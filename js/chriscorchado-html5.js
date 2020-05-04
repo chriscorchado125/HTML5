@@ -54,7 +54,6 @@ async function getIndexPage() {
       item += `<img src=${getFullUrl(logo)} class="company-logo" />`;
       item += `</div>`;
     }
- 
 
     item += `<div class="company-job-title">${element.job_title}</div>`;
     item += `<div class="body-container">`;
@@ -74,8 +73,6 @@ async function getIndexPage() {
     item += extractDate(element.end_date, true);
     item += `<br /><div class="employment-type">${element.type}</div>`;
     item += `</div>`;
-
-   
 
     item += `</div>`;
 
@@ -132,6 +129,8 @@ function pageLoaded() {
   $("#preloader").hide();
   $("*").removeClass("hide-me");
   $(".container").fadeIn();
+  console.log(getCurrentLinkID());
+  $("#" + getCurrentLinkID()).addClass("active");
 }
 
 function extractDate(dt, monthYear) {
@@ -146,8 +145,34 @@ function extractDate(dt, monthYear) {
 }
 
 /**
+ * Load navigation
+ */
+$("#navigation").load("includes/nav.html");
+
+function navFunction() {
+  var x = document.getElementById("navigation");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
+
+function getCurrentLinkID() {
+  if (location.pathname.includes("skills.html")) {
+    return "skills-link";
+  }
+  if (location.pathname.includes("index.html")) {
+    return "home-link";
+  }
+}
+
+
+/**
  * Load pages
  */
+$(".navItem").removeClass("active");
+
 if (location.pathname.includes("skills.html")) {
   getSkillsPage();
 } else {

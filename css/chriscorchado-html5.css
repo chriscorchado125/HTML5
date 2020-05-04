@@ -12,16 +12,29 @@ body {
   text-shadow: 2px 2px 4px #000000;
 }
 
-header {
+.container {
+  margin-top: 85px !important;
+  
+}
+
+#logo img {
+  height: 60px;
+}
+
+/* force nav to stay horizontal */
+.navbar-nav {
+  flex-direction: row !important;
+}
+
+.nav-item {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100px;
+  margin: 0 5px;
+  padding: 0px 15px !important;
 }
 
-h1 {
-  text-align: center;
-}
+
 
 .hide-me {
   visibility: hidden;
@@ -95,14 +108,11 @@ header h1 {
   font-size: 12px;
   border-radius: 5px;
   padding: 5px;
-
-
 }
 
 .employment-type {
   font-size: 10px;
   font-style: italic;
-
 }
 
 /* Skills page */
