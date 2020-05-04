@@ -104,8 +104,7 @@ async function getSkillsPage() {
     let awardDate = "";
 
     if (element.field_award_date) {
-      awardDate = element.field_award_date.split(">")[1];
-      awardDate = awardDate.split("-")[0];
+      awardDate = extractDate(element.field_award_date);
     }
 
     item += `<div class="skill-date">${awardDate}</div>`;
@@ -124,6 +123,11 @@ function pageLoaded() {
   $("#preloader").hide();
   $("*").removeClass("hide-me");
   $(".container").fadeIn();
+}
+
+function extractDate(dt){
+  let newDate = dt.split(">")[1];
+  return newDate.split("-")[0];
 }
 
 /**
