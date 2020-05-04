@@ -47,14 +47,16 @@ async function getIndexPage() {
 
   response.forEach((element) => {
     let item = `<div class="company-container col shadow">`;
-
+    item += `<div class="company-name">${element.title}</div>`;
     if (element.logo) {
       let logo = getStringInQuotes.exec(element.logo)[0];
       item += `<div class="logo-container">`;
       item += `<img src=${getFullUrl(logo)} class="company-logo" />`;
       item += `</div>`;
     }
+ 
 
+    item += `<div class="company-job-title">${element.job_title}</div>`;
     item += `<div class="body-container">`;
     item += element.body;
     item += `</div>`;
@@ -70,9 +72,10 @@ async function getIndexPage() {
     item += extractDate(element.start_date, true);
     item += " - ";
     item += extractDate(element.end_date, true);
+    item += `<br /><div class="employment-type">${element.type}</div>`;
     item += `</div>`;
 
-    item += `<span class="employment-type">(${element.type})</span>`;
+   
 
     item += `</div>`;
 

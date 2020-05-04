@@ -70,17 +70,39 @@ header h1 {
   padding-bottom: 20px;
 }
 
+.company-name {
+  margin: 10px 0 -15px 0;
+  font-weight: bold;
+  color: rgb(96, 96, 97);
+}
+
+.company-job-title {
+  margin-top: 10px;
+  margin: auto;
+  background-color: rgb(231, 228, 228);
+  border-top: 1px solid #7399ea;
+  border-bottom: 1px solid #7399ea;
+}
+
 .company-screenshot {
   max-width: 320px;
 }
 
 .employment-dates {
+  width: 80%;
+  margin: auto;
   margin-top: 10px;
-  background-color: rgb(231, 228, 228);
+  font-size: 12px;
+  border-radius: 5px;
+  padding: 5px;
+
+
 }
 
 .employment-type {
   font-size: 10px;
+  font-style: italic;
+
 }
 
 /* Skills page */
