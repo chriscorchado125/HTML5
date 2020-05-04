@@ -41,7 +41,6 @@ function getFullUrl(linkToFix) {
  * Load companies page (Homepage)
  */
 async function getIndexPage() {
-
   let response = await getData(
     "https://chriscorchado.com/drupal8/rest/api/companies?_format=json"
   );
@@ -67,6 +66,14 @@ async function getIndexPage() {
       item += `</div>`;
     }
 
+    item += `<div class="employment-dates">`;
+    item += extractDate(element.start_date, true);
+    item += " - ";
+    item += extractDate(element.end_date, true);
+    item += `</div>`;
+
+    item += `<span class="employment-type">(${element.type})</span>`;
+
     item += `</div>`;
 
     $(".container").append(item);
@@ -79,7 +86,6 @@ async function getIndexPage() {
  * Load skills page
  */
 async function getSkillsPage() {
-
   let response = await getData(
     "https://chriscorchado.com/drupal8/rest/api/skills?_format=json"
   );
@@ -125,9 +131,15 @@ function pageLoaded() {
   $(".container").fadeIn();
 }
 
-function extractDate(dt){
-  let newDate = dt.split(">")[1];
-  return newDate.split("-")[0];
+function extractDate(dt, monthYear) {
+  let returnDate = dt.split(">")[1];
+  returnDate = returnDate.split("-")[0];
+
+  if (monthYear) {
+    let shortDate = returnDate.split(",");
+    returnDate = shortDate[1].split(" ")[1] + shortDate[2];
+  }
+  return returnDate;
 }
 
 /**
