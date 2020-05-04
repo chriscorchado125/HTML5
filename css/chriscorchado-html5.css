@@ -1,1 +1,116 @@
 /* chriscorchado.com HTML */
+body {
+  box-sizing: border-box;
+  background-image: url(../images/cclogobg.jpg);
+}
+
+#preloader {
+  text-align: center;
+  margin-top: 100px;
+  font-size: 40px;
+  color: white;
+  text-shadow: 2px 2px 4px #000000;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.hide-me {
+  visibility: hidden;
+}
+
+header h1 {
+  color: white;
+  text-shadow: 2px 2px 4px #000000;
+}
+
+.shadow {
+  -webkit-box-shadow: 3px 3px 5px 3px #ccc; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow: 3px 3px 5px 3px #ccc; /* Firefox 3.5 - 3.6 */
+  box-shadow: 3px 3px 5px 3px #ccc; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+
+/* Homapage - Companies */
+
+.container {
+  margin: auto;
+  text-align: center;
+  padding: 20px 5px;
+  background-color: white;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  min-height: 125px;
+}
+
+/* body text - the bullet items */
+.body-container {
+  max-width: 320px;
+  margin: 20px auto;
+  text-align: left;
+}
+
+/* entire company item */
+.company-container {
+  border: 1px solid rgb(209, 208, 208);
+  padding: 0px;
+  margin: 0 10px 20px 10px;
+  padding-bottom: 20px;
+}
+
+.company-screenshot {
+  max-width: 320px;
+}
+
+/* Skills page */
+
+.skills-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 1px;
+}
+
+.skills-container h2 {
+  font-size: 14px;
+}
+
+.skill-box {
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.skill-box:hover {
+ font-size: 44px;
+  -webkit-box-shadow: 3px 3px 5px 3px #ccc; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow: 3px 3px 5px 3px #ccc; /* Firefox 3.5 - 3.6 */
+  box-shadow: 3px 3px 5px 3px #ccc; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+
+.skill-date {
+  font-size: 12px;
+}
+
+@media (max-width: 992px) {
+  .skills-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 800px) {
+  .skills-container {
+    grid-template-columns: 1fr;
+  }
+}
