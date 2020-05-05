@@ -20,8 +20,8 @@ body {
   height: 60px;
 }
 
-.navbar{
-    border-bottom: 2px solid #83A6E8 !important;
+.navbar {
+  border-bottom: 2px solid #83a6e8 !important;
 }
 
 /* force nav to stay horizontal */
@@ -37,15 +37,8 @@ body {
   padding: 0px 5px !important;
 }
 
-
-
 .hide-me {
   visibility: hidden;
-}
-
-header h1 {
-  color: white;
-  text-shadow: 2px 2px 4px #000000;
 }
 
 .shadow {
@@ -54,28 +47,14 @@ header h1 {
   box-shadow: 3px 3px 5px 3px #ccc; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
 }
 
-/* Homapage - Companies */
-
+/**
+ * Homapage - Companies
+ */
 .container {
   margin: auto;
   text-align: center;
   padding: 20px 5px;
   background-color: white;
-}
-
-.logo-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  min-height: 125px;
-}
-
-/* body text - the bullet items */
-.body-container {
-  max-width: 320px;
-  margin: 20px auto;
-  text-align: left;
 }
 
 /* entire company item */
@@ -92,12 +71,25 @@ header h1 {
   color: rgb(96, 96, 97);
 }
 
+.logo-container {
+  align-items: center;
+  padding: 10px;
+}
+
 .company-job-title {
   margin-top: 10px;
   margin: auto;
   background-color: rgb(231, 228, 228);
   border-top: 1px solid #7399ea;
   border-bottom: 1px solid #7399ea;
+}
+
+/* body text - the bullet items */
+.body-container {
+  max-width: 320px;
+  margin: 20px auto;
+  text-align: left;
+  font-size: 14px
 }
 
 .company-screenshot {
@@ -118,7 +110,9 @@ header h1 {
   font-style: italic;
 }
 
-/* Skills page */
+/**
+ * Skills page
+ */
 
 .skills-container {
   display: grid;
@@ -136,15 +130,43 @@ header h1 {
   margin-bottom: 20px;
 }
 
-.skill-box:hover {
-  font-size: 44px;
-  -webkit-box-shadow: 3px 3px 5px 3px #ccc; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
-  -moz-box-shadow: 3px 3px 5px 3px #ccc; /* Firefox 3.5 - 3.6 */
-  box-shadow: 3px 3px 5px 3px #ccc; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
-}
-
 .skill-date {
   font-size: 12px;
+}
+
+/* the box class is used for the skill hover effect */
+.box {
+  position: relative;
+  display: inline-block;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.box::after {
+  content: "";
+  border-radius: 5px;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.box:hover {
+  -webkit-transform: scale(1.02, 1.02);
+  transform: scale(1.02, 1.02);
+}
+
+.box:hover::after {
+  opacity: 1;
 }
 
 @media (max-width: 992px) {

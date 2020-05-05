@@ -91,7 +91,7 @@ async function getSkillsPage() {
   );
 
   response.forEach((element) => {
-    let item = `<div class="skill-box">`;
+    let item = `<div class="skill-box box">`;
     item += `<h2>${element.title}</h2>`;
     item += `<div>`;
 
