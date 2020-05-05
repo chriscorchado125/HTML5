@@ -14,11 +14,14 @@ body {
 
 .container {
   margin-top: 85px !important;
-  
 }
 
 #logo img {
   height: 60px;
+}
+
+.navbar{
+    border-bottom: 2px solid #83A6E8 !important;
 }
 
 /* force nav to stay horizontal */
@@ -31,7 +34,7 @@ body {
   justify-content: center;
   align-items: center;
   margin: 0 5px;
-  padding: 0px 15px !important;
+  padding: 0px 5px !important;
 }
 
 
