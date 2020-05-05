@@ -1,7 +1,7 @@
-@import 'hover-animation.css';
-@import 'navigation.css';
-@import 'company.css';
-@import 'skill.css';
+@import "hover-animation.css";
+@import "navigation.css";
+@import "company.css";
+@import "skill.css";
 
 body {
   box-sizing: border-box;
@@ -16,13 +16,9 @@ body {
   text-shadow: 2px 2px 4px #000000;
 }
 
+/* space for top navigation */
 .container {
   margin-top: 85px !important;
-}
-
-
-.hide-me {
-  visibility: hidden;
 }
 
 .shadow {
@@ -30,4 +26,3 @@ body {
   -moz-box-shadow: 3px 3px 5px 3px #ccc; /* Firefox 3.5 - 3.6 */
   box-shadow: 3px 3px 5px 3px #ccc; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
 }
-

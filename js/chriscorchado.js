@@ -24,9 +24,11 @@ function getData(urlToData) {
   return result;
 }
 
-let getStringInQuotes = /"(.*?)"/; // regex to get string within quotes
+/* regex to get string within quotes */
+let getStringInQuotes = /"(.*?)"/;
 
-$(".container").hide(); // hide in order to fade in
+/* used to avoid FOUC-Flash Of Unstyled Content */
+$(".container").hide();
 
 /**
  * Create absolute link
@@ -132,19 +134,18 @@ async function getSkillsPage() {
  * Hide preloader and show page
  */
 function pageLoaded() {
-  $("#preloader").hide();
-  $("*").removeClass("hide-me");
-  $(".container").fadeIn();
-
   // highlight the current nav item link
   $("#" + getCurrentLinkID()).addClass("nav-item-active");
+
+  $("#preloader").hide();
+  $(".container").fadeIn();
 }
 
 /**
  * Extract date string
  *
  * @param dt {string} contains the date
- * @param monthYear {boolean} whether to return month and year only
+ * @param monthYear {boolean} if true return month and year only
  * @return {string} full date or month and year only
  */
 function extractDate(dt, monthYear) {
@@ -181,4 +182,3 @@ if (location.pathname.includes("skills.html")) {
 } else {
   getIndexPage();
 }
-
