@@ -6,6 +6,7 @@
  */
 function getData(urlToData) {
   /* For Testing */
+
   if (window.location.href.indexOf("localhost") !== -1) {
     if (urlToData.indexOf("companies") !== -1) {
       urlToData = "companies.json";
@@ -25,10 +26,10 @@ function getData(urlToData) {
 
 let getStringInQuotes = /"(.*?)"/; // regex to get string within quotes
 
-$(".container").hide();
+$(".container").hide(); // hide in order to fade in
 
 /**
- * Create absolute link.
+ * Create absolute link
  *
  * @param linkToFix {string} relative url
  * @return {string} absolute url
@@ -47,7 +48,9 @@ async function getIndexPage() {
 
   response.forEach((element) => {
     let item = `<div class="company-container col shadow">`;
+
     item += `<div class="company-name">${element.title}</div>`;
+
     if (element.logo) {
       let logo = getStringInQuotes.exec(element.logo)[0];
       item += `<div class="logo-container">`;
@@ -56,12 +59,14 @@ async function getIndexPage() {
     }
 
     item += `<div class="company-job-title">${element.job_title}</div>`;
+
     item += `<div class="body-container">`;
     item += element.body;
     item += `</div>`;
 
     if (element.screenshot) {
       let screenshot = getStringInQuotes.exec(element.screenshot)[0];
+
       item += `<div class="screenshot-container">`;
       item += `<img src=${getFullUrl(screenshot)} class="company-screenshot" />`;
       item += `</div>`;
@@ -71,7 +76,7 @@ async function getIndexPage() {
     item += extractDate(element.start_date, true);
     item += " - ";
     item += extractDate(element.end_date, true);
-    item += `<br /><div class="employment-type">${element.type}</div>`;
+    item += `<div class="employment-type">${element.type}</div>`;
     item += `</div>`;
 
     item += `</div>`;
@@ -105,6 +110,7 @@ async function getSkillsPage() {
     } else {
       item += `${awardImage}`;
     }
+
     item += `</div>`;
 
     let awardDate = "";
@@ -129,10 +135,18 @@ function pageLoaded() {
   $("#preloader").hide();
   $("*").removeClass("hide-me");
   $(".container").fadeIn();
-  console.log(getCurrentLinkID());
-  $("#" + getCurrentLinkID()).addClass("active");
+
+  // highlight the current nav item link
+  $("#" + getCurrentLinkID()).addClass("nav-item-active");
 }
 
+/**
+ * Extract date string
+ *
+ * @param dt {string} contains the date
+ * @param monthYear {boolean} whether to return month and year only
+ * @return {string} full date or month and year only
+ */
 function extractDate(dt, monthYear) {
   let returnDate = dt.split(">")[1];
   returnDate = returnDate.split("-")[0];
@@ -149,15 +163,6 @@ function extractDate(dt, monthYear) {
  */
 $("#navigation").load("includes/nav.html");
 
-function navFunction() {
-  var x = document.getElementById("navigation");
-  if (x.className === "topnav") {
-    x.className += " responsive";
-  } else {
-    x.className = "topnav";
-  }
-}
-
 function getCurrentLinkID() {
   if (location.pathname.includes("skills.html")) {
     return "skills-link";
@@ -167,14 +172,13 @@ function getCurrentLinkID() {
   }
 }
 
-
 /**
  * Load pages
  */
-$(".navItem").removeClass("active");
 
 if (location.pathname.includes("skills.html")) {
   getSkillsPage();
 } else {
   getIndexPage();
 }
+

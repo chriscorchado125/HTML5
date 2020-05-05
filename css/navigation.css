@@ -1,0 +1,28 @@
+/**
+ * Site Navigation
+ */
+ 
+ #logo img {
+  height: 60px;
+}
+
+.navbar {
+  border-bottom: 2px solid #83a6e8 !important;
+}
+
+/* force nav to stay horizontal */
+.navbar-nav {
+  flex-direction: row !important;
+}
+
+.nav-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 5px;
+  padding: 0px 5px !important;
+}
+
+.nav-item-active {
+  font-weight: bold;
+}

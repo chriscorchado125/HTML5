@@ -1,0 +1,65 @@
+/**
+ * Homapage - Companies
+ */
+ 
+.container {
+  margin: auto;
+  text-align: center;
+  padding: 20px 5px;
+  background-color: white;
+}
+
+/* entire company item */
+.company-container {
+  border: 1px solid rgb(209, 208, 208);
+  padding: 0px;
+  margin: 0 10px 20px 10px;
+  padding-bottom: 20px;
+}
+
+.company-name {
+  margin: 10px 0 -10px 0;
+  font-weight: bold;
+  color: rgb(96, 96, 97);
+}
+
+/* company logo */
+.logo-container {
+  align-items: center;
+  padding: 10px;
+}
+
+.company-job-title {
+  margin-top: 10px;
+  margin: auto;
+  background-color: rgb(231, 228, 228);
+  border-top: 1px solid #7399ea;
+  border-bottom: 1px solid #7399ea;
+}
+
+/* body text - the bullet items */
+.body-container {
+  max-width: 320px;
+  margin: 20px auto;
+  text-align: left;
+  font-size: 14px;
+}
+
+.company-screenshot {
+  max-width: 320px;
+  margin-bottom: 50px;
+}
+
+.employment-dates {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  font-size: 12px;
+  padding: 10px;
+  background-color: #cbdafa;
+}
+
+.employment-type {
+  font-size: 10px;
+  font-style: italic;
+}
