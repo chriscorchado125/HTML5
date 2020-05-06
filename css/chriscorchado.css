@@ -17,6 +17,10 @@ body {
 /* space for top navigation */
 .container {
   margin-top: 85px !important;
+  margin: auto;
+  text-align: center;
+  padding: 20px 5px;
+  background-color: white;
 }
 
 .shadow {

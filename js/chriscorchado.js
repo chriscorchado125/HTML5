@@ -1,4 +1,4 @@
-'use strict'
+
 
 /**
  * Get data from Drupal 8 datastore.
