@@ -104,13 +104,13 @@ async function getSkillsPage() {
     item += `<h2>${element.title}</h2>`;
     item += `<div>`;
 
-    let awardImage = getFullUrl(element.field_award_images_1);
-
+    let awardImage = getFullUrl(element.field_award_images);   
+   
     /* if there is a PDF, link to it */
     if (element.field_award_pdf) {
       item += `<a href="${getFullUrl(
         element.field_award_pdf
-      )}" target="_blank" title="Click to View the PDF">${awardImage}</a>`;
+      )}" target="_blank" title="Click to view a PDF of ${element.title}"><img src="${awardImage}" alt="${element.title}" width="290" /></a>`;
     } else {
       item += `${awardImage}`;
     }
