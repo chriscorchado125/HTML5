@@ -26,6 +26,10 @@ function getData(urlToData) {
   return result;
 }
 
+/* API URLs */
+const API_Company = "https://chriscorchado.com/drupal8/rest/api/companies?_format=json";
+const API_Skills = "https://chriscorchado.com/drupal8/rest/api/skills?_format=json";
+
 /* regex to get string within quotes */
 let getStringInQuotes = /"(.*?)"/;
 
@@ -46,9 +50,7 @@ function getFullUrl(linkToFix) {
  * Load companies page (Homepage)
  */
 async function getIndexPage() {
-  let response = await getData(
-    "https://chriscorchado.com/drupal8/rest/api/companies?_format=json"
-  );
+  let response = await getData(API_Company);
 
   response.forEach((element) => {
     let item = `<div class="company-container col shadow">`;
@@ -95,9 +97,7 @@ async function getIndexPage() {
  * Load skills page
  */
 async function getSkillsPage() {
-  let response = await getData(
-    "https://chriscorchado.com/drupal8/rest/api/skills?_format=json"
-  );
+  let response = await getData(API_Skills);
 
   response.forEach((element) => {
     let item = `<div class="skill-box box">`;
