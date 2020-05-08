@@ -1,8 +1,8 @@
 /**
  * Site Navigation
  */
- 
- #logo img {
+
+#logo img {
   height: 60px;
 }
 
@@ -26,4 +26,11 @@
 
 .nav-item-active {
   font-weight: bold;
+}
+
+#search-container {
+  float: right;
+  margin: -50px 40px 0 0;
+  max-width: 200px;
+  background-color: red;
 }
