@@ -60,7 +60,7 @@ async function getIndexPage() {
     if (element.logo) {
       let logo = getStringInQuotes.exec(element.logo)[0];
       item += `<div class="logo-container">`;
-      item += `<img src=${getFullUrl(logo)} class="company-logo" />`;
+      item += `<img src=${getFullUrl(logo)} class="company-logo" alt="${element.title} Logo" />`;
       item += `</div>`;
     }
 
@@ -74,7 +74,7 @@ async function getIndexPage() {
       let screenshot = getStringInQuotes.exec(element.screenshot)[0];
 
       item += `<div class="screenshot-container">`;
-      item += `<img src=${getFullUrl(screenshot)} class="company-screenshot" />`;
+      item += `<img src=${getFullUrl(screenshot)} class="company-screenshot"  alt="${element.title} Screenshot" />`;
       item += `</div>`;
     }
 
@@ -114,7 +114,7 @@ async function getSkillsPage() {
         element.title
       }"><img src="${awardImage}" alt="${element.title}" width="290" /></a>`;
     } else {
-      item += `${awardImage}`;
+      item += `<img src="${awardImage}" alt="${element.title}" width="290" />`;
     }
 
     item += `</div>`;
