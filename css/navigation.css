@@ -31,6 +31,19 @@
 #search-container {
   float: right;
   margin: -50px 40px 0 0;
-  max-width: 200px;
-  background-color: red;
+  max-width: 150px;
+  text-align: center;
+}
+
+/* search textbox */
+#searchSite {
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  #search-container {
+    float: none;
+    margin: auto;
+    margin-bottom: 15px;
+  }
 }
