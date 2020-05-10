@@ -179,6 +179,8 @@ function renderPage(data, page, searchedFor) {
   let titleToShow = "";
   let itemCount = 0;
 
+  $("#noRecords").remove();
+  
   data.forEach((element) => {
     /* if searching then skip any items that don't match otherwise highlight search results*/
     if (
