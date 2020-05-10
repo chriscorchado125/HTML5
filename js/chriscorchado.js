@@ -279,7 +279,7 @@ function renderPage(data, page, searchedFor) {
 
   if (itemCount <= 0) {
     $("#noRecords").remove();
-    $("body").append(`<div id="noRecords">No matches found for '${searchedFor}'</div>`);
+    $("body").append(`<div id="noRecords" class="shadow">No matches found for '${searchedFor}'</div>`);
   }
 
   return item;
