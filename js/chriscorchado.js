@@ -90,7 +90,12 @@ function searchClear() {
  * @return {string} allowed characters
  */
 function searchFilter(event) {
-  var charCode = event.keyCode || event.which;
+  /* don't allow more characters if current search returns no records */
+  if (document.getElementById("searchCount").innerHTML.substring(0, 1) == "0") {
+    return false;
+  }
+
+  let charCode = event.keyCode || event.which;
 
   return (
     (charCode >= 65 && charCode <= 90) ||
@@ -188,7 +193,6 @@ function renderPage(data, page, searchedFor) {
     itemCount++;
 
     /* Set regular title or title with search term in highlight */
-
     if (searchedFor) {
       titleToShow = searchedTitle;
     } else {
@@ -279,7 +283,9 @@ function renderPage(data, page, searchedFor) {
 
   if (itemCount <= 0) {
     $("#noRecords").remove();
-    $("body").append(`<div id="noRecords" class="shadow">No matches found for '${searchedFor}'</div>`);
+    $("body").append(
+      `<div id="noRecords" class="shadow">No matches found for '${searchedFor}'</div>`
+    );
   }
 
   return item;
