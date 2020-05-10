@@ -66,7 +66,6 @@ async function searchData() {
   let inputSearchBox = document.getElementById("searchSite");
 
   $(".container, .skills-container").hide();
-  $("#noRecords").remove();
 
   if (location.pathname.includes("skills.html")) {
     getSkillsPage(inputSearchBox.value);
@@ -279,6 +278,7 @@ function renderPage(data, page, searchedFor) {
   setItemCount(itemCount);
 
   if (itemCount <= 0) {
+    $("#noRecords").remove();
     $("body").append(`<div id="noRecords">No matches found for '${searchedFor}'</div>`);
   }
 
