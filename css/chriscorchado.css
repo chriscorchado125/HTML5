@@ -1,5 +1,5 @@
-@import "hover-animation.css";
 @import "navigation.css";
+@import "hover-animation.css";
 
 body {
   box-sizing: border-box;
@@ -21,6 +21,13 @@ body {
   text-align: center;
   padding: 20px 5px;
   background-color: white;
+}
+
+#noRecords {
+  margin-top: 150px !important;
+  width: 100%;
+  font-size: 36px;
+  text-align: center;
 }
 
 .shadow {

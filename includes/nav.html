@@ -8,8 +8,21 @@
       <a href="#" class="nav-item nav-link disabled" id="about-link">About</a>
       <a href="skills.html" class="nav-item nav-link" id="skills-link">Skills</a>
       <a href="#" class="nav-item nav-link disabled" id="projects-link">Projects</a>
-      
     </div>
-  <div id="search-container"><input type="text" id="searchSite" placeholder="Search" /></div>
+
+    <div id="search-container">
+      <span id="searchCount">Loading...</span>
+
+      <input
+        type="text"
+        id="searchSite"
+        placeholder="Search items"
+        onkeyup="searchData()"
+        onkeypress="return searchFilter(event)"
+        class="ccBtn"
+      />
+
+      <button class="searchBtn" onclick="searchClear()">clear</button>
+    </div>
   </div>
 </nav>
