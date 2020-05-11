@@ -67,14 +67,11 @@ async function searchData() {
 
   $(".container, .skills-container").hide();
 
+  ga("send", "pageview", location.pathname + "?search=" + inputSearchBox.value);
+
   if (location.pathname.includes("skills.html")) {
-    analytics.js: ga('send', 'pageview', '/skills.html?search=' + inputSearchBox.value + '&data=skills');
-
     getSkillsPage(inputSearchBox.value);
-
   } else {
-    analytics.js: ga('send', 'pageview', '/index.html?search=' + inputSearchBox.value + '&data=companies');
-
     getIndexPage(inputSearchBox.value);
   }
 }
