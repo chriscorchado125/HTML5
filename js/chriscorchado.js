@@ -67,7 +67,9 @@ async function searchData() {
 
   $(".container, .skills-container").hide();
 
-  ga("send", "pageview", location.pathname + "?search=" + inputSearchBox.value);
+  if (inputSearchBox.value.length > 2) {
+    ga("send", "pageview", location.pathname + "?search=" + inputSearchBox.value);
+  }  
 
   if (location.pathname.includes("skills.html")) {
     getSkillsPage(inputSearchBox.value);
