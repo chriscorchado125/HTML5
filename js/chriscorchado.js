@@ -30,7 +30,7 @@ function getData(dataURL) {
 }
 
 /* Hide page UI on load in order to fade in */
-$(".container, #navigation").hide();
+$(".container").hide();
 
 /**
  * Load companies page (Homepage)
@@ -280,14 +280,16 @@ function renderPage(data, page, searchedFor) {
     }
   });
 
-  $(".container").html(item);
-
   setItemCount(itemCount);
 
   if (itemCount <= 0) {
+    $(".container").hide();
+
     $("body").append(
       `<div id="noRecords" class="shadow">No matches found for '${searchedFor}'</div>`
     );
+  } else {
+    $(".container").html(item);
   }
 }
 
@@ -299,7 +301,6 @@ function pageLoaded(pageLink) {
   setTimeout(function () {
     $("#preloader").hide();
 
-    $("#navigation").fadeIn(150);
     $(".container").fadeIn(250);
 
     $("#" + pageLink).addClass("nav-item-active");
