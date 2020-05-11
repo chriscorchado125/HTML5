@@ -285,7 +285,6 @@ function renderPage(data, page, searchedFor) {
   setItemCount(itemCount);
 
   if (itemCount <= 0) {
-    $("#noRecords").remove();
     $("body").append(
       `<div id="noRecords" class="shadow">No matches found for '${searchedFor}'</div>`
     );
