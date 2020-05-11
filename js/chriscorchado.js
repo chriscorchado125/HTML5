@@ -37,7 +37,7 @@ $(".container, #navigation").hide();
  */
 async function getIndexPage(search) {
   let data = await getData(API_Company);
-  $(".container").html(renderPage(data, "company", search));
+  renderPage(data, "company", search);
 }
 
 /**
@@ -45,7 +45,7 @@ async function getIndexPage(search) {
  */
 async function getSkillsPage(search) {
   let data = await getData(API_Skills);
-  $(".container").html(renderPage(data, "skills", search));
+  renderPage(data, "skills", search);
 }
 
 /**
@@ -170,7 +170,6 @@ let getStringInQuotes = /"(.*?)"/;
  * @param data {array} page items
  * @param page {string} page name
  * @param searchedFor {string} search string
- * @return {string} HTML with data
  */
 
 function renderPage(data, page, searchedFor) {
@@ -180,7 +179,7 @@ function renderPage(data, page, searchedFor) {
   let itemCount = 0;
 
   $("#noRecords").remove();
-  
+
   data.forEach((element) => {
     /* if searching then skip any items that don't match otherwise highlight search results*/
     if (
@@ -281,6 +280,8 @@ function renderPage(data, page, searchedFor) {
     }
   });
 
+  $(".container").html(item);
+
   setItemCount(itemCount);
 
   if (itemCount <= 0) {
@@ -289,8 +290,6 @@ function renderPage(data, page, searchedFor) {
       `<div id="noRecords" class="shadow">No matches found for '${searchedFor}'</div>`
     );
   }
-
-  return item;
 }
 
 /**
