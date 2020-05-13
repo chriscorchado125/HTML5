@@ -299,7 +299,7 @@ function renderPage(data, page, searchedFor) {
 
 /**
  * Hide preloader, show page, set nav item, put focus in search
- * @param urlpageLinkToData {string} id of current nav item
+ * @param pageLink {string} id of current nav item
  */
 function pageLoaded(pageLink) {
   setTimeout(function () {
