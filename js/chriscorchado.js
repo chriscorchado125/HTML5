@@ -3,6 +3,29 @@
 /* API URLs */
 const API_Company = "https://chriscorchado.com/drupal8/rest/api/companies?_format=json";
 const API_Skills = "https://chriscorchado.com/drupal8/rest/api/skills?_format=json";
+const API_Projects = "https://chriscorchado.com/drupal8/rest/api/projects?_format=json";
+
+/**
+ * Get current page
+ * @return {string} name of page
+ */
+function getCurrentPage() {
+  let currentPage = "";
+
+  if (location.pathname.includes("skills.html")) {
+    currentPage = "skills";
+  }
+
+  if (location.pathname.includes("projects.html")) {
+    currentPage = "projects";
+  }
+
+  if (location.pathname.includes("index.html") || currentPage == "") {
+    currentPage = "companies";
+  }
+
+  return currentPage;
+}
 
 /**
  * Get data from Drupal 8 datastore
@@ -13,11 +36,16 @@ function getData(dataURL) {
   /* For Local Testing */
 
   if (window.location.href.indexOf("localhost") !== -1) {
-    if (dataURL.indexOf("companies") !== -1) {
-      dataURL = "companies.json";
-    }
-    if (dataURL.indexOf("skills") !== -1) {
-      dataURL = "skills.json";
+    switch (getCurrentPage()) {
+      case "companies":
+        dataURL = "companies.json";
+        break;
+      case "skills":
+        dataURL = "skills.json";
+        break;
+      case "projects":
+        dataURL = "projects.json";
+        break;
     }
   }
 
@@ -34,14 +62,16 @@ $(".container").hide();
 
 /**
  * Load companies page (Homepage)
+ * @param search {string} search string
  */
 async function getIndexPage(search) {
   let data = await getData(API_Company);
-  renderPage(data, "company", search);
+  renderPage(data, "companies", search);
 }
 
 /**
  * Load skills page
+ * @param search {string} search string
  */
 async function getSkillsPage(search) {
   let data = await getData(API_Skills);
@@ -49,14 +79,29 @@ async function getSkillsPage(search) {
 }
 
 /**
+ * Load projects page
+ * @param search {string} search string
+ */
+async function getProjectsPage(search) {
+  let data = await getData(API_Projects);
+  renderPage(data, "projects", search);
+}
+
+/**
  * Load pages
  */
 $("#navigation").load("includes/nav.html");
 
-if (location.pathname.includes("skills.html")) {
-  getSkillsPage();
-} else {
-  getIndexPage();
+switch (getCurrentPage()) {
+  case "companies":
+    getIndexPage();
+    break;
+  case "skills":
+    getSkillsPage();
+    break;
+  case "projects":
+    getProjectsPage();
+    break;
 }
 
 /**
@@ -69,12 +114,18 @@ async function searchData() {
 
   if (inputSearchBox.value.length > 2) {
     ga("send", "pageview", location.pathname + "?search=" + inputSearchBox.value);
-  }  
+  }
 
-  if (location.pathname.includes("skills.html")) {
-    getSkillsPage(inputSearchBox.value);
-  } else {
-    getIndexPage(inputSearchBox.value);
+  switch (getCurrentPage()) {
+    case "companies":
+      getIndexPage(inputSearchBox.value);
+      break;
+    case "skills":
+      getSkillsPage(inputSearchBox.value);
+      break;
+    case "projects":
+      getProjectsPage(inputSearchBox.value);
+      break;
   }
 }
 
@@ -175,7 +226,6 @@ let getStringInQuotes = /"(.*?)"/;
  * @param page {string} page name
  * @param searchedFor {string} search string
  */
-
 function renderPage(data, page, searchedFor) {
   let item = "";
   let searchedTitle = "";
@@ -204,8 +254,10 @@ function renderPage(data, page, searchedFor) {
       titleToShow = element.title;
     }
 
+    titleToShow = titleToShow.replace("&amp;", "&");
+
     switch (page) {
-      case "company":
+      case "companies":
         item += `<div class="company-container col shadow">`;
         item += `<div class="company-name">${titleToShow}</div>`;
 
@@ -281,6 +333,68 @@ function renderPage(data, page, searchedFor) {
         pageLoaded("skills-link");
 
         break;
+
+      case "projects":
+        item += `<div class="project col">`;
+        item += `<div class="project-title">${titleToShow}</div>`;
+        item += `<div class="project-company">${element.company}</div>`;
+
+        item += `<div class="body-container">`;
+        item += element.body;
+        item += `</div>`;
+
+        if (element.screenshot) {
+          let screenshots = element.screenshot.split(",");
+          let screenshotCount = parseInt(screenshots.length);
+
+          let itemGridClass = "project-items3";
+
+          if (screenshotCount === 2) {
+            itemGridClass = "project-items2";
+          }
+          if (screenshotCount === 1) {
+            itemGridClass = "project-items1";
+          }
+
+          let section = `<section data-featherlight-gallery data-featherlight-filter="a" class="${itemGridClass}">`;
+
+          screenshots.forEach((img) => {
+            let imgPieces = img.split("=");
+
+            let imgUrl = getStringInQuotes.exec(imgPieces[1])[0];
+            // let imgWidth = getStringInQuotes.exec(imgPieces[2])[0];
+            // let imgHeight = getStringInQuotes.exec(imgPieces[3])[0];
+            let imgAlt = getStringInQuotes.exec(imgPieces[4])[0].replace(/"/g, "");
+
+            let projectImage = getFullUrl(imgUrl);
+
+            section += `<div class="project-item shadow">`;
+
+            section += `<a href=${projectImage} style="display:none;"><img src=${projectImage}></a>`;
+
+            section += `<a href=${projectImage} class="gallery">
+            <div class="project-item-desc">${imgAlt}</div>
+            <img src=${projectImage} alt=${imgAlt} />
+            </a></div>`;
+          });
+
+          section += `</section>`;
+
+          item += section;
+        }
+        if (element.video_url) {
+          item += `<a href="${element.video_url}" 
+          data-featherlight="iframe" 
+          data-featherlight-iframe-frameborder="0" 
+          data-featherlight-iframe-allowfullscreen="true" 
+          data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;" class="play-video">Play Video<img src="images/play_vidoe_icon.png" width="20" /></a>`;
+        }
+
+        item += `</div>`;
+
+        pageLoaded("projects-link");
+
+        break;
     }
   });
 
@@ -294,6 +408,7 @@ function renderPage(data, page, searchedFor) {
     );
   } else {
     $(".container").html(item);
+    $("section").featherlight(); // must init after adding items
   }
 }
 
@@ -304,11 +419,8 @@ function renderPage(data, page, searchedFor) {
 function pageLoaded(pageLink) {
   setTimeout(function () {
     $("#preloader").hide();
-
     $(".container").fadeIn(250);
-
     $("#" + pageLink).addClass("nav-item-active");
-
     $("#searchSite").focus();
   }, 25);
 }
