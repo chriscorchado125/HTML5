@@ -332,7 +332,7 @@ function renderPage(data, page, searchedFor) {
 
         pageLoaded("skills-link");
 
-        setPageMessage("click image to the PDF");
+        setPageMessage("click an image to view the PDF");
 
         break;
 
@@ -396,7 +396,7 @@ function renderPage(data, page, searchedFor) {
 
         pageLoaded("projects-link");
 
-        setPageMessage("click an image to make it bigger");
+        setPageMessage("click an image to enlarge it");
 
         break;
     }
