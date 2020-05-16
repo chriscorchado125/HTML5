@@ -23,8 +23,14 @@
   width: 80px;
 }
 
+.nav-item:hover {
+  font-weight: bold;
+  color: #83a6e8 !important;
+}
+
 .nav-item-active {
   font-weight: bold;
+  color: #83a6e8 !important;
 }
 
 #search-container {

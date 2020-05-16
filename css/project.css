@@ -50,11 +50,10 @@
 }
 
 .project-date {
-font-size:12px
+  font-size: 12px;
 }
 
 .project-title {
-  font-weight: bold;
   color: rgb(96, 96, 97);
   margin: 0;
   padding: 10px 0;
