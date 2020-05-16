@@ -311,9 +311,9 @@ function renderPage(data, page, searchedFor) {
         if (element.field_award_pdf) {
           item += `<a href="${getFullUrl(
             element.field_award_pdf
-          )}" target="_blank" title="Click to view a PDF of ${
+          )}" target="_blank"><img src="${awardImage}" alt="${
             element.title
-          }"><img src="${awardImage}" alt="${element.title}" width="290" /></a>`;
+          }" width="290" /></a>`;
         } else {
           item += `<img src="${awardImage}" alt="${element.title}" width="290" />`;
         }
@@ -447,4 +447,3 @@ function setPageMessage(msg = "&nbsp;") {
   let pageMessageContainer = document.getElementById("msg");
   pageMessageContainer.innerHTML = `(${msg})`;
 }
-
