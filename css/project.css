@@ -51,13 +51,11 @@
 
 .project-title {
   font-weight: bold;
-  color: rgb(96, 96, 97);
+  color: #fff;
   margin: 0;
   padding: 10px 0;
-  background-color: #bfd1f8;
+  background-color: #7399ea;
   border-radius: 10px 10px 0 0;
-
-  padding-bottom: 10px;
 }
 
 .gallery img {

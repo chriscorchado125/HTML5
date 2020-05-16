@@ -16,7 +16,7 @@ body {
 
 /* space for top navigation */
 .container {
-  margin-top: 85px !important;
+  margin-top: 80px !important;
   margin: auto;
   text-align: center;
   padding: 20px 5px;
@@ -41,11 +41,11 @@ a:link {
 }
 
 #msg {
-  background-color: green;
   margin: auto;
   width: 300px;
   text-align: center;
   margin-top: -25px;
+  font-size: 12px;
 }
 
 .shadow {

@@ -332,6 +332,8 @@ function renderPage(data, page, searchedFor) {
 
         pageLoaded("skills-link");
 
+        setPageMessage("click image to the PDF");
+
         break;
 
       case "projects":
@@ -394,6 +396,8 @@ function renderPage(data, page, searchedFor) {
 
         pageLoaded("projects-link");
 
+        setPageMessage("click an image to make it bigger");
+
         break;
     }
   });
@@ -426,7 +430,7 @@ function pageLoaded(pageLink) {
 }
 
 /**
- * Set/update the current page item couunt
+ * Set/update the current page item count
  * @param count {int} number of items
  */
 function setItemCount(count) {
@@ -434,3 +438,13 @@ function setItemCount(count) {
   let searchForNoun = count == 1 ? "item" : "items";
   searchCount.innerHTML = `${count} ${searchForNoun}`;
 }
+
+/**
+ * Set page message
+ * @param msg {string} message text
+ */
+function setPageMessage(msg = "&nbsp;") {
+  let pageMessageContainer = document.getElementById("msg");
+  pageMessageContainer.innerHTML = `(${msg})`;
+}
+
