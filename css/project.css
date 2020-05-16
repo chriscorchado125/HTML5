@@ -49,12 +49,16 @@
   font-style: italic;
 }
 
+.project-date {
+font-size:12px
+}
+
 .project-title {
   font-weight: bold;
-  color: #fff;
+  color: rgb(96, 96, 97);
   margin: 0;
   padding: 10px 0;
-  background-color: #7399ea;
+  background-color: #cbdafa;
   border-radius: 10px 10px 0 0;
 }
 

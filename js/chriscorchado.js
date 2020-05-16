@@ -339,7 +339,16 @@ function renderPage(data, page, searchedFor) {
       case "projects":
         item += `<div class="project col">`;
         item += `<div class="project-title">${titleToShow}</div>`;
-        item += `<div class="project-company">${element.company}</div>`;
+
+        let projectDate = "";
+
+        if (element.date) {
+          projectDate = extractDate(element.date, true);
+        }
+
+        item += `<div class="project-company">${
+          element.company
+        } <div class="project-date">(${projectDate.split(" ")[1]})</div></div>`;
 
         item += `<div class="body-container">`;
         item += element.body;
