@@ -24,6 +24,7 @@
 .company-job-title {
   margin-top: 10px;
   margin: auto;
+  padding: 5px;
   background-color: rgb(231, 228, 228);
   border-top: 1px solid #7399ea;
   border-bottom: 1px solid #7399ea;
@@ -48,7 +49,8 @@
   bottom: 0;
   font-size: 12px;
   padding: 10px;
-  background-color: #cbdafa;
+  border-top: 1px solid rgb(231, 228, 228);
+  background-color: rgb(248, 244, 244);
 }
 
 .employment-type {
