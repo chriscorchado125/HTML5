@@ -10,7 +10,7 @@
   color: rgb(96, 96, 97);
   margin: 0;
   padding: 10px 0;
-  background-color: rgb(248, 244, 244);
+  background-color: rgb(231, 228, 228);
   border-bottom: 1px solid rgb(231, 228, 228);
 }
 
@@ -24,9 +24,7 @@
   margin-top: 10px;
   margin: auto;
   padding: 5px;
-  background-color: rgb(231, 228, 228);
-  border-top: 1px solid #7399ea;
-  border-bottom: 1px solid #7399ea;
+  background-color: rgb(248, 244, 244);
 }
 
 /* body text - the bullet items */
@@ -48,7 +46,6 @@
   bottom: 0;
   font-size: 12px;
   padding: 10px;
-  border-top: 1px solid rgb(231, 228, 228);
   background-color: rgb(248, 244, 244);
 }
 

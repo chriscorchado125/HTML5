@@ -337,8 +337,10 @@ function renderPage(data, page, searchedFor) {
         break;
 
       case "projects":
+        console.log(element);
+
         item += `<div class="project col">`;
-        item += `<div class="project-title">${titleToShow}</div>`;
+        item += `<div class="project-title">${titleToShow}`;
 
         let projectDate = "";
 
@@ -348,7 +350,9 @@ function renderPage(data, page, searchedFor) {
 
         item += `<div class="project-company">${
           element.company
-        } <div class="project-date">(${projectDate.split(" ")[1]})</div></div>`;
+        } <span class="project-date">(${projectDate.split(" ")[1]})</span></div>`;
+
+        item += `</div>`;
 
         item += `<div class="body-container">`;
         item += element.body;
@@ -402,7 +406,11 @@ function renderPage(data, page, searchedFor) {
           data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;" class="play-video">Play Video<img src="images/play_vidoe_icon.png" width="20" /></a>`;
         }
 
+        item += `<br /><div class="project-technology">${element.technology}</div>`;
+
         item += `</div>`;
+
+       
 
         pageLoaded("projects-link");
 
