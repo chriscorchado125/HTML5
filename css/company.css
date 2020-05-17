@@ -57,8 +57,30 @@
   font-style: italic;
 }
 
-@media (max-width: 650px) {
-  .company-container {
-    margin-top: 40px;
+@media (max-width: 1000px) {
+  #msg {
+    margin-top: -15px;
+  }
+  .container {
+    margin-top: 90px !important;
+  }
+
+  .skills-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 800px) {
+  .skills-container {
+    grid-template-columns: 1fr;
+  }
+  /* #msg {
+    margin-top: 5px;
+  } */
+}
+
+@media (max-width: 700px) {
+  .container {
+    margin-top: 125px !important;
   }
 }

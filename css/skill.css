@@ -19,20 +19,37 @@
   font-size: 12px;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 1000px) {
   .skills-container {
     grid-template-columns: 1fr 1fr;
+  }
+  #msg {
+    margin-top: -15px;
   }
 }
 
 @media (max-width: 800px) {
+  .container {
+    margin-top: 110px !important;
+  }
+
   .skills-container {
     grid-template-columns: 1fr;
   }
+
+  #msg {
+    margin-top: 5px;
+  }
+
+  .skill-box {
+    max-width: 400px;
+    padding: 5px 50px;
+    margin: 30px auto;
+  }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 700px) {
   .container {
-    margin-top: 120px !important;
+    margin-top: 130px !important;
   }
 }

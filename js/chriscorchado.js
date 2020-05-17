@@ -398,6 +398,7 @@ function renderPage(data, page, searchedFor) {
           data-featherlight="iframe" 
           data-featherlight-iframe-frameborder="0" 
           data-featherlight-iframe-allowfullscreen="true" 
+          data-featherlight-iframe-allow="autoplay; encrypted-media"
           data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;" class="play-video">Play Video<img src="images/play_vidoe_icon.png" width="20" /></a>`;
         }
 
