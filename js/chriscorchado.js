@@ -84,15 +84,14 @@ async function getProjectsPage(search) {
   renderPage(data, "projects", search);
 }
 
-/* Hide container immediately */
+/* Hide container and show navigation asap */
 $(".container").hide();
+$("#navigation").load("includes/nav.html");
 
 /**
- * Load pages
+ * Load pages when the browser is ready
  */
 window.onload = (event) => {
-  $("#navigation").load("includes/nav.html");
-
   switch (getCurrentPage()) {
     case "companies":
       getIndexPage();
@@ -233,6 +232,7 @@ function renderPage(data, page, searchedFor) {
   let searchedTitle = "";
   let titleToShow = "";
   let itemCount = 0;
+  let currentNavItem = "";
 
   $("#noRecords").remove();
 
@@ -257,6 +257,18 @@ function renderPage(data, page, searchedFor) {
     }
 
     titleToShow = titleToShow.replace("&amp;", "&");
+
+    switch (page) {
+      case "companies":
+        currentNavItem = "home-link";
+        break;
+      case "skills":
+        currentNavItem = "skills-link";
+        break;
+      case "projects":
+        currentNavItem = "projects-link";
+        break;
+    }
 
     switch (page) {
       case "companies":
@@ -298,7 +310,6 @@ function renderPage(data, page, searchedFor) {
 
         item += `</div>`;
 
-        pageLoaded("home-link");
         break;
 
       case "skills":
@@ -330,8 +341,6 @@ function renderPage(data, page, searchedFor) {
         item += `<div class="skill-date">${awardDate}</div>`;
 
         item += `</div>`;
-
-        pageLoaded("skills-link");
 
         setPageMessage("click an image to view the PDF");
         break;
@@ -408,9 +417,16 @@ function renderPage(data, page, searchedFor) {
 
         item += `</div>`;
 
-        pageLoaded("projects-link");
-
         setPageMessage("click an image to enlarge it");
+
+        $("a.gallery").featherlightGallery({
+          previousIcon: "&#9664;" /* Code that is used as previous icon */,
+          nextIcon: "&#9654;" /* Code that is used as next icon */,
+          galleryFadeIn: 200 /* fadeIn speed when slide is loaded */,
+          galleryFadeOut: 300 /* fadeOut speed before slide is loaded */,
+        });
+
+        $("section").featherlight(); // must init after adding items
         break;
     }
   });
@@ -425,8 +441,9 @@ function renderPage(data, page, searchedFor) {
     );
   } else {
     $(".container").html(item);
-    $("section").featherlight(); // must init after adding items
   }
+
+  pageLoaded(currentNavItem);
 }
 
 /**
@@ -434,10 +451,18 @@ function renderPage(data, page, searchedFor) {
  * @param pageLink {string} id of current nav item
  */
 function pageLoaded(pageLink) {
-    $("#preloader").hide();
-    $(".container").fadeIn(250);
-    $("#" + pageLink).addClass("nav-item-active");
-    $("#searchSite").focus();
+  $("#preloader").hide();
+
+  /* toggle container visiblity based on current item count */
+  if (document.getElementById("searchCount").innerHTML.substring(0, 1) == "0") {
+    $(".container").hide();
+  } else {
+    $(".container").fadeIn(300);
+  }
+
+  $("#" + pageLink).addClass("nav-item-active");
+
+  $("#searchSite").focus();
 }
 
 /**
