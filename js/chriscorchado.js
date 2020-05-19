@@ -57,9 +57,6 @@ function getData(dataURL) {
   return result;
 }
 
-/* Hide page UI on load in order to fade in */
-$(".container").hide();
-
 /**
  * Load companies page (Homepage)
  * @param search {string} search string
@@ -87,22 +84,27 @@ async function getProjectsPage(search) {
   renderPage(data, "projects", search);
 }
 
+/* Hide container immediately */
+$(".container").hide();
+
 /**
  * Load pages
  */
-$("#navigation").load("includes/nav.html");
+window.onload = (event) => {
+  $("#navigation").load("includes/nav.html");
 
-switch (getCurrentPage()) {
-  case "companies":
-    getIndexPage();
-    break;
-  case "skills":
-    getSkillsPage();
-    break;
-  case "projects":
-    getProjectsPage();
-    break;
-}
+  switch (getCurrentPage()) {
+    case "companies":
+      getIndexPage();
+      break;
+    case "skills":
+      getSkillsPage();
+      break;
+    case "projects":
+      getProjectsPage();
+      break;
+  }
+};
 
 /**
  * Search data
@@ -297,7 +299,6 @@ function renderPage(data, page, searchedFor) {
         item += `</div>`;
 
         pageLoaded("home-link");
-
         break;
 
       case "skills":
@@ -333,12 +334,9 @@ function renderPage(data, page, searchedFor) {
         pageLoaded("skills-link");
 
         setPageMessage("click an image to view the PDF");
-
         break;
 
       case "projects":
-        console.log(element);
-
         item += `<div class="project col">`;
         item += `<div class="project-title">${titleToShow}`;
 
@@ -410,12 +408,9 @@ function renderPage(data, page, searchedFor) {
 
         item += `</div>`;
 
-       
-
         pageLoaded("projects-link");
 
         setPageMessage("click an image to enlarge it");
-
         break;
     }
   });
@@ -439,12 +434,10 @@ function renderPage(data, page, searchedFor) {
  * @param pageLink {string} id of current nav item
  */
 function pageLoaded(pageLink) {
-  setTimeout(function () {
     $("#preloader").hide();
     $(".container").fadeIn(250);
     $("#" + pageLink).addClass("nav-item-active");
     $("#searchSite").focus();
-  }, 25);
 }
 
 /**
@@ -461,7 +454,7 @@ function setItemCount(count) {
  * Set page message
  * @param msg {string} message text
  */
-function setPageMessage(msg = "&nbsp;") {
+function setPageMessage(msg) {
   let pageMessageContainer = document.getElementById("msg");
   pageMessageContainer.innerHTML = `(${msg})`;
 }
