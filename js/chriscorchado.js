@@ -214,6 +214,7 @@ function itemWithSearchHighlight(itemToHighlight, searchedFor) {
         `<span class="highlightSearchText">${matchFound[i]}</span>`
       );
     }
+  } else {
   }
   return itemWithHighlight;
 }
@@ -261,17 +262,7 @@ function renderPage(data, page, searchedFor) {
     switch (page) {
       case "companies":
         currentNavItem = "home-link";
-        break;
-      case "skills":
-        currentNavItem = "skills-link";
-        break;
-      case "projects":
-        currentNavItem = "projects-link";
-        break;
-    }
 
-    switch (page) {
-      case "companies":
         item += `<div class="company-container col shadow">`;
         item += `<div class="company-name">${titleToShow}</div>`;
 
@@ -313,6 +304,8 @@ function renderPage(data, page, searchedFor) {
         break;
 
       case "skills":
+        currentNavItem = "skills-link";
+
         item += `<div class="skill-box box">`;
         item += `<h2>${titleToShow}</h2>`;
         item += `<div>`;
@@ -346,6 +339,8 @@ function renderPage(data, page, searchedFor) {
         break;
 
       case "projects":
+        currentNavItem = "projects-link";
+
         item += `<div class="project col">`;
         item += `<div class="project-title">${titleToShow}`;
 
