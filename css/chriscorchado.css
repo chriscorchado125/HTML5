@@ -58,6 +58,15 @@ a:link {
   box-shadow: 3px 3px 5px 3px #ccc; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
 }
 
+/* override the featherlight lightbox arrows */
+
+/* the arrow */
+.featherlight-next span,
+.featherlight-previous span {
+  font-size: 34px;
+  width:35px;
+}
+
 @media (max-width: 700px) {
   #search-container {
     float: none;
