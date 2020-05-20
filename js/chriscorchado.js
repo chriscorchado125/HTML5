@@ -468,12 +468,9 @@ function renderPage(data, page, searchedFor) {
         currentNavItem = "projects-link";
 
         item += `<div class="project col">`;
+
         item += `<div class="project-title">${itemTitle}`;
-
-        item += `<div class="project-company">${itemCompanyName} <span class="project-date">(${
-          itemDate.split(" ")[1]
-        })</span></div>`;
-
+        item += `<div class="project-company">${itemCompanyName} <span class="project-date">(${itemDate})</span></div>`;
         item += `</div>`;
 
         item += `<div class="body-container">`;
@@ -537,47 +534,30 @@ function renderPage(data, page, searchedFor) {
     }
   });
 
+  $("#" + currentNavItem).addClass("nav-item-active");
+
   setItemCount(itemCount);
-
-  if (itemCount <= 0) {
-    $(".container").hide();
-
-    $("body").append(
-      `<div id="noRecords" class="shadow">No matches found for '${searchedFor}'</div>`
-    );
-  } else {
-    $(".container").html(item);
-  }
-
-  pageLoaded(currentNavItem);
-}
-
-/**
- * Hide preloader, show page, set nav item, put focus in search
- * @param pageLink {string} id of current nav item
- */
-function pageLoaded(pageLink) {
-  $("#preloader").hide();
-
-  /* toggle container visiblity based on current item count */
-  if (document.getElementById("searchCount").innerHTML.substring(0, 1) == "0") {
-    $(".container").hide();
-  } else {
-    $(".container").fadeIn(300);
-  }
-
-  $("#" + pageLink).addClass("nav-item-active");
 
   $("#searchSite").focus();
 
-  $("a.gallery").featherlightGallery({
-    previousIcon: "&#9664;" /* Code that is used as previous icon */,
-    nextIcon: "&#9654;" /* Code that is used as next icon */,
-    galleryFadeIn: 200 /* fadeIn speed when slide is loaded */,
-    galleryFadeOut: 300 /* fadeOut speed before slide is loaded */,
-  });
+  $("#preloader").hide();
 
-  $("section").featherlight(); // must init after adding items
+  if (itemCount > 0) {
+    $(".container").html(item).fadeIn(300);
+
+    $("a.gallery").featherlightGallery({
+      previousIcon: "&#9664;" /* Code that is used as previous icon */,
+      nextIcon: "&#9654;" /* Code that is used as next icon */,
+      galleryFadeIn: 200 /* fadeIn speed when slide is loaded */,
+      galleryFadeOut: 300 /* fadeOut speed before slide is loaded */,
+    });
+
+    $("section").featherlight(); // must init after adding items
+  } else {
+    $("body").append(
+      `<div id="noRecords" class="shadow">No matches found for '${searchedFor}'</div>`
+    );
+  }
 }
 
 /**
