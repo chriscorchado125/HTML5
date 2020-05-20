@@ -253,6 +253,21 @@ function itemWithSearchHighlight(itemToHighlight, searchedFor) {
   return dataToReturn;
 }
 
+/**
+ * Check if the item has the search text within it
+ * @param item {string} string to search
+ * @param search {string} uppercase search phrase
+ * @return {int} 0 or 1
+ */
+function checkMatch(item, search) {
+  let itemWithOutHTML = item.replace(/(<([^>]+)>)/gi, "");
+
+  if (itemWithOutHTML.toUpperCase().indexOf(search) !== -1) {
+    return 1;
+  }
+  return 0;
+}
+
 /* regex to get string within quotes */
 let getStringInQuotes = /"(.*?)"/;
 
@@ -332,49 +347,18 @@ function renderPage(data, page, searchedFor) {
       noMatchFound = 0;
       upperSearch = searchedFor.toUpperCase();
 
-      if (itemTitle.toUpperCase().indexOf(upperSearch) !== -1) {
-        noMatchFound++;
-      }
+      noMatchFound += checkMatch(itemTitle, upperSearch);
+      noMatchFound += checkMatch(itemBody, upperSearch);
+      noMatchFound += checkMatch(itemJobTitle, upperSearch);
+      noMatchFound += checkMatch(itemDate, upperSearch);
+      noMatchFound += checkMatch(startDate, upperSearch);
+      noMatchFound += checkMatch(endDate, upperSearch);
+      noMatchFound += checkMatch(itemJobTitle, upperSearch);
+      noMatchFound += checkMatch(itemTechnology, upperSearch);
+      noMatchFound += checkMatch(itemCompanyName, upperSearch);
+      noMatchFound += checkMatch(itemWorkType, upperSearch);
 
-      bodyWithOutHTML = itemBody.replace(/(<([^>]+)>)/gi, "");
-
-      if (bodyWithOutHTML.toUpperCase().indexOf(upperSearch) !== -1) {
-        noMatchFound++;
-      }
-
-      if (itemJobTitle.toUpperCase().indexOf(upperSearch) !== -1) {
-        noMatchFound++;
-      }
-
-      if (itemDate.toUpperCase().indexOf(upperSearch) !== -1) {
-        noMatchFound++;
-      }
-
-      if (startDate.toUpperCase().indexOf(upperSearch) !== -1) {
-        noMatchFound++;
-      }
-
-      if (endDate.toUpperCase().indexOf(upperSearch) !== -1) {
-        noMatchFound++;
-      }
-
-      if (itemJobTitle.toUpperCase().indexOf(upperSearch) !== -1) {
-        noMatchFound++;
-      }
-
-      if (itemTechnology.toUpperCase().indexOf(upperSearch) !== -1) {
-        noMatchFound++;
-      }
-
-      if (itemCompanyName.toUpperCase().indexOf(upperSearch) !== -1) {
-        noMatchFound++;
-      }
-
-      if (itemWorkType.toUpperCase().indexOf(upperSearch) !== -1) {
-        noMatchFound++;
-      }
-
-      if (noMatchFound == false) {
+      if (noMatchFound == 0) {
         return;
       }
 
