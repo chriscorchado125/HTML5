@@ -264,27 +264,49 @@ let getStringInQuotes = /"(.*?)"/;
  */
 function renderPage(data, page, searchedFor) {
   let item = "";
-  let searchedTitle = "";
   let itemCount = 0;
-  let currentNavItem = "";
-  let itemDate = "";
+
+  let noMatchFound,
+    screenshotCount = 0;
+
+  let screenshots,
+    imgPieces = [];
+
+  let currentNavItem,
+    itemGridClass,
+    itemTitle,
+    itemDate,
+    startDate,
+    endDate,
+    itemBody,
+    itemJobTitle,
+    itemTechnology,
+    itemCompanyName,
+    itemWorkType,
+    upperSearch,
+    bodyWithOutHTML,
+    awardImage,
+    screenshot,
+    logo,
+    section,
+    imgUrl,
+    imgAlt,
+    projectImage = "";
 
   $("#noRecords").remove();
 
   data.forEach((element) => {
-    // console.log(element);
-
-    let itemTitle = element.title;
+    itemTitle = element.title;
 
     //skills date (field_award_date) or project date (element.date)
-    let itemDate = element.field_award_date || element.date || "";
+    itemDate = element.field_award_date || element.date || "";
 
     if (itemDate) {
       itemDate = extractDate(itemDate, true);
     }
 
-    let startDate = element.start_date || "";
-    let endDate = element.end_date || "";
+    startDate = element.start_date || "";
+    endDate = element.end_date || "";
 
     if (startDate) {
       startDate = extractDate(startDate, true);
@@ -294,11 +316,11 @@ function renderPage(data, page, searchedFor) {
       endDate = extractDate(endDate, true);
     }
 
-    let itemBody = element.body || "";
-    let itemJobTitle = element.job_title || "";
-    let itemTechnology = element.technology || "";
-    let itemCompanyName = element.field_company_name || "";
-    let itemWorkType = element.type || "";
+    itemBody = element.body || "";
+    itemJobTitle = element.job_title || "";
+    itemTechnology = element.technology || "";
+    itemCompanyName = element.field_company_name || "";
+    itemWorkType = element.type || "";
 
     /* If searching then skip any items that don't match otherwise highlight search phrase within the results.
      * TODO: Move data search to server side using the JSON API for efficiency and performance.
@@ -307,14 +329,14 @@ function renderPage(data, page, searchedFor) {
      */
 
     if (searchedFor) {
-      let noMatchFound = 0;
-      let upperSearch = searchedFor.toUpperCase();
+      noMatchFound = 0;
+      upperSearch = searchedFor.toUpperCase();
 
       if (itemTitle.toUpperCase().indexOf(upperSearch) !== -1) {
         noMatchFound++;
       }
 
-      let bodyWithOutHTML = itemBody.replace(/(<([^>]+)>)/gi, "");
+      bodyWithOutHTML = itemBody.replace(/(<([^>]+)>)/gi, "");
 
       if (bodyWithOutHTML.toUpperCase().indexOf(upperSearch) !== -1) {
         noMatchFound++;
@@ -379,7 +401,7 @@ function renderPage(data, page, searchedFor) {
         item += `<div class="company-name">${itemTitle}</div>`;
 
         if (element.logo) {
-          let logo = getStringInQuotes.exec(element.logo)[0];
+          logo = getStringInQuotes.exec(element.logo)[0];
 
           item += `<div class="logo-container">`;
           item += `<img src=${getFullUrl(logo)} class="company-logo" alt="${
@@ -395,7 +417,7 @@ function renderPage(data, page, searchedFor) {
         item += `</div>`;
 
         if (element.screenshot) {
-          let screenshot = getStringInQuotes.exec(element.screenshot)[0];
+          screenshot = getStringInQuotes.exec(element.screenshot)[0];
 
           item += `<div class="screenshot-container">`;
           item += `<img src=${getFullUrl(screenshot)} class="company-screenshot"  alt="${
@@ -418,7 +440,6 @@ function renderPage(data, page, searchedFor) {
         item += `<h2>${itemTitle}</h2>`;
         item += `<div>`;
 
-        let awardImage = "";
         if (element.field_award_images) {
           awardImage = getFullUrl(element.field_award_images);
         }
@@ -460,10 +481,10 @@ function renderPage(data, page, searchedFor) {
         item += `</div>`;
 
         if (element.screenshot) {
-          let screenshots = element.screenshot.split(",");
-          let screenshotCount = parseInt(screenshots.length);
+          screenshots = element.screenshot.split(",");
+          screenshotCount = parseInt(screenshots.length);
 
-          let itemGridClass = "project-items3";
+          itemGridClass = "project-items3";
 
           if (screenshotCount === 2) {
             itemGridClass = "project-items2";
@@ -472,17 +493,17 @@ function renderPage(data, page, searchedFor) {
             itemGridClass = "project-items1";
           }
 
-          let section = `<section data-featherlight-gallery data-featherlight-filter="a" class="${itemGridClass}">`;
+          section = `<section data-featherlight-gallery data-featherlight-filter="a" class="${itemGridClass}">`;
 
           screenshots.forEach((img) => {
-            let imgPieces = img.split("=");
+            imgPieces = img.split("=");
 
-            let imgUrl = getStringInQuotes.exec(imgPieces[1])[0];
+            imgUrl = getStringInQuotes.exec(imgPieces[1])[0];
             // let imgWidth = getStringInQuotes.exec(imgPieces[2])[0];
             // let imgHeight = getStringInQuotes.exec(imgPieces[3])[0];
-            let imgAlt = getStringInQuotes.exec(imgPieces[4])[0].replace(/"/g, "");
+            imgAlt = getStringInQuotes.exec(imgPieces[4])[0].replace(/"/g, "");
 
-            let projectImage = getFullUrl(imgUrl);
+            projectImage = getFullUrl(imgUrl);
 
             section += `<div class="project-item shadow">`;
 
