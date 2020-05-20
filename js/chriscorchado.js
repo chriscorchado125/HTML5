@@ -141,7 +141,7 @@ function searchClear() {
 }
 
 /**
- * Only allow searching with a-Z and spaces
+ * Only allow searching with a-Z, numbers and spaces
  * @param event {event} key event
  * @return {string} allowed characters
  */
@@ -154,10 +154,11 @@ function searchFilter(event) {
   let charCode = event.keyCode || event.which;
 
   return (
-    (charCode >= 65 && charCode <= 90) ||
-    (charCode >= 92 && charCode <= 122) ||
-    charCode == 32 ||
-    charCode == 16
+    (charCode >= 65 && charCode <= 122) || // a-z
+    (charCode >= 96 && charCode <= 105) || // 96-105 numeric keypad
+    (charCode >= 48 && charCode <= 57) || // 0-1 top of keyboard
+    charCode == 32 || // space
+    charCode == 16 // shift
   );
 }
 
@@ -198,25 +199,58 @@ function getFullUrl(linkToFix) {
  * Highlight search term with a string
  * @param itemToHighlight {string} string to search
  * @param searchedFor {string} string to search for
- * @return {string} search result with highlight
+ * @return {string} search result with/without highlight
  */
 function itemWithSearchHighlight(itemToHighlight, searchedFor) {
-  let itemWithHighlight = "";
+  let dataToReturn = "";
 
   if (searchedFor) {
     let searchTerm = new RegExp(searchedFor, "gi");
     let searchString = itemToHighlight.replace("&amp;", "&").replace("&#039;", "'");
-    let matchFound = searchString.match(searchTerm);
+    let results = "";
 
-    for (let i = 0; i < matchFound.length; i++) {
-      itemWithHighlight = searchString.replace(
-        matchFound[i],
-        `<span class="highlightSearchText">${matchFound[i]}</span>`
-      );
+    /* check for HTML
+     * TODO: use entities within Drupal to avoid adding body content with HTML
+     */
+    if (searchString.includes("<ul>")) {
+      let listItem = "";
+
+      // remove ul tags and break the li items into an array
+      let searchWithHTML = searchString.replace("<ul>", "").replace("</ul>", "");
+      searchWithHTML = searchWithHTML.split("<li>");
+
+      searchWithHTML.forEach((element) => {
+        if (element) {
+          // remove closing li tag
+          searchString = element.slice(0, -7);
+
+          if (searchString.match(searchTerm)) {
+            results = searchString.replace(
+              searchTerm,
+              (match) => `<span class="highlightSearchText">${match}</span>`
+            );
+
+            listItem += `<li>${results}</li>`;
+          } else {
+            listItem += `<li>${searchString}</li>`;
+          }
+        }
+      });
+
+      dataToReturn = `<ul>${listItem}</ul>`;
+    } else {
+      if (searchString.match(searchTerm)) {
+        results = searchString.replace(
+          searchTerm,
+          (match) => `<span class="highlightSearchText">${match}</span>`
+        );
+        dataToReturn += results;
+      } else {
+        dataToReturn += searchString;
+      }
     }
-  } else {
   }
-  return itemWithHighlight;
+  return dataToReturn;
 }
 
 /* regex to get string within quotes */
@@ -231,40 +265,118 @@ let getStringInQuotes = /"(.*?)"/;
 function renderPage(data, page, searchedFor) {
   let item = "";
   let searchedTitle = "";
-  let titleToShow = "";
   let itemCount = 0;
   let currentNavItem = "";
+  let itemDate = "";
 
   $("#noRecords").remove();
 
   data.forEach((element) => {
-    /* if searching then skip any items that don't match otherwise highlight search results*/
-    if (
-      searchedFor &&
-      element.title.toUpperCase().indexOf(searchedFor.toUpperCase()) == -1
-    ) {
-      return;
-    } else {
-      searchedTitle = itemWithSearchHighlight(element.title, searchedFor);
+    // console.log(element);
+
+    let itemTitle = element.title;
+
+    //skills date (field_award_date) or project date (element.date)
+    let itemDate = element.field_award_date || element.date || "";
+
+    if (itemDate) {
+      itemDate = extractDate(itemDate, true);
+    }
+
+    let startDate = element.start_date || "";
+    let endDate = element.end_date || "";
+
+    if (startDate) {
+      startDate = extractDate(startDate, true);
+    }
+
+    if (endDate) {
+      endDate = extractDate(endDate, true);
+    }
+
+    let itemBody = element.body || "";
+    let itemJobTitle = element.job_title || "";
+    let itemTechnology = element.technology || "";
+    let itemCompanyName = element.field_company_name || "";
+    let itemWorkType = element.type || "";
+
+    /* If searching then skip any items that don't match otherwise highlight search phrase within the results.
+     * TODO: Move data search to server side using the JSON API for efficiency and performance.
+     * Specification: https://jsonapi.org/
+     * Playlist: https://www.youtube.com/playlist?list=PLZOQ_ZMpYrZsyO-3IstImK1okrpfAjuMZ
+     */
+
+    if (searchedFor) {
+      let noMatchFound = 0;
+      let upperSearch = searchedFor.toUpperCase();
+
+      if (itemTitle.toUpperCase().indexOf(upperSearch) !== -1) {
+        noMatchFound++;
+      }
+
+      let bodyWithOutHTML = itemBody.replace(/(<([^>]+)>)/gi, "");
+
+      if (bodyWithOutHTML.toUpperCase().indexOf(upperSearch) !== -1) {
+        noMatchFound++;
+      }
+
+      if (itemJobTitle.toUpperCase().indexOf(upperSearch) !== -1) {
+        noMatchFound++;
+      }
+
+      if (itemDate.toUpperCase().indexOf(upperSearch) !== -1) {
+        noMatchFound++;
+      }
+
+      if (startDate.toUpperCase().indexOf(upperSearch) !== -1) {
+        noMatchFound++;
+      }
+
+      if (endDate.toUpperCase().indexOf(upperSearch) !== -1) {
+        noMatchFound++;
+      }
+
+      if (itemJobTitle.toUpperCase().indexOf(upperSearch) !== -1) {
+        noMatchFound++;
+      }
+
+      if (itemTechnology.toUpperCase().indexOf(upperSearch) !== -1) {
+        noMatchFound++;
+      }
+
+      if (itemCompanyName.toUpperCase().indexOf(upperSearch) !== -1) {
+        noMatchFound++;
+      }
+
+      if (itemWorkType.toUpperCase().indexOf(upperSearch) !== -1) {
+        noMatchFound++;
+      }
+
+      if (noMatchFound == false) {
+        return;
+      }
+
+      itemTitle = itemWithSearchHighlight(itemTitle, searchedFor);
+      itemDate = itemWithSearchHighlight(itemDate, searchedFor);
+      startDate = itemWithSearchHighlight(startDate, searchedFor);
+      endDate = itemWithSearchHighlight(endDate, searchedFor);
+      itemBody = itemWithSearchHighlight(itemBody, searchedFor);
+      itemJobTitle = itemWithSearchHighlight(itemJobTitle, searchedFor);
+      itemTechnology = itemWithSearchHighlight(itemTechnology, searchedFor);
+      itemCompanyName = itemWithSearchHighlight(itemCompanyName, searchedFor);
+      itemWorkType = itemWithSearchHighlight(itemWorkType, searchedFor);
     }
 
     itemCount++;
 
-    /* Set regular title or title with search term in highlight */
-    if (searchedFor) {
-      titleToShow = searchedTitle;
-    } else {
-      titleToShow = element.title;
-    }
-
-    titleToShow = titleToShow.replace("&amp;", "&");
+    itemTitle = itemTitle.replace("&amp;", "&");
 
     switch (page) {
       case "companies":
         currentNavItem = "home-link";
 
         item += `<div class="company-container col shadow">`;
-        item += `<div class="company-name">${titleToShow}</div>`;
+        item += `<div class="company-name">${itemTitle}</div>`;
 
         if (element.logo) {
           let logo = getStringInQuotes.exec(element.logo)[0];
@@ -276,10 +388,10 @@ function renderPage(data, page, searchedFor) {
           item += `</div>`;
         }
 
-        item += `<div class="company-job-title">${element.job_title}</div>`;
+        item += `<div class="company-job-title">${itemJobTitle}</div>`;
 
         item += `<div class="body-container">`;
-        item += element.body;
+        item += itemBody;
         item += `</div>`;
 
         if (element.screenshot) {
@@ -292,25 +404,24 @@ function renderPage(data, page, searchedFor) {
           item += `</div>`;
         }
 
-        item += `<div class="employment-dates">`;
-        item += extractDate(element.start_date, true);
-        item += " - ";
-        item += extractDate(element.end_date, true);
-        item += `<div class="employment-type">${element.type}</div>`;
+        item += `<div class="employment-dates">${startDate} - ${endDate}`;
+        item += `<div class="employment-type">${itemWorkType}</div>`;
         item += `</div>`;
 
         item += `</div>`;
-
         break;
 
       case "skills":
         currentNavItem = "skills-link";
 
         item += `<div class="skill-box box">`;
-        item += `<h2>${titleToShow}</h2>`;
+        item += `<h2>${itemTitle}</h2>`;
         item += `<div>`;
 
-        let awardImage = getFullUrl(element.field_award_images);
+        let awardImage = "";
+        if (element.field_award_images) {
+          awardImage = getFullUrl(element.field_award_images);
+        }
 
         /* if there is a PDF, link to it */
         if (element.field_award_pdf) {
@@ -325,13 +436,7 @@ function renderPage(data, page, searchedFor) {
 
         item += `</div>`;
 
-        let awardDate = "";
-
-        if (element.field_award_date) {
-          awardDate = extractDate(element.field_award_date, true);
-        }
-
-        item += `<div class="skill-date">${awardDate}</div>`;
+        item += `<div class="skill-date">${itemDate}</div>`;
 
         item += `</div>`;
 
@@ -342,22 +447,16 @@ function renderPage(data, page, searchedFor) {
         currentNavItem = "projects-link";
 
         item += `<div class="project col">`;
-        item += `<div class="project-title">${titleToShow}`;
+        item += `<div class="project-title">${itemTitle}`;
 
-        let projectDate = "";
-
-        if (element.date) {
-          projectDate = extractDate(element.date, true);
-        }
-
-        item += `<div class="project-company">${
-          element.company
-        } <span class="project-date">(${projectDate.split(" ")[1]})</span></div>`;
+        item += `<div class="project-company">${itemCompanyName} <span class="project-date">(${
+          itemDate.split(" ")[1]
+        })</span></div>`;
 
         item += `</div>`;
 
         item += `<div class="body-container">`;
-        item += element.body;
+        item += itemBody;
         item += `</div>`;
 
         if (element.screenshot) {
@@ -408,12 +507,11 @@ function renderPage(data, page, searchedFor) {
           data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;" class="play-video">Play Video<img src="images/play_vidoe_icon.png" width="20" /></a>`;
         }
 
-        item += `<br /><div class="project-technology">${element.technology}</div>`;
+        item += `<br /><div class="project-technology">${itemTechnology}</div>`;
 
         item += `</div>`;
 
         setPageMessage("click an image to enlarge it");
-
         break;
     }
   });

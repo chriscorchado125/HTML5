@@ -43,8 +43,8 @@
 
   .skill-box {
     max-width: 400px;
-    padding: 5px 50px;
-    margin: 30px auto;
+    padding: 5px;
+    margin: 0px;
   }
 }
 

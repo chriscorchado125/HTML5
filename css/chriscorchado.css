@@ -59,12 +59,10 @@ a:link {
 }
 
 /* override the featherlight lightbox arrows */
-
-/* the arrow */
 .featherlight-next span,
 .featherlight-previous span {
   font-size: 34px;
-  width:35px;
+  width: 35px;
 }
 
 @media (max-width: 700px) {
