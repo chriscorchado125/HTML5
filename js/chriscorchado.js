@@ -47,12 +47,12 @@ async function searchData() {
   let timeout = null;
 
   inputSearchBox.addEventListener("keyup", function (e) {
-
     clearTimeout(timeout);
 
     // Make a new timeout set to go off in 1000ms (1 second)
     timeout = setTimeout(function () {
       $(".container, .skills-container").hide();
+
       if (inputSearchBox.value.length > 2) {
         ga("send", "pageview", location.pathname + "?search=" + inputSearchBox.value);
       }
@@ -526,21 +526,17 @@ window.onload = (event) => {
  * @return {string} name of page
  */
 function getCurrentPage() {
-  let currentPage = "";
-
   if (location.pathname.includes("skills.html")) {
-    currentPage = "skills";
+    return "skills";
   }
 
   if (location.pathname.includes("projects.html")) {
-    currentPage = "projects";
+    return "projects";
   }
 
   if (location.pathname.includes("index.html") || currentPage == "") {
-    currentPage = "companies";
+    return "companies";
   }
-
-  return currentPage;
 }
 
 /**
