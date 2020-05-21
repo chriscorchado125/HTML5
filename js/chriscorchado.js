@@ -5,27 +5,9 @@ const API_Company = "https://chriscorchado.com/drupal8/rest/api/companies?_forma
 const API_Skills = "https://chriscorchado.com/drupal8/rest/api/skills?_format=json";
 const API_Projects = "https://chriscorchado.com/drupal8/rest/api/projects?_format=json";
 
-/**
- * Get current page
- * @return {string} name of page
- */
-function getCurrentPage() {
-  let currentPage = "";
-
-  if (location.pathname.includes("skills.html")) {
-    currentPage = "skills";
-  }
-
-  if (location.pathname.includes("projects.html")) {
-    currentPage = "projects";
-  }
-
-  if (location.pathname.includes("index.html") || currentPage == "") {
-    currentPage = "companies";
-  }
-
-  return currentPage;
-}
+/* Hide container and show navigation */
+$(".container").hide();
+$("#navigation").load("includes/nav.html");
 
 /**
  * Get data from Drupal 8 datastore
@@ -58,76 +40,36 @@ function getData(dataURL) {
 }
 
 /**
- * Load companies page (Homepage)
- * @param search {string} search string
- */
-async function getIndexPage(search) {
-  let data = await getData(API_Company);
-  renderPage(data, "companies", search);
-}
-
-/**
- * Load skills page
- * @param search {string} search string
- */
-async function getSkillsPage(search) {
-  let data = await getData(API_Skills);
-  renderPage(data, "skills", search);
-}
-
-/**
- * Load projects page
- * @param search {string} search string
- */
-async function getProjectsPage(search) {
-  let data = await getData(API_Projects);
-  renderPage(data, "projects", search);
-}
-
-/* Hide container and show navigation asap */
-$(".container").hide();
-$("#navigation").load("includes/nav.html");
-
-/**
- * Load pages when the browser is ready
- */
-window.onload = (event) => {
-  switch (getCurrentPage()) {
-    case "companies":
-      getIndexPage();
-      break;
-    case "skills":
-      getSkillsPage();
-      break;
-    case "projects":
-      getProjectsPage();
-      break;
-  }
-};
-
-/**
- * Search data
+ * Search data after the user pauses for half a second
  */
 async function searchData() {
   let inputSearchBox = document.getElementById("searchSite");
+  let timeout = null;
 
-  $(".container, .skills-container").hide();
+  inputSearchBox.addEventListener("keyup", function (e) {
 
-  if (inputSearchBox.value.length > 2) {
-    ga("send", "pageview", location.pathname + "?search=" + inputSearchBox.value);
-  }
+    clearTimeout(timeout);
 
-  switch (getCurrentPage()) {
-    case "companies":
-      getIndexPage(inputSearchBox.value);
-      break;
-    case "skills":
-      getSkillsPage(inputSearchBox.value);
-      break;
-    case "projects":
-      getProjectsPage(inputSearchBox.value);
-      break;
-  }
+    // Make a new timeout set to go off in 1000ms (1 second)
+    timeout = setTimeout(function () {
+      $(".container, .skills-container").hide();
+      if (inputSearchBox.value.length > 2) {
+        ga("send", "pageview", location.pathname + "?search=" + inputSearchBox.value);
+      }
+
+      switch (getCurrentPage()) {
+        case "companies":
+          getIndexPage(inputSearchBox.value);
+          break;
+        case "skills":
+          getSkillsPage(inputSearchBox.value);
+          break;
+        case "projects":
+          getProjectsPage(inputSearchBox.value);
+          break;
+      }
+    }, 500);
+  });
 }
 
 /**
@@ -141,6 +83,7 @@ function searchClear() {
 }
 
 /**
+ * Filter what a user is allowed to enter in the search field
  * Only allow searching with a-Z, numbers and spaces
  * @param event {event} key event
  * @return {string} allowed characters
@@ -257,7 +200,7 @@ function itemWithSearchHighlight(itemToHighlight, searchedFor) {
  * Check if the item has the search text within it
  * @param item {string} string to search
  * @param search {string} uppercase search phrase
- * @return {int} 0 or 1
+ * @return {int} 1 if there is a match otherwise 0
  */
 function checkMatch(item, search) {
   let itemWithOutHTML = item.replace(/(<([^>]+)>)/gi, "");
@@ -281,7 +224,7 @@ function renderPage(data, page, searchedFor) {
   let item = "";
   let itemCount = 0;
 
-  let noMatchFound,
+  let matchesFound,
     screenshotCount = 0;
 
   let screenshots,
@@ -299,7 +242,6 @@ function renderPage(data, page, searchedFor) {
     itemCompanyName,
     itemWorkType,
     upperSearch,
-    bodyWithOutHTML,
     awardImage,
     screenshot,
     logo,
@@ -337,28 +279,29 @@ function renderPage(data, page, searchedFor) {
     itemCompanyName = element.field_company_name || "";
     itemWorkType = element.type || "";
 
+    itemTitle = itemTitle.replace("&amp;", "&");
+
     /* If searching then skip any items that don't match otherwise highlight search phrase within the results.
      * TODO: Move data search to server side using the JSON API for efficiency and performance.
      * Specification: https://jsonapi.org/
      * Playlist: https://www.youtube.com/playlist?list=PLZOQ_ZMpYrZsyO-3IstImK1okrpfAjuMZ
      */
-
     if (searchedFor) {
-      noMatchFound = 0;
+      matchesFound = 0;
       upperSearch = searchedFor.toUpperCase();
 
-      noMatchFound += checkMatch(itemTitle, upperSearch);
-      noMatchFound += checkMatch(itemBody, upperSearch);
-      noMatchFound += checkMatch(itemJobTitle, upperSearch);
-      noMatchFound += checkMatch(itemDate, upperSearch);
-      noMatchFound += checkMatch(startDate, upperSearch);
-      noMatchFound += checkMatch(endDate, upperSearch);
-      noMatchFound += checkMatch(itemJobTitle, upperSearch);
-      noMatchFound += checkMatch(itemTechnology, upperSearch);
-      noMatchFound += checkMatch(itemCompanyName, upperSearch);
-      noMatchFound += checkMatch(itemWorkType, upperSearch);
+      matchesFound += checkMatch(itemTitle, upperSearch);
+      matchesFound += checkMatch(itemBody, upperSearch);
+      matchesFound += checkMatch(itemJobTitle, upperSearch);
+      matchesFound += checkMatch(itemDate, upperSearch);
+      matchesFound += checkMatch(startDate, upperSearch);
+      matchesFound += checkMatch(endDate, upperSearch);
+      matchesFound += checkMatch(itemJobTitle, upperSearch);
+      matchesFound += checkMatch(itemTechnology, upperSearch);
+      matchesFound += checkMatch(itemCompanyName, upperSearch);
+      matchesFound += checkMatch(itemWorkType, upperSearch);
 
-      if (noMatchFound == 0) {
+      if (matchesFound == 0) {
         return;
       }
 
@@ -374,8 +317,6 @@ function renderPage(data, page, searchedFor) {
     }
 
     itemCount++;
-
-    itemTitle = itemTitle.replace("&amp;", "&");
 
     switch (page) {
       case "companies":
@@ -561,4 +502,70 @@ function setItemCount(count) {
 function setPageMessage(msg) {
   let pageMessageContainer = document.getElementById("msg");
   pageMessageContainer.innerHTML = `(${msg})`;
+}
+
+/**
+ * Load pages when the browser is ready
+ */
+window.onload = (event) => {
+  switch (getCurrentPage()) {
+    case "companies":
+      getIndexPage();
+      break;
+    case "skills":
+      getSkillsPage();
+      break;
+    case "projects":
+      getProjectsPage();
+      break;
+  }
+};
+
+/**
+ * Get current page
+ * @return {string} name of page
+ */
+function getCurrentPage() {
+  let currentPage = "";
+
+  if (location.pathname.includes("skills.html")) {
+    currentPage = "skills";
+  }
+
+  if (location.pathname.includes("projects.html")) {
+    currentPage = "projects";
+  }
+
+  if (location.pathname.includes("index.html") || currentPage == "") {
+    currentPage = "companies";
+  }
+
+  return currentPage;
+}
+
+/**
+ * Load companies page (Homepage)
+ * @param search {string} search string
+ */
+async function getIndexPage(search) {
+  let data = await getData(API_Company);
+  renderPage(data, "companies", search);
+}
+
+/**
+ * Load skills page
+ * @param search {string} search string
+ */
+async function getSkillsPage(search) {
+  let data = await getData(API_Skills);
+  renderPage(data, "skills", search);
+}
+
+/**
+ * Load projects page
+ * @param search {string} search string
+ */
+async function getProjectsPage(search) {
+  let data = await getData(API_Projects);
+  renderPage(data, "projects", search);
 }
