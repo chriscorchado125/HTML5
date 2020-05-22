@@ -1,8 +1,9 @@
 "use strict";
 
 /* API URLs */
-const API_Company = "https://chriscorchado.com/drupal8/rest/api/companies?_format=json";
-const API_Skills = "https://chriscorchado.com/drupal8/rest/api/skills?_format=json";
+const API_About = "https://chriscorchado.com/drupal8/rest/api/about?_format=json";
+const API_History = "https://chriscorchado.com/drupal8/rest/api/companies?_format=json";
+const API_Courses = "https://chriscorchado.com/drupal8/rest/api/courses?_format=json";
 const API_Projects = "https://chriscorchado.com/drupal8/rest/api/projects?_format=json";
 
 /* Hide container and show navigation */
@@ -14,16 +15,19 @@ $("#navigation").load("includes/nav.html");
  * @param dataURL {string} url to fetch data from
  * @return {array} array of objects
  */
-function getData(dataURL) {
+const getData = (dataURL) => {
   /* For Local Testing */
 
   if (window.location.href.indexOf("localhost") !== -1) {
     switch (getCurrentPage()) {
+      case "about":
+        dataURL = "about.json";
+        break;
       case "companies":
         dataURL = "companies.json";
         break;
-      case "skills":
-        dataURL = "skills.json";
+      case "courses":
+        dataURL = "courses.json";
         break;
       case "projects":
         dataURL = "projects.json";
@@ -37,7 +41,7 @@ function getData(dataURL) {
   });
 
   return result;
-}
+};
 
 /**
  * Search data after the user pauses for half a second
@@ -51,18 +55,21 @@ async function searchData() {
 
     // Make a new timeout set to go off in 1000ms (1 second)
     timeout = setTimeout(function () {
-      $(".container, .skills-container").hide();
+      $(".container, .courses-container").hide();
 
       if (inputSearchBox.value.length > 2) {
         ga("send", "pageview", location.pathname + "?search=" + inputSearchBox.value);
       }
 
       switch (getCurrentPage()) {
+        case "about":
+          getAboutPage();
+          break;
         case "companies":
           getIndexPage(inputSearchBox.value);
           break;
-        case "skills":
-          getSkillsPage(inputSearchBox.value);
+        case "courses":
+          getCoursesPage(inputSearchBox.value);
           break;
         case "projects":
           getProjectsPage(inputSearchBox.value);
@@ -75,12 +82,11 @@ async function searchData() {
 /**
  * Clear Search
  */
-function searchClear() {
-  let inputSearchBox = document.getElementById("searchSite");
-  if (inputSearchBox.value !== "") {
+const searchClear = () => {
+  if (document.getElementById("searchSite").value !== "") {
     location.reload();
   }
-}
+};
 
 /**
  * Filter what a user is allowed to enter in the search field
@@ -88,7 +94,7 @@ function searchClear() {
  * @param event {event} key event
  * @return {string} allowed characters
  */
-function searchFilter(event) {
+const searchFilter = (event) => {
   /* don't allow more characters if current search returns no records */
   if (document.getElementById("searchCount").innerHTML.substring(0, 1) == "0") {
     return false;
@@ -103,7 +109,7 @@ function searchFilter(event) {
     charCode == 32 || // space
     charCode == 16 // shift
   );
-}
+};
 
 /**
  * Extract date string
@@ -112,7 +118,7 @@ function searchFilter(event) {
  * @param monthYear {boolean} if true return month and year only
  * @return {string} full date or month and year only
  */
-function extractDate(dateString, monthYear) {
+const extractDate = (dateString, monthYear) => {
   let returnDate = dateString.split(">")[1];
   returnDate = returnDate.split("-")[0];
 
@@ -121,14 +127,14 @@ function extractDate(dateString, monthYear) {
     returnDate = shortDate[1].split(" ")[1] + shortDate[2];
   }
   return returnDate;
-}
+};
 
 /**
  * Create absolute link
  * @param linkToFix {string} relative url
  * @return {string} absolute url
  */
-function getFullUrl(linkToFix) {
+const getFullUrl = (linkToFix) => {
   /* For Local Testing */
 
   if (window.location.href.indexOf("localhost") !== -1) {
@@ -136,7 +142,7 @@ function getFullUrl(linkToFix) {
   }
 
   return linkToFix.replace("/drupal8/", "https://chriscorchado.com/drupal8/");
-}
+};
 
 /**
  * Highlight search term with a string
@@ -144,7 +150,7 @@ function getFullUrl(linkToFix) {
  * @param searchedFor {string} string to search for
  * @return {string} search result with/without highlight
  */
-function itemWithSearchHighlight(itemToHighlight, searchedFor) {
+const itemWithSearchHighlight = (itemToHighlight, searchedFor) => {
   let dataToReturn = "";
 
   if (searchedFor) {
@@ -194,7 +200,7 @@ function itemWithSearchHighlight(itemToHighlight, searchedFor) {
     }
   }
   return dataToReturn;
-}
+};
 
 /**
  * Check if the item has the search text within it
@@ -202,14 +208,14 @@ function itemWithSearchHighlight(itemToHighlight, searchedFor) {
  * @param search {string} uppercase search phrase
  * @return {int} 1 if there is a match otherwise 0
  */
-function checkMatch(item, search) {
+const checkMatch = (item, search) => {
   let itemWithOutHTML = item.replace(/(<([^>]+)>)/gi, "");
 
   if (itemWithOutHTML.toUpperCase().indexOf(search) !== -1) {
     return 1;
   }
   return 0;
-}
+};
 
 /* regex to get string within quotes */
 let getStringInQuotes = /"(.*?)"/;
@@ -220,7 +226,15 @@ let getStringInQuotes = /"(.*?)"/;
  * @param page {string} page name
  * @param searchedFor {string} search string
  */
-function renderPage(data, page, searchedFor) {
+const renderPage = (data, page, searchedFor) => {
+  // addhide search box on About Me page
+  if (page == "about") {
+    document.getElementById("search-container").style.display = "none";
+
+    document.getElementById("logo").getElementsByTagName("img")[0].style.border =
+      "1px dashed #7399EA";
+  }
+
   let item = "";
   let itemCount = 0;
 
@@ -255,7 +269,7 @@ function renderPage(data, page, searchedFor) {
   data.forEach((element) => {
     itemTitle = element.title;
 
-    //skills date (field_award_date) or project date (element.date)
+    //course date (field_award_date) or project date (element.date)
     itemDate = element.field_award_date || element.date || "";
 
     if (itemDate) {
@@ -319,8 +333,13 @@ function renderPage(data, page, searchedFor) {
     itemCount++;
 
     switch (page) {
+      case "about":
+        currentNavItem = "about-link";
+        item = `<h1>${itemTitle}</h1>`;
+        item += itemBody;
+        break;
       case "companies":
-        currentNavItem = "home-link";
+        currentNavItem = "companies-link";
 
         item += `<div class="company-container col shadow">`;
         item += `<div class="company-name">${itemTitle}</div>`;
@@ -358,10 +377,10 @@ function renderPage(data, page, searchedFor) {
         item += `</div>`;
         break;
 
-      case "skills":
-        currentNavItem = "skills-link";
+      case "courses":
+        currentNavItem = "courses-link";
 
-        item += `<div class="skill-box box">`;
+        item += `<div class="course-box box">`;
         item += `<h2>${itemTitle}</h2>`;
         item += `<div>`;
 
@@ -382,7 +401,7 @@ function renderPage(data, page, searchedFor) {
 
         item += `</div>`;
 
-        item += `<div class="skill-date">${itemDate}</div>`;
+        item += `<div class="course-date">${itemDate}</div>`;
 
         item += `</div>`;
 
@@ -483,85 +502,100 @@ function renderPage(data, page, searchedFor) {
       `<div id="noRecords" class="shadow">No matches found for '${searchedFor}'</div>`
     );
   }
-}
+};
 
 /**
  * Set/update the current page item count
  * @param count {int} number of items
  */
-function setItemCount(count) {
-  let searchCount = document.getElementById("searchCount");
+const setItemCount = (count) => {
   let searchForNoun = count == 1 ? "item" : "items";
-  searchCount.innerHTML = `${count} ${searchForNoun}`;
-}
+  document.getElementById("searchCount").innerHTML = `${count} ${searchForNoun}`;
+};
 
 /**
  * Set page message
  * @param msg {string} message text
  */
-function setPageMessage(msg) {
-  let pageMessageContainer = document.getElementById("msg");
-  pageMessageContainer.innerHTML = `(${msg})`;
-}
-
-/**
- * Load pages when the browser is ready
- */
-window.onload = (event) => {
-  switch (getCurrentPage()) {
-    case "companies":
-      getIndexPage();
-      break;
-    case "skills":
-      getSkillsPage();
-      break;
-    case "projects":
-      getProjectsPage();
-      break;
-  }
+const setPageMessage = (msg) => {
+  document.getElementById("msg").innerHTML = `(${msg})`;
 };
 
 /**
  * Get current page
  * @return {string} name of page
  */
-function getCurrentPage() {
-  if (location.pathname.includes("skills.html")) {
-    return "skills";
+const getCurrentPage = () => {
+  if (location.pathname.includes("index.html")) {
+    return "about";
+  }
+
+  if (location.pathname.includes("companies.html")) {
+    return "companies";
+  }
+
+  if (location.pathname.includes("courses.html")) {
+    return "courses";
   }
 
   if (location.pathname.includes("projects.html")) {
     return "projects";
   }
 
-  if (location.pathname.includes("index.html") || currentPage == "") {
-    return "companies";
-  }
+  return "about";
+};
+
+/**
+ * Load about
+ */
+async function getAboutPage() {
+  let data = await getData(API_About);
+  renderPage(data, "about");
 }
 
 /**
- * Load companies page (Homepage)
+ * Load companies
  * @param search {string} search string
  */
-async function getIndexPage(search) {
-  let data = await getData(API_Company);
+async function getCompaniesPage(search) {
+  let data = await getData(API_History);
   renderPage(data, "companies", search);
 }
 
 /**
- * Load skills page
+ * Load courses
  * @param search {string} search string
  */
-async function getSkillsPage(search) {
-  let data = await getData(API_Skills);
-  renderPage(data, "skills", search);
+async function getCoursesPage(search) {
+  let data = await getData(API_Courses);
+  renderPage(data, "courses", search);
 }
 
 /**
- * Load projects page
+ * Load projects
  * @param search {string} search string
  */
 async function getProjectsPage(search) {
   let data = await getData(API_Projects);
   renderPage(data, "projects", search);
 }
+
+/**
+ * Get page when the resources are loaded
+ */
+window.onload = () => {
+  switch (getCurrentPage()) {
+    case "about":
+      getAboutPage();
+      break;
+    case "companies":
+      getCompaniesPage();
+      break;
+    case "courses":
+      getCoursesPage();
+      break;
+    case "projects":
+      getProjectsPage();
+      break;
+  }
+};

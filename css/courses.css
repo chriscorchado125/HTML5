@@ -1,26 +1,26 @@
-.skills-container {
+.courses-container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-column-gap: 1px;
 }
 
-/* skill title */
-.skills-container h2 {
+/* course title */
+.courses-container h2 {
   font-size: 14px;
 }
 
-.skill-box {
+.course-box {
   text-align: center;
   padding: 10px;
   margin-bottom: 20px;
 }
 
-.skill-date {
+.course-date {
   font-size: 12px;
 }
 
 @media (max-width: 1000px) {
-  .skills-container {
+  .courses-container {
     grid-template-columns: 1fr 1fr;
   }
   #msg {
@@ -33,7 +33,7 @@
     margin-top: 110px !important;
   }
 
-  .skills-container {
+  .courses-container {
     grid-template-columns: 1fr;
   }
 
@@ -41,7 +41,7 @@
     margin-top: 5px;
   }
 
-  .skill-box {
+  .course-box {
     max-width: 400px;
     padding: 5px;
     margin: 0px;

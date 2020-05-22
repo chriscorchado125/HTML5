@@ -6,6 +6,14 @@ body {
   background-image: url(../images/cclogobg.jpg);
 }
 
+#logo > img {
+  padding: 5px;
+}
+
+#logo > img:hover {
+  border: 1px dashed #7399ea;
+}
+
 #preloader {
   text-align: center;
   margin-top: 140px;
@@ -65,7 +73,37 @@ a:link {
   width: 35px;
 }
 
+/* About page */
+.about p {
+  text-align: left !important;
+  padding: 5px 100px;
+}
+
+.about h1 {
+  color: rgb(96, 96, 97);
+  margin: 20px 10px;
+}
+
+#workstation-comparison {
+  text-align: center !important;
+}
+
+@media (max-width: 800px) {
+  /* About page */
+  .about p {
+    padding: 5px 80px;
+  }
+}
+
 @media (max-width: 700px) {
+  .about {
+    margin-top: 70px !important;
+  }
+
+  .about p {
+    padding: 5px 30px;
+  }
+
   #search-container {
     float: none;
     margin: 0 0 5px 0px;
