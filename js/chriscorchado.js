@@ -53,7 +53,7 @@ async function searchData() {
   inputSearchBox.addEventListener("keyup", function (e) {
     clearTimeout(timeout);
 
-    // Make a new timeout set to go off in 1000ms (1 second)
+    // Make a new timeout set to go off in 500ms (1/2 second)
     timeout = setTimeout(function () {
       $(".container, .courses-container").hide();
 
@@ -217,9 +217,6 @@ const checkMatch = (item, search) => {
   return 0;
 };
 
-/* regex to get string within quotes */
-let getStringInQuotes = /"(.*?)"/;
-
 /**
  * Create HTML for page *
  * @param data {array} page items
@@ -227,6 +224,9 @@ let getStringInQuotes = /"(.*?)"/;
  * @param searchedFor {string} search string
  */
 const renderPage = (data, page, searchedFor) => {
+  /* regex to get string within quotes */
+  let getStringInQuotes = /"(.*?)"/;
+
   // addhide search box on About Me page
   if (page == "about") {
     document.getElementById("search-container").style.display = "none";
