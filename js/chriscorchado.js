@@ -44,7 +44,7 @@ const getData = (dataURL) => {
 };
 
 /**
- * Search data after the user pauses for half a second
+ * Search data after the user pauses typing for half a second
  */
 async function searchData() {
   let inputSearchBox = document.getElementById("searchSite");
@@ -53,7 +53,6 @@ async function searchData() {
   inputSearchBox.addEventListener("keyup", function (e) {
     clearTimeout(timeout);
 
-    // Make a new timeout set to go off in 500ms (1/2 second)
     timeout = setTimeout(function () {
       $(".container, .courses-container").hide();
 
@@ -61,26 +60,13 @@ async function searchData() {
         ga("send", "pageview", location.pathname + "?search=" + inputSearchBox.value);
       }
 
-      switch (getCurrentPage()) {
-        case "about":
-          getAboutPage();
-          break;
-        case "companies":
-          getIndexPage(inputSearchBox.value);
-          break;
-        case "courses":
-          getCoursesPage(inputSearchBox.value);
-          break;
-        case "projects":
-          getProjectsPage(inputSearchBox.value);
-          break;
-      }
+      getPage(getCurrentPage(), inputSearchBox.value);
     }, 500);
   });
 }
 
 /**
- * Clear Search
+ * Clear current search
  */
 const searchClear = () => {
   if (document.getElementById("searchSite").value !== "") {
@@ -90,7 +76,7 @@ const searchClear = () => {
 
 /**
  * Filter what a user is allowed to enter in the search field
- * Only allow searching with a-Z, numbers and spaces
+ * Only allow searching with a-Z, 0-9 and spaces
  * @param event {event} key event
  * @return {string} allowed characters
  */
@@ -104,10 +90,10 @@ const searchFilter = (event) => {
 
   return (
     (charCode >= 65 && charCode <= 122) || // a-z
-    (charCode >= 96 && charCode <= 105) || // 96-105 numeric keypad
-    (charCode >= 48 && charCode <= 57) || // 0-1 top of keyboard
-    charCode == 32 || // space
-    charCode == 16 // shift
+    (charCode >= 96 && charCode <= 105) || // 0-9 numeric keypad
+    (charCode >= 48 && charCode <= 57) || // 0-9 top of keyboard
+    charCode == 16 || // shift key - A-Z
+    charCode == 32 // space
   );
 };
 
@@ -227,7 +213,7 @@ const renderPage = (data, page, searchedFor) => {
   /* regex to get string within quotes */
   let getStringInQuotes = /"(.*?)"/;
 
-  // addhide search box on About Me page
+  // add border to logo and hide search box on About page
   if (page == "about") {
     document.getElementById("search-container").style.display = "none";
 
@@ -509,8 +495,9 @@ const renderPage = (data, page, searchedFor) => {
  * @param count {int} number of items
  */
 const setItemCount = (count) => {
-  let searchForNoun = count == 1 ? "item" : "items";
-  document.getElementById("searchCount").innerHTML = `${count} ${searchForNoun}`;
+  document.getElementById("searchCount").innerHTML = `${count} ${
+    count == 1 ? "item" : "items"
+  }`;
 };
 
 /**
@@ -522,80 +509,58 @@ const setPageMessage = (msg) => {
 };
 
 /**
- * Get current page
+ * Get current page - defaults to "about"
  * @return {string} name of page
  */
 const getCurrentPage = () => {
-  if (location.pathname.includes("index.html")) {
+  if (location.pathname.includes("/index.html")) {
     return "about";
   }
 
-  if (location.pathname.includes("companies.html")) {
+  if (location.pathname.includes("/companies.html")) {
     return "companies";
   }
 
-  if (location.pathname.includes("courses.html")) {
+  if (location.pathname.includes("/courses.html")) {
     return "courses";
   }
 
-  if (location.pathname.includes("projects.html")) {
+  if (location.pathname.includes("/projects.html")) {
     return "projects";
   }
-
+  // default
   return "about";
 };
 
 /**
- * Load about
+ * Load data and render pages
+ * @param page {string} page name
+ * @param search {string} optional search string
  */
-async function getAboutPage() {
-  let data = await getData(API_About);
-  renderPage(data, "about");
-}
+async function getPage(page, search) {
+  let data = null;
 
-/**
- * Load companies
- * @param search {string} search string
- */
-async function getCompaniesPage(search) {
-  let data = await getData(API_History);
-  renderPage(data, "companies", search);
-}
+  switch (page) {
+    case "about":
+      data = await getData(API_About);
+      break;
+    case "companies":
+      data = await getData(API_History);
+      break;
+    case "courses":
+      data = await getData(API_Courses);
+      break;
+    case "projects":
+      data = await getData(API_Projects);
+      break;
+  }
 
-/**
- * Load courses
- * @param search {string} search string
- */
-async function getCoursesPage(search) {
-  let data = await getData(API_Courses);
-  renderPage(data, "courses", search);
-}
-
-/**
- * Load projects
- * @param search {string} search string
- */
-async function getProjectsPage(search) {
-  let data = await getData(API_Projects);
-  renderPage(data, "projects", search);
+  renderPage(data, page, search);
 }
 
 /**
  * Get page when the resources are loaded
  */
 window.onload = () => {
-  switch (getCurrentPage()) {
-    case "about":
-      getAboutPage();
-      break;
-    case "companies":
-      getCompaniesPage();
-      break;
-    case "courses":
-      getCoursesPage();
-      break;
-    case "projects":
-      getProjectsPage();
-      break;
-  }
+  getPage(getCurrentPage());
 };
