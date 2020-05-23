@@ -259,7 +259,14 @@ const renderPage = (data, page, searchedFor) => {
     itemDate = element.field_award_date || element.date || "";
 
     if (itemDate) {
-      itemDate = extractDate(itemDate, true);
+      // show year without month on the projects page
+      if (page == "projects") {
+        itemDate = extractDate(itemDate, true).split(" ")[1];
+        itemCompanyName = element.company || "";
+      } else {
+        itemDate = extractDate(itemDate, true);
+        itemCompanyName = element.field_company_name || "";
+      }
     }
 
     startDate = element.start_date || "";
@@ -276,7 +283,7 @@ const renderPage = (data, page, searchedFor) => {
     itemBody = element.body || "";
     itemJobTitle = element.job_title || "";
     itemTechnology = element.technology || "";
-    itemCompanyName = element.field_company_name || "";
+
     itemWorkType = element.type || "";
 
     itemTitle = itemTitle.replace("&amp;", "&");
@@ -535,7 +542,7 @@ const getCurrentPage = () => {
 /**
  * Load data and render pages
  * @param page {string} page name
- * @param search {string} optional search string
+ * @param search {string} (optional) search string
  */
 async function getPage(page, search) {
   let data = null;
