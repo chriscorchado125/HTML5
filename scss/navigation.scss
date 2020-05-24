@@ -1,9 +1,11 @@
+$main_color: #7399ea;
+
 #logo img {
   height: 60px;
 }
 
 .navbar {
-  border-bottom: 2px solid #83a6e8;
+  border-bottom: 2px solid $main_color;
 }
 
 /* force nav to stay horizontal */
@@ -23,14 +25,10 @@
   width: 80px;
 }
 
+.nav-item-active,
 .nav-item:hover {
   font-weight: bold;
-  color: #83a6e8 !important;
-}
-
-.nav-item-active {
-  font-weight: bold;
-  color: #83a6e8 !important;
+  color: $main_color !important;
 }
 
 #search-container {
@@ -60,7 +58,7 @@
 .searchBtn:hover {
   color: #fff;
   box-shadow: 0 0 #fff;
-  background-color: #7399ea;
+  background-color: $main_color;
 }
 
 .highlightSearchText {

@@ -1,5 +1,5 @@
-@import "navigation.css";
-@import "hover-animation.css";
+@import 'navigation.scss';
+@import 'hover-animation.css';
 
 body {
   box-sizing: border-box;
@@ -11,7 +11,7 @@ body {
 }
 
 #logo > img:hover {
-  border: 1px dashed #7399ea;
+  border: 1px dashed $main_color;
 }
 
 #preloader {
