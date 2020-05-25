@@ -387,9 +387,9 @@ const renderPage = (data, page, searchedFor) => {
             element.field_award_pdf
           )}" target="_blank"><img src="${awardImage}" alt="${
             element.title
-          }" width="290" /></a>`;
+          }" /></a>`;
         } else {
-          item += `<img src="${awardImage}" alt="${element.title}" width="290" />`;
+          item += `<img src="${awardImage}" alt="${element.title}" />`;
         }
 
         item += `</div>`;
@@ -418,13 +418,13 @@ const renderPage = (data, page, searchedFor) => {
           screenshots = element.screenshot.split(",");
           screenshotCount = parseInt(screenshots.length);
 
-          itemGridClass = "project-items3";
+          itemGridClass = "project-item-grid";
 
           if (screenshotCount === 2) {
-            itemGridClass = "project-items2";
+            itemGridClass = "project-items2 project-item-grid";
           }
           if (screenshotCount === 1) {
-            itemGridClass = "project-items1";
+            itemGridClass = "project-items1 project-item-grid";
           }
 
           section = `<section data-featherlight-gallery data-featherlight-filter="a" class="${itemGridClass}">`;
