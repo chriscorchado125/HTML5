@@ -1,5 +1,16 @@
 'use strict';
 
+const API_Course_Count =
+  'https://chriscorchado.com/drupal8/rest/api/course/count?_format=json';
+
+const API_Company_Count =
+  'https://chriscorchado.com/drupal8/rest/api/company/count?_format=json';
+
+const API_Project_Count =
+  'https://chriscorchado.com/drupal8/rest/api/project/count?_format=json';
+
+const pageLimit = 50;
+
 /* Hide container and show navigation */
 $('.container').hide();
 $('#navigation').load('includes/nav.html');
@@ -9,57 +20,55 @@ $('#navigation').load('includes/nav.html');
  * @param page {string} page name
  * @param search {string} (optional) search string
  */
-async function getPage(page, search) {
+async function getPage(page, search, pagingURL) {
   let data = null;
+  if (pagingURL) {
+    data = await getData(pagingURL);
+  } else {
+    switch (page) {
+      case 'about':
+        data = await getData(
+          `https://chriscorchado.com/drupal8/jsonapi/node/page?fields[node--page]=id,title,body&filter[id][operator]=CONTAINS&filter[id][value]=ca23f416-ad70-41c2-9228-52ba6577abfe`
+        );
+        break;
+      case 'companies':
+        if (search) {
+          data = await getData(
+            `https://chriscorchado.com/drupal8/jsonapi/node/company?filter[or-group][group][conjunction]=OR&filter[field_company_name][operator]=CONTAINS&filter[field_company_name][value]=${search}&filter[field_company_name][condition][memberOf]=or-group&filter[field_job_title][operator]=CONTAINS&filter[field_job_title][value]=${search}&filter[field_job_title][condition][memberOf]=or-group&filter[body.value][operator]=CONTAINS&filter[body.value][value]=${search}&filter[body.value][condition][memberOf]=or-group&sort=-field_end_date&include=field_company_screenshot&page[limit]=${pageLimit}`
+          );
+        } else {
+          data = await getData(
+            `https://chriscorchado.com/drupal8/jsonapi/node/company?sort=-field_end_date&include=field_company_screenshot&page[limit]=${pageLimit}`
+          );
+        }
+        break;
+      case 'courses':
+        if (search) {
+          data = await getData(
+            `https://chriscorchado.com/drupal8/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=${search}&filter[title][condition][memberOf]=or-group&filter[field_award_date][operator]=CONTAINS&filter[field_award_date][value]=${search}&filter[field_award_date][condition][memberOf]=or-group&sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=${pageLimit}`
+          );
+        } else {
+          data = await getData(
+            `https://chriscorchado.com/drupal8/jsonapi/node/awards?sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=${pageLimit}`
+          );
+        }
 
-  switch (page) {
-    case 'about':
-      data = await getData(
-        `http://chriscorchado.com/drupal8/jsonapi/node/page?fields[node--page]=id,title,body&filter[id][operator]=CONTAINS&filter[id][value]=ca23f416-ad70-41c2-9228-52ba6577abfe`
-      );
-      break;
-    case 'companies':
-      if (search) {
-        data = await getData(
-          `http://chriscorchado.com/drupal8/jsonapi/node/company?filter[or-group][group][conjunction]=OR&filter[field_company_name][operator]=CONTAINS&filter[field_company_name][value]=${search}&filter[field_company_name][condition][memberOf]=or-group&filter[field_job_title][operator]=CONTAINS&filter[field_job_title][value]=${search}&filter[field_job_title][condition][memberOf]=or-group&filter[body.value][operator]=CONTAINS&filter[body.value][value]=${search}&filter[body.value][condition][memberOf]=or-group&sort=-field_end_date&include=field_company_screenshot`
-        );
-      } else {
-        data = await getData(
-          `http://chriscorchado.com/drupal8/jsonapi/node/company?sort=-field_end_date&include=field_company_screenshot`
-        );
-      }
-      break;
-    case 'courses':
-      /* Courses goes over the 50 record limit so pagination is required. (Items 1-50 of TOTAL) 
-      async function countData(url) {
-        return getData(url);
-      }
-      */
-
-      if (search) {
-        data = await getData(
-          `https://chriscorchado.com/drupal8/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=${search}&filter[title][condition][memberOf]=or-group&filter[field_award_date][operator]=CONTAINS&filter[field_award_date][value]=${search}&filter[field_award_date][condition][memberOf]=or-group&sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images`
-        );
-      } else {
-        data = await getData(
-          `https://chriscorchado.com/drupal8/jsonapi/node/awards?sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images`
-        );
-      }
-      break;
-    case 'projects':
-      if (search) {
-        data = await getData(
-          `http://chriscorchado.com/drupal8/jsonapi/node/project?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=${search}&filter[title][condition][memberOf]=or-group&filter[taxonomy_term--tags][path]=field_project_technology.name&filter[taxonomy_term--tags][operator]=CONTAINS&filter[taxonomy_term--tags][value]=${search}&filter[taxonomy_term--tags][condition][memberOf]=or-group&filter[field_company.title][operator]=CONTAINS&filter[field_company.title][value]=${search}&filter[field_company.title][condition][memberOf]=or-group&filter[field_screenshot.meta.alt][operator]=CONTAINS&filter[field_screenshot.meta.alt][value]=${search}&filter[field_screenshot.meta.alt][condition][memberOf]=or-group&filter[field_date][operator]=CONTAINS&filter[field_date][value]=${search}&filter[field_date][condition][memberOf]=or-group&sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url`
-        );
-      } else {
-        data = await getData(
-          `http://chriscorchado.com/drupal8/jsonapi/node/project?sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url`
-        );
-      }
-      break;
+        break;
+      case 'projects':
+        if (search) {
+          data = await getData(
+            `https://chriscorchado.com/drupal8/jsonapi/node/project?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=${search}&filter[title][condition][memberOf]=or-group&filter[taxonomy_term--tags][path]=field_project_technology.name&filter[taxonomy_term--tags][operator]=CONTAINS&filter[taxonomy_term--tags][value]=${search}&filter[taxonomy_term--tags][condition][memberOf]=or-group&filter[field_company.title][operator]=CONTAINS&filter[field_company.title][value]=${search}&filter[field_company.title][condition][memberOf]=or-group&filter[field_screenshot.meta.alt][operator]=CONTAINS&filter[field_screenshot.meta.alt][value]=${search}&filter[field_screenshot.meta.alt][condition][memberOf]=or-group&filter[field_date][operator]=CONTAINS&filter[field_date][value]=${search}&filter[field_date][condition][memberOf]=or-group&sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&page[limit]=${pageLimit}`
+          );
+        } else {
+          data = await getData(
+            `https://chriscorchado.com/drupal8/jsonapi/node/project?sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&page[limit]=${pageLimit}`
+          );
+        }
+        break;
+    }
   }
 
-  renderPage(data, page, search);
+  renderPage(data, page, search, data.links.next, data.links.prev);
 }
 
 /**
@@ -207,7 +216,7 @@ const itemWithSearchHighlight = (itemToHighlight, searchedFor) => {
  * @param page {string} page name
  * @param searchedFor {string} search string
  */
-const renderPage = (data, page, searchedFor) => {
+const renderPage = (data, page, searchedFor, next, prev) => {
   /* regex to get string within quotes */
   let getStringInQuotes = /"(.*?)"/;
 
@@ -528,8 +537,6 @@ const renderPage = (data, page, searchedFor) => {
 
   $('#' + currentNavItem).addClass('nav-item-active');
 
-  setItemCount(itemCount);
-
   $('#searchSite').focus();
 
   $('#preloader').hide();
@@ -550,6 +557,8 @@ const renderPage = (data, page, searchedFor) => {
       `<div id="noRecords" class="shadow">No matches found for '${searchedFor}'</div>`
     );
   }
+
+  setItemCount(itemCount, page, prev, next);
 };
 
 /**
@@ -588,14 +597,118 @@ const getFullUrlByPage = (linkToFix, page) => {
 };
 
 /**
- * Set/update the current page item count
+ * Set/update the current page item counts
  * @param count {int} number of items
+ * @param page {string} name of page
+ * @param page {prev} link to previous results
+ * @param page {next} link to next results
  */
-const setItemCount = (count, total) => {
-  document.getElementById('searchCount').innerHTML = `${count} ${
-    count == 1 ? 'item' : 'items'
-  }`;
-};
+function setItemCount(count, page, prev, next) {
+  let dataOffset = 0;
+  let dataOffsetText = '';
+  let totalItems = getCookie(page);
+
+  if (next) {
+    let nextURL = next.href
+      .replace(/%2C/g, ',')
+      .replace(/%5B/g, '[')
+      .replace(/%5D/g, ']');
+
+    let startOffset = nextURL.indexOf('page[offset]') + 13;
+    let endOffset = nextURL.indexOf('page[limit]') - 1;
+    dataOffset = nextURL.substring(startOffset, endOffset);
+  }
+
+  /* setup pagination counts */
+  let currentCount = dataOffset / pageLimit;
+
+  if (currentCount == 1) {
+    dataOffsetText = `Items ${currentCount}-${pageLimit * currentCount}`;
+  } else {
+    dataOffsetText = `Items ${(currentCount * pageLimit) - pageLimit}-${
+      pageLimit * currentCount
+    }`;
+  }
+
+  /* get the highest multiple of the page limit without going over to total */
+  let topNumber = Math.round(totalItems / pageLimit) * pageLimit;
+
+  /* set the paging count on the last page */
+  if (count < pageLimit && totalItems > pageLimit) {
+    dataOffsetText = `Items ${topNumber}-${totalItems} `;
+  }
+
+/* handle searching  */
+  if ($('#searchSite').val()) {
+    dataOffsetText = `${count} ${count == 1 ? 'Item' : 'Items'} `;
+    if (count <= pageLimit) {
+      $('#searchCount').html(count + `  ${count == 1 ? 'Item' : 'Items'}`);
+    } else {
+      $('#searchCount').html(pageLimit + `  ${pageLimit == 1 ? 'Item' : 'Items'}`);
+    }
+  }
+
+  let recordCount = getTotalRecordCount(page);
+
+  /* use pagination when the total records exceed the page limit */
+  if (recordCount < pageLimit) {
+    document.getElementById('searchCount').innerHTML = `<span id="totalItems">${recordCount}</span>
+   ${count == 1 ? 'Item' : 'Items'}`;
+  } else {
+    document.getElementById(
+      'searchCount'
+    ).innerHTML = `<span id="paging-info">${dataOffsetText}</span>`;
+
+    let prevLink = prev
+      ? `<a href="#" class="pager-navigation" onclick="getPage(getCurrentPage(), document.getElementById('searchSite').value,'${prev.href}')">Prev</a>`
+      : `<span class="pager-navigation disabled">Prev</span>`;
+    let nextLink = next
+      ? `<a href="#" class="pager-navigation" onclick="getPage(getCurrentPage(), document.getElementById('searchSite').value,'${next.href}')">Next</a>`
+      : `<span class="pager-navigation disabled">Next</span>`;
+
+    $('#pagination').html(`${prevLink}  ${nextLink}`);
+  }
+
+  /* add record count */
+  $('#totalItems').html(recordCount);
+}
+
+/**
+ * Return the total record count via the Drupal API and store the results in a cookie
+ * JSON:API has a limit of 50 records
+ * @param page {string} current page
+ * @return {int} total record count
+ */
+function getTotalRecordCount(page) {
+  let recordCount = getCookie(page);
+  let urlForTotal = null;
+
+  if (!recordCount) {
+    switch (page) {
+      case 'courses':
+        urlForTotal = API_Course_Count;
+        break;
+      case 'companies':
+        urlForTotal = API_Company_Count;
+        break;
+      case 'projects':
+        urlForTotal = API_Project_Count;
+    }
+  }
+
+  /* fetch total or use the cookie value */
+  if (urlForTotal) {
+    fetch(urlForTotal)
+      .then((resp) => {
+        return resp.ok ? resp.json() : Promise.reject(resp.statusText);
+      })
+      .then((document) => {
+        recordCount = document.length;
+        setCookie(page, recordCount, 1);
+      });
+  }
+  return recordCount;
+}
 
 /**
  * Set page message
@@ -630,8 +743,34 @@ const getCurrentPage = () => {
 };
 
 /**
- * Get page when the resources are loaded
+ * Get current page when the resources are loaded
  */
 window.onload = () => {
   getPage(getCurrentPage());
 };
+
+/**
+ * Cookies
+ */
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+  var expires = 'expires=' + d.toUTCString();
+  document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
+}
+
+function getCookie(cname) {
+  var name = cname + '=';
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return '';
+}
