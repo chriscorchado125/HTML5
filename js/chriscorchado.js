@@ -1,13 +1,9 @@
 'use strict';
 
-const API_Course_Count =
-  'https://chriscorchado.com/drupal8/rest/api/course/count?_format=json';
-
-const API_Company_Count =
-  'https://chriscorchado.com/drupal8/rest/api/company/count?_format=json';
-
-const API_Project_Count =
-  'https://chriscorchado.com/drupal8/rest/api/project/count?_format=json';
+const base_url = 'https://chriscorchado.com/drupal8';
+const API_Course_Count = `${base_url}/rest/api/course/count?_format=json`;
+const API_Company_Count = `${base_url}/rest/api/company/count?_format=json`;
+const API_Project_Count = `${base_url}/rest/api/project/count?_format=json`;
 
 const pageLimit = 50;
 
@@ -29,39 +25,39 @@ async function getPage(page, search, pagingURL) {
     switch (page) {
       case 'about':
         data = await getData(
-          `https://chriscorchado.com/drupal8/jsonapi/node/page?fields[node--page]=id,title,body&filter[id][operator]=CONTAINS&filter[id][value]=ca23f416-ad70-41c2-9228-52ba6577abfe`
+          `${base_url}/jsonapi/node/page?fields[node--page]=id,title,body&filter[id][operator]=CONTAINS&filter[id][value]=ca23f416-ad70-41c2-9228-52ba6577abfe`
         );
         break;
       case 'companies':
         if (search) {
           data = await getData(
-            `https://chriscorchado.com/drupal8/jsonapi/node/company?filter[or-group][group][conjunction]=OR&filter[field_company_name][operator]=CONTAINS&filter[field_company_name][value]=${search}&filter[field_company_name][condition][memberOf]=or-group&filter[field_job_title][operator]=CONTAINS&filter[field_job_title][value]=${search}&filter[field_job_title][condition][memberOf]=or-group&filter[body.value][operator]=CONTAINS&filter[body.value][value]=${search}&filter[body.value][condition][memberOf]=or-group&sort=-field_end_date&include=field_company_screenshot&page[limit]=${pageLimit}`
+            `${base_url}/jsonapi/node/company?filter[or-group][group][conjunction]=OR&filter[field_company_name][operator]=CONTAINS&filter[field_company_name][value]=${search}&filter[field_company_name][condition][memberOf]=or-group&filter[field_job_title][operator]=CONTAINS&filter[field_job_title][value]=${search}&filter[field_job_title][condition][memberOf]=or-group&filter[body.value][operator]=CONTAINS&filter[body.value][value]=${search}&filter[body.value][condition][memberOf]=or-group&sort=-field_end_date&include=field_company_screenshot&page[limit]=${pageLimit}`
           );
         } else {
           data = await getData(
-            `https://chriscorchado.com/drupal8/jsonapi/node/company?sort=-field_end_date&include=field_company_screenshot&page[limit]=${pageLimit}`
+            `${base_url}/jsonapi/node/company?sort=-field_end_date&include=field_company_screenshot&page[limit]=${pageLimit}`
           );
         }
         break;
       case 'courses':
         if (search) {
           data = await getData(
-            `https://chriscorchado.com/drupal8/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=${search}&filter[title][condition][memberOf]=or-group&filter[field_award_date][operator]=CONTAINS&filter[field_award_date][value]=${search}&filter[field_award_date][condition][memberOf]=or-group&sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=${pageLimit}`
+            `${base_url}/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=${search}&filter[title][condition][memberOf]=or-group&filter[field_award_date][operator]=CONTAINS&filter[field_award_date][value]=${search}&filter[field_award_date][condition][memberOf]=or-group&sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=${pageLimit}`
           );
         } else {
           data = await getData(
-            `https://chriscorchado.com/drupal8/jsonapi/node/awards?sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=${pageLimit}`
+            `${base_url}/jsonapi/node/awards?sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=${pageLimit}`
           );
         }
         break;
       case 'projects':
         if (search) {
           data = await getData(
-            `https://chriscorchado.com/drupal8/jsonapi/node/project?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=${search}&filter[title][condition][memberOf]=or-group&filter[taxonomy_term--tags][path]=field_project_technology.name&filter[taxonomy_term--tags][operator]=CONTAINS&filter[taxonomy_term--tags][value]=${search}&filter[taxonomy_term--tags][condition][memberOf]=or-group&filter[field_company.title][operator]=CONTAINS&filter[field_company.title][value]=${search}&filter[field_company.title][condition][memberOf]=or-group&filter[field_screenshot.meta.alt][operator]=CONTAINS&filter[field_screenshot.meta.alt][value]=${search}&filter[field_screenshot.meta.alt][condition][memberOf]=or-group&filter[field_date][operator]=CONTAINS&filter[field_date][value]=${search}&filter[field_date][condition][memberOf]=or-group&sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&page[limit]=${pageLimit}`
+            `${base_url}/jsonapi/node/project?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=${search}&filter[title][condition][memberOf]=or-group&filter[taxonomy_term--tags][path]=field_project_technology.name&filter[taxonomy_term--tags][operator]=CONTAINS&filter[taxonomy_term--tags][value]=${search}&filter[taxonomy_term--tags][condition][memberOf]=or-group&filter[field_company.title][operator]=CONTAINS&filter[field_company.title][value]=${search}&filter[field_company.title][condition][memberOf]=or-group&filter[field_screenshot.meta.alt][operator]=CONTAINS&filter[field_screenshot.meta.alt][value]=${search}&filter[field_screenshot.meta.alt][condition][memberOf]=or-group&filter[field_date][operator]=CONTAINS&filter[field_date][value]=${search}&filter[field_date][condition][memberOf]=or-group&sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&page[limit]=${pageLimit}`
           );
         } else {
           data = await getData(
-            `https://chriscorchado.com/drupal8/jsonapi/node/project?sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&page[limit]=${pageLimit}`
+            `${base_url}/jsonapi/node/project?sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&page[limit]=${pageLimit}`
           );
         }
         break;
@@ -211,7 +207,7 @@ const itemWithSearchHighlight = (itemToHighlight, searchedFor) => {
 };
 
 /**
- * Create HTML for page *
+ * Create HTML for page
  * @param data {array} page items
  * @param page {string} page name
  * @param searchedFor {string} search string
@@ -234,7 +230,6 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     itemCount = 0;
 
   let imgPieces = [];
-  let companyScreenshotID = [];
 
   let item = '';
   let currentNavItem,
@@ -250,7 +245,6 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     itemCompanyName,
     itemWorkType,
     itemPDF,
-    upperSearch,
     section,
     projectImage,
     imgUrl = '';
@@ -263,15 +257,15 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     itemJobTitle = element.attributes.field_job_title;
     startDate = element.attributes.field_start_date;
     endDate = element.attributes.field_end_date;
-    itemWorkType = element.attributes.field_type == 'full' ? 'Full-Time' : 'Contract';
+    itemWorkType = element.attributes.field_type = 'full' ? 'Full-Time' : 'Contract';
 
     itemTechnology = '';
     imgPieces = [];
 
     if (data.included) {
       data.included.forEach((included_element) => {
+        /* get Courses screenshot filenames */
         if (element.relationships.field_award_images) {
-          /* get Courses screenshot filenames */
           if (
             element.relationships.field_award_images.data[0].id == included_element.id
           ) {
@@ -279,6 +273,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
           }
         }
 
+        /* get Courses PDF filenames */
         if (
           element.relationships.field_award_pdf &&
           element.relationships.field_award_pdf.data.id == included_element.id
@@ -286,12 +281,8 @@ const renderPage = (data, page, searchedFor, next, prev) => {
           itemPDF = included_element.attributes.filename;
         }
 
-        if (included_element.attributes.filename) {
-          imgUrl = included_element.attributes.filename;
-        }
-
+        /* get Company screenshot filenames */
         if (element.relationships.field_company_screenshot) {
-          /* get Company screenshot filenames */
           if (
             element.relationships.field_company_screenshot.data.some(
               (field_screenshot) => field_screenshot.id == included_element.id
@@ -301,8 +292,8 @@ const renderPage = (data, page, searchedFor, next, prev) => {
           }
         }
 
+        /* get Company name */
         if (element.relationships.field_screenshot) {
-          /* get Company name */
           if (element.relationships.field_company.data.id == included_element.id) {
             itemCompanyName = included_element.attributes.field_company_name;
           }
@@ -328,14 +319,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
       });
     } // if data_included
 
-    if (
-      element.relationships &&
-      element.relationships.field_company_screenshot &&
-      element.relationships.field_company_screenshot.data[0]
-    ) {
-      companyScreenshotID.push(element.relationships.field_company_screenshot.data[0].id);
-    }
-
+    /* get dates */
     if (itemDate) {
       if (page == 'projects') {
         itemDate = itemDate.split('-')[0]; // only year
@@ -351,9 +335,8 @@ const renderPage = (data, page, searchedFor, next, prev) => {
       }
     }
 
-    /* Work History Dates */
+    /* Work History Dates - month and year*/
     if (startDate) {
-      // month and year
       newDate = new Date(startDate);
       startDate =
         newDate.toLocaleString('default', { month: 'long' }) +
@@ -362,7 +345,6 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     }
 
     if (endDate) {
-      // month and year
       newDate = new Date(endDate);
       endDate =
         newDate.toLocaleString('default', { month: 'long' }) +
@@ -406,9 +388,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
         item += `<div class="company-name">${itemTitle}</div>`;
         item += `<div class="company-job-title">${itemJobTitle}</div>`;
 
-        item += `<div class="body-container">`;
-        item += itemBody;
-        item += `</div>`;
+        item += `<div class="body-container">${itemBody}</div>`;
 
         item += `<div class="screenshot-container">`;
         item += `<img src=${getFullUrlByPage(
@@ -465,9 +445,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
         item += `<div class="project-company">${itemCompanyName} <span class="project-date">(${itemDate})</span></div>`;
         item += `</div>`;
 
-        item += `<div class="body-container">`;
-        item += itemBody;
-        item += `</div>`;
+        item += `<div class="body-container">${itemBody}</div>`;
 
         /* Screenshot Section */
         if (imgPieces) {
@@ -494,8 +472,6 @@ const renderPage = (data, page, searchedFor, next, prev) => {
             projectImage = getFullUrlByPage(img, page);
 
             section += `<div class="project-item shadow">`;
-
-            section += `<a href=${projectImage} style="display:none;"><img src=${projectImage}></a>`;
 
             section += `<a href=${projectImage} class="gallery">
             <div class="project-item-desc">${itemWithSearchHighlight(
@@ -570,28 +546,17 @@ const renderPage = (data, page, searchedFor, next, prev) => {
 const getFullUrlByPage = (linkToFix, page) => {
   switch (page) {
     case 'companies':
-      return (
-        'https://chriscorchado.com/drupal8/sites/default/files/company-screenshot/' +
-        linkToFix
-      );
+      return `${base_url}/sites/default/files/company-screenshot/` + linkToFix;
       break;
     case 'courses':
       if (linkToFix.includes('.pdf')) {
-        return (
-          'https://chriscorchado.com/drupal8/sites/default/files/award-pdf/' + linkToFix
-        );
+        return `${base_url}/sites/default/files/award-pdf/` + linkToFix;
       } else {
-        return (
-          'https://chriscorchado.com/drupal8/sites/default/files/award-images/' +
-          linkToFix
-        );
+        return `${base_url}/sites/default/files/award-images/` + linkToFix;
       }
       break;
     case 'projects':
-      return (
-        'https://chriscorchado.com/drupal8/sites/default/files/project-screenshot/' +
-        linkToFix
-      );
+      return `${base_url}/sites/default/files/project-screenshot/` + linkToFix;
       break;
   }
 };
@@ -600,8 +565,8 @@ const getFullUrlByPage = (linkToFix, page) => {
  * Set/update the current page item counts
  * @param count {int} number of items
  * @param page {string} name of page
- * @param page {prev} link to previous results
- * @param page {next} link to next results
+ * @param prev {prev} link to previous results
+ * @param next {next} link to next results
  */
 function setItemCount(count, page, prev, next) {
   let dataOffset = 0;
@@ -630,7 +595,7 @@ function setItemCount(count, page, prev, next) {
     }`;
   }
 
-  /* get the highest multiple of the page limit without going over to total */
+  /* get the highest multiple of the page limit without going over the total */
   let topNumber = Math.round(totalItems / pageLimit) * pageLimit;
 
   /* set the paging count on the last page */
@@ -681,7 +646,7 @@ function setItemCount(count, page, prev, next) {
  * @param page {string} current page
  * @return {int} total record count
  */
-function getTotalRecordCount(page) {
+const getTotalRecordCount = (page) => {
   let recordCount = getCookie(page);
   let urlForTotal = null;
 
@@ -710,7 +675,7 @@ function getTotalRecordCount(page) {
       });
   }
   return recordCount;
-}
+};
 
 /**
  * Set page message
