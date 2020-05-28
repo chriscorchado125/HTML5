@@ -43,6 +43,7 @@
 #searchCount {
   font-size: 12px;
   text-align: right;
+  margin-right: 5px;
 }
 
 /* search button */
@@ -61,6 +62,16 @@
 
 .highlightSearchText {
   background-color: yellow;
+}
+
+.pager-navigation {
+  color: black;
+  font-size: 12px;
+  display: inline-block;
+}
+
+.disabled {
+  color: grey !important;
 }
 
 .box {

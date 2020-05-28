@@ -67,6 +67,10 @@
   .container {
     margin-top: 125px !important;
   }
+
+  .company-container {
+    margin: 0 0px 20px 0px;
+  }
 }
 
 /*# sourceMappingURL=company.css.map */

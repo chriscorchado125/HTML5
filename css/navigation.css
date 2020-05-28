@@ -43,6 +43,7 @@
 #searchCount {
   font-size: 12px;
   text-align: right;
+  margin-right: 5px;
 }
 
 /* search button */
@@ -61,6 +62,10 @@
 
 .highlightSearchText {
   background-color: yellow;
+}
+
+.disabled {
+  color: grey !important;
 }
 
 /*# sourceMappingURL=navigation.css.map */
