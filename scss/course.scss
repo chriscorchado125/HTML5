@@ -1,5 +1,9 @@
 @import 'variables.scss';
 
+.container {
+  margin-top: 95px !important;
+}
+
 .courses-container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -16,7 +20,7 @@
 
 .course-box {
   padding: 20px;
-  margin: 3px;
+  margin: 0 0 20px 0;
   img {
     max-width: 400px;
   }
@@ -69,24 +73,12 @@
 
 @media (max-width: 500px) {
   .container {
-    margin-top: 170px !important;
+    margin-top: 180px !important;
   }
   .course-box {
     padding: 10px !important;
     img {
       max-width: 90%;
-    }
-  }
-}
-
-@media (max-width: 500px) {
-  #pagination {
-    margin-top: 10px;
-    a {
-      font-size: 16px;
-    }
-    span {
-      font-size: 16px;
     }
   }
 }

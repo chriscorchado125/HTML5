@@ -64,8 +64,19 @@
   background-color: yellow;
 }
 
+.pager-navigation {
+  margin: 5px 5px 0px 5px;
+}
+
 .disabled {
   color: grey !important;
+}
+
+@media (max-width: 500px) {
+  #pagination {
+    margin-top: 10px;
+    font-size: 16px;
+  }
 }
 
 /*# sourceMappingURL=navigation.css.map */
