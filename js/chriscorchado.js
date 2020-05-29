@@ -19,6 +19,9 @@ $('#navigation').load('includes/nav.html');
 async function getPage(page, search, pagingURL) {
   let data = null;
 
+  $('#preloader').show();
+  $('.container').hide();
+
   if (page == 'contact') {
     /* get the feedback form from the Drupal 8 site */
 
