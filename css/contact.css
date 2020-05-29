@@ -54,7 +54,9 @@ h4 {
 /* stack name and email fields */
 @media (max-width: 800px) {
   .container {
-    margin-top: 70px !important; }
+    margin-top: 80px !important; }
+    .container h1 {
+      margin: 30px; }
 
   .js-form-item-name {
     display: block !important; }

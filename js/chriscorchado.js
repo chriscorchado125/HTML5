@@ -308,6 +308,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
   let companyScreenshotID = [];
 
   let item = '';
+  let itemBody = '';
   let currentNavItem,
     itemGridClass,
     itemTitle,
@@ -315,7 +316,6 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     startDate,
     endDate,
     newDate,
-    itemBody,
     itemJobTitle,
     itemTechnology,
     itemCompanyName,
@@ -336,6 +336,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
 
   data.data.forEach((element) => {
     itemTitle = element.attributes.title;
+    itemBody = element.attributes.body ? element.attributes.body.value : '';
     itemDate = element.attributes.field_date || element.attributes.field_award_date;
     itemJobTitle = element.attributes.field_job_title;
     startDate = element.attributes.field_start_date;
@@ -443,8 +444,15 @@ const renderPage = (data, page, searchedFor, next, prev) => {
         newDate.getFullYear();
     }
 
-    if (element.attributes.body) {
-      itemBody = element.attributes.body.value || '';
+    if (page == 'about') {
+      /* separate profiles/resume links from body content*/
+      document.getElementById('profiles').innerHTML = itemBody.substr(
+        0,
+        itemBody.indexOf('<p>')
+      );
+
+      /* get the rest of the body */
+      itemBody = itemBody.substr(itemBody.indexOf('<p>'));
     }
 
     itemTitle = itemTitle.replace('&amp;', '&');

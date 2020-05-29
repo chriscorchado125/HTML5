@@ -185,6 +185,24 @@ a:link {
   width: 35px; }
 
 /* About page */
+#profiles {
+  max-width: 300px;
+  margin-top: -70px;
+  float: right; }
+  #profiles a {
+    font-size: 10px; }
+
+.icon {
+  width: 70px;
+  padding: 10px;
+  margin-left: 10px;
+  text-align: center;
+  display: inline-block; }
+  .icon img {
+    height: 25px; }
+  .icon span {
+    display: block; }
+
 .about p {
   text-align: left !important;
   padding: 5px 100px; }
@@ -200,10 +218,25 @@ a:link {
   .about p {
     padding: 5px 80px; } }
 @media (max-width: 700px) {
+  h1 {
+    font-size: 20px; }
+
   .about {
-    margin-top: 70px !important; }
+    margin-top: 100px !important; }
 
   .about p {
-    padding: 5px 30px; } }
+    padding: 5px 30px; }
+
+  #profiles {
+    margin: auto;
+    margin-top: -10px;
+    float: none;
+    max-width: 80%;
+    text-align: center; }
+
+  .icon {
+    padding: 0px; }
+    .icon img {
+      height: 20px; } }
 
 /*# sourceMappingURL=chriscorchado.css.map */

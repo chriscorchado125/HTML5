@@ -73,14 +73,17 @@ h4 {
   }
 }
 
-#timer{
+#timer {
   max-width: 80%;
 }
 
 /* stack name and email fields */
 @media (max-width: 800px) {
   .container {
-    margin-top: 70px !important;
+    margin-top: 80px !important;
+    h1 {
+      margin: 30px;
+    }
   }
   .js-form-item-name {
     display: block !important;
