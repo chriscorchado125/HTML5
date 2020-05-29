@@ -12,15 +12,18 @@ $('.container').hide();
 $('#navigation').load('includes/nav.html');
 
 /**
- * Load data and render pages
+ * Load data
  * @param page {string} page name
  * @param search {string} (optional) search string
  */
 async function getPage(page, search, pagingURL) {
   let data = null;
 
-  $('#preloader').show();
-  $('.container').hide();
+  /* if not searching */
+  if (!document.getElementById('noRecords')) {
+    $('#preloader').show();
+    $('.container').hide();
+  }
 
   if (page == 'contact') {
     /* get the feedback form from the Drupal 8 site */
@@ -45,7 +48,7 @@ async function getPage(page, search, pagingURL) {
         /* add 'searchBtn' class to submit button */
         form = form.replace(
           'class="button button--primary js-form-submit form-submit"',
-          'class="searchBtn button button--primary js-form-submit form-submit"'
+          'class="button button--primary js-form-submit form-submit searchBtn"'
         );
 
         /* get scripts */
@@ -57,7 +60,7 @@ async function getPage(page, search, pagingURL) {
         );
         script = script.substr(0, script.indexOf('</script>') + 9);
 
-        /* show form or submitted message */
+        /* set data to form or submitted message */
         if (location.toString().indexOf('submitted') !== -1) {
           data = '<h2>Thanks for the Feedback</h2>';
           data += '<div id="countdown"></div>';
@@ -73,6 +76,8 @@ async function getPage(page, search, pagingURL) {
     if (pagingURL) {
       data = await getData(pagingURL);
     } else {
+      getTotalRecordCount(page);
+
       switch (page) {
         case 'about':
           data = await getData(
@@ -162,11 +167,10 @@ async function searchData() {
 
 /**
  * Clear current search
- * TODO: use getData instead of reloading
  */
 const searchClear = () => {
   if (document.getElementById('searchSite').value !== '') {
-    location.reload();
+    window.location.replace(location.href);
   }
 };
 
@@ -282,7 +286,9 @@ const itemWithSearchHighlight = (itemToHighlight, searchedFor) => {
 const renderPage = (data, page, searchedFor, next, prev) => {
   if (page == 'contact') {
     $('#contact-link').addClass('nav-item-active');
+
     $('#search-container,#preloader').hide();
+
     $('.container').html(data).fadeIn(300);
 
     /* foward to the homepage after submission */
@@ -676,6 +682,7 @@ const getFullUrlByPage = (linkToFix, page) => {
 function setItemCount(count, page, prev, next) {
   let dataOffset = 0;
   let dataOffsetText = '';
+
   let totalItems = getCookie(page);
 
   if (next) {
@@ -719,6 +726,7 @@ function setItemCount(count, page, prev, next) {
       $('#searchCount').html(pageLimit + `  ${pageLimit == 1 ? 'Item' : 'Items'}`);
     }
   }
+  console.log(count, recordCount);
 
   /* use pagination when the total records exceed the page limit */
   if (recordCount < pageLimit) {
