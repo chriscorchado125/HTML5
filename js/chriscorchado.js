@@ -12,7 +12,7 @@ $('.container').hide();
 $('#navigation').load('includes/nav.html');
 
 /**
- * Load data
+ * Load page
  * @param page {string} page name
  * @param search {string} (optional) search string
  */
@@ -60,7 +60,7 @@ async function getPage(page, search, pagingURL) {
         );
         script = script.substr(0, script.indexOf('</script>') + 9);
 
-        /* set data to form or submitted message */
+        /* show form or submitted message */
         if (location.toString().indexOf('submitted') !== -1) {
           data = '<h2>Thanks for the Feedback</h2>';
           data += '<div id="countdown"></div>';
@@ -181,22 +181,8 @@ const searchClear = () => {
  * @return {string} allowed characters
  */
 const searchFilter = (event) => {
-  let searchCount = '';
-  if (document.getElementById('searchCount')) {
-    searchCount = document
-      .getElementById('searchCount')
-      .innerHTML.replace(/(<([^>]+)>)/gi, '');
-  }
-
-  let totalItems = '';
-  if (document.getElementById('totalItems')) {
-    totalItems = document
-      .getElementById('totalItems')
-      .innerHTML.replace(/(<([^>]+)>)/gi, '');
-  }
-
   /* don't allow more characters to be typed if current search returns no records */
-  if (searchCount.substring(0, 1) == '0' || totalItems.substring(0, 1) == '0') {
+  if (document.getElementById('searchCount').innerText.substring(0, 1) == '0') {
     return false;
   }
 
@@ -286,9 +272,7 @@ const itemWithSearchHighlight = (itemToHighlight, searchedFor) => {
 const renderPage = (data, page, searchedFor, next, prev) => {
   if (page == 'contact') {
     $('#contact-link').addClass('nav-item-active');
-
     $('#search-container,#preloader').hide();
-
     $('.container').html(data).fadeIn(300);
 
     /* foward to the homepage after submission */
@@ -622,8 +606,6 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     }
   }); // data.data forEach
 
-  setItemCount(itemCount, page, prev, next);
-
   $('#' + currentNavItem).addClass('nav-item-active');
 
   $('#searchSite').focus();
@@ -646,6 +628,8 @@ const renderPage = (data, page, searchedFor, next, prev) => {
       `<div id="noRecords" class="shadow">No matches found for '${searchedFor}'</div>`
     );
   }
+
+  setItemCount(itemCount, page, prev, next);
 };
 
 /**
@@ -682,7 +666,6 @@ const getFullUrlByPage = (linkToFix, page) => {
 function setItemCount(count, page, prev, next) {
   let dataOffset = 0;
   let dataOffsetText = '';
-
   let totalItems = getCookie(page);
 
   if (next) {
@@ -715,8 +698,6 @@ function setItemCount(count, page, prev, next) {
     dataOffsetText = `Items ${topNumber}-${totalItems} `;
   }
 
-  let recordCount = getTotalRecordCount(page);
-
   /* handle searching  */
   if ($('#searchSite').val()) {
     dataOffsetText = `${count} ${count == 1 ? 'Item' : 'Items'} `;
@@ -726,7 +707,8 @@ function setItemCount(count, page, prev, next) {
       $('#searchCount').html(pageLimit + `  ${pageLimit == 1 ? 'Item' : 'Items'}`);
     }
   }
-  console.log(count, recordCount);
+
+  let recordCount = getTotalRecordCount(page);
 
   /* use pagination when the total records exceed the page limit */
   if (recordCount < pageLimit) {
@@ -750,7 +732,7 @@ function setItemCount(count, page, prev, next) {
   }
 
   /* add record count */
-  $('#totalItems').html(count);
+  $('#totalItems').html(recordCount);
 }
 
 /**
