@@ -174,8 +174,22 @@ const searchClear = () => {
  * @return {string} allowed characters
  */
 const searchFilter = (event) => {
-  /* don't allow more characters if current search returns no records */
-  if (document.getElementById('searchCount').innerHTML.substring(0, 1) == '0') {
+  let searchCount = '';
+  if (document.getElementById('searchCount')) {
+    searchCount = document
+      .getElementById('searchCount')
+      .innerHTML.replace(/(<([^>]+)>)/gi, '');
+  }
+
+  let totalItems = '';
+  if (document.getElementById('totalItems')) {
+    totalItems = document
+      .getElementById('totalItems')
+      .innerHTML.replace(/(<([^>]+)>)/gi, '');
+  }
+
+  /* don't allow more characters to be typed if current search returns no records */
+  if (searchCount.substring(0, 1) == '0' || totalItems.substring(0, 1) == '0') {
     return false;
   }
 
@@ -293,8 +307,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
   /* regex to get string within quotes */
   let getStringInQuotes = /"(.*?)"/;
 
-  let matchesFound,
-    screenshotCount,
+  let screenshotCount,
     imgAltCount,
     itemCount = 0;
 
@@ -315,10 +328,8 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     itemCompanyName,
     itemWorkType,
     itemPDF,
-    upperSearch,
     section,
-    projectImage,
-    imgUrl = '';
+    projectImage = '';
 
   // add border to logo and hide search box on About page
   if (page == 'about') {
@@ -357,10 +368,6 @@ const renderPage = (data, page, searchedFor, next, prev) => {
           element.relationships.field_award_pdf.data.id == included_element.id
         ) {
           itemPDF = included_element.attributes.filename;
-        }
-
-        if (included_element.attributes.filename) {
-          imgUrl = included_element.attributes.filename;
         }
 
         if (element.relationships.field_company_screenshot) {
@@ -538,9 +545,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
         item += `<div class="project-company">${itemCompanyName} <span class="project-date">(${itemDate})</span></div>`;
         item += `</div>`;
 
-        item += `<div class="body-container">`;
-        item += itemBody;
-        item += `</div>`;
+        item += `<div class="body-container">${itemBody}</div>`;
 
         /* Screenshot Section */
         if (imgPieces) {
@@ -608,6 +613,8 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     }
   }); // data.data forEach
 
+  setItemCount(itemCount, page, prev, next);
+
   $('#' + currentNavItem).addClass('nav-item-active');
 
   $('#searchSite').focus();
@@ -630,8 +637,6 @@ const renderPage = (data, page, searchedFor, next, prev) => {
       `<div id="noRecords" class="shadow">No matches found for '${searchedFor}'</div>`
     );
   }
-
-  setItemCount(itemCount, page, prev, next);
 };
 
 /**
@@ -700,6 +705,8 @@ function setItemCount(count, page, prev, next) {
     dataOffsetText = `Items ${topNumber}-${totalItems} `;
   }
 
+  let recordCount = getTotalRecordCount(page);
+
   /* handle searching  */
   if ($('#searchSite').val()) {
     dataOffsetText = `${count} ${count == 1 ? 'Item' : 'Items'} `;
@@ -709,8 +716,6 @@ function setItemCount(count, page, prev, next) {
       $('#searchCount').html(pageLimit + `  ${pageLimit == 1 ? 'Item' : 'Items'}`);
     }
   }
-
-  let recordCount = getTotalRecordCount(page);
 
   /* use pagination when the total records exceed the page limit */
   if (recordCount < pageLimit) {
@@ -734,7 +739,7 @@ function setItemCount(count, page, prev, next) {
   }
 
   /* add record count */
-  $('#totalItems').html(recordCount);
+  $('#totalItems').html(count);
 }
 
 /**
