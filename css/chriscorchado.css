@@ -59,6 +59,11 @@
 .disabled {
   color: grey !important; }
 
+  .nav-item {
+    display: flex;
+    justify-content: left;
+    width: 60px;
+    margin-left: 15px; } }
 @media (max-width: 500px) {
   #logo img {
     height: 50px; }
@@ -190,6 +195,7 @@ a:link {
     margin-top: 70px !important; }
 
   .about p {
+<<<<<<< HEAD
     padding: 5px 30px; }
 
   #search-container {
@@ -205,5 +211,8 @@ a:link {
     justify-content: left;
     width: 60px;
     margin-left: 15px; } }
+=======
+    padding: 5px 30px; } }
+>>>>>>> develop
 
 /*# sourceMappingURL=chriscorchado.css.map */

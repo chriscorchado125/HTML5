@@ -74,6 +74,25 @@
   color: grey !important;
 }
 
+@media (max-width: 700px) {
+  #search-container {
+    float: none;
+    margin: 0 0 5px 0px;
+  }
+
+  .navbar-nav {
+    justify-content: space-between;
+    width: 90%;
+  }
+
+  .nav-item {
+    display: flex;
+    justify-content: left;
+    width: 60px;
+    margin-left: 15px;
+  }
+}
+
 @media (max-width: 500px) {
   #logo img {
     height: 50px;

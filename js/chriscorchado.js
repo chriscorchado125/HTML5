@@ -12,12 +12,18 @@ $('.container').hide();
 $('#navigation').load('includes/nav.html');
 
 /**
- * Load data and render pages
+ * Load page
  * @param page {string} page name
  * @param search {string} (optional) search string
  */
 async function getPage(page, search, pagingURL) {
   let data = null;
+
+  /* if not searching */
+  if (!document.getElementById('noRecords')) {
+    $('#preloader').show();
+    $('.container').hide();
+  }
 
   if (page == 'contact') {
     /* get the feedback form from the Drupal 8 site */
@@ -42,7 +48,7 @@ async function getPage(page, search, pagingURL) {
         /* add 'searchBtn' class to submit button */
         form = form.replace(
           'class="button button--primary js-form-submit form-submit"',
-          'class="searchBtn button button--primary js-form-submit form-submit"'
+          'class="button button--primary js-form-submit form-submit searchBtn"'
         );
 
         /* get scripts */
@@ -70,6 +76,8 @@ async function getPage(page, search, pagingURL) {
     if (pagingURL) {
       data = await getData(pagingURL);
     } else {
+      getTotalRecordCount(page);
+
       switch (page) {
         case 'about':
           data = await getData(
@@ -159,11 +167,10 @@ async function searchData() {
 
 /**
  * Clear current search
- * TODO: use getData instead of reloading
  */
 const searchClear = () => {
   if (document.getElementById('searchSite').value !== '') {
-    location.reload();
+    window.location.replace(location.href);
   }
 };
 
@@ -174,8 +181,8 @@ const searchClear = () => {
  * @return {string} allowed characters
  */
 const searchFilter = (event) => {
-  /* don't allow more characters if current search returns no records */
-  if (document.getElementById('searchCount').innerHTML.substring(0, 1) == '0') {
+  /* don't allow more characters to be typed if current search returns no records */
+  if (document.getElementById('searchCount').innerText.substring(0, 1) == '0') {
     return false;
   }
 
@@ -293,8 +300,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
   /* regex to get string within quotes */
   let getStringInQuotes = /"(.*?)"/;
 
-  let matchesFound,
-    screenshotCount,
+  let screenshotCount,
     imgAltCount,
     itemCount = 0;
 
@@ -315,8 +321,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     itemWorkType,
     itemPDF,
     section,
-    projectImage,
-    imgUrl = '';
+    projectImage = '';
 
   // add border to logo and hide search box on About page
   if (page == 'about') {
