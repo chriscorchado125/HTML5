@@ -1,9 +1,9 @@
 'use strict';
 
-const base_url = 'https://chriscorchado.com/drupal8';
-const API_Course_Count = `${base_url}/rest/api/course/count?_format=json`;
-const API_Company_Count = `${base_url}/rest/api/company/count?_format=json`;
-const API_Project_Count = `${base_url}/rest/api/project/count?_format=json`;
+const API_base = 'https://chriscorchado.com/drupal8';
+const API_Course_Count = `${API_base}/rest/api/course/count?_format=json`;
+const API_Company_Count = `${API_base}/rest/api/company/count?_format=json`;
+const API_Project_Count = `${API_base}/rest/api/project/count?_format=json`;
 
 const pageLimit = 50;
 
@@ -19,48 +19,98 @@ $('#navigation').load('includes/nav.html');
 async function getPage(page, search, pagingURL) {
   let data = null;
 
-  if (pagingURL) {
-    data = await getData(pagingURL);
-  } else {
-    switch (page) {
-      case 'about':
-        data = await getData(
-          `${base_url}/jsonapi/node/page?fields[node--page]=id,title,body&filter[id][operator]=CONTAINS&filter[id][value]=ca23f416-ad70-41c2-9228-52ba6577abfe`
+  if (page == 'contact') {
+    /* get the feedback form from the Drupal 8 site */
+
+    await fetch(`${API_base}/contact/feedback`)
+      .then((resp) => {
+        return resp.ok ? resp.text() : Promise.reject(resp.statusText);
+      })
+      .then((document) => {
+        /* get the HTML and update the URLs from relative to absolute */
+        data = document.substr(0, document.indexOf('</html>') + 8);
+        data = data.replace(/\/drupal8/g, API_base);
+
+        /* get form */
+        let form = data.substr(data.indexOf('<form'), data.indexOf('</form>'));
+        form = form.substr(0, form.indexOf('</form>') + 8);
+
+        /* replace form name and email label text */
+        form = form.replace('Your name', 'Name');
+        form = form.replace('Your email address', 'Email');
+
+        /* add 'searchBtn' class to submit button */
+        form = form.replace(
+          'class="button button--primary js-form-submit form-submit"',
+          'class="searchBtn button button--primary js-form-submit form-submit"'
         );
-        break;
-      case 'companies':
-        if (search) {
-          data = await getData(
-            `${base_url}/jsonapi/node/company?filter[or-group][group][conjunction]=OR&filter[field_company_name][operator]=CONTAINS&filter[field_company_name][value]=${search}&filter[field_company_name][condition][memberOf]=or-group&filter[field_job_title][operator]=CONTAINS&filter[field_job_title][value]=${search}&filter[field_job_title][condition][memberOf]=or-group&filter[body.value][operator]=CONTAINS&filter[body.value][value]=${search}&filter[body.value][condition][memberOf]=or-group&sort=-field_end_date&include=field_company_screenshot&page[limit]=${pageLimit}`
-          );
+
+        /* get scripts */
+        let script = data.substr(
+          data.indexOf(
+            '<script type="application/json" data-drupal-selector="drupal-settings-json">'
+          ),
+          data.indexOf('js"></script>')
+        );
+        script = script.substr(0, script.indexOf('</script>') + 9);
+
+        /* show form or submitted message */
+        if (location.toString().indexOf('submitted') !== -1) {
+          data = '<h2>Thanks for the Feedback</h2>';
+          data += '<div id="countdown"></div>';
         } else {
-          data = await getData(
-            `${base_url}/jsonapi/node/company?sort=-field_end_date&include=field_company_screenshot&page[limit]=${pageLimit}`
-          );
+          data = `<h1>Contact</h1>${form} ${script}`;
         }
-        break;
-      case 'courses':
-        if (search) {
+      });
+
+    renderPage(data, page);
+
+    return false;
+  } else {
+    if (pagingURL) {
+      data = await getData(pagingURL);
+    } else {
+      switch (page) {
+        case 'about':
           data = await getData(
-            `${base_url}/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=${search}&filter[title][condition][memberOf]=or-group&filter[field_award_date][operator]=CONTAINS&filter[field_award_date][value]=${search}&filter[field_award_date][condition][memberOf]=or-group&sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=${pageLimit}`
+            `${API_base}/jsonapi/node/page?fields[node--page]=id,title,body&filter[id][operator]=CONTAINS&filter[id][value]=ca23f416-ad70-41c2-9228-52ba6577abfe`
           );
-        } else {
-          data = await getData(
-            `${base_url}/jsonapi/node/awards?sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=${pageLimit}`
-          );
-        }
-        break;
-      case 'projects':
-        if (search) {
-          data = await getData(
-            `${base_url}/jsonapi/node/project?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=${search}&filter[title][condition][memberOf]=or-group&filter[taxonomy_term--tags][path]=field_project_technology.name&filter[taxonomy_term--tags][operator]=CONTAINS&filter[taxonomy_term--tags][value]=${search}&filter[taxonomy_term--tags][condition][memberOf]=or-group&filter[field_company.title][operator]=CONTAINS&filter[field_company.title][value]=${search}&filter[field_company.title][condition][memberOf]=or-group&filter[field_screenshot.meta.alt][operator]=CONTAINS&filter[field_screenshot.meta.alt][value]=${search}&filter[field_screenshot.meta.alt][condition][memberOf]=or-group&filter[field_date][operator]=CONTAINS&filter[field_date][value]=${search}&filter[field_date][condition][memberOf]=or-group&sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&page[limit]=${pageLimit}`
-          );
-        } else {
-          data = await getData(
-            `${base_url}/jsonapi/node/project?sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&page[limit]=${pageLimit}`
-          );
-        }
-        break;
+          break;
+        case 'companies':
+          if (search) {
+            data = await getData(
+              `${API_base}/jsonapi/node/company?filter[or-group][group][conjunction]=OR&filter[field_company_name][operator]=CONTAINS&filter[field_company_name][value]=${search}&filter[field_company_name][condition][memberOf]=or-group&filter[field_job_title][operator]=CONTAINS&filter[field_job_title][value]=${search}&filter[field_job_title][condition][memberOf]=or-group&filter[body.value][operator]=CONTAINS&filter[body.value][value]=${search}&filter[body.value][condition][memberOf]=or-group&sort=-field_end_date&include=field_company_screenshot&page[limit]=${pageLimit}`
+            );
+          } else {
+            data = await getData(
+              `${API_base}/jsonapi/node/company?sort=-field_end_date&include=field_company_screenshot&page[limit]=${pageLimit}`
+            );
+          }
+          break;
+        case 'courses':
+          if (search) {
+            data = await getData(
+              `${API_base}/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=${search}&filter[title][condition][memberOf]=or-group&filter[field_award_date][operator]=CONTAINS&filter[field_award_date][value]=${search}&filter[field_award_date][condition][memberOf]=or-group&sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=${pageLimit}`
+            );
+          } else {
+            data = await getData(
+              `${API_base}/jsonapi/node/awards?sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=${pageLimit}`
+            );
+          }
+
+          break;
+        case 'projects':
+          if (search) {
+            data = await getData(
+              `${API_base}/jsonapi/node/project?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=${search}&filter[title][condition][memberOf]=or-group&filter[taxonomy_term--tags][path]=field_project_technology.name&filter[taxonomy_term--tags][operator]=CONTAINS&filter[taxonomy_term--tags][value]=${search}&filter[taxonomy_term--tags][condition][memberOf]=or-group&filter[field_company.title][operator]=CONTAINS&filter[field_company.title][value]=${search}&filter[field_company.title][condition][memberOf]=or-group&filter[field_screenshot.meta.alt][operator]=CONTAINS&filter[field_screenshot.meta.alt][value]=${search}&filter[field_screenshot.meta.alt][condition][memberOf]=or-group&filter[field_date][operator]=CONTAINS&filter[field_date][value]=${search}&filter[field_date][condition][memberOf]=or-group&sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&page[limit]=${pageLimit}`
+            );
+          } else {
+            data = await getData(
+              `${API_base}/jsonapi/node/project?sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&page[limit]=${pageLimit}`
+            );
+          }
+          break;
+      }
     }
   }
 
@@ -213,16 +263,35 @@ const itemWithSearchHighlight = (itemToHighlight, searchedFor) => {
  * @param searchedFor {string} search string
  */
 const renderPage = (data, page, searchedFor, next, prev) => {
+  if (page == 'contact') {
+    $('#contact-link').addClass('nav-item-active');
+    $('#search-container,#preloader').hide();
+    $('.container').html(data).fadeIn(300);
+
+    /* foward to the homepage after submission */
+    let loc = location.toString().indexOf('contact.html?submitted');
+    if (loc !== -1) {
+      let seconds = 5;
+
+      function incrementSeconds() {
+        seconds -= 1;
+        document.getElementById(
+          'countdown'
+        ).innerHTML = `<h4>You will be redirect to the homepage in ${seconds} seconds.</h4><img id="timer" src="https://chriscorchado.com/images/timer.gif" />`;
+      }
+
+      setInterval(incrementSeconds, 1000);
+
+      /* get the homepage url and forward to it after ${seconds} */
+      setTimeout(function () {
+        window.location.replace(location.toString().substr(0, loc));
+      }, seconds + '000');
+    }
+    return false;
+  }
+
   /* regex to get string within quotes */
   let getStringInQuotes = /"(.*?)"/;
-
-  // add border to logo and hide search box on About page
-  if (page == 'about') {
-    document.getElementById('search-container').style.display = 'none';
-
-    document.getElementById('logo').getElementsByTagName('img')[0].style.border =
-      '1px dashed #7399EA';
-  }
 
   let matchesFound,
     screenshotCount,
@@ -248,6 +317,14 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     section,
     projectImage,
     imgUrl = '';
+
+  // add border to logo and hide search box on About page
+  if (page == 'about') {
+    document.getElementById('search-container').style.display = 'none';
+
+    document.getElementById('logo').getElementsByTagName('img')[0].style.border =
+      '1px dashed #7399EA';
+  }
 
   $('#noRecords').remove();
 
@@ -546,17 +623,17 @@ const renderPage = (data, page, searchedFor, next, prev) => {
 const getFullUrlByPage = (linkToFix, page) => {
   switch (page) {
     case 'companies':
-      return `${base_url}/sites/default/files/company-screenshot/` + linkToFix;
+      return `${API_base}/sites/default/files/company-screenshot/${linkToFix}`;
       break;
     case 'courses':
       if (linkToFix.includes('.pdf')) {
-        return `${base_url}/sites/default/files/award-pdf/` + linkToFix;
+        return `${API_base}/sites/default/files/award-pdf/${linkToFix}`;
       } else {
-        return `${base_url}/sites/default/files/award-images/` + linkToFix;
+        return `${API_base}/sites/default/files/award-images/${linkToFix}`;
       }
       break;
     case 'projects':
-      return `${base_url}/sites/default/files/project-screenshot/` + linkToFix;
+      return `${API_base}/sites/default/files/project-screenshot/${linkToFix}`;
       break;
   }
 };
@@ -704,6 +781,10 @@ const getCurrentPage = () => {
 
   if (location.pathname.includes('/projects.html')) {
     return 'projects';
+  }
+
+  if (location.pathname.includes('/contact.html')) {
+    return 'contact';
   }
   // default
   return 'about';
