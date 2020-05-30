@@ -2,7 +2,14 @@
 @import 'navigation.scss';
 @import 'hover-animation.scss';
 
+html,
 body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   background-image: url(../images/cclogobg.jpg);
 }
@@ -32,8 +39,12 @@ body {
   margin-top: 80px !important;
   margin: auto;
   text-align: center;
-  padding: 20px 5px;
+  padding: 20px 5px 100px 5px;
   background-color: #fff;
+}
+
+h1 {
+  font-size: 30px;
 }
 
 #noRecords {
@@ -74,6 +85,30 @@ a:link {
 }
 
 /* About page */
+
+#profiles {
+  max-width: 300px;
+  margin-top: -70px;
+  float: right;
+  a {
+    font-size: 10px;
+  }
+}
+
+.icon {
+  width: 70px;
+  padding: 10px;
+  margin-left: 10px;
+  text-align: center;
+  display: inline-block;
+  img {
+    height: 25px;
+  }
+  span {
+    display: block;
+  }
+}
+
 .about p {
   text-align: left !important;
   padding: 5px 100px;
@@ -88,6 +123,33 @@ a:link {
   text-align: center !important;
 }
 
+#footer {
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  background-color: $off_white;
+  border-top: 2px solid $main_color;
+}
+
+#footer-text {
+  width: 300px;
+  display: inline-block;
+  background-color: orange;
+}
+
+.site-version {
+  display: inline-block;
+  max-width: 120px;
+  text-align: center;
+  padding: 0 5px 5px 5px;
+  font-size: 10px;
+  img {
+    width: 50px;
+  }
+}
+
 @media (max-width: 800px) {
   .about p {
     padding: 5px 80px;
@@ -95,11 +157,31 @@ a:link {
 }
 
 @media (max-width: 700px) {
+  h1 {
+    font-size: 20px;
+  }
+
   .about {
-    margin-top: 70px !important;
+    margin-top: 100px !important;
   }
 
   .about p {
     padding: 5px 30px;
+  }
+
+  #profiles {
+    margin: auto;
+    margin-bottom: 10px;
+    float: none;
+    max-width: 80%;
+    text-align: center;
+  }
+
+  .icon {
+    width: 50px;
+    padding: 0px;
+    img {
+      height: 20px;
+    }
   }
 }

@@ -1,3 +1,6 @@
+#preloader {
+  margin-top: 160px; }
+
 .container {
   margin-top: 95px !important; }
 
@@ -48,10 +51,14 @@
     margin-bottom: 20px; } }
 @media (max-width: 700px) {
   .container {
-    margin-top: 145px !important; } }
+    margin-top: 165px !important; }
+
+  #preloader {
+    margin-top: 190px; } }
 @media (max-width: 500px) {
   .container {
-    margin-top: 180px !important; }
+    margin-top: 145px !important;
+    padding-top: 50px; }
 
   .course-box {
     padding: 10px !important; }

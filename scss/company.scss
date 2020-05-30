@@ -22,7 +22,7 @@
 
 /* body text - the bullet items */
 .body-container {
-  max-width: 320px;
+  max-width: 400px;
   margin: 20px auto;
   text-align: left;
   font-size: 14px;
@@ -48,29 +48,48 @@
 }
 
 @media (max-width: 1000px) {
+  .body-container {
+    max-width: 95%;
+  }
   #msg {
     margin-top: -15px;
   }
   .container {
     margin-top: 90px !important;
-  }
-
-  .skills-container {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 800px) {
-  .skills-container {
-    grid-template-columns: 1fr;
+    min-width: 320px;
   }
 }
 
 @media (max-width: 700px) {
   .container {
-    margin-top: 125px !important;
+    margin-top: 115px !important;
+    padding-top: 20px 0 0 0;
   }
   .company-container {
-    margin: 0 0px 20px 0px;
+    margin: 10px;
+    img {
+      width: 400px;
+    }
+  }
+
+  #search-container {
+    margin-left: -20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    margin-top: 115px !important;
+    padding-top: 20px 0 0 0;
+  }
+  .company-container {
+    margin: 20px 10px;
+    img {
+      width: 400px;
+    }
+  }
+
+  #search-container {
+    margin-left: -20px;
   }
 }

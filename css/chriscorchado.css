@@ -59,11 +59,23 @@
 .disabled {
   color: grey !important; }
 
+@media (max-width: 700px) {
+  #search-container {
+    float: none;
+    margin: -20px 0 5px 0px; }
+
+  .navbar-nav {
+    justify-content: space-between;
+    width: 90%; }
+
   .nav-item {
     display: flex;
     justify-content: left;
     width: 60px;
-    margin-left: 15px; } }
+    margin-left: 15px; }
+
+  #search-container {
+    margin-left: 20px 0 0 -30px; } }
 @media (max-width: 500px) {
   #logo img {
     height: 50px; }
@@ -77,7 +89,7 @@
     margin-right: 0; }
 
   #companies-link {
-    margin-left: -15px; }
+    padding-left: 5px; }
 
   #pagination {
     margin-top: 10px;
@@ -112,7 +124,13 @@
 .box:hover::after {
   opacity: 1; }
 
+html,
 body {
+  height: 100%; }
+
+body {
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   background-image: url(../images/cclogobg.jpg); }
 
@@ -137,8 +155,11 @@ body {
   margin-top: 80px !important;
   margin: auto;
   text-align: center;
-  padding: 20px 5px;
+  padding: 20px 5px 100px 5px;
   background-color: #fff; }
+
+h1 {
+  font-size: 30px; }
 
 #noRecords {
   background-color: #f8f9fa;
@@ -176,6 +197,24 @@ a:link {
   width: 35px; }
 
 /* About page */
+#profiles {
+  max-width: 300px;
+  margin-top: -70px;
+  float: right; }
+  #profiles a {
+    font-size: 10px; }
+
+.icon {
+  width: 70px;
+  padding: 10px;
+  margin-left: 10px;
+  text-align: center;
+  display: inline-block; }
+  .icon img {
+    height: 25px; }
+  .icon span {
+    display: block; }
+
 .about p {
   text-align: left !important;
   padding: 5px 100px; }
@@ -187,32 +226,53 @@ a:link {
 #workstation-comparison {
   text-align: center !important; }
 
+#footer {
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  background-color: #f8f9fa;
+  border-top: 2px solid #7399ea; }
+
+#footer-text {
+  width: 300px;
+  display: inline-block;
+  background-color: orange; }
+
+.site-version {
+  display: inline-block;
+  max-width: 120px;
+  text-align: center;
+  padding: 0 5px 5px 5px;
+  font-size: 10px; }
+  .site-version img {
+    width: 50px; }
+
 @media (max-width: 800px) {
   .about p {
     padding: 5px 80px; } }
 @media (max-width: 700px) {
+  h1 {
+    font-size: 20px; }
+
   .about {
-    margin-top: 70px !important; }
+    margin-top: 100px !important; }
 
   .about p {
-<<<<<<< HEAD
     padding: 5px 30px; }
 
-  #search-container {
+  #profiles {
+    margin: auto;
+    margin-bottom: 10px;
     float: none;
-    margin: 0 0 5px 0px; }
+    max-width: 80%;
+    text-align: center; }
 
-  .navbar-nav {
-    justify-content: space-between;
-    width: 90%; }
-
-  .nav-item {
-    display: flex;
-    justify-content: left;
-    width: 60px;
-    margin-left: 15px; } }
-=======
-    padding: 5px 30px; } }
->>>>>>> develop
+  .icon {
+    width: 50px;
+    padding: 0px; }
+    .icon img {
+      height: 20px; } }
 
 /*# sourceMappingURL=chriscorchado.css.map */

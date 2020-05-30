@@ -1,10 +1,6 @@
-.container {
-  min-height: 500px !important; }
-
 .contact-form {
   margin: auto;
-  border-radius: 0 0 10px 10px;
-  min-height: 500px !important; }
+  border-radius: 0 0 10px 10px; }
   .contact-form h2 {
     color: grey;
     margin-top: 30px; }
@@ -17,9 +13,9 @@ h4 {
 
 #contact-message-feedback-form {
   background-color: #f8f4f4;
-  padding: 10px;
+  padding: 10px 10px 50px 10px;
   text-align: center !important;
-  margin-bottom: 50px;
+  margin-bottom: 100px;
   margin-top: 20px;
   max-width: 600px;
   border-radius: 10px;
@@ -49,12 +45,14 @@ h4 {
     max-width: 600px; }
 
 #timer {
-  max-width: 80%; }
+  max-width: 250px; }
 
 /* stack name and email fields */
 @media (max-width: 800px) {
   .container {
-    margin-top: 70px !important; }
+    margin-top: 50px !important; }
+    .container h1 {
+      margin: 30px; }
 
   .js-form-item-name {
     display: block !important; }

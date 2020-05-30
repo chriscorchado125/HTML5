@@ -3,33 +3,28 @@
   border: 1px solid #d1d0d0;
   padding: 0px;
   margin: 0 10px 20px 10px;
-  padding-bottom: 20px;
-}
+  padding-bottom: 20px; }
 
 .company-name {
   color: black;
   padding: 10px 0;
-  background-color: #e7e4e4;
-}
+  background-color: #e7e4e4; }
 
 .company-job-title {
   padding: 5px;
   font-size: 14px;
-  background-color: #f8f4f4;
-}
+  background-color: #f8f4f4; }
 
 /* body text - the bullet items */
 .body-container {
-  max-width: 320px;
+  max-width: 400px;
   margin: 20px auto;
   text-align: left;
-  font-size: 14px;
-}
+  font-size: 14px; }
 
 .company-screenshot {
   max-width: 320px;
-  margin-bottom: 50px;
-}
+  margin-bottom: 50px; }
 
 .employment-dates {
   position: absolute;
@@ -37,40 +32,45 @@
   bottom: 0;
   font-size: 12px;
   padding: 10px;
-  background-color: #f8f4f4;
-}
+  background-color: #f8f4f4; }
 
 .employment-type {
   font-size: 10px;
-  font-style: italic;
-}
+  font-style: italic; }
 
 @media (max-width: 1000px) {
+  .body-container {
+    max-width: 95%; }
+
   #msg {
-    margin-top: -15px;
-  }
+    margin-top: -15px; }
 
   .container {
     margin-top: 90px !important;
-  }
-
-  .skills-container {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-@media (max-width: 800px) {
-  .skills-container {
-    grid-template-columns: 1fr;
-  }
-}
+    min-width: 320px; } }
 @media (max-width: 700px) {
   .container {
-    margin-top: 125px !important;
-  }
+    margin-top: 115px !important;
+    padding-top: 20px 0 0 0; }
 
   .company-container {
-    margin: 0 0px 20px 0px;
-  }
-}
+    margin: 10px; }
+    .company-container img {
+      width: 400px; }
+
+  #search-container {
+    margin-left: -20px; } }
+@media (max-width: 600px) {
+  .container {
+    margin-top: 115px !important;
+    padding-top: 20px 0 0 0; }
+
+  .company-container {
+    margin: 20px 10px; }
+    .company-container img {
+      width: 400px; }
+
+  #search-container {
+    margin-left: -20px; } }
 
 /*# sourceMappingURL=company.css.map */

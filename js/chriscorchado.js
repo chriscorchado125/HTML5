@@ -4,12 +4,12 @@ const API_base = 'https://chriscorchado.com/drupal8';
 const API_Course_Count = `${API_base}/rest/api/course/count?_format=json`;
 const API_Company_Count = `${API_base}/rest/api/company/count?_format=json`;
 const API_Project_Count = `${API_base}/rest/api/project/count?_format=json`;
-
 const pageLimit = 50;
 
-/* Hide container and show navigation */
+/* Hide container and load navigation/footer */
 $('.container').hide();
 $('#navigation').load('includes/nav.html');
+$('#footer').load('includes/footer.html');
 
 /**
  * Load page
@@ -18,6 +18,14 @@ $('#navigation').load('includes/nav.html');
  */
 async function getPage(page, search, pagingURL) {
   let data = null;
+
+  if (search) {
+    ga(
+      'send',
+      'pageview',
+      location.pathname + '?search=' + document.getElementById('searchSite').value
+    );
+  }
 
   /* if not searching */
   if (!document.getElementById('noRecords')) {
@@ -147,18 +155,14 @@ const getData = (dataURL) => {
  * Search data after the user pauses typing for half a second
  */
 async function searchData() {
-  let inputSearchBox = document.getElementById('searchSite');
   let timeout = null;
+  const inputSearchBox = document.getElementById('searchSite');
 
   inputSearchBox.addEventListener('keyup', function (e) {
     clearTimeout(timeout);
 
     timeout = setTimeout(function () {
       $('.container, .courses-container').hide();
-
-      if (inputSearchBox.value.length > 2) {
-        ga('send', 'pageview', location.pathname + '?search=' + inputSearchBox.value);
-      }
 
       getPage(getCurrentPage(), inputSearchBox.value);
     }, 500);
@@ -272,8 +276,11 @@ const itemWithSearchHighlight = (itemToHighlight, searchedFor) => {
 const renderPage = (data, page, searchedFor, next, prev) => {
   if (page == 'contact') {
     $('#contact-link').addClass('nav-item-active');
-    $('#search-container,#preloader').hide();
     $('.container').html(data).fadeIn(300);
+
+    document.getElementById('profiles').style.display = 'none';
+    document.getElementById('search-container').style.display = 'none';
+    document.getElementById('preloader').style.display = 'none';
 
     /* foward to the homepage after submission */
     let loc = location.toString().indexOf('contact.html?submitted');
@@ -293,6 +300,8 @@ const renderPage = (data, page, searchedFor, next, prev) => {
       setTimeout(function () {
         window.location.replace(location.toString().substr(0, loc));
       }, seconds + '000');
+    } else {
+      $('#edit-name').focus();
     }
     return false;
   }
@@ -300,28 +309,32 @@ const renderPage = (data, page, searchedFor, next, prev) => {
   /* regex to get string within quotes */
   let getStringInQuotes = /"(.*?)"/;
 
-  let screenshotCount,
-    imgAltCount,
+  let screenshotCount = 0,
+    imgAltCount = 0,
     itemCount = 0;
 
   let imgPieces = [];
 
-  let item = '';
-  let currentNavItem,
-    itemGridClass,
-    itemTitle,
-    itemDate,
-    startDate,
-    endDate,
-    newDate,
-    itemBody,
-    itemJobTitle,
-    itemTechnology,
-    itemCompanyName,
-    itemWorkType,
-    itemPDF,
-    section,
+  let item = '',
+    itemBody = '',
+    currentNavItem = '',
+    itemGridClass = '',
+    itemTitle = '',
+    itemDate = '',
+    startDate = '',
+    endDate = '',
+    newDate = '',
+    itemJobTitle = '',
+    itemTechnology = '',
+    itemCompanyName = '',
+    itemWorkType = '',
+    itemPDF = '',
+    section = '',
     projectImage = '';
+
+  let aboutBody = null,
+    aboutProfiles = null,
+    aboutSiteVersions = null;
 
   // add border to logo and hide search box on About page
   if (page == 'about') {
@@ -335,6 +348,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
 
   data.data.forEach((element) => {
     itemTitle = element.attributes.title;
+    itemBody = element.attributes.body ? element.attributes.body.value : '';
     itemDate = element.attributes.field_date || element.attributes.field_award_date;
     itemJobTitle = element.attributes.field_job_title;
     startDate = element.attributes.field_start_date;
@@ -434,8 +448,14 @@ const renderPage = (data, page, searchedFor, next, prev) => {
         newDate.getFullYear();
     }
 
-    if (element.attributes.body) {
-      itemBody = element.attributes.body.value || '';
+    if (page == 'about') {
+      let aboutData = element.attributes.body.value.toString().split('<hr />');
+      //console.log(aboutData[0]);
+
+      /* body */
+      aboutBody = aboutData[0];
+      aboutProfiles = aboutData[1];
+      aboutSiteVersions = aboutData[2];
     }
 
     itemTitle = itemTitle.replace('&amp;', '&');
@@ -460,8 +480,11 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     switch (page) {
       case 'about':
         currentNavItem = 'about-link';
+
         item = `<h1>${itemTitle}</h1>`;
-        item += itemBody;
+        item += aboutBody;
+
+        document.getElementById('profiles').innerHTML = aboutProfiles;
         break;
       case 'companies':
         currentNavItem = 'companies-link';

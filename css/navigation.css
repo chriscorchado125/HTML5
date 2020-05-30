@@ -62,7 +62,7 @@
 @media (max-width: 700px) {
   #search-container {
     float: none;
-    margin: 0 0 5px 0px; }
+    margin: -20px 0 5px 0px; }
 
   .navbar-nav {
     justify-content: space-between;
@@ -72,7 +72,10 @@
     display: flex;
     justify-content: left;
     width: 60px;
-    margin-left: 15px; } }
+    margin-left: 15px; }
+
+  #search-container {
+    margin-left: 20px 0 0 -30px; } }
 @media (max-width: 500px) {
   #logo img {
     height: 50px; }
@@ -86,7 +89,7 @@
     margin-right: 0; }
 
   #companies-link {
-    margin-left: -15px; }
+    padding-left: 5px; }
 
   #pagination {
     margin-top: 10px;
