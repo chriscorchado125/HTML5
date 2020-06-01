@@ -4,6 +4,7 @@ const API_base = 'https://chriscorchado.com/drupal8';
 const API_Course_Count = `${API_base}/rest/api/course/count?_format=json`;
 const API_Company_Count = `${API_base}/rest/api/company/count?_format=json`;
 const API_Project_Count = `${API_base}/rest/api/project/count?_format=json`;
+const inputSearchBox = document.getElementById('searchSite')! as HTMLInputElement;
 const pageLimit = 50;
 
 /* Hide container and load navigation/footer */
@@ -18,15 +19,12 @@ $('#footer').load('includes/footer.html');
  * @param {string=} search - (optional) - search string
  * @param {string=} pagingURL - (optional) - Prev/Next links
  */
-async function getPage(page, search, pagingURL) {
+async function getPage(page: string, search?: string, pagingURL?: string) {
   let data = null;
+  const inputSearchBox = document.getElementById('searchSite')! as HTMLInputElement;
 
   if (search) {
-    ga(
-      'send',
-      'pageview',
-      location.pathname + '?search=' + document.getElementById('searchSite').value
-    );
+    ga('send', 'pageview', location.pathname + '?search=' + inputSearchBox.value);
   }
 
   /* if not searching */
@@ -77,6 +75,9 @@ async function getPage(page, search, pagingURL) {
         } else {
           data = `<h1>Contact</h1>${form} ${script}`;
         }
+      })
+      .catch((error) => {
+        console.log(error);
       });
 
     renderPage(data, page);
@@ -140,7 +141,7 @@ async function getPage(page, search, pagingURL) {
  * @param {string} dataURL - url to fetch data from
  * @return {array} - array of objects
  */
-const getData = (dataURL) => {
+const getData = (dataURL: string) => {
   const result = $.ajax({
     dataType: 'json',
     accepts: {
@@ -157,15 +158,13 @@ const getData = (dataURL) => {
  * Search data after the user pauses typing for half a second
  */
 async function searchData() {
-  let timeout = null;
-  const inputSearchBox = document.getElementById('searchSite');
+  let timeout = 0;
+  const inputSearchBox = document.getElementById('searchSite')! as HTMLInputElement;
 
   inputSearchBox.addEventListener('keyup', function (e) {
     clearTimeout(timeout);
 
     timeout = setTimeout(function () {
-      console.log(typeof timeout);
-
       $('.container, .courses-container').hide();
 
       getPage(getCurrentPage(), inputSearchBox.value);
@@ -177,7 +176,7 @@ async function searchData() {
  * Clear current search
  */
 const searchClear = () => {
-  if (document.getElementById('searchSite').value !== '') {
+  if (inputSearchBox.value !== '') {
     window.location.replace(location.href);
   }
 };
@@ -188,7 +187,7 @@ const searchClear = () => {
  * @param {KeyboardEvent} event - key event
  * @return {string} - allowed characters
  */
-const searchFilter = (event) => {
+const searchFilter = (event: KeyboardEvent) => {
   /* don't allow more characters to be typed if current search returns no records */
   if (document.getElementById('searchCount').innerText.substring(0, 1) == '0') {
     return false;
@@ -211,7 +210,7 @@ const searchFilter = (event) => {
  * @param {string} searchedFor - string to search for
  * @return {string} - search result with/without highlight
  */
-const itemWithSearchHighlight = (itemToHighlight, searchedFor) => {
+const itemWithSearchHighlight = (itemToHighlight: string, searchedFor: string) => {
   let dataToReturn = '';
 
   if (searchedFor) {
@@ -219,23 +218,24 @@ const itemWithSearchHighlight = (itemToHighlight, searchedFor) => {
     let results = '';
 
     let searchString = '';
+    let searchStringArray = [];
 
-    if (itemToHighlight && itemToHighlight !== -1) {
+    if (itemToHighlight && +itemToHighlight !== -1) {
       searchString = itemToHighlight.replace('&amp;', '&').replace('&#039;', "'");
     }
 
     /* check for HTML
      * TODO: use entities within Drupal to avoid adding body content with HTML
      */
-    if (searchString.includes('<ul>')) {
+    if (searchString.indexOf('<ul>') !== -1) {
       let listItem = '';
 
       // remove ul tags and break the li items into an array
       let searchWithHTML = searchString.replace('<ul>', '').replace('</ul>', '');
 
-      searchWithHTML = searchWithHTML.split('<li>');
+      searchStringArray = searchWithHTML.split('<li>');
 
-      searchWithHTML.forEach((element) => {
+      searchStringArray.forEach((element) => {
         if (element.length > 3) {
           // remove closing li tag
           searchString = element.slice(0, element.lastIndexOf('<'));
@@ -272,6 +272,17 @@ const itemWithSearchHighlight = (itemToHighlight, searchedFor) => {
 };
 
 /**
+ * Create the countdown after submitting the contact form
+ */
+let seconds = 5;
+const showCountDown = () => {
+  seconds -= 1;
+  document.getElementById(
+    'countdown'
+  ).innerHTML = `<h4>You will be redirect to the homepage in ${seconds} seconds.</h4><img id="timer" src="https://chriscorchado.com/images/timer.gif" />`;
+};
+
+/**
  * Create HTML for page
  * @param {object[]} data - page items
  * @param {string} page - page name
@@ -279,10 +290,16 @@ const itemWithSearchHighlight = (itemToHighlight, searchedFor) => {
  * @param {Object=} next - (Optional) - page name
  * @param {Object=} prev - (Optional) - search string
  */
-const renderPage = (data, page, searchedFor, next, prev) => {
+const renderPage = (
+  data: object[],
+  page: string,
+  searchedFor?: string,
+  next?: Object,
+  prev?: Object
+) => {
   if (page == 'contact') {
     $('#contact-link').addClass('nav-item-active');
-    $('.container').html(data).fadeIn(300);
+    $('.container').html(data.toString()).fadeIn(300);
 
     document.getElementById('profiles').style.display = 'none';
     document.getElementById('search-container').style.display = 'none';
@@ -291,21 +308,12 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     /* foward to the homepage after submission */
     let loc = location.toString().indexOf('contact.html?submitted');
     if (loc !== -1) {
-      let seconds = 5;
-
-      function incrementSeconds() {
-        seconds -= 1;
-        document.getElementById(
-          'countdown'
-        ).innerHTML = `<h4>You will be redirect to the homepage in ${seconds} seconds.</h4><img id="timer" src="https://chriscorchado.com/images/timer.gif" />`;
-      }
-
-      setInterval(incrementSeconds, 1000);
+      setInterval(showCountDown, 1000);
 
       /* get the homepage url and forward to it after ${seconds} */
       setTimeout(function () {
         window.location.replace(location.toString().substr(0, loc));
-      }, seconds + '000');
+      }, seconds * 1000);
     } else {
       $('#edit-name').focus();
     }
@@ -319,7 +327,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     imgAltCount = 0,
     itemCount = 0;
 
-  let imgPieces = [];
+  let imgPieces = [''];
 
   let item = '',
     itemBody = '',
@@ -329,7 +337,6 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     itemDate = '',
     startDate = '',
     endDate = '',
-    newDate = '',
     itemJobTitle = '',
     itemTechnology = '',
     itemCompanyName = '',
@@ -338,9 +345,10 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     section = '',
     projectImage = '';
 
-  let aboutBody = null,
-    aboutProfiles = null,
-    aboutSiteVersions = null;
+  let newDate = new Date();
+
+  let aboutBody = '',
+    aboutProfiles = '';
 
   // add border to logo and hide search box on About page
   if (page == 'about') {
@@ -351,9 +359,8 @@ const renderPage = (data, page, searchedFor, next, prev) => {
   }
 
   $('#noRecords').remove();
-  console.log(typeof data.data);
 
-  data.data.forEach((element) => {
+  data.data.forEach((element: any) => {
     itemTitle = element.attributes.title;
     itemBody = element.attributes.body ? element.attributes.body.value : '';
     itemDate = element.attributes.field_date || element.attributes.field_award_date;
@@ -366,7 +373,9 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     imgPieces = [];
 
     if (data.included) {
-      data.included.forEach((included_element) => {
+      data.included.forEach((included_element: Array['']) => {
+        console.log(typeof included_element);
+
         /* get Courses screenshot filenames */
         if (element.relationships.field_award_images) {
           if (
@@ -388,7 +397,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
         if (element.relationships.field_company_screenshot) {
           if (
             element.relationships.field_company_screenshot.data.some(
-              (field_screenshot) => field_screenshot.id == included_element.id
+              (field_screenshot: Array['']) => field_screenshot.id == included_element.id
             )
           ) {
             imgPieces.push(included_element.attributes.filename);
@@ -404,7 +413,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
           /* get Project screenshot filenames */
           if (
             element.relationships.field_screenshot.data.some(
-              (field_screenshot) => field_screenshot.id == included_element.id
+              (field_screenshot: Array['']) => field_screenshot.id == included_element.id
             )
           ) {
             imgPieces.push(included_element.attributes.filename);
@@ -413,7 +422,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
           /* get technology names */
           if (
             element.relationships.field_project_technology.data.some(
-              (technology) => technology.id == included_element.id
+              (technology: Array['']) => technology.id == included_element.id
             )
           ) {
             itemTechnology += included_element.attributes.name + ', ';
@@ -462,7 +471,6 @@ const renderPage = (data, page, searchedFor, next, prev) => {
       /* body */
       aboutBody = aboutData[0];
       aboutProfiles = aboutData[1];
-      aboutSiteVersions = aboutData[2];
     }
 
     itemTitle = itemTitle.replace('&amp;', '&');
@@ -561,7 +569,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
 
         /* Screenshot Section */
         if (imgPieces) {
-          screenshotCount = parseInt(imgPieces.length);
+          screenshotCount = +imgPieces.length;
 
           itemGridClass = 'project-item-grid';
 
@@ -574,8 +582,8 @@ const renderPage = (data, page, searchedFor, next, prev) => {
 
           section = `<section data-featherlight-gallery data-featherlight-filter="a" class="${itemGridClass}">`;
 
-          let screenshotAlt = [];
-          element.relationships.field_screenshot.data.forEach((screenshot) => {
+          let screenshotAlt = [''];
+          element.relationships.field_screenshot.data.forEach((screenshot: Array<{}>) => {
             screenshotAlt.push(screenshot.meta.alt);
           });
 
@@ -604,7 +612,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
 
         /* Video Section */
         if (element.attributes.field_video_url) {
-          element.attributes.field_video_url.forEach((img) => {
+          element.attributes.field_video_url.forEach((img: string) => {
             item += `<a href="${img}" 
           data-featherlight="iframe" 
           data-featherlight-iframe-frameborder="0" 
@@ -655,13 +663,13 @@ const renderPage = (data, page, searchedFor, next, prev) => {
  * @param {string} page - page name
  * @return {string} - absolute url
  */
-const getFullUrlByPage = (linkToFix, page) => {
+const getFullUrlByPage = (linkToFix: string, page: string) => {
   switch (page) {
     case 'companies':
       return `${API_base}/sites/default/files/company-screenshot/${linkToFix}`;
       break;
     case 'courses':
-      if (linkToFix.includes('.pdf')) {
+      if (linkToFix.indexOf('.pdf') !== -1) {
         return `${API_base}/sites/default/files/award-pdf/${linkToFix}`;
       } else {
         return `${API_base}/sites/default/files/award-images/${linkToFix}`;
@@ -680,10 +688,11 @@ const getFullUrlByPage = (linkToFix, page) => {
  * @param {object=} prev - (optional) - link to previous results
  * @param {object=} next - (optional) - link to next results
  */
-function setItemCount(count, page, prev, next) {
+function setItemCount(count: number, page: string, prev?: object, next?: object) {
   let dataOffset = 0;
   let dataOffsetText = '';
   let totalItems = getCookie(page);
+  const inputSearchBox = document.getElementById('searchSite')! as HTMLInputElement;
 
   if (next) {
     let nextURL = next.href
@@ -708,10 +717,10 @@ function setItemCount(count, page, prev, next) {
   }
 
   /* get the highest multiple of the page limit without going over the total */
-  let topNumber = Math.round(totalItems / pageLimit) * pageLimit;
+  let topNumber = Math.round(+totalItems / pageLimit) * pageLimit;
 
   /* set the paging count on the last page */
-  if (count < pageLimit && totalItems > pageLimit) {
+  if (count < pageLimit && +totalItems > pageLimit) {
     dataOffsetText = `Items ${topNumber}-${totalItems} `;
   }
 
@@ -721,14 +730,14 @@ function setItemCount(count, page, prev, next) {
     if (count <= pageLimit) {
       $('#searchCount').html(count + `  ${count == 1 ? 'Item' : 'Items'}`);
     } else {
-      $('#searchCount').html(pageLimit + `  ${pageLimit == 1 ? 'Item' : 'Items'}`);
+      $('#searchCount').html(pageLimit + `  ${+pageLimit == 1 ? 'Item' : 'Items'}`);
     }
   }
 
   let recordCount = getTotalRecordCount(page);
 
   /* use pagination when the total records exceed the page limit */
-  if (recordCount < pageLimit) {
+  if (+recordCount < pageLimit) {
     document.getElementById(
       'searchCount'
     ).innerHTML = `<span id="totalItems">${recordCount}</span>
@@ -738,11 +747,14 @@ function setItemCount(count, page, prev, next) {
       'searchCount'
     ).innerHTML = `<span id="paging-info">${dataOffsetText}</span>`;
 
+    const inputSearchBox = document.getElementById('searchSite')! as HTMLInputElement;
+    console.log('value : ' + inputSearchBox);
+
     let prevLink = prev
-      ? `<a href="#" class="pager-navigation" onclick="getPage(getCurrentPage(), document.getElementById('searchSite').value,'${prev.href}')">Prev</a>`
+      ? `<a href="#" class="pager-navigation" onclick="getPage(getCurrentPage(), inputSearchBox.value,prev.href)">Prev</a>`
       : `<span class="pager-navigation disabled">Prev</span>`;
     let nextLink = next
-      ? `<a href="#" class="pager-navigation" onclick="getPage(getCurrentPage(), document.getElementById('searchSite').value,'${next.href}')">Next</a>`
+      ? `<a href="#" class="pager-navigation" onclick="getPage(getCurrentPage(), inputSearchBox.value,next.href)">Next</a>`
       : `<span class="pager-navigation disabled">Next</span>`;
 
     $('#pagination').html(`${prevLink}  ${nextLink}`);
@@ -758,7 +770,7 @@ function setItemCount(count, page, prev, next) {
  * @param {string} page - page name
  * @return {int} - total record count
  */
-const getTotalRecordCount = (page) => {
+const getTotalRecordCount = (page: string) => {
   let recordCount = getCookie(page);
   let urlForTotal = null;
 
@@ -793,7 +805,7 @@ const getTotalRecordCount = (page) => {
  * Set page message
  * @param {string} msg - message text
  */
-const setPageMessage = (msg) => {
+const setPageMessage = (msg: string) => {
   document.getElementById('msg').innerHTML = `(${msg})`;
 };
 
@@ -802,23 +814,23 @@ const setPageMessage = (msg) => {
  * @return {string} - page name
  */
 const getCurrentPage = () => {
-  if (location.pathname.includes('/index.html')) {
+  if (location.pathname.indexOf('/index.html') !== -1) {
     return 'about';
   }
 
-  if (location.pathname.includes('/companies.html')) {
+  if (location.pathname.indexOf('/companies.html') !== -1) {
     return 'companies';
   }
 
-  if (location.pathname.includes('/courses.html')) {
+  if (location.pathname.indexOf('/courses.html') !== -1) {
     return 'courses';
   }
 
-  if (location.pathname.includes('/projects.html')) {
+  if (location.pathname.indexOf('/projects.html') !== -1) {
     return 'projects';
   }
 
-  if (location.pathname.includes('/contact.html')) {
+  if (location.pathname.indexOf('/contact.html') !== -1) {
     return 'contact';
   }
   // default
@@ -835,14 +847,14 @@ window.onload = () => {
 /**
  * Cookies
  */
-function setCookie(cname, cvalue, exdays) {
+function setCookie(cname: string, cvalue: string, exdays: number) {
   var d = new Date();
   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
   var expires = 'expires=' + d.toUTCString();
   document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
 }
 
-function getCookie(cname) {
+function getCookie(cname: string) {
   var name = cname + '=';
   var decodedCookie = decodeURIComponent(document.cookie);
   var ca = decodedCookie.split(';');

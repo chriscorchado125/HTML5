@@ -9,12 +9,11 @@
 
 /* individual project container */
 .project {
-  padding: 0;
-  padding-bottom: 30px;
+  padding: 0 0 30px 0;
   border-radius: 10px;
   border: 1px solid $item_bg_border;
   min-height: 400px;
-  margin-bottom: 25px;
+  margin: 15px 0 15px 0;
 }
 
 .project-title {
@@ -140,7 +139,7 @@
 
 @media (max-width: 700px) {
   .container {
-    margin-top: 130px !important;
+    margin-top: 150px !important;
   }
   #msg {
     margin-top: 0px;

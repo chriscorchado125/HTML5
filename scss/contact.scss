@@ -2,32 +2,23 @@
 
 .contact-form {
   margin: auto;
-  border-radius: 0 0 10px 10px;
-  h2 {
-    color: grey;
-    margin-top: 30px;
+  h1 {
+    color: $main_color;
   }
-}
-
-h1 {
-  color: $main_color;
-}
-
-h4 {
-  margin: 30px;
 }
 
 #contact-message-feedback-form {
   background-color: $item_bg_color;
   padding: 10px 10px 50px 10px;
   text-align: center !important;
-  margin-bottom: 100px;
   margin-top: 20px;
   max-width: 600px;
   border-radius: 10px;
   label {
     display: block;
   }
+
+  /* subject align */
   .form-text {
     display: inline !important;
   }
@@ -41,11 +32,9 @@ h4 {
   }
 
   /* display the name and email fiels next to each other */
-  .js-form-item-name {
-    display: inline-block !important;
-  }
+  .js-form-item-name,
   .js-form-item-mail {
-    display: inline-block;
+    display: inline-block !important;
   }
 
   #edit-subject-0-value {
@@ -60,15 +49,13 @@ h4 {
     margin-top: 30px;
   }
 
-  #edit-preview {
-    display: none !important;
-  }
   textarea {
     max-width: 600px;
   }
 }
 
 #timer {
+  margin-top: 50px;
   max-width: 250px;
 }
 

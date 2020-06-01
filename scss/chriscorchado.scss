@@ -2,11 +2,6 @@
 @import 'navigation.scss';
 @import 'hover-animation.scss';
 
-html,
-body {
-  height: 100%;
-}
-
 body {
   display: flex;
   flex-direction: column;
@@ -86,6 +81,18 @@ a:link {
 
 /* About page */
 
+.about {
+  p {
+    text-align: left !important;
+    padding: 5px 100px;
+  }
+  h1 {
+    color: darken($main_color, 15%);
+    margin: 20px 10px;
+  }
+}
+
+/* resume, linkedin, azure */
 #profiles {
   max-width: 300px;
   margin-top: -70px;
@@ -93,30 +100,19 @@ a:link {
   a {
     font-size: 10px;
   }
-}
-
-.icon {
-  width: 70px;
-  padding: 10px;
-  margin-left: 10px;
-  text-align: center;
-  display: inline-block;
-  img {
-    height: 25px;
+  .icon {
+    width: 70px;
+    padding: 10px;
+    margin-left: 10px;
+    text-align: center;
+    display: inline-block;
+    img {
+      height: 25px;
+    }
+    span {
+      display: block;
+    }
   }
-  span {
-    display: block;
-  }
-}
-
-.about p {
-  text-align: left !important;
-  padding: 5px 100px;
-}
-
-.about h1 {
-  color: darken($main_color, 15%);
-  margin: 20px 10px;
 }
 
 #workstation-comparison {
@@ -124,19 +120,21 @@ a:link {
 }
 
 #footer {
-  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   position: fixed;
-  bottom: 0;
   width: 100%;
-  text-align: center;
+  bottom: 0;
+  padding: 10px;
   background-color: $off_white;
   border-top: 2px solid $main_color;
-}
-
-#footer-text {
-  width: 300px;
-  display: inline-block;
-  background-color: orange;
+  #footer-text {
+    width: 300px;
+    display: inline-block;
+    background-color: orange;
+  }
 }
 
 .site-version {
@@ -163,10 +161,9 @@ a:link {
 
   .about {
     margin-top: 100px !important;
-  }
-
-  .about p {
-    padding: 5px 30px;
+    p {
+      padding: 5px 30px;
+    }
   }
 
   #profiles {
@@ -175,13 +172,12 @@ a:link {
     float: none;
     max-width: 80%;
     text-align: center;
-  }
-
-  .icon {
-    width: 50px;
-    padding: 0px;
-    img {
-      height: 20px;
+    .icon {
+      width: 50px;
+      padding: 0px;
+      img {
+        height: 20px;
+      }
     }
   }
 }

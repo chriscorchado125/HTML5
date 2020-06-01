@@ -1,68 +1,90 @@
 #preloader {
-  margin-top: 160px; }
+  margin-top: 160px;
+}
 
 .container {
-  margin-top: 95px !important; }
+  margin-top: 95px !important;
+}
 
 .courses-container {
+  display: -ms-grid;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-column-gap: 1px;
+  -ms-grid-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 1px;
   justify-items: center;
   text-align: center;
-  /* course title */ }
-  .courses-container h2 {
-    font-size: 14px;
-    color: black; }
+  /* course title */
+}
+
+.courses-container h2 {
+  font-size: 14px;
+  color: black;
+}
 
 .course-box {
   padding: 20px;
-  margin: 0 0 20px 0; }
-  .course-box img {
-    max-width: 400px; }
+  margin: 0 0 20px 0;
+}
+
+.course-box img {
+  max-width: 400px;
+}
 
 .course-date {
-  font-size: 12px; }
+  font-size: 12px;
+}
 
 @media (max-width: 1200px) {
   .courses-container {
-    grid-template-columns: 1fr 1fr; }
-
+    -ms-grid-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
+  }
   .course-box {
-    padding: 20px 50px; } }
+    padding: 20px 40px;
+  }
+  .course-box img {
+    max-width: 90%;
+  }
+}
+
 @media (max-width: 1000px) {
   #msg {
-    margin-top: -15px; }
-
+    margin-top: -15px;
+  }
   .course-box {
-    padding: 20px 25px; } }
+    padding: 15px 25px;
+  }
+}
+
 @media (max-width: 800px) {
   #msg {
-    margin-top: 5px; }
-
+    margin-top: 5px;
+  }
   .container {
-    margin-top: 110px !important; }
-
+    margin-top: 110px !important;
+  }
   .courses-container {
-    grid-template-columns: 1fr; }
+    -ms-grid-columns: 1fr;
+        grid-template-columns: 1fr;
+  }
+}
 
-  .course-box {
-    padding: 20px 50px;
-    margin-bottom: 20px; } }
 @media (max-width: 700px) {
   .container {
-    margin-top: 165px !important; }
-
+    margin-top: 165px !important;
+  }
   #preloader {
-    margin-top: 190px; } }
+    margin-top: 190px;
+  }
+}
+
 @media (max-width: 500px) {
   .container {
-    margin-top: 145px !important;
-    padding-top: 50px; }
-
+    padding-top: 50px;
+  }
   .course-box {
-    padding: 10px !important; }
-    .course-box img {
-      max-width: 90%; } }
-
+    padding: 10px !important;
+  }
+}
 /*# sourceMappingURL=course.css.map */
