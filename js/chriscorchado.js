@@ -73,6 +73,9 @@ async function getPage(page, search, pagingURL) {
         } else {
           data = `<h1>Contact</h1>${form} ${script}`;
         }
+      })
+      .catch((error) => {
+        console.log(error);
       });
 
     renderPage(data, page);
@@ -109,7 +112,6 @@ async function getPage(page, search, pagingURL) {
               `${API_base}/jsonapi/node/awards?sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=${pageLimit}`
             );
           }
-
           break;
         case 'projects':
           if (search) {
@@ -223,7 +225,7 @@ const searchClear = () => {
  */
 const searchFilter = (event) => {
   /* don't allow more characters to be typed if current search returns no records */
-  if (document.getElementById('searchCount').innerText.substring(0, 1) == '0') {
+  if ($('#noRecords').length) {
     return false;
   }
 
@@ -345,9 +347,6 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     return false;
   }
 
-  /* regex to get string within quotes */
-  let getStringInQuotes = /"(.*?)"/;
-
   let screenshotCount = 0,
     imgAltCount = 0,
     itemCount = 0;
@@ -369,11 +368,9 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     itemWorkType = '',
     itemPDF = '',
     section = '',
-    projectImage = '';
-
-  let aboutBody = null,
-    aboutProfiles = null,
-    aboutSiteVersions = null;
+    projectImage = '',
+    aboutBody = '',
+    aboutProfiles = '';
 
   // add border to logo and hide search box on About page
   if (page == 'about') {
@@ -671,12 +668,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     });
 
     $('section').featherlight(); // must init after adding items
-  } else {
-    $('body').append(
-      `<div id="noRecords" class="shadow">No matches found for '${searchedFor}'</div>`
-    );
   }
-
   setItemCount(itemCount, page, prev, next, data.passedInCount.currentCount);
 };
 
@@ -710,7 +702,7 @@ const getFullUrlByPage = (linkToFix, page) => {
  * @param {string} page - page name
  * @param {object=} prev - (optional) - link to previous results
  * @param {object=} next - (optional) - link to next results
- * @param {int=} paginationTotal - (optional) - last pagination value
+ * @param {int} paginationTotal - last pagination value
  */
 function setItemCount(count, page, prev, next, paginationTotal) {
   let dataOffset = 0;
