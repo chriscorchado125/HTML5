@@ -126,14 +126,14 @@ async function getPage(page, search, pagingURL) {
     }
   }
 
-  /* if there is pagination add range number to data */
-  if (document.getElementById('lastCount')) {
-    let passedInCount = {
-      currentCount: document.getElementById('lastCount').textContent,
-    };
+  /* create object with pagination info */
+  let passedInCount = {
+    currentCount: document.getElementById('lastCount')
+      ? document.getElementById('lastCount').textContent
+      : 1,
+  };
 
-    data = { ...data, passedInCount };
-  }
+  data = { ...data, passedInCount };
 
   renderPage(data, page, search, data.links.next, data.links.prev);
 }
@@ -168,8 +168,6 @@ async function searchData() {
     clearTimeout(timeout);
 
     timeout = setTimeout(function () {
-      $('.container, .courses-container').hide();
-
       getPage(getCurrentPage(), inputSearchBox.value);
     }, 500);
   });
@@ -647,12 +645,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     );
   }
 
-  let passedInCount = null;
-  if (data.passedInCount) {
-    passedInCount = data.passedInCount.currentCount;
-  }
-
-  setItemCount(itemCount, page, prev, next, passedInCount);
+  setItemCount(itemCount, page, prev, next, data.passedInCount.currentCount);
 };
 
 /**
@@ -690,16 +683,15 @@ const getFullUrlByPage = (linkToFix, page) => {
 function setItemCount(count, page, prev, next, paginationTotal) {
   let dataOffset = 0;
   let dataOffsetText = '';
-
-  if (paginationTotal == null) {
-    paginationTotal = 1;
-  }
+  let prevLink = null;
+  let nextLink = null;
 
   if (next) {
     let nextURL = next.href
       .replace(/%2C/g, ',')
       .replace(/%5B/g, '[')
       .replace(/%5D/g, ']');
+
     dataOffset = nextURL.substring(
       nextURL.search('offset') + 8,
       nextURL.search('limit') - 6
@@ -725,40 +717,40 @@ function setItemCount(count, page, prev, next, paginationTotal) {
   } else {
     let currentCount = parseInt(dataOffset / pageLimit);
 
-    /* handle first page */
+    /* generate first page item counts*/
     if (count == dataOffset) {
       dataOffsetText = `Items 1-<span id="lastCount">${pageLimit}</span>`;
     } else {
+      /* generate middle pages item counts*/
       if (currentCount !== 0) {
-        /* handle middle pages */
         dataOffsetText = `Items ${
           currentCount * pageLimit - pageLimit
         }-<span id="lastCount">${currentCount * pageLimit}</span>`;
       } else {
-        /* handle last page */
+        /* generate last page item counts*/
         dataOffsetText = `Items ${paginationTotal}-<span id="lastCount">${
           parseInt(paginationTotal) + count
         }</span>`;
       }
     }
-
+    /* add item counts to page */
     document.getElementById(
       'searchCount'
     ).innerHTML = `<span id="paging-info">${dataOffsetText}</span>`;
 
-    let prevLink = prev
+    prevLink = prev
       ? `<a href="#" class="pager-navigation" onclick="getPage(getCurrentPage(), document.getElementById('searchSite').value,'${prev.href}')">Prev</a>`
       : `<span class="pager-navigation disabled">Prev</span>`;
-    let nextLink = next
+    nextLink = next
       ? `<a href="#" class="pager-navigation" onclick="getPage(getCurrentPage(), document.getElementById('searchSite').value,'${next.href}')">Next</a>`
       : `<span class="pager-navigation disabled">Next</span>`;
-
-    $('#pagination').html(`${prevLink}  ${nextLink}`);
   }
 
-  /* hide pagination of the search items returned when the count is less than the page limit */
+  /* hide pagination when the item count is less than the page limit and on the first page*/
   if (count < pageLimit && paginationTotal === 1) {
     $('#pagination').html('&nbsp;');
+  } else {
+    $('#pagination').html(`${prevLink}  ${nextLink}`);
   }
 }
 
