@@ -83,8 +83,6 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
     if (pagingURL) {
       data = await getData(pagingURL);
     } else {
-      getTotalRecordCount(page);
-
       switch (page) {
         case 'about':
           data = await getData(
@@ -140,32 +138,38 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
   if (data.data.length) {
     renderPage(data, page, search, data.links.next, data.links.prev);
   } else {
-    renderNoRecords(search);
+    updateInterface(search);
   }
 }
 
 /**
- * Render no records page
- * @param {string} search - searched for text
+ * Render UI
+ * @param {string=} search - (optional) searched for text
  */
-const renderNoRecords = (search) => {
-  if (document.getElementById('preloader')) {
-    document.getElementById('preloader').style.display = 'none';
-  }
-  if (document.getElementById('searchCount')) {
-    document.getElementById('searchCount').style.display = 'none';
-  }
-  if (document.getElementById('paging-info')) {
-    document.getElementById('paging-info').style.display = 'none';
-  }
-  if (document.getElementById('pagination')) {
-    document.getElementById('pagination').style.display = 'none';
-  }
-  if (document.getElementById('msg')) {
-    document.getElementById('msg').style.display = 'none';
+const updateInterface = (search?: string) => {
+  let action = 'none';
+
+  if (!search) {
+    action = '';
   }
 
-  if (!$('#noRecords').html()) {
+  if (document.getElementById('preloader')) {
+    document.getElementById('preloader').style.display = action;
+  }
+  if (document.getElementById('searchCount')) {
+    document.getElementById('searchCount').style.display = action;
+  }
+  if (document.getElementById('paging-info')) {
+    document.getElementById('paging-info').style.display = action;
+  }
+  if (document.getElementById('pagination')) {
+    document.getElementById('pagination').style.display = action;
+  }
+  if (document.getElementById('msg')) {
+    document.getElementById('msg').style.display = action;
+  }
+
+  if (!$('#noRecords').html() && search) {
     $('body').append(
       `<div id="noRecords" class="shadow">No matches found for '${search}'</div>`
     );
@@ -210,9 +214,12 @@ async function searchData() {
  * Clear current search
  */
 const searchClear = () => {
-  if (document.getElementById('searchSite').value !== '') {
-    document.getElementById('searchSite').value = '';
+  const inputSearchBox = document.getElementById('searchSite')! as HTMLInputElement;
+  if (inputSearchBox.value !== '') {
+    $('#noRecords').hide();
+    inputSearchBox.value = '';
     getPage(getCurrentPage());
+    updateInterface();
   }
 };
 
@@ -404,8 +411,8 @@ const renderPage = (
     imgPieces = [];
 
     if (data.included) {
-      data.included.forEach((included_element: Array['']) => {
-        //console.log(typeof included_element);
+      data.included.forEach((included_element: Array[string]) => {
+        console.log(typeof included_element);
 
         /* get Courses screenshot filenames */
         if (element.relationships.field_award_images) {
@@ -428,7 +435,8 @@ const renderPage = (
         if (element.relationships.field_company_screenshot) {
           if (
             element.relationships.field_company_screenshot.data.some(
-              (field_screenshot: Array['']) => field_screenshot.id == included_element.id
+              (field_screenshot: Array[string]) =>
+                field_screenshot.id == included_element.id
             )
           ) {
             imgPieces.push(included_element.attributes.filename);
@@ -444,7 +452,8 @@ const renderPage = (
           /* get Project screenshot filenames */
           if (
             element.relationships.field_screenshot.data.some(
-              (field_screenshot: Array['']) => field_screenshot.id == included_element.id
+              (field_screenshot: Array[string]) =>
+                field_screenshot.id == included_element.id
             )
           ) {
             imgPieces.push(included_element.attributes.filename);
@@ -453,7 +462,7 @@ const renderPage = (
           /* get technology names */
           if (
             element.relationships.field_project_technology.data.some(
-              (technology: Array['']) => technology.id == included_element.id
+              (technology: Array[string]) => technology.id == included_element.id
             )
           ) {
             itemTechnology += included_element.attributes.name + ', ';
@@ -682,7 +691,7 @@ const renderPage = (
     $('section').featherlight(); // must init after adding items
   }
 
-  setItemCount(itemCount, page, prev, next, data.passedInCount.currentCount);
+  setItemCount(itemCount, page, data.passedInCount.currentCount, prev, next);
 };
 
 /**
@@ -713,16 +722,17 @@ const getFullUrlByPage = (linkToFix: string, page: string) => {
  * Set/update the current page item counts
  * @param {int} count - number of items
  * @param {string} page - page name
+ * @param {int} paginationTotal - last pagination value
  * @param {object=} prev - (optional) - link to previous results
  * @param {object=} next - (optional) - link to next results
- * @param {int} paginationTotal - last pagination value
+
  */
 function setItemCount(
   count: number,
   page: string,
+  paginationTotal: number,
   prev?: object,
-  next?: object,
-  paginationTotal: int
+  next?: object
 ) {
   let dataOffset = 0;
   let dataOffsetText = '';
