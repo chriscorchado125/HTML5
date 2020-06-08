@@ -1,5 +1,12 @@
 @import 'variables.scss';
 
+.container {
+  margin-top: 80px !important;
+  display: flex;
+  flex-flow: column;
+  height: vh;
+}
+
 .contact-form {
   margin: auto;
   h1 {

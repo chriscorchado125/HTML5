@@ -1,5 +1,9 @@
 @import 'variables.scss';
 
+.container {
+  margin-top: 90px;
+}
+
 /* individual company container */
 .company-container {
   border: 1px solid $item_bg_border;

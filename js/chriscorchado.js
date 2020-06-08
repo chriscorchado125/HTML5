@@ -168,6 +168,7 @@ var updateInterface = function (search) {
     var action = 'none';
     if (!search) {
         action = '';
+        document.getElementById('searchBtn').style.display = '';
     }
     if (document.getElementById('preloader')) {
         document.getElementById('preloader').style.display = action;
@@ -209,6 +210,7 @@ function searchData() {
                 clearTimeout(timeout);
                 timeout = setTimeout(function () {
                     getPage(getCurrentPage(), inputSearchBox.value);
+                    document.getElementById('searchBtn').style.display = 'inline-block';
                 }, 500);
             });
             return [2];
@@ -452,7 +454,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
                         itemGridClass = 'project-items1 project-item-grid';
                     }
                     section = "<section data-featherlight-gallery data-featherlight-filter=\"a\" class=\"" + itemGridClass + "\">";
-                    var screenshotAlt_1 = [''];
+                    var screenshotAlt_1 = Array();
                     element.relationships.field_screenshot.data.forEach(function (screenshot) {
                         screenshotAlt_1.push(screenshot.meta.alt);
                     });

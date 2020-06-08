@@ -56,6 +56,10 @@
   box-shadow: 0 2px #999;
 }
 
+#searchBtn {
+  display: none;
+}
+
 .searchBtn:hover {
   color: #fff;
   box-shadow: 0 0 #fff;
@@ -66,6 +70,10 @@
   background-color: yellow;
 }
 
+#pagination {
+  text-align: right;
+  padding-right: 70px;
+}
 .pager-navigation {
   margin: 5px 5px 0px 5px;
 }

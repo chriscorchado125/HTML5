@@ -148,6 +148,7 @@ const updateInterface = (search?: string) => {
 
   if (!search) {
     action = '';
+    document.getElementById('searchBtn').style.display = '';
   }
 
   if (document.getElementById('preloader')) {
@@ -203,6 +204,8 @@ async function searchData() {
 
     timeout = setTimeout(function () {
       getPage(getCurrentPage(), inputSearchBox.value);
+
+      document.getElementById('searchBtn').style.display = 'inline-block';
     }, 500);
   });
 }
@@ -615,8 +618,8 @@ const renderPage = (
 
           section = `<section data-featherlight-gallery data-featherlight-filter="a" class="${itemGridClass}">`;
 
-          let screenshotAlt = [''];
-          element.relationships.field_screenshot.data.forEach((screenshot: Array<{}>) => {
+          let screenshotAlt = Array<[]>;
+          element.relationships.field_screenshot.data.forEach((screenshot: Array<[]>) => {
             screenshotAlt.push(screenshot.meta.alt);
           });
 
