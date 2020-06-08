@@ -135,8 +135,40 @@ async function getPage(page, search, pagingURL) {
 
   data = { ...data, passedInCount };
 
-  renderPage(data, page, search, data.links.next, data.links.prev);
+  if (data.data.length) {
+    renderPage(data, page, search, data.links.next, data.links.prev);
+  } else {
+    renderNoRecords(search);
+  }
 }
+
+/**
+ * Render no records page
+ * @param {string} search - searched for text
+ */
+const renderNoRecords = (search) => {
+  if (document.getElementById('preloader')) {
+    document.getElementById('preloader').style.display = 'none';
+  }
+  if (document.getElementById('searchCount')) {
+    document.getElementById('searchCount').style.display = 'none';
+  }
+  if (document.getElementById('paging-info')) {
+    document.getElementById('paging-info').style.display = 'none';
+  }
+  if (document.getElementById('pagination')) {
+    document.getElementById('pagination').style.display = 'none';
+  }
+  if (document.getElementById('msg')) {
+    document.getElementById('msg').style.display = 'none';
+  }
+
+  if (!$('#noRecords').html()) {
+    $('body').append(
+      `<div id="noRecords" class="shadow">No matches found for '${search}'</div>`
+    );
+  }
+};
 
 /**
  * Get data from Drupal 8 datastore
