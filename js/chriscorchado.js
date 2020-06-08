@@ -1,9 +1,6 @@
 'use strict';
 
 const API_base = 'https://chriscorchado.com/drupal8';
-const API_Course_Count = `${API_base}/rest/api/course/count?_format=json`;
-const API_Company_Count = `${API_base}/rest/api/company/count?_format=json`;
-const API_Project_Count = `${API_base}/rest/api/project/count?_format=json`;
 const pageLimit = 50;
 
 /* Hide container and load navigation/footer */
@@ -13,8 +10,7 @@ $('#footer').load('includes/footer.html');
 
 /**
  * Load page
- * @callback getCurrentPage
- * @param {getCurrentPage} page - page name
+ * @param {string} page - page name
  * @param {string=} search - (optional) - search string
  * @param {string=} pagingURL - (optional) - Prev/Next links
  */
@@ -86,8 +82,6 @@ async function getPage(page, search, pagingURL) {
     if (pagingURL) {
       data = await getData(pagingURL);
     } else {
-      getTotalRecordCount(page);
-
       switch (page) {
         case 'about':
           data = await getData(
@@ -132,13 +126,22 @@ async function getPage(page, search, pagingURL) {
     }
   }
 
+  /* if there is pagination add range number to data */
+  if (document.getElementById('lastCount')) {
+    let passedInCount = {
+      currentCount: document.getElementById('lastCount').textContent,
+    };
+
+    data = { ...data, passedInCount };
+  }
+
   renderPage(data, page, search, data.links.next, data.links.prev);
 }
 
 /**
  * Get data from Drupal 8 datastore
  * @param {string} dataURL - url to fetch data from
- * @return {array} - array of objects
+ * @return {object} - object of data
  */
 const getData = (dataURL) => {
   const result = $.ajax({
@@ -155,6 +158,7 @@ const getData = (dataURL) => {
 
 /**
  * Search data after the user pauses typing for half a second
+ * TODO: use debounce
  */
 async function searchData() {
   let timeout = null;
@@ -164,8 +168,6 @@ async function searchData() {
     clearTimeout(timeout);
 
     timeout = setTimeout(function () {
-      console.log(typeof timeout);
-
       $('.container, .courses-container').hide();
 
       getPage(getCurrentPage(), inputSearchBox.value);
@@ -351,7 +353,6 @@ const renderPage = (data, page, searchedFor, next, prev) => {
   }
 
   $('#noRecords').remove();
-  console.log(typeof data.data);
 
   data.data.forEach((element) => {
     itemTitle = element.attributes.title;
@@ -457,7 +458,6 @@ const renderPage = (data, page, searchedFor, next, prev) => {
 
     if (page == 'about') {
       let aboutData = element.attributes.body.value.toString().split('<hr />');
-      //console.log(aboutData[0]);
 
       /* body */
       aboutBody = aboutData[0];
@@ -646,7 +646,12 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     );
   }
 
-  setItemCount(itemCount, page, prev, next);
+  let passedInCount = null;
+  if (data.passedInCount) {
+    passedInCount = data.passedInCount.currentCount;
+  }
+
+  setItemCount(itemCount, page, prev, next, passedInCount);
 };
 
 /**
@@ -679,40 +684,25 @@ const getFullUrlByPage = (linkToFix, page) => {
  * @param {string} page - page name
  * @param {object=} prev - (optional) - link to previous results
  * @param {object=} next - (optional) - link to next results
+ * @param {int=} paginationTotal - (optional) - last pagination value
  */
-function setItemCount(count, page, prev, next) {
+function setItemCount(count, page, prev, next, paginationTotal) {
   let dataOffset = 0;
   let dataOffsetText = '';
-  let totalItems = getCookie(page);
+
+  if (paginationTotal == null) {
+    paginationTotal = 1;
+  }
 
   if (next) {
     let nextURL = next.href
       .replace(/%2C/g, ',')
       .replace(/%5B/g, '[')
       .replace(/%5D/g, ']');
-
-    let startOffset = nextURL.indexOf('page[offset]') + 13;
-    let endOffset = nextURL.indexOf('page[limit]') - 1;
-    dataOffset = nextURL.substring(startOffset, endOffset);
-  }
-
-  /* setup pagination counts */
-  let currentCount = dataOffset / pageLimit;
-
-  if (currentCount == 1) {
-    dataOffsetText = `Items ${currentCount}-${pageLimit * currentCount}`;
-  } else {
-    dataOffsetText = `Items ${currentCount * pageLimit - pageLimit}-${
-      pageLimit * currentCount
-    }`;
-  }
-
-  /* get the highest multiple of the page limit without going over the total */
-  let topNumber = Math.round(totalItems / pageLimit) * pageLimit;
-
-  /* set the paging count on the last page */
-  if (count < pageLimit && totalItems > pageLimit) {
-    dataOffsetText = `Items ${topNumber}-${totalItems} `;
+    dataOffset = nextURL.substring(
+      nextURL.search('offset') + 8,
+      nextURL.search('limit') - 6
+    );
   }
 
   /* handle searching  */
@@ -725,15 +715,32 @@ function setItemCount(count, page, prev, next) {
     }
   }
 
-  let recordCount = getTotalRecordCount(page);
-
-  /* use pagination when the total records exceed the page limit */
-  if (recordCount < pageLimit) {
+  /* to paginate or not to paginate! */
+  if (!next && !prev) {
     document.getElementById(
       'searchCount'
-    ).innerHTML = `<span id="totalItems">${recordCount}</span>
+    ).innerHTML = `<span id="totalItems">${count}</span>
    ${count == 1 ? 'Item' : 'Items'}`;
   } else {
+    let currentCount = parseInt(dataOffset / pageLimit);
+
+    /* handle first page */
+    if (count == dataOffset) {
+      dataOffsetText = `Items 1-<span id="lastCount">${pageLimit}</span>`;
+    } else {
+      if (currentCount !== 0) {
+        /* handle middle pages */
+        dataOffsetText = `Items ${
+          currentCount * pageLimit - pageLimit
+        }-<span id="lastCount">${currentCount * pageLimit}</span>`;
+      } else {
+        /* handle last page */
+        dataOffsetText = `Items ${paginationTotal}-<span id="lastCount">${
+          parseInt(paginationTotal) + count
+        }</span>`;
+      }
+    }
+
     document.getElementById(
       'searchCount'
     ).innerHTML = `<span id="paging-info">${dataOffsetText}</span>`;
@@ -748,46 +755,11 @@ function setItemCount(count, page, prev, next) {
     $('#pagination').html(`${prevLink}  ${nextLink}`);
   }
 
-  /* add record count */
-  $('#totalItems').html(recordCount);
+  /* hide pagination of the search items returned when the count is less than the page limit */
+  if (count < pageLimit && paginationTotal === 1) {
+    $('#pagination').html('&nbsp;');
+  }
 }
-
-/**
- * Return the total record count via the Drupal API and store the results in a cookie
- * JSON:API has a limit of 50 records
- * @param {string} page - page name
- * @return {int} - total record count
- */
-const getTotalRecordCount = (page) => {
-  let recordCount = getCookie(page);
-  let urlForTotal = null;
-
-  if (!recordCount) {
-    switch (page) {
-      case 'courses':
-        urlForTotal = API_Course_Count;
-        break;
-      case 'companies':
-        urlForTotal = API_Company_Count;
-        break;
-      case 'projects':
-        urlForTotal = API_Project_Count;
-    }
-  }
-
-  /* fetch total or use the cookie value */
-  if (urlForTotal) {
-    fetch(urlForTotal)
-      .then((resp) => {
-        return resp.ok ? resp.json() : Promise.reject(resp.statusText);
-      })
-      .then((document) => {
-        recordCount = document.length;
-        setCookie(page, recordCount, 1);
-      });
-  }
-  return recordCount;
-};
 
 /**
  * Set page message
@@ -831,29 +803,3 @@ const getCurrentPage = () => {
 window.onload = () => {
   getPage(getCurrentPage());
 };
-
-/**
- * Cookies
- */
-function setCookie(cname, cvalue, exdays) {
-  var d = new Date();
-  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-  var expires = 'expires=' + d.toUTCString();
-  document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
-}
-
-function getCookie(cname) {
-  var name = cname + '=';
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return '';
-}
