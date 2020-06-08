@@ -1,7 +1,7 @@
 'use strict';
 
 const API_base = 'https://chriscorchado.com/drupal8';
-const inputSearchBox = document.getElementById('searchSite')! as HTMLInputElement;
+//const inputSearchBox = document.getElementById('searchSite')! as HTMLInputElement;
 const pageLimit = 50;
 
 /* Hide container and load navigation/footer */
@@ -19,14 +19,11 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
   let data = null;
   const inputSearchBox = document.getElementById('searchSite')! as HTMLInputElement;
 
+  $('#preloader').show();
+  $('.container').hide();
+
   if (search) {
     ga('send', 'pageview', location.pathname + '?search=' + inputSearchBox.value);
-  }
-
-  /* if not searching */
-  if (!document.getElementById('noRecords')) {
-    $('#preloader').show();
-    $('.container').hide();
   }
 
   if (page == 'contact') {
@@ -73,7 +70,7 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
 
     renderPage(data, page);
@@ -333,7 +330,7 @@ const showCountDown = () => {
  * @param {Object=} prev - (Optional) - search string
  */
 const renderPage = (
-  data: object[],
+  data: Object[],
   page: string,
   searchedFor?: string,
   next?: Object,
@@ -412,8 +409,6 @@ const renderPage = (
 
     if (data.included) {
       data.included.forEach((included_element: Array[string]) => {
-        console.log(typeof included_element);
-
         /* get Courses screenshot filenames */
         if (element.relationships.field_award_images) {
           if (
@@ -506,9 +501,6 @@ const renderPage = (
 
     if (page == 'about') {
       let aboutData = element.attributes.body.value.toString().split('<hr />');
-      //console.log(aboutData[0]);
-
-      /* body */
       aboutBody = aboutData[0];
       aboutProfiles = aboutData[1];
     }
@@ -738,7 +730,6 @@ function setItemCount(
   let dataOffsetText = '';
   let prevLink = null;
   let nextLink = null;
-  let inputSearchBox = document.getElementById('searchSite')! as HTMLInputElement;
 
   if (next) {
     let nextURL = next.href
@@ -769,7 +760,7 @@ function setItemCount(
     ).innerHTML = `<span id="totalItems">${count}</span>
    ${count == 1 ? 'Item' : 'Items'}`;
   } else {
-    let currentCount = parseInt(dataOffset / pageLimit);
+    let currentCount = +dataOffset / pageLimit;
 
     /* generate first page item counts*/
     if (count == dataOffset) {
@@ -783,7 +774,7 @@ function setItemCount(
       } else {
         /* generate last page item counts*/
         dataOffsetText = `Items ${paginationTotal}-<span id="lastCount">${
-          parseInt(paginationTotal) + count
+          +paginationTotal + count
         }</span>`;
       }
     }

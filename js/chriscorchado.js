@@ -47,7 +47,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var API_base = 'https://chriscorchado.com/drupal8';
-var inputSearchBox = document.getElementById('searchSite');
 var pageLimit = 50;
 $('.container').hide();
 $('#navigation').load('includes/nav.html');
@@ -60,12 +59,10 @@ function getPage(page, search, pagingURL) {
                 case 0:
                     data = null;
                     inputSearchBox = document.getElementById('searchSite');
+                    $('#preloader').show();
+                    $('.container').hide();
                     if (search) {
                         ga('send', 'pageview', location.pathname + '?search=' + inputSearchBox.value);
-                    }
-                    if (!document.getElementById('noRecords')) {
-                        $('#preloader').show();
-                        $('.container').hide();
                     }
                     if (!(page == 'contact')) return [3, 2];
                     return [4, fetch(API_base + "/contact/feedback")
@@ -91,7 +88,7 @@ function getPage(page, search, pagingURL) {
                             }
                         })
                             .catch(function (error) {
-                            console.log(error);
+                            console.error(error);
                         })];
                 case 1:
                     _b.sent();
@@ -324,7 +321,6 @@ var renderPage = function (data, page, searchedFor, next, prev) {
         imgPieces = [];
         if (data.included) {
             data.included.forEach(function (included_element) {
-                console.log(typeof included_element);
                 if (element.relationships.field_award_images) {
                     if (element.relationships.field_award_images.data[0].id == included_element.id) {
                         imgPieces.push(included_element.attributes.filename);
@@ -520,7 +516,6 @@ function setItemCount(count, page, paginationTotal, prev, next) {
     var dataOffsetText = '';
     var prevLink = null;
     var nextLink = null;
-    var inputSearchBox = document.getElementById('searchSite');
     if (next) {
         var nextURL = next.href
             .replace(/%2C/g, ',')
@@ -541,7 +536,7 @@ function setItemCount(count, page, paginationTotal, prev, next) {
         document.getElementById('searchCount').innerHTML = "<span id=\"totalItems\">" + count + "</span>\n   " + (count == 1 ? 'Item' : 'Items');
     }
     else {
-        var currentCount = parseInt(dataOffset / pageLimit);
+        var currentCount = +dataOffset / pageLimit;
         if (count == dataOffset) {
             dataOffsetText = "Items 1-<span id=\"lastCount\">" + pageLimit + "</span>";
         }
@@ -550,7 +545,7 @@ function setItemCount(count, page, paginationTotal, prev, next) {
                 dataOffsetText = "Items " + (currentCount * pageLimit - pageLimit) + "-<span id=\"lastCount\">" + currentCount * pageLimit + "</span>";
             }
             else {
-                dataOffsetText = "Items " + paginationTotal + "-<span id=\"lastCount\">" + (parseInt(paginationTotal) + count) + "</span>";
+                dataOffsetText = "Items " + paginationTotal + "-<span id=\"lastCount\">" + (+paginationTotal + count) + "</span>";
             }
         }
         document.getElementById('searchCount').innerHTML = "<span id=\"paging-info\">" + dataOffsetText + "</span>";
