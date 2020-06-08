@@ -180,7 +180,8 @@ async function searchData() {
  */
 const searchClear = () => {
   if (document.getElementById('searchSite').value !== '') {
-    window.location.replace(location.href);
+    document.getElementById('searchSite').value = '';
+    getPage(getCurrentPage());
   }
 };
 
