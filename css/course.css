@@ -13,7 +13,7 @@
   /* course title */ }
   .courses-container h2 {
     font-size: 14px;
-    color: black; }
+    color: rgba(0, 0, 0, 0.7); }
 
 .course-box {
   padding: 20px;

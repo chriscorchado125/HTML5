@@ -16,13 +16,13 @@
   margin: 15px 0 15px 0; }
 
 .project-title {
-  color: black;
+  color: rgba(0, 0, 0, 0.7);
   padding: 10px 0 0 0;
   background-color: #e7e4e4;
   border-radius: 10px 10px 0 0; }
 
 .project-company {
-  color: black;
+  color: rgba(0, 0, 0, 0.7);
   margin-top: 10px;
   padding: 5px;
   font-style: italic;
@@ -45,7 +45,7 @@
 .project-item-desc {
   padding: 5px;
   font-size: 14px;
-  color: black; }
+  color: rgba(0, 0, 0, 0.7); }
 
 /* thumbnail */
 .project-item {
@@ -76,7 +76,7 @@
   width: 130px;
   margin: auto;
   margin-top: 20px;
-  color: black !important;
+  color: rgba(0, 0, 0, 0.7) !important;
   border: 1px solid #ccdaf7; }
 
 .play-video:hover {
