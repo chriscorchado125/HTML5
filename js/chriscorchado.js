@@ -207,6 +207,9 @@ function searchData() {
             timeout = 0;
             inputSearchBox = document.getElementById('searchSite');
             inputSearchBox.addEventListener('keyup', function (e) {
+                if (!inputSearchBox.value) {
+                    updateInterface();
+                }
                 clearTimeout(timeout);
                 timeout = setTimeout(function () {
                     getPage(getCurrentPage(), inputSearchBox.value);
@@ -227,9 +230,6 @@ var searchClear = function () {
     }
 };
 var searchFilter = function (event) {
-    if ($('#noRecords').length) {
-        return false;
-    }
     var charCode = event.keyCode || event.which;
     return ((charCode >= 65 && charCode <= 122) ||
         (charCode >= 96 && charCode <= 105) ||

@@ -200,6 +200,11 @@ async function searchData() {
   const inputSearchBox = document.getElementById('searchSite')! as HTMLInputElement;
 
   inputSearchBox.addEventListener('keyup', function (e) {
+    
+    if(!inputSearchBox.value){
+      updateInterface();
+    }
+
     clearTimeout(timeout);
 
     timeout = setTimeout(function () {
@@ -230,10 +235,6 @@ const searchClear = () => {
  * @return {string} - allowed characters
  */
 const searchFilter = (event: KeyboardEvent) => {
-  /* don't allow more characters to be typed if current search returns no records */
-  if ($('#noRecords').length) {
-    return false;
-  }
 
   let charCode = event.keyCode || event.which;
 
