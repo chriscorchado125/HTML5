@@ -46,49 +46,47 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var API_base = 'https://chriscorchado.com/drupal8';
+var API_BASE = 'https://chriscorchado.com/drupal8';
 var pageLimit = 50;
-$('.container').hide();
 $('#navigation').load('includes/nav.html');
 $('#footer').load('includes/footer.html');
 function getPage(page, search, pagingURL) {
     return __awaiter(this, void 0, void 0, function () {
-        var data, inputSearchBox, _a, passedInCount;
+        var data, _a, passedInCount;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     data = null;
-                    inputSearchBox = document.getElementById('searchSite');
-                    $('#preloader').show();
+                    document.getElementById('preloader').style.display = 'block';
                     $('.container').hide();
                     if (search) {
-                        ga('send', 'pageview', location.pathname + '?search=' + inputSearchBox.value);
+                        ga('send', 'pageview', location.pathname + '?search=' + search);
                     }
                     if (!(page == 'contact')) return [3, 2];
-                    return [4, fetch(API_base + "/contact/feedback")
+                    return [4, fetch(API_BASE + "/contact/feedback")
                             .then(function (resp) {
                             return resp.ok ? resp.text() : Promise.reject(resp.statusText);
                         })
                             .then(function (document) {
                             data = document.substr(0, document.indexOf('</html>') + 8);
-                            data = data.replace(/\/drupal8/g, API_base);
+                            data = data.replace(/\/drupal8/g, API_BASE);
                             var form = data.substr(data.indexOf('<form'), data.indexOf('</form>'));
                             form = form.substr(0, form.indexOf('</form>') + 8);
+                            form = form.replace('class="contact-message-feedback-form contact-message-form contact-form"', '');
                             form = form.replace('Your name', 'Name');
                             form = form.replace('Your email address', 'Email');
                             form = form.replace('class="button button--primary js-form-submit form-submit"', 'class="button button--primary js-form-submit form-submit searchBtn"');
-                            var script = data.substr(data.indexOf('<script type="application/json" data-drupal-selector="drupal-settings-json">'), data.indexOf('js"></script>'));
+                            var script = data.substr(data.indexOf('<script type="application/json" data-drupal-selector="drupal-settings-json">'), data.indexOf('></script>'));
                             script = script.substr(0, script.indexOf('</script>') + 9);
                             if (location.toString().indexOf('submitted') !== -1) {
-                                data = '<h2>Thanks for the Feedback</h2>';
-                                data += '<div id="countdown"></div>';
+                                data = '';
                             }
                             else {
                                 data = "<h1>Contact</h1>" + form + " " + script;
                             }
                         })
                             .catch(function (error) {
-                            console.error(error);
+                            alert("Sorry an error has occurred: " + error);
                         })];
                 case 1:
                     _b.sent();
@@ -109,39 +107,39 @@ function getPage(page, search, pagingURL) {
                         case 'projects': return [3, 17];
                     }
                     return [3, 22];
-                case 5: return [4, getData(API_base + "/jsonapi/node/page?fields[node--page]=id,title,body&filter[id][operator]=CONTAINS&filter[id][value]=ca23f416-ad70-41c2-9228-52ba6577abfe")];
+                case 5: return [4, getData(API_BASE + "/jsonapi/node/page?fields[node--page]=id,title,body&filter[id][operator]=CONTAINS&filter[id][value]=ca23f416-ad70-41c2-9228-52ba6577abfe")];
                 case 6:
                     data = _b.sent();
                     return [3, 22];
                 case 7:
                     if (!search) return [3, 9];
-                    return [4, getData(API_base + "/jsonapi/node/company?filter[or-group][group][conjunction]=OR&filter[field_company_name][operator]=CONTAINS&filter[field_company_name][value]=" + search + "&filter[field_company_name][condition][memberOf]=or-group&filter[field_job_title][operator]=CONTAINS&filter[field_job_title][value]=" + search + "&filter[field_job_title][condition][memberOf]=or-group&filter[body.value][operator]=CONTAINS&filter[body.value][value]=" + search + "&filter[body.value][condition][memberOf]=or-group&sort=-field_end_date&include=field_company_screenshot&page[limit]=" + pageLimit)];
+                    return [4, getData(API_BASE + "/jsonapi/node/company?filter[or-group][group][conjunction]=OR&filter[field_company_name][operator]=CONTAINS&filter[field_company_name][value]=" + search + "&filter[field_company_name][condition][memberOf]=or-group&filter[field_job_title][operator]=CONTAINS&filter[field_job_title][value]=" + search + "&filter[field_job_title][condition][memberOf]=or-group&filter[body.value][operator]=CONTAINS&filter[body.value][value]=" + search + "&filter[body.value][condition][memberOf]=or-group&sort=-field_end_date&include=field_company_screenshot&page[limit]=" + pageLimit)];
                 case 8:
                     data = _b.sent();
                     return [3, 11];
-                case 9: return [4, getData(API_base + "/jsonapi/node/company?sort=-field_end_date&include=field_company_screenshot&page[limit]=" + pageLimit)];
+                case 9: return [4, getData(API_BASE + "/jsonapi/node/company?sort=-field_end_date&include=field_company_screenshot&page[limit]=" + pageLimit)];
                 case 10:
                     data = _b.sent();
                     _b.label = 11;
                 case 11: return [3, 22];
                 case 12:
                     if (!search) return [3, 14];
-                    return [4, getData(API_base + "/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=" + search + "&filter[title][condition][memberOf]=or-group&filter[field_award_date][operator]=CONTAINS&filter[field_award_date][value]=" + search + "&filter[field_award_date][condition][memberOf]=or-group&sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=" + pageLimit)];
+                    return [4, getData(API_BASE + "/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=" + search + "&filter[title][condition][memberOf]=or-group&filter[field_award_date][operator]=CONTAINS&filter[field_award_date][value]=" + search + "&filter[field_award_date][condition][memberOf]=or-group&sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=" + pageLimit)];
                 case 13:
                     data = _b.sent();
                     return [3, 16];
-                case 14: return [4, getData(API_base + "/jsonapi/node/awards?sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=" + pageLimit)];
+                case 14: return [4, getData(API_BASE + "/jsonapi/node/awards?sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=" + pageLimit)];
                 case 15:
                     data = _b.sent();
                     _b.label = 16;
                 case 16: return [3, 22];
                 case 17:
                     if (!search) return [3, 19];
-                    return [4, getData(API_base + "/jsonapi/node/project?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=" + search + "&filter[title][condition][memberOf]=or-group&filter[taxonomy_term--tags][path]=field_project_technology.name&filter[taxonomy_term--tags][operator]=CONTAINS&filter[taxonomy_term--tags][value]=" + search + "&filter[taxonomy_term--tags][condition][memberOf]=or-group&filter[field_company.title][operator]=CONTAINS&filter[field_company.title][value]=" + search + "&filter[field_company.title][condition][memberOf]=or-group&filter[field_screenshot.meta.alt][operator]=CONTAINS&filter[field_screenshot.meta.alt][value]=" + search + "&filter[field_screenshot.meta.alt][condition][memberOf]=or-group&filter[field_date][operator]=CONTAINS&filter[field_date][value]=" + search + "&filter[field_date][condition][memberOf]=or-group&sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&page[limit]=" + pageLimit)];
+                    return [4, getData(API_BASE + "/jsonapi/node/project?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=" + search + "&filter[title][condition][memberOf]=or-group&filter[taxonomy_term--tags][path]=field_project_technology.name&filter[taxonomy_term--tags][operator]=CONTAINS&filter[taxonomy_term--tags][value]=" + search + "&filter[taxonomy_term--tags][condition][memberOf]=or-group&filter[field_company.title][operator]=CONTAINS&filter[field_company.title][value]=" + search + "&filter[field_company.title][condition][memberOf]=or-group&filter[field_screenshot.meta.alt][operator]=CONTAINS&filter[field_screenshot.meta.alt][value]=" + search + "&filter[field_screenshot.meta.alt][condition][memberOf]=or-group&filter[field_date][operator]=CONTAINS&filter[field_date][value]=" + search + "&filter[field_date][condition][memberOf]=or-group&sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&page[limit]=" + pageLimit)];
                 case 18:
                     data = _b.sent();
                     return [3, 21];
-                case 19: return [4, getData(API_base + "/jsonapi/node/project?sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&page[limit]=" + pageLimit)];
+                case 19: return [4, getData(API_BASE + "/jsonapi/node/project?sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&page[limit]=" + pageLimit)];
                 case 20:
                     data = _b.sent();
                     _b.label = 21;
@@ -170,21 +168,12 @@ var updateInterface = function (search) {
         action = '';
         document.getElementById('searchBtn').style.display = '';
     }
-    if (document.getElementById('preloader')) {
-        document.getElementById('preloader').style.display = action;
-    }
-    if (document.getElementById('searchCount')) {
-        document.getElementById('searchCount').style.display = action;
-    }
-    if (document.getElementById('paging-info')) {
-        document.getElementById('paging-info').style.display = action;
-    }
-    if (document.getElementById('pagination')) {
-        document.getElementById('pagination').style.display = action;
-    }
-    if (document.getElementById('msg')) {
-        document.getElementById('msg').style.display = action;
-    }
+    var uiElements = ['preloader', 'searchCount', 'paging-info', 'pagination', 'msg'];
+    uiElements.forEach(function (element) {
+        if (document.getElementById(element)) {
+            document.getElementById(element).style.display = action;
+        }
+    });
     if (!$('#noRecords').html() && search) {
         $('body').append("<div id=\"noRecords\" class=\"shadow\">No matches found for '" + search + "'</div>");
     }
@@ -200,26 +189,20 @@ var getData = function (dataURL) {
     });
     return result;
 };
-function searchData() {
-    return __awaiter(this, void 0, void 0, function () {
-        var timeout, inputSearchBox;
-        return __generator(this, function (_a) {
-            timeout = 0;
-            inputSearchBox = document.getElementById('searchSite');
-            inputSearchBox.addEventListener('keyup', function (e) {
-                if (!inputSearchBox.value) {
-                    updateInterface();
-                }
-                clearTimeout(timeout);
-                timeout = setTimeout(function () {
-                    getPage(getCurrentPage(), inputSearchBox.value);
-                    document.getElementById('searchBtn').style.display = 'inline-block';
-                }, 500);
-            });
-            return [2];
-        });
+var searchData = function () {
+    var timeout = 0;
+    var inputSearchBox = document.getElementById('searchSite');
+    inputSearchBox.addEventListener('keyup', function (e) {
+        if (!inputSearchBox.value) {
+            updateInterface();
+        }
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+            getPage(getCurrentPage(), inputSearchBox.value);
+            document.getElementById('searchBtn').style.display = 'inline-block';
+        }, 500);
     });
-}
+};
 var searchClear = function () {
     var inputSearchBox = document.getElementById('searchSite');
     if (inputSearchBox.value !== '') {
@@ -280,15 +263,19 @@ var itemWithSearchHighlight = function (itemToHighlight, searchedFor) {
 var seconds = 5;
 var showCountDown = function () {
     seconds -= 1;
-    document.getElementById('countdown').innerHTML = "<h4>You will be redirect to the homepage in " + seconds + " seconds.</h4><img id=\"timer\" src=\"https://chriscorchado.com/images/timer.gif\" />";
+    document.getElementById('contact').style.padding = '50px';
+    document.getElementById('contact').innerHTML = "\n    <h2>Thanks for the Feedback</h2>\n    <h4>You will be redirected to the homepage in " + seconds + " seconds.</h4><img id=\"timer\" src=\"https://chriscorchado.com/images/timer.gif\" />";
 };
 var renderPage = function (data, page, searchedFor, next, prev) {
-    if (page == 'contact') {
-        $('#contact-link').addClass('nav-item-active');
-        $('.container').html(data.toString()).fadeIn(300);
-        document.getElementById('profiles').style.display = 'none';
+    document.getElementById('preloader').style.display = 'none';
+    if (page == 'about') {
         document.getElementById('search-container').style.display = 'none';
-        document.getElementById('preloader').style.display = 'none';
+        document.getElementById('profiles').style.display = 'block';
+        document.getElementById('logo').getElementsByTagName('img')[0].style.border =
+            '1px dashed #7399EA';
+    }
+    if (page == 'contact') {
+        $('.container').html(data.toString()).fadeIn(300);
         var loc_1 = location.toString().indexOf('contact.html?submitted');
         if (loc_1 !== -1) {
             setInterval(showCountDown, 1000);
@@ -297,19 +284,17 @@ var renderPage = function (data, page, searchedFor, next, prev) {
             }, seconds * 1000);
         }
         else {
+            $('#contact-link').addClass('nav-item-active');
+            document.getElementById('edit-field-site-0-value').value = location;
             $('#edit-name').focus();
         }
         return false;
     }
     var screenshotCount = 0, imgAltCount = 0, itemCount = 0;
     var imgPieces = [''];
-    var item = '', itemBody = '', currentNavItem = '', itemGridClass = '', itemTitle = '', itemDate = '', startDate = '', endDate = '', itemJobTitle = '', itemTechnology = '', itemCompanyName = '', itemWorkType = '', itemPDF = '', section = '', projectImage = '', aboutBody = '', aboutProfiles = '';
+    var item = '', itemBody = '', currentNavItem = '', itemGridClass = '', itemTitle = '', itemDate = '', startDate = '', endDate = '', itemJobTitle = '', itemTechnology = '', itemCompanyName = '', itemWorkType = '', itemPDF = '', section = '', projectImage = '';
     var newDate = new Date();
-    if (page == 'about') {
-        document.getElementById('search-container').style.display = 'none';
-        document.getElementById('logo').getElementsByTagName('img')[0].style.border =
-            '1px dashed #7399EA';
-    }
+    var pageIsSearchable = false;
     $('#noRecords').remove();
     data.data.forEach(function (element) {
         itemTitle = element.attributes.title;
@@ -380,11 +365,6 @@ var renderPage = function (data, page, searchedFor, next, prev) {
                     ' ' +
                     newDate.getFullYear();
         }
-        if (page == 'about') {
-            var aboutData = element.attributes.body.value.toString().split('<hr />');
-            aboutBody = aboutData[0];
-            aboutProfiles = aboutData[1];
-        }
         itemTitle = itemTitle.replace('&amp;', '&');
         if (searchedFor) {
             itemTitle = itemWithSearchHighlight(itemTitle, searchedFor);
@@ -403,12 +383,14 @@ var renderPage = function (data, page, searchedFor, next, prev) {
         switch (page) {
             case 'about':
                 currentNavItem = 'about-link';
+                var aboutData = element.attributes.body.value.toString().split('<hr />');
                 item = "<h1>" + itemTitle + "</h1>";
-                item += aboutBody;
-                document.getElementById('profiles').innerHTML = aboutProfiles;
+                item += aboutData[0];
+                document.getElementById('profiles').innerHTML = aboutData[1];
                 break;
             case 'companies':
                 currentNavItem = 'companies-link';
+                pageIsSearchable = true;
                 item += "<div class=\"company-container col shadow\">";
                 item += "<div class=\"company-name\">" + itemTitle + "</div>";
                 item += "<div class=\"company-job-title\">" + itemJobTitle + "</div>";
@@ -423,6 +405,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
                 break;
             case 'courses':
                 currentNavItem = 'courses-link';
+                pageIsSearchable = true;
                 item += "<div class=\"course-box box\">";
                 item += "<h2>" + itemTitle + "</h2>";
                 item += "<div>";
@@ -439,6 +422,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
                 break;
             case 'projects':
                 currentNavItem = 'projects-link';
+                pageIsSearchable = true;
                 item += "<div class=\"project col\">";
                 item += "<div class=\"project-title\">" + itemTitle;
                 item += "<div class=\"project-company\">" + itemCompanyName + " <span class=\"project-date\">(" + itemDate + ")</span></div>";
@@ -446,15 +430,9 @@ var renderPage = function (data, page, searchedFor, next, prev) {
                 item += "<div class=\"body-container\">" + itemBody + "</div>";
                 if (imgPieces) {
                     screenshotCount = +imgPieces.length;
-                    itemGridClass = 'project-item-grid';
-                    if (screenshotCount === 2) {
-                        itemGridClass = 'project-items2 project-item-grid';
-                    }
-                    if (screenshotCount === 1) {
-                        itemGridClass = 'project-items1 project-item-grid';
-                    }
+                    itemGridClass = "project-item-grid project-items" + screenshotCount;
                     section = "<section data-featherlight-gallery data-featherlight-filter=\"a\" class=\"" + itemGridClass + "\">";
-                    var screenshotAlt_1 = Array();
+                    var screenshotAlt_1 = [];
                     element.relationships.field_screenshot.data.forEach(function (screenshot) {
                         screenshotAlt_1.push(screenshot.meta.alt);
                     });
@@ -474,17 +452,18 @@ var renderPage = function (data, page, searchedFor, next, prev) {
                         item += "<a href=\"" + img + "\" \n          data-featherlight=\"iframe\" \n          data-featherlight-iframe-frameborder=\"0\" \n          data-featherlight-iframe-allowfullscreen=\"true\" \n          data-featherlight-iframe-allow=\"autoplay; encrypted-media\"\n          data-featherlight-iframe-style=\"display:block;border:none;height:85vh;width:85vw;\" class=\"play-video\">Play Video<img src=\"images/play_vidoe_icon.png\" width=\"20\" /></a>";
                     });
                 }
-                item += "<br /><div class=\"project-technology\">" + itemTechnology + "</div>";
+                item += "<div class=\"project-technology\">" + itemTechnology + "</div>";
                 item += "</div>";
                 setPageMessage('click an image to enlarge it');
                 break;
         }
     });
     $('#' + currentNavItem).addClass('nav-item-active');
-    $('#searchSite').focus();
-    $('#preloader').hide();
     if (itemCount > 0) {
         $('.container').html(item).fadeIn(300);
+        if (pageIsSearchable) {
+            document.getElementById('search-container').style.display = 'block';
+        }
         $('a.gallery').featherlightGallery({
             previousIcon: '&#9664;',
             nextIcon: '&#9654;',
@@ -493,27 +472,27 @@ var renderPage = function (data, page, searchedFor, next, prev) {
         });
         $('section').featherlight();
     }
-    setItemCount(itemCount, page, data.passedInCount.currentCount, prev, next);
+    setItemCount(itemCount, data.passedInCount.currentCount, prev, next);
 };
 var getFullUrlByPage = function (linkToFix, page) {
     switch (page) {
         case 'companies':
-            return API_base + "/sites/default/files/company-screenshot/" + linkToFix;
+            return API_BASE + "/sites/default/files/company-screenshot/" + linkToFix;
             break;
         case 'courses':
             if (linkToFix.indexOf('.pdf') !== -1) {
-                return API_base + "/sites/default/files/award-pdf/" + linkToFix;
+                return API_BASE + "/sites/default/files/award-pdf/" + linkToFix;
             }
             else {
-                return API_base + "/sites/default/files/award-images/" + linkToFix;
+                return API_BASE + "/sites/default/files/award-images/" + linkToFix;
             }
             break;
         case 'projects':
-            return API_base + "/sites/default/files/project-screenshot/" + linkToFix;
+            return API_BASE + "/sites/default/files/project-screenshot/" + linkToFix;
             break;
     }
 };
-function setItemCount(count, page, paginationTotal, prev, next) {
+var setItemCount = function (count, paginationTotal, prev, next) {
     var dataOffset = 0;
     var dataOffsetText = '';
     var prevLink = null;
@@ -559,30 +538,31 @@ function setItemCount(count, page, paginationTotal, prev, next) {
             : "<span class=\"pager-navigation disabled\">Next</span>";
     }
     if (count < pageLimit && paginationTotal === 1) {
-        $('#pagination').html('&nbsp;');
+        $('#pagination').hide();
     }
     else {
         $('#pagination').html(prevLink + "  " + nextLink);
     }
-}
+};
 var setPageMessage = function (msg) {
     document.getElementById('msg').innerHTML = "(" + msg + ")";
+    document.getElementById('msg').style.display = 'block';
+    setTimeout(function () {
+        $('#msg').fadeOut(3000);
+    }, 2500);
 };
 var getCurrentPage = function () {
-    if (location.pathname.indexOf('/index.html') !== -1) {
-        return 'about';
-    }
-    if (location.pathname.indexOf('/companies.html') !== -1) {
-        return 'companies';
-    }
-    if (location.pathname.indexOf('/courses.html') !== -1) {
-        return 'courses';
-    }
-    if (location.pathname.indexOf('/projects.html') !== -1) {
-        return 'projects';
-    }
-    if (location.pathname.indexOf('/contact.html') !== -1) {
-        return 'contact';
+    var pageMap = {
+        index: 'about',
+        companies: 'companies',
+        courses: 'courses',
+        projects: 'projects',
+        contact: 'contact',
+    };
+    for (var page in pageMap) {
+        if (location.pathname.indexOf("/" + page + ".html") !== -1) {
+            return pageMap[page];
+        }
     }
     return 'about';
 };

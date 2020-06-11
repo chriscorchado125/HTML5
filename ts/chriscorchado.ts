@@ -1,11 +1,9 @@
 'use strict';
 
-const API_base = 'https://chriscorchado.com/drupal8';
-//const inputSearchBox = document.getElementById('searchSite')! as HTMLInputElement;
+const API_BASE = 'https://chriscorchado.com/drupal8';
 const pageLimit = 50;
 
-/* Hide container and load navigation/footer */
-$('.container').hide();
+/* Load navigation and footer */
 $('#navigation').load('includes/nav.html');
 $('#footer').load('includes/footer.html');
 
@@ -17,36 +15,41 @@ $('#footer').load('includes/footer.html');
  */
 async function getPage(page: string, search?: string, pagingURL?: string) {
   let data = null;
-  const inputSearchBox = document.getElementById('searchSite')! as HTMLInputElement;
 
-  $('#preloader').show();
+  document.getElementById('preloader').style.display = 'block';
   $('.container').hide();
 
   if (search) {
-    ga('send', 'pageview', location.pathname + '?search=' + inputSearchBox.value);
+    ga('send', 'pageview', location.pathname + '?search=' + search);
   }
 
   if (page == 'contact') {
     /* get the feedback form and javascript from the Drupal 8 site */
 
-    await fetch(`${API_base}/contact/feedback`)
+    await fetch(`${API_BASE}/contact/feedback`)
       .then((resp) => {
         return resp.ok ? resp.text() : Promise.reject(resp.statusText);
       })
       .then((document) => {
         /* get the HTML and update the URLs from relative to absolute */
         data = document.substr(0, document.indexOf('</html>') + 8);
-        data = data.replace(/\/drupal8/g, API_base);
+        data = data.replace(/\/drupal8/g, API_BASE);
 
         /* get form */
         let form = data.substr(data.indexOf('<form'), data.indexOf('</form>'));
         form = form.substr(0, form.indexOf('</form>') + 8);
 
-        /* replace form name and email label text */
+        /* remove the form style */
+        form = form.replace(
+          'class="contact-message-feedback-form contact-message-form contact-form"',
+          ''
+        );
+
+        /* replace the form name and email label text */
         form = form.replace('Your name', 'Name');
         form = form.replace('Your email address', 'Email');
 
-        /* add 'searchBtn' class to the submit button */
+        /* add 'searchBtn' style/class to the submit button */
         form = form.replace(
           'class="button button--primary js-form-submit form-submit"',
           'class="button button--primary js-form-submit form-submit searchBtn"'
@@ -57,20 +60,19 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
           data.indexOf(
             '<script type="application/json" data-drupal-selector="drupal-settings-json">'
           ),
-          data.indexOf('js"></script>')
+          data.indexOf('></script>')
         );
         script = script.substr(0, script.indexOf('</script>') + 9);
 
         /* show form or submitted message */
         if (location.toString().indexOf('submitted') !== -1) {
-          data = '<h2>Thanks for the Feedback</h2>';
-          data += '<div id="countdown"></div>';
+          data = '';
         } else {
           data = `<h1>Contact</h1>${form} ${script}`;
         }
       })
       .catch((error) => {
-        console.error(error);
+        alert(`Sorry an error has occurred: ${error}`);
       });
 
     renderPage(data, page);
@@ -83,39 +85,39 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
       switch (page) {
         case 'about':
           data = await getData(
-            `${API_base}/jsonapi/node/page?fields[node--page]=id,title,body&filter[id][operator]=CONTAINS&filter[id][value]=ca23f416-ad70-41c2-9228-52ba6577abfe`
+            `${API_BASE}/jsonapi/node/page?fields[node--page]=id,title,body&filter[id][operator]=CONTAINS&filter[id][value]=ca23f416-ad70-41c2-9228-52ba6577abfe`
           );
           break;
         case 'companies':
           if (search) {
             data = await getData(
-              `${API_base}/jsonapi/node/company?filter[or-group][group][conjunction]=OR&filter[field_company_name][operator]=CONTAINS&filter[field_company_name][value]=${search}&filter[field_company_name][condition][memberOf]=or-group&filter[field_job_title][operator]=CONTAINS&filter[field_job_title][value]=${search}&filter[field_job_title][condition][memberOf]=or-group&filter[body.value][operator]=CONTAINS&filter[body.value][value]=${search}&filter[body.value][condition][memberOf]=or-group&sort=-field_end_date&include=field_company_screenshot&page[limit]=${pageLimit}`
+              `${API_BASE}/jsonapi/node/company?filter[or-group][group][conjunction]=OR&filter[field_company_name][operator]=CONTAINS&filter[field_company_name][value]=${search}&filter[field_company_name][condition][memberOf]=or-group&filter[field_job_title][operator]=CONTAINS&filter[field_job_title][value]=${search}&filter[field_job_title][condition][memberOf]=or-group&filter[body.value][operator]=CONTAINS&filter[body.value][value]=${search}&filter[body.value][condition][memberOf]=or-group&sort=-field_end_date&include=field_company_screenshot&page[limit]=${pageLimit}`
             );
           } else {
             data = await getData(
-              `${API_base}/jsonapi/node/company?sort=-field_end_date&include=field_company_screenshot&page[limit]=${pageLimit}`
+              `${API_BASE}/jsonapi/node/company?sort=-field_end_date&include=field_company_screenshot&page[limit]=${pageLimit}`
             );
           }
           break;
         case 'courses':
           if (search) {
             data = await getData(
-              `${API_base}/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=${search}&filter[title][condition][memberOf]=or-group&filter[field_award_date][operator]=CONTAINS&filter[field_award_date][value]=${search}&filter[field_award_date][condition][memberOf]=or-group&sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=${pageLimit}`
+              `${API_BASE}/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=${search}&filter[title][condition][memberOf]=or-group&filter[field_award_date][operator]=CONTAINS&filter[field_award_date][value]=${search}&filter[field_award_date][condition][memberOf]=or-group&sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=${pageLimit}`
             );
           } else {
             data = await getData(
-              `${API_base}/jsonapi/node/awards?sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=${pageLimit}`
+              `${API_BASE}/jsonapi/node/awards?sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=${pageLimit}`
             );
           }
           break;
         case 'projects':
           if (search) {
             data = await getData(
-              `${API_base}/jsonapi/node/project?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=${search}&filter[title][condition][memberOf]=or-group&filter[taxonomy_term--tags][path]=field_project_technology.name&filter[taxonomy_term--tags][operator]=CONTAINS&filter[taxonomy_term--tags][value]=${search}&filter[taxonomy_term--tags][condition][memberOf]=or-group&filter[field_company.title][operator]=CONTAINS&filter[field_company.title][value]=${search}&filter[field_company.title][condition][memberOf]=or-group&filter[field_screenshot.meta.alt][operator]=CONTAINS&filter[field_screenshot.meta.alt][value]=${search}&filter[field_screenshot.meta.alt][condition][memberOf]=or-group&filter[field_date][operator]=CONTAINS&filter[field_date][value]=${search}&filter[field_date][condition][memberOf]=or-group&sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&page[limit]=${pageLimit}`
+              `${API_BASE}/jsonapi/node/project?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=${search}&filter[title][condition][memberOf]=or-group&filter[taxonomy_term--tags][path]=field_project_technology.name&filter[taxonomy_term--tags][operator]=CONTAINS&filter[taxonomy_term--tags][value]=${search}&filter[taxonomy_term--tags][condition][memberOf]=or-group&filter[field_company.title][operator]=CONTAINS&filter[field_company.title][value]=${search}&filter[field_company.title][condition][memberOf]=or-group&filter[field_screenshot.meta.alt][operator]=CONTAINS&filter[field_screenshot.meta.alt][value]=${search}&filter[field_screenshot.meta.alt][condition][memberOf]=or-group&filter[field_date][operator]=CONTAINS&filter[field_date][value]=${search}&filter[field_date][condition][memberOf]=or-group&sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&page[limit]=${pageLimit}`
             );
           } else {
             data = await getData(
-              `${API_base}/jsonapi/node/project?sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&page[limit]=${pageLimit}`
+              `${API_BASE}/jsonapi/node/project?sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&page[limit]=${pageLimit}`
             );
           }
           break;
@@ -123,7 +125,7 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
     }
   }
 
-  /* create object with pagination info */
+  /* create object with current pagination count to append to data */
   let passedInCount = {
     currentCount: document.getElementById('lastCount')
       ? document.getElementById('lastCount').textContent
@@ -140,7 +142,7 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
 }
 
 /**
- * Render UI
+ * Show/Hide UI elements
  * @param {string=} search - (optional) searched for text
  */
 const updateInterface = (search?: string) => {
@@ -151,21 +153,13 @@ const updateInterface = (search?: string) => {
     document.getElementById('searchBtn').style.display = '';
   }
 
-  if (document.getElementById('preloader')) {
-    document.getElementById('preloader').style.display = action;
-  }
-  if (document.getElementById('searchCount')) {
-    document.getElementById('searchCount').style.display = action;
-  }
-  if (document.getElementById('paging-info')) {
-    document.getElementById('paging-info').style.display = action;
-  }
-  if (document.getElementById('pagination')) {
-    document.getElementById('pagination').style.display = action;
-  }
-  if (document.getElementById('msg')) {
-    document.getElementById('msg').style.display = action;
-  }
+  let uiElements = ['preloader', 'searchCount', 'paging-info', 'pagination', 'msg'];
+
+  uiElements.forEach((element) => {
+    if (document.getElementById(element)) {
+      document.getElementById(element).style.display = action;
+    }
+  });
 
   if (!$('#noRecords').html() && search) {
     $('body').append(
@@ -195,13 +189,12 @@ const getData = (dataURL: string) => {
 /**
  * Search data after the user pauses typing for half a second
  */
-async function searchData() {
+const searchData = () => {
   let timeout = 0;
   const inputSearchBox = document.getElementById('searchSite')! as HTMLInputElement;
 
   inputSearchBox.addEventListener('keyup', function (e) {
-    
-    if(!inputSearchBox.value){
+    if (!inputSearchBox.value) {
       updateInterface();
     }
 
@@ -213,7 +206,7 @@ async function searchData() {
       document.getElementById('searchBtn').style.display = 'inline-block';
     }, 500);
   });
-}
+};
 
 /**
  * Clear current search
@@ -235,7 +228,6 @@ const searchClear = () => {
  * @return {string} - allowed characters
  */
 const searchFilter = (event: KeyboardEvent) => {
-
   let charCode = event.keyCode || event.which;
 
   return (
@@ -320,9 +312,10 @@ const itemWithSearchHighlight = (itemToHighlight: string, searchedFor: string) =
 let seconds = 5;
 const showCountDown = () => {
   seconds -= 1;
-  document.getElementById(
-    'countdown'
-  ).innerHTML = `<h4>You will be redirect to the homepage in ${seconds} seconds.</h4><img id="timer" src="https://chriscorchado.com/images/timer.gif" />`;
+  document.getElementById('contact').style.padding = '50px';
+  document.getElementById('contact').innerHTML = `
+    <h2>Thanks for the Feedback</h2>
+    <h4>You will be redirected to the homepage in ${seconds} seconds.</h4><img id="timer" src="https://chriscorchado.com/images/timer.gif" />`;
 };
 
 /**
@@ -340,15 +333,21 @@ const renderPage = (
   next?: Object,
   prev?: Object
 ) => {
+  document.getElementById('preloader').style.display = 'none';
+
+  // add border to logo and hide search box on About page (homepage)
+  if (page == 'about') {
+    document.getElementById('search-container').style.display = 'none';
+    document.getElementById('profiles').style.display = 'block';
+
+    document.getElementById('logo').getElementsByTagName('img')[0].style.border =
+      '1px dashed #7399EA';
+  }
+
+  /* show the form or the thank you screen after submission which fowards to the homepage  */
   if (page == 'contact') {
-    $('#contact-link').addClass('nav-item-active');
     $('.container').html(data.toString()).fadeIn(300);
 
-    document.getElementById('profiles').style.display = 'none';
-    document.getElementById('search-container').style.display = 'none';
-    document.getElementById('preloader').style.display = 'none';
-
-    /* foward to the homepage after submission */
     let loc = location.toString().indexOf('contact.html?submitted');
     if (loc !== -1) {
       setInterval(showCountDown, 1000);
@@ -358,6 +357,11 @@ const renderPage = (
         window.location.replace(location.toString().substr(0, loc));
       }, seconds * 1000);
     } else {
+      $('#contact-link').addClass('nav-item-active');
+
+      //capture current site
+      document.getElementById('edit-field-site-0-value').value = location;
+
       $('#edit-name').focus();
     }
     return false;
@@ -383,19 +387,11 @@ const renderPage = (
     itemWorkType = '',
     itemPDF = '',
     section = '',
-    projectImage = '',
-    aboutBody = '',
-    aboutProfiles = '';
+    projectImage = '';
 
   let newDate = new Date();
 
-  // add border to logo and hide search box on About page
-  if (page == 'about') {
-    document.getElementById('search-container').style.display = 'none';
-
-    document.getElementById('logo').getElementsByTagName('img')[0].style.border =
-      '1px dashed #7399EA';
-  }
+  let pageIsSearchable = false;
 
   $('#noRecords').remove();
 
@@ -407,7 +403,6 @@ const renderPage = (
     startDate = element.attributes.field_start_date;
     endDate = element.attributes.field_end_date;
     itemWorkType = element.attributes.field_type = 'full' ? 'Full-Time' : 'Contract';
-
     itemTechnology = '';
     imgPieces = [];
 
@@ -503,12 +498,6 @@ const renderPage = (
         newDate.getFullYear();
     }
 
-    if (page == 'about') {
-      let aboutData = element.attributes.body.value.toString().split('<hr />');
-      aboutBody = aboutData[0];
-      aboutProfiles = aboutData[1];
-    }
-
     itemTitle = itemTitle.replace('&amp;', '&');
 
     if (searchedFor) {
@@ -532,14 +521,16 @@ const renderPage = (
     switch (page) {
       case 'about':
         currentNavItem = 'about-link';
+        let aboutData = element.attributes.body.value.toString().split('<hr />');
 
         item = `<h1>${itemTitle}</h1>`;
-        item += aboutBody;
+        item += aboutData[0];
 
-        document.getElementById('profiles').innerHTML = aboutProfiles;
+        document.getElementById('profiles').innerHTML = aboutData[1];
         break;
       case 'companies':
         currentNavItem = 'companies-link';
+        pageIsSearchable = true;
 
         item += `<div class="company-container col shadow">`;
         item += `<div class="company-name">${itemTitle}</div>`;
@@ -560,9 +551,9 @@ const renderPage = (
 
         item += `</div>`;
         break;
-
       case 'courses':
         currentNavItem = 'courses-link';
+        pageIsSearchable = true;
 
         item += `<div class="course-box box">`;
         item += `<h2>${itemTitle}</h2>`;
@@ -576,7 +567,7 @@ const renderPage = (
           )}" target="_blank"><img src="${getFullUrlByPage(
             imgPieces[0],
             page
-          )}" alt="${itemTitle.replace(/(<([^>]+)>)/gi, '')}" /></a>`;
+          )}" alt="${itemTitle.replace(/(<([^>]+)>)/gi, '')}" /></a>`; // replace HTML for ALT tag
         } else {
           item += `<img src="${getFullUrlByPage(
             imgPieces[0],
@@ -585,16 +576,15 @@ const renderPage = (
         }
 
         item += `</div>`;
-
         item += `<div class="course-date">${itemDate}</div>`;
-
-        item += `</div>`;
+        item += `</div>`; //course-box box
 
         setPageMessage('click an image to view the PDF');
         break;
 
       case 'projects':
         currentNavItem = 'projects-link';
+        pageIsSearchable = true;
 
         item += `<div class="project col">`;
 
@@ -608,19 +598,12 @@ const renderPage = (
         if (imgPieces) {
           screenshotCount = +imgPieces.length;
 
-          itemGridClass = 'project-item-grid';
-
-          if (screenshotCount === 2) {
-            itemGridClass = 'project-items2 project-item-grid';
-          }
-          if (screenshotCount === 1) {
-            itemGridClass = 'project-items1 project-item-grid';
-          }
+          itemGridClass = `project-item-grid project-items${screenshotCount}`;
 
           section = `<section data-featherlight-gallery data-featherlight-filter="a" class="${itemGridClass}">`;
 
-          let screenshotAlt = Array<[]>;
-          element.relationships.field_screenshot.data.forEach((screenshot: Array<[]>) => {
+          let screenshotAlt = [];
+          element.relationships.field_screenshot.data.forEach((screenshot: String[]) => {
             screenshotAlt.push(screenshot.meta.alt);
           });
 
@@ -643,7 +626,6 @@ const renderPage = (
           });
 
           section += `</section>`;
-
           item += section;
         }
 
@@ -659,8 +641,7 @@ const renderPage = (
           });
         }
 
-        item += `<br /><div class="project-technology">${itemTechnology}</div>`;
-
+        item += `<div class="project-technology">${itemTechnology}</div>`;
         item += `</div>`;
 
         setPageMessage('click an image to enlarge it');
@@ -670,12 +651,12 @@ const renderPage = (
 
   $('#' + currentNavItem).addClass('nav-item-active');
 
-  $('#searchSite').focus();
-
-  $('#preloader').hide();
-
   if (itemCount > 0) {
     $('.container').html(item).fadeIn(300);
+
+    if (pageIsSearchable) {
+      document.getElementById('search-container').style.display = 'block';
+    }
 
     $('a.gallery').featherlightGallery({
       previousIcon: '&#9664;' /* Code that is used as previous icon */,
@@ -687,7 +668,7 @@ const renderPage = (
     $('section').featherlight(); // must init after adding items
   }
 
-  setItemCount(itemCount, page, data.passedInCount.currentCount, prev, next);
+  setItemCount(itemCount, data.passedInCount.currentCount, prev, next);
 };
 
 /**
@@ -699,17 +680,17 @@ const renderPage = (
 const getFullUrlByPage = (linkToFix: string, page: string) => {
   switch (page) {
     case 'companies':
-      return `${API_base}/sites/default/files/company-screenshot/${linkToFix}`;
+      return `${API_BASE}/sites/default/files/company-screenshot/${linkToFix}`;
       break;
     case 'courses':
       if (linkToFix.indexOf('.pdf') !== -1) {
-        return `${API_base}/sites/default/files/award-pdf/${linkToFix}`;
+        return `${API_BASE}/sites/default/files/award-pdf/${linkToFix}`;
       } else {
-        return `${API_base}/sites/default/files/award-images/${linkToFix}`;
+        return `${API_BASE}/sites/default/files/award-images/${linkToFix}`;
       }
       break;
     case 'projects':
-      return `${API_base}/sites/default/files/project-screenshot/${linkToFix}`;
+      return `${API_BASE}/sites/default/files/project-screenshot/${linkToFix}`;
       break;
   }
 };
@@ -717,19 +698,16 @@ const getFullUrlByPage = (linkToFix: string, page: string) => {
 /**
  * Set/update the current page item counts
  * @param {int} count - number of items
- * @param {string} page - page name
  * @param {int} paginationTotal - last pagination value
  * @param {object=} prev - (optional) - link to previous results
  * @param {object=} next - (optional) - link to next results
-
  */
-function setItemCount(
+const setItemCount = (
   count: number,
-  page: string,
   paginationTotal: number,
   prev?: object,
   next?: object
-) {
+) => {
   let dataOffset = 0;
   let dataOffsetText = '';
   let prevLink = null;
@@ -750,6 +728,7 @@ function setItemCount(
   /* handle searching  */
   if ($('#searchSite').val()) {
     dataOffsetText = `${count} ${count == 1 ? 'Item' : 'Items'} `;
+
     if (count <= pageLimit) {
       $('#searchCount').html(count + `  ${count == 1 ? 'Item' : 'Items'}`);
     } else {
@@ -757,7 +736,7 @@ function setItemCount(
     }
   }
 
-  /* to paginate or not to paginate! */
+  /* Show pagination if there is a next or prev link */
   if (!next && !prev) {
     document.getElementById(
       'searchCount'
@@ -782,11 +761,13 @@ function setItemCount(
         }</span>`;
       }
     }
+
     /* add item counts to page */
     document.getElementById(
       'searchCount'
     ).innerHTML = `<span id="paging-info">${dataOffsetText}</span>`;
 
+    /* configure next and prev links */
     prevLink = prev
       ? `<a href="#" class="pager-navigation" onclick="getPage(getCurrentPage(), document.getElementById('searchSite').value,'${prev.href}')">Prev</a>`
       : `<span class="pager-navigation disabled">Prev</span>`;
@@ -795,13 +776,13 @@ function setItemCount(
       : `<span class="pager-navigation disabled">Next</span>`;
   }
 
-  /* hide pagination when the item count is less than the page limit and on the first page*/
+  /* hide pagination when the item count is less than the page limit and on the first page */
   if (count < pageLimit && paginationTotal === 1) {
-    $('#pagination').html('&nbsp;');
+    $('#pagination').hide();
   } else {
     $('#pagination').html(`${prevLink}  ${nextLink}`);
   }
-}
+};
 
 /**
  * Set page message
@@ -809,31 +790,32 @@ function setItemCount(
  */
 const setPageMessage = (msg: string) => {
   document.getElementById('msg').innerHTML = `(${msg})`;
+  document.getElementById('msg').style.display = 'block';
+
+  setTimeout(function () {
+    //document.getElementById('msg').style.display = 'none';
+    $('#msg').fadeOut(3000);
+  }, 2500);
 };
 
 /**
  * Get current page - defaults to "about"
+ * TODO: get pages via API
  * @return {string} - page name
  */
 const getCurrentPage = () => {
-  if (location.pathname.indexOf('/index.html') !== -1) {
-    return 'about';
-  }
+  let pageMap = {
+    index: 'about',
+    companies: 'companies',
+    courses: 'courses',
+    projects: 'projects',
+    contact: 'contact',
+  };
 
-  if (location.pathname.indexOf('/companies.html') !== -1) {
-    return 'companies';
-  }
-
-  if (location.pathname.indexOf('/courses.html') !== -1) {
-    return 'courses';
-  }
-
-  if (location.pathname.indexOf('/projects.html') !== -1) {
-    return 'projects';
-  }
-
-  if (location.pathname.indexOf('/contact.html') !== -1) {
-    return 'contact';
+  for (let page in pageMap) {
+    if (location.pathname.indexOf(`/${page}.html`) !== -1) {
+      return pageMap[page];
+    }
   }
   // default
   return 'about';

@@ -1,25 +1,27 @@
 .container {
   margin-top: 80px !important;
-  display: flex;
-  flex-flow: column;
-  height: vh; }
-
-.contact-form {
   margin: auto; }
-  .contact-form h1 {
+  .container h1 {
     color: #7399ea; }
 
 #contact-message-feedback-form {
-  background-color: #f8f4f4;
-  padding: 10px 10px 50px 10px;
+  margin: auto;
+  background-color: #e2eafb;
+  padding: 10px 10px 30px 10px;
   text-align: center !important;
   margin-top: 20px;
   max-width: 600px;
   border-radius: 10px;
+  /* holds the current page url */
   /* subject align */
   /* display the name and email fiels next to each other */ }
   #contact-message-feedback-form label {
     display: block; }
+  #contact-message-feedback-form #thank-you {
+    background-color: red;
+    margin-top: 50px; }
+  #contact-message-feedback-form #edit-field-site-wrapper {
+    display: none; }
   #contact-message-feedback-form .form-text {
     display: inline !important; }
   #contact-message-feedback-form #edit-name {
@@ -46,14 +48,24 @@
 /* stack name and email fields */
 @media (max-width: 800px) {
   .container {
-    margin-top: 50px !important; }
+    margin-top: 50px !important;
+    padding: 5px 0; }
+    .container #contact-message-feedback-form {
+      width: 100%;
+      border-radius: 0; }
     .container h1 {
-      margin: 30px; }
+      margin-top: 50px; }
 
   .js-form-item-name {
     display: block !important; }
 
   .js-form-item-mail {
     display: block !important; } }
+@media (max-width: 700px) {
+  .container {
+    margin-top: 50px !important; } }
+@media (max-width: 500px) {
+  .container {
+    margin-top: 40px !important; } }
 
 /*# sourceMappingURL=contact.css.map */

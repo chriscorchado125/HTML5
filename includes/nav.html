@@ -30,11 +30,12 @@
       >
     </div>
 
-    <div id="profiles">&nbsp;</div>
+    <div id="profiles"></div>
+  </div>
 
-    <div id="search-container">
+  <div id="search-container">
+    <div class="input-wrapper">
       <span id="searchCount">Loading...</span>
-
       <input
         type="text"
         id="searchSite"
@@ -43,11 +44,10 @@
         onkeypress="return searchFilter(event)"
         class="ccBtn"
       />
-
       <button id="searchBtn" class="searchBtn" onclick="searchClear()">clear</button>
+
       <div id="pagination"></div>
     </div>
-
-    <div id="msg">&nbsp;</div>
   </div>
+  <div id="msg">&nbsp;</div>
 </nav>

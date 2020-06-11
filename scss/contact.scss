@@ -2,27 +2,34 @@
 
 .container {
   margin-top: 80px !important;
-  display: flex;
-  flex-flow: column;
-  height: vh;
-}
-
-.contact-form {
   margin: auto;
+
   h1 {
     color: $main_color;
   }
 }
 
 #contact-message-feedback-form {
-  background-color: $item_bg_color;
-  padding: 10px 10px 50px 10px;
+  margin: auto;
+  background-color: $main_color_light;
+  padding: 10px 10px 30px 10px;
   text-align: center !important;
   margin-top: 20px;
   max-width: 600px;
   border-radius: 10px;
+
   label {
     display: block;
+  }
+
+  #thank-you {
+    background-color: red;
+    margin-top: 50px;
+  }
+
+  /* holds the current page url */
+  #edit-field-site-wrapper {
+    display: none;
   }
 
   /* subject align */
@@ -70,8 +77,15 @@
 @media (max-width: 800px) {
   .container {
     margin-top: 50px !important;
+    padding: 5px 0;
+
+    #contact-message-feedback-form {
+      width: 100%;
+      border-radius: 0;
+    }
+
     h1 {
-      margin: 30px;
+      margin-top: 50px;
     }
   }
   .js-form-item-name {
@@ -79,5 +93,17 @@
   }
   .js-form-item-mail {
     display: block !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .container {
+    margin-top: 50px !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .container {
+    margin-top: 40px !important;
   }
 }

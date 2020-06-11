@@ -2,11 +2,16 @@
 @import 'navigation.scss';
 @import 'hover-animation.scss';
 
+html,
 body {
-  display: flex;
-  flex-direction: column;
+  padding: 0;
+  margin: 0;
   box-sizing: border-box;
+}
+
+body {
   background-image: url(../images/cclogobg.jpg);
+  background-attachment: fixed;
 }
 
 #logo > img {
@@ -23,35 +28,55 @@ body {
   font-size: 26px;
   color: white;
   text-shadow: 2px 2px 4px #000000;
-}
 
-#preloader > img {
-  width: 90px;
-}
-
-/* space for top navigation */
-.container {
-  margin-top: 80px;
-  margin: auto;
-  text-align: center;
-  padding: 20px 5px 100px 5px;
-  background-color: #fff;
+  img {
+    width: 90px;
+  }
 }
 
 h1 {
   font-size: 30px;
 }
 
+#profiles {
+  margin-top: -50px;
+  margin-bottom: 10px;
+  float: right;
+  max-width: 380px;
+  text-align: center;
+  font-size: 12px;
+
+  .icon {
+    display: inline-block;
+    width: 50px;
+    padding: 0 5px;
+    margin: 0 5px;
+
+    img {
+      height: 30px;
+    }
+  }
+}
+
+/* space for top navigation */
+.container {
+  margin: auto;
+  margin-top: 90px;
+  text-align: center;
+  padding: 20px 5px 100px 5px;
+  background-color: #fff;
+}
+
 #noRecords {
-  background-color: $off_white;
+  font-size: 36px;
+  max-width: 700px;
   border-radius: 5px;
   color: $main_color;
-  font-size: 36px;
-  margin: auto;
-  margin-top: 150px !important;
-  max-width: 700px;
+  background-color: $off_white;
   padding: 15px;
   text-align: center;
+  margin: auto;
+  margin-top: 150px !important;
 }
 
 a:link {
@@ -59,11 +84,12 @@ a:link {
 }
 
 #msg {
-  margin: auto;
-  width: 300px;
   text-align: center;
-  margin-top: -25px;
-  font-size: 12px;
+  width: 100%;
+  display: none;
+  margin-top: -70px;
+  position: absolute;
+  font-size: 11px;
 }
 
 .shadow {
@@ -79,46 +105,6 @@ a:link {
   width: 35px;
 }
 
-/* About page */
-
-.about {
-  p {
-    text-align: left !important;
-    padding: 5px 100px;
-  }
-  h1 {
-    color: darken($main_color, 15%);
-    margin: 20px 10px;
-  }
-}
-
-/* resume, linkedin, azure */
-#profiles {
-  max-width: 300px;
-  margin-top: -70px;
-  float: right;
-  a {
-    font-size: 10px;
-  }
-  .icon {
-    width: 70px;
-    padding: 10px;
-    margin-left: 10px;
-    text-align: center;
-    display: inline-block;
-    img {
-      height: 25px;
-    }
-    span {
-      display: block;
-    }
-  }
-}
-
-#workstation-comparison {
-  text-align: center !important;
-}
-
 #footer {
   display: flex;
   flex-direction: row;
@@ -127,57 +113,70 @@ a:link {
   position: fixed;
   width: 100%;
   bottom: 0;
-  padding: 10px;
+  padding: 3px;
   background-color: $off_white;
   border-top: 2px solid $main_color;
-  #footer-text {
-    width: 300px;
-    display: inline-block;
-    background-color: orange;
-  }
 }
 
 .site-version {
   display: inline-block;
   max-width: 120px;
   text-align: center;
-  padding: 0 5px 5px 5px;
+  padding: 0 5px 0 5px;
   font-size: 10px;
+
   img {
-    width: 50px;
+    width: 30px;
   }
 }
 
-@media (max-width: 800px) {
-  .about p {
-    padding: 5px 80px;
+.about {
+  h1 {
+    color: $main_color;
+  }
+  p {
+    text-align: left;
+    padding: 5px 60px;
   }
 }
 
 @media (max-width: 700px) {
+  #msg {
+    margin-top: -120px;
+  }
+
+  #profiles {
+    margin: 0;
+    float: none;
+    max-width: 100%;
+    text-align: center;
+    font-size: 11px;
+
+    .icon {
+      img {
+        height: 25px;
+      }
+    }
+  }
+
   h1 {
     font-size: 20px;
   }
 
   .about {
-    margin-top: 100px !important;
+    margin-top: 120px;
+
     p {
       padding: 5px 30px;
     }
   }
+}
 
-  #profiles {
-    margin: auto;
-    margin-bottom: 10px;
-    float: none;
-    max-width: 80%;
-    text-align: center;
-    .icon {
-      width: 50px;
-      padding: 0px;
-      img {
-        height: 20px;
-      }
-    }
+@media (max-width: 600px) {
+  #searchSite {
+    width: 120px;
+  }
+  #footer {
+    display: none;
   }
 }
