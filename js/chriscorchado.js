@@ -475,22 +475,24 @@ var renderPage = function (data, page, searchedFor, next, prev) {
     setItemCount(itemCount, data.passedInCount.currentCount, prev, next);
 };
 var getFullUrlByPage = function (linkToFix, page) {
+    var pathToResource = 'No Path Found';
     switch (page) {
         case 'companies':
-            return API_BASE + "/sites/default/files/company-screenshot/" + linkToFix;
+            pathToResource = 'company-screenshot';
             break;
         case 'courses':
             if (linkToFix.indexOf('.pdf') !== -1) {
-                return API_BASE + "/sites/default/files/award-pdf/" + linkToFix;
+                pathToResource = 'award-pdf';
             }
             else {
-                return API_BASE + "/sites/default/files/award-images/" + linkToFix;
+                pathToResource = 'award-images';
             }
             break;
         case 'projects':
-            return API_BASE + "/sites/default/files/project-screenshot/" + linkToFix;
+            pathToResource = 'project-screenshot';
             break;
     }
+    return API_BASE + "/sites/default/files/" + pathToResource + "/" + linkToFix;
 };
 var setItemCount = function (count, paginationTotal, prev, next) {
     var dataOffset = 0;
