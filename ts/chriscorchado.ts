@@ -319,6 +319,18 @@ const showCountDown = () => {
 };
 
 /**
+ * Change date to month as text plus the 4 digit year
+ * @param {string} dateString - date value
+ * @return {string} - month and year - example: January 2020
+ */
+const getMonthYear = (dateString: string) => {
+
+  let newDate = new Date(dateString);
+
+  return newDate.toLocaleString('default', { month: 'long' }) + ' ' + newDate.getFullYear().toString();
+}
+
+/**
  * Create HTML for page
  * @param {object[]} data - page items
  * @param {string} page - page name
@@ -472,30 +484,17 @@ const renderPage = (
       }
 
       if (page == 'courses') {
-        // month and year
-        newDate = new Date(itemDate);
-        itemDate =
-          newDate.toLocaleString('default', { month: 'long' }) +
-          ' ' +
-          newDate.getFullYear();
+        itemDate = getMonthYear(itemDate)
       }
     }
 
     /* Work History Dates - month and year*/
     if (startDate) {
-      newDate = new Date(startDate);
-      startDate =
-        newDate.toLocaleString('default', { month: 'long' }) +
-        ' ' +
-        newDate.getFullYear();
+      startDate = getMonthYear(startDate)
     }
 
     if (endDate) {
-      newDate = new Date(endDate);
-      endDate =
-        newDate.toLocaleString('default', { month: 'long' }) +
-        ' ' +
-        newDate.getFullYear();
+      endDate = getMonthYear(endDate)
     }
 
     itemTitle = itemTitle.replace('&amp;', '&');

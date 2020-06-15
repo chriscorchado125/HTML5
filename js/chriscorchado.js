@@ -266,6 +266,10 @@ var showCountDown = function () {
     document.getElementById('contact').style.padding = '50px';
     document.getElementById('contact').innerHTML = "\n    <h2>Thanks for the Feedback</h2>\n    <h4>You will be redirected to the homepage in " + seconds + " seconds.</h4><img id=\"timer\" src=\"https://chriscorchado.com/images/timer.gif\" />";
 };
+var getMonthYear = function (dateString) {
+    var newDate = new Date(dateString);
+    return newDate.toLocaleString('default', { month: 'long' }) + ' ' + newDate.getFullYear().toString();
+};
 var renderPage = function (data, page, searchedFor, next, prev) {
     document.getElementById('preloader').style.display = 'none';
     if (page == 'about') {
@@ -344,26 +348,14 @@ var renderPage = function (data, page, searchedFor, next, prev) {
                 itemDate = itemDate.split('-')[0];
             }
             if (page == 'courses') {
-                newDate = new Date(itemDate);
-                itemDate =
-                    newDate.toLocaleString('default', { month: 'long' }) +
-                        ' ' +
-                        newDate.getFullYear();
+                itemDate = getMonthYear(itemDate);
             }
         }
         if (startDate) {
-            newDate = new Date(startDate);
-            startDate =
-                newDate.toLocaleString('default', { month: 'long' }) +
-                    ' ' +
-                    newDate.getFullYear();
+            startDate = getMonthYear(startDate);
         }
         if (endDate) {
-            newDate = new Date(endDate);
-            endDate =
-                newDate.toLocaleString('default', { month: 'long' }) +
-                    ' ' +
-                    newDate.getFullYear();
+            endDate = getMonthYear(endDate);
         }
         itemTitle = itemTitle.replace('&amp;', '&');
         if (searchedFor) {
