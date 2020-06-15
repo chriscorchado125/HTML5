@@ -46,7 +46,7 @@
 
   /* search textbox */
   #searchSite {
-    width: 150px;
+    width: 130px;
   }
 
   /* search button */
@@ -65,7 +65,7 @@
   }
 
   #pagination {
-    padding-left: 100px;
+    text-align: center;
     /* next / prev text */
     .pager-navigation {
       margin: 5px 5px 0px 5px;
@@ -108,5 +108,12 @@
 @media (max-width: 500px) {
   #logo img {
     height: 50px;
+  }
+  #pagination {
+    /* next / prev text */
+    .pager-navigation {
+      font-size: 12px;
+      margin: 0;
+    }
   }
 }

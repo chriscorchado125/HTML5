@@ -33,7 +33,7 @@
   #search-container .input-wrapper {
     display: inline-block; }
   #search-container #searchSite {
-    width: 150px; }
+    width: 130px; }
   #search-container .searchBtn {
     padding: 3px;
     margin-top: -3px;
@@ -45,7 +45,7 @@
     box-shadow: 0 0 #fff;
     background-color: #7399ea; }
   #search-container #pagination {
-    padding-left: 100px;
+    text-align: center;
     /* next / prev text */ }
     #search-container #pagination .pager-navigation {
       margin: 5px 5px 0px 5px; }
@@ -75,7 +75,13 @@
       padding-left: 0; } }
 @media (max-width: 500px) {
   #logo img {
-    height: 50px; } }
+    height: 50px; }
+
+  #pagination {
+    /* next / prev text */ }
+    #pagination .pager-navigation {
+      font-size: 12px;
+      margin: 0; } }
 .box {
   position: relative;
   display: inline-block;

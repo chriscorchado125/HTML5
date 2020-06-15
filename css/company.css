@@ -1,6 +1,8 @@
+.container {
+  margin-top: 80px; }
+
 .company {
-  display: grid;
-  margin-top: 85px; }
+  display: grid; }
 
 /* individual company container */
 .company-container {

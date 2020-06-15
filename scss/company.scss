@@ -1,8 +1,10 @@
 @import 'variables.scss';
 
+.container {
+  margin-top: 80px;
+}
 .company {
   display: grid;
-  margin-top: 85px;
 }
 
 /* individual company container */
