@@ -139,6 +139,9 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
   } else {
     updateInterface(search);
   }
+
+  /* update menu via API */
+  updateMenuPages(page, 'navbar-nav');
 }
 
 /**
@@ -324,11 +327,14 @@ const showCountDown = () => {
  * @return {string} - month and year - example: January 2020
  */
 const getMonthYear = (dateString: string) => {
-
   let newDate = new Date(dateString);
 
-  return newDate.toLocaleString('default', { month: 'long' }) + ' ' + newDate.getFullYear().toString();
-}
+  return (
+    newDate.toLocaleString('default', { month: 'long' }) +
+    ' ' +
+    newDate.getFullYear().toString()
+  );
+};
 
 /**
  * Create HTML for page
@@ -484,17 +490,17 @@ const renderPage = (
       }
 
       if (page == 'courses') {
-        itemDate = getMonthYear(itemDate)
+        itemDate = getMonthYear(itemDate);
       }
     }
 
     /* Work History Dates - month and year*/
     if (startDate) {
-      startDate = getMonthYear(startDate)
+      startDate = getMonthYear(startDate);
     }
 
     if (endDate) {
-      endDate = getMonthYear(endDate)
+      endDate = getMonthYear(endDate);
     }
 
     itemTitle = itemTitle.replace('&amp;', '&');
@@ -756,12 +762,12 @@ const setItemCount = (
       if (currentCount !== 0) {
         dataOffsetText = `Items ${
           currentCount * pageLimit - pageLimit
-          }-<span id="lastCount">${currentCount * pageLimit}</span>`;
+        }-<span id="lastCount">${currentCount * pageLimit}</span>`;
       } else {
         /* generate last page item counts*/
         dataOffsetText = `Items ${paginationTotal}-<span id="lastCount">${
           +paginationTotal + count
-          }</span>`;
+        }</span>`;
       }
     }
 
@@ -802,26 +808,74 @@ const setPageMessage = (msg: string) => {
 };
 
 /**
- * Get current page - defaults to "about"
- * TODO: get pages via API
+ * Replace static navigation with data from the menu API
+ * @param {string} currentPage - page name
+ * @param {string} targetContainer - id of html container for the menu items
+ */
+async function updateMenuPages(currentPage: string, targetContainer: string) {
+  try {
+    await fetch(`${API_BASE}/api/menu_items/main?_format=json`)
+      .then((resp) => {
+        return resp.ok ? resp.json() : Promise.reject(resp.statusText);
+      })
+      .then((pageData) => {
+        let pageName = '';
+        let pageLink = '';
+
+        let homepageStyle = '';
+        if (currentPage == 'about') {
+          homepageStyle = 'border: 1px dashed rgb(115, 153, 234);';
+        }
+
+        let generatedPageLinks = `<a href="index.html" class="navbar-brand" id="logo" style="${homepageStyle}">
+          <img src="./images/chriscorchado-initials-logo.png" title="Home" alt="Home">
+        </a>`;
+
+        for (let page in pageData) {
+          pageName = pageData[page].title;
+          if (pageName == 'Home' || pageName == 'About' || !pageData[page].enabled) {
+            continue;
+          }
+
+          let activeNavItem = '';
+          if (currentPage == pageName.toLowerCase()) {
+            activeNavItem = 'nav-item-active';
+          }
+
+          pageLink = pageName; // capture correct link name before pageName is updated
+          if (pageName == 'Companies') pageName = 'History';
+
+          generatedPageLinks += `<a href="${pageLink.toLowerCase()}.html" 
+          class="nav-item nav-link ${activeNavItem}" 
+          title="${pageName}" 
+          id="${pageName.toLowerCase()}-link">${pageName}</a>`;
+        }
+
+        document.getElementById(targetContainer).innerHTML = generatedPageLinks;
+      });
+  } catch (error) {
+    console.log('Error Occured ' + error);
+  }
+}
+
+/**
+ * Get current page
  * @return {string} - page name
  */
 const getCurrentPage = () => {
-  let pageMap = {
-    index: 'about',
-    companies: 'companies',
-    courses: 'courses',
-    projects: 'projects',
-    contact: 'contact',
-  };
 
-  for (let page in pageMap) {
-    if (location.pathname.indexOf(`/${page}.html`) !== -1) {
-      return pageMap[page];
-    }
-  }
-  // default
-  return 'about';
+  //get the page name
+  let getCurrentPage = window.location.pathname
+    .split('/')
+    .filter(function (pathnamePieces) {
+      return pathnamePieces.length;
+    })
+    .pop();
+
+  let pageName = getCurrentPage.split('.')[0];
+  if (pageName == 'index') pageName = 'about';
+  
+  return pageName;
 };
 
 /**

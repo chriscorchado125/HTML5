@@ -157,6 +157,7 @@ function getPage(page, search, pagingURL) {
                     else {
                         updateInterface(search);
                     }
+                    updateMenuPages(page, 'navbar-nav');
                     return [2];
             }
         });
@@ -268,7 +269,9 @@ var showCountDown = function () {
 };
 var getMonthYear = function (dateString) {
     var newDate = new Date(dateString);
-    return newDate.toLocaleString('default', { month: 'long' }) + ' ' + newDate.getFullYear().toString();
+    return (newDate.toLocaleString('default', { month: 'long' }) +
+        ' ' +
+        newDate.getFullYear().toString());
 };
 var renderPage = function (data, page, searchedFor, next, prev) {
     document.getElementById('preloader').style.display = 'none';
@@ -545,20 +548,64 @@ var setPageMessage = function (msg) {
         $('#msg').fadeOut(3000);
     }, 2500);
 };
+function updateMenuPages(currentPage, targetContainer) {
+    return __awaiter(this, void 0, void 0, function () {
+        var error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4, fetch(API_BASE + "/api/menu_items/main?_format=json")
+                            .then(function (resp) {
+                            return resp.ok ? resp.json() : Promise.reject(resp.statusText);
+                        })
+                            .then(function (pageData) {
+                            var pageName = '';
+                            var pageLink = '';
+                            var homepageStyle = '';
+                            if (currentPage == 'about') {
+                                homepageStyle = 'border: 1px dashed rgb(115, 153, 234);';
+                            }
+                            var generatedPageLinks = "<a href=\"index.html\" class=\"navbar-brand\" id=\"logo\" style=\"" + homepageStyle + "\">\n          <img src=\"./images/chriscorchado-initials-logo.png\" title=\"Home\" alt=\"Home\">\n        </a>";
+                            for (var page in pageData) {
+                                pageName = pageData[page].title;
+                                if (pageName == 'Home' || pageName == 'About' || !pageData[page].enabled) {
+                                    continue;
+                                }
+                                var activeNavItem = '';
+                                if (currentPage == pageName.toLowerCase()) {
+                                    activeNavItem = 'nav-item-active';
+                                }
+                                pageLink = pageName;
+                                if (pageName == 'Companies')
+                                    pageName = 'History';
+                                generatedPageLinks += "<a href=\"" + pageLink.toLowerCase() + ".html\" \n          class=\"nav-item nav-link " + activeNavItem + "\" \n          title=\"" + pageName + "\" \n          id=\"" + pageName.toLowerCase() + "-link\">" + pageName + "</a>";
+                            }
+                            document.getElementById(targetContainer).innerHTML = generatedPageLinks;
+                        })];
+                case 1:
+                    _a.sent();
+                    return [3, 3];
+                case 2:
+                    error_1 = _a.sent();
+                    console.log('Error Occured ' + error_1);
+                    return [3, 3];
+                case 3: return [2];
+            }
+        });
+    });
+}
 var getCurrentPage = function () {
-    var pageMap = {
-        index: 'about',
-        companies: 'companies',
-        courses: 'courses',
-        projects: 'projects',
-        contact: 'contact',
-    };
-    for (var page in pageMap) {
-        if (location.pathname.indexOf("/" + page + ".html") !== -1) {
-            return pageMap[page];
-        }
-    }
-    return 'about';
+    var getCurrentPage = window.location.pathname
+        .split('/')
+        .filter(function (pathnamePieces) {
+        return pathnamePieces.length;
+    })
+        .pop();
+    var pageName = getCurrentPage.split('.')[0];
+    if (pageName == 'index')
+        pageName = 'about';
+    return pageName;
 };
 window.onload = function () {
     getPage(getCurrentPage());
