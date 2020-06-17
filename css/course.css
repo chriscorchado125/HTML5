@@ -43,10 +43,7 @@
   .courses-container {
     grid-template-columns: 1fr; } }
 @media (max-width: 500px) {
-  .container {
-    margin-top: 90px;
-    padding-top: 50px; }
-    .container .course-box {
-      padding: 10px !important; } }
+  .container .course-box {
+    padding: 10px !important; } }
 
 /*# sourceMappingURL=course.css.map */

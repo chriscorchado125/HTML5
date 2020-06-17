@@ -64,6 +64,8 @@
       justify-content: left;
       width: 60px;
       margin-left: 15px; }
+    .navbar-nav #searchSite {
+      width: 120px; }
 
   #search-container {
     text-align: center;
@@ -82,5 +84,18 @@
     #pagination .pager-navigation {
       font-size: 12px;
       margin: 0; } }
+@media (max-width: 350px) {
+  .navbar .navbar-nav {
+    width: 100%;
+    margin-left: -7px !important; }
+    .navbar .navbar-nav .nav-item {
+      margin-left: -2px;
+      font-size: 14px; }
+
+  #paging-info {
+    font-size: 10px; }
+
+  #search-container #searchSite {
+    width: 100px; } }
 
 /*# sourceMappingURL=navigation.css.map */

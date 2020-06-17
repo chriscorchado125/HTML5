@@ -863,7 +863,6 @@ async function updateMenuPages(currentPage: string, targetContainer: string) {
  * @return {string} - page name
  */
 const getCurrentPage = () => {
-
   //get the page name
   let getCurrentPage = window.location.pathname
     .split('/')
@@ -874,7 +873,7 @@ const getCurrentPage = () => {
 
   let pageName = getCurrentPage.split('.')[0];
   if (pageName == 'index') pageName = 'about';
-  
+
   return pageName;
 };
 
