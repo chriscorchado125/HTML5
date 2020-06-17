@@ -872,7 +872,7 @@ const getCurrentPage = () => {
     .pop();
 
   let pageName = getCurrentPage.split('.')[0];
-  if (pageName == 'index') pageName = 'about';
+  if (pageName == 'index' || pageName == 'html5') pageName = 'about';
 
   return pageName;
 };

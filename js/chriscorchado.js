@@ -603,7 +603,7 @@ var getCurrentPage = function () {
     })
         .pop();
     var pageName = getCurrentPage.split('.')[0];
-    if (pageName == 'index')
+    if (pageName == 'index' || pageName == 'html5')
         pageName = 'about';
     return pageName;
 };
