@@ -778,11 +778,11 @@ const setItemCount = (
 
     /* configure next and prev links */
     prevLink = prev
-      ? `<a href="#" class="pager-navigation" onclick="getPage(getCurrentPage(), document.getElementById('searchSite').value,'${prev.href}')">Prev</a>`
-      : `<span class="pager-navigation disabled">Prev</span>`;
+      ? `<a href="#" class="pager-navigation" title="View the previous page" onclick="getPage(getCurrentPage(), document.getElementById('searchSite').value,'${prev.href}')">Prev</a>`
+      : `<span class="pager-navigation disabled" title="There is no previous page available">Prev</span>`;
     nextLink = next
-      ? `<a href="#" class="pager-navigation" onclick="getPage(getCurrentPage(), document.getElementById('searchSite').value,'${next.href}')">Next</a>`
-      : `<span class="pager-navigation disabled">Next</span>`;
+      ? `<a href="#" class="pager-navigation" title="View the next page" onclick="getPage(getCurrentPage(), document.getElementById('searchSite').value,'${next.href}')">Next</a>`
+      : `<span class="pager-navigation disabled" title="There is no next page available">Next</span>`;
   }
 
   /* hide pagination when the item count is less than the page limit and on the first page */

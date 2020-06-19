@@ -528,11 +528,11 @@ var setItemCount = function (count, paginationTotal, prev, next) {
         }
         document.getElementById('searchCount').innerHTML = "<span id=\"paging-info\">" + dataOffsetText + "</span>";
         prevLink = prev
-            ? "<a href=\"#\" class=\"pager-navigation\" onclick=\"getPage(getCurrentPage(), document.getElementById('searchSite').value,'" + prev.href + "')\">Prev</a>"
-            : "<span class=\"pager-navigation disabled\">Prev</span>";
+            ? "<a href=\"#\" class=\"pager-navigation\" title=\"View the previous page\" onclick=\"getPage(getCurrentPage(), document.getElementById('searchSite').value,'" + prev.href + "')\">Prev</a>"
+            : "<span class=\"pager-navigation disabled\" title=\"There is no previous page available\">Prev</span>";
         nextLink = next
-            ? "<a href=\"#\" class=\"pager-navigation\" onclick=\"getPage(getCurrentPage(), document.getElementById('searchSite').value,'" + next.href + "')\">Next</a>"
-            : "<span class=\"pager-navigation disabled\">Next</span>";
+            ? "<a href=\"#\" class=\"pager-navigation\" title=\"View the next page\" onclick=\"getPage(getCurrentPage(), document.getElementById('searchSite').value,'" + next.href + "')\">Next</a>"
+            : "<span class=\"pager-navigation disabled\" title=\"There is no next page available\">Next</span>";
     }
     if (count < pageLimit && paginationTotal === 1) {
         $('#pagination').hide();

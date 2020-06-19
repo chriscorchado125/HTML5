@@ -43,8 +43,16 @@
         onkeyup="searchData()"
         onkeypress="return searchFilter(event)"
         class="ccBtn"
+        title="Enter something to search for"
       />
-      <button id="searchBtn" class="searchBtn" onclick="searchClear()">clear</button>
+      <button
+        id="searchBtn"
+        class="searchBtn"
+        onclick="searchClear()"
+        title="Clear the search"
+      >
+        clear
+      </button>
 
       <div id="pagination"></div>
     </div>

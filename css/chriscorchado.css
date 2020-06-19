@@ -22,8 +22,11 @@
 
 #search-container {
   float: right;
-  margin: -50px 40px 0 0;
+  margin: -55px 40px 0 0;
   display: none;
+  padding: 0px;
+  width: 260px;
+  text-align: center;
   /* search textbox */
   /* search button */ }
   #search-container #searchCount {
@@ -46,11 +49,24 @@
     background-color: #7399ea; }
   #search-container #pagination {
     text-align: center;
+    margin: 5px -32px 0 0;
     /* next / prev text */ }
+    #search-container #pagination a {
+      color: #ffffff; }
     #search-container #pagination .pager-navigation {
-      margin: 5px 5px 0px 5px; }
-  #search-container .disabled {
-    color: grey !important; }
+      background-color: #7399ea;
+      margin: 0px 5px;
+      padding: 1px 10px; }
+    #search-container #pagination .disabled {
+      color: #3d3c3c;
+      background-color: #cac9c9 !important; }
+
+#pagination-footer {
+  width: 100%;
+  position: fixed;
+  padding: 3px;
+  text-align: center;
+  background-color: red !important; }
 
 .highlightSearchText {
   background-color: yellow; }
@@ -74,7 +90,8 @@
     padding: 5px 0;
     margin-top: 0px; }
     #search-container #pagination {
-      padding-left: 0; } }
+      padding-left: 0;
+      margin: 0 0 0 20px; } }
 @media (max-width: 500px) {
   #logo img {
     height: 50px; }
@@ -83,8 +100,14 @@
     /* next / prev text */ }
     #pagination .pager-navigation {
       font-size: 12px;
+      margin: 0; }
+
+  #pagination {
+    margin-left: 5px; }
+    #pagination .pager-navigation {
+      padding: 5px 3px;
       margin: 0; } }
-@media (max-width: 350px) {
+@media (max-width: 400px) {
   .navbar .navbar-nav {
     width: 100%;
     margin-left: -7px !important; }
@@ -95,6 +118,11 @@
   #paging-info {
     font-size: 10px; }
 
+  #search-container #pagination {
+    margin-left: 5px; }
+    #search-container #pagination .pager-navigation {
+      padding: 5px;
+      margin: 0; }
   #search-container #searchSite {
     width: 100px; } }
 .box {

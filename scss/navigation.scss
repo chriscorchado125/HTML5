@@ -31,9 +31,11 @@
 
 #search-container {
   float: right;
-  margin: -50px 40px 0 0;
+  margin: -55px 40px 0 0;
   display: none;
-
+  padding: 0px;
+  width: 260px;
+  text-align: center;
   #searchCount {
     font-size: 12px;
     text-align: right;
@@ -66,16 +68,30 @@
 
   #pagination {
     text-align: center;
+    margin: 5px -32px 0 0;
+    a {
+      color: #ffffff;
+    }
     /* next / prev text */
     .pager-navigation {
-      margin: 5px 5px 0px 5px;
+      background-color: $main_color;
+      margin: 0px 5px;
+      padding: 1px 10px;
+    }
+    .disabled {
+      color: rgb(61, 60, 60);
+      background-color: rgb(202, 201, 201) !important;
     }
   }
-
-  .disabled {
-    color: grey !important;
-  }
 } // #search-container
+
+#pagination-footer {
+  width: 100%;
+  position: fixed;
+  padding: 3px;
+  text-align: center;
+  background-color: red !important;
+}
 
 .highlightSearchText {
   background-color: yellow;
@@ -105,6 +121,7 @@
     margin-top: 0px;
     #pagination {
       padding-left: 0;
+      margin: 0 0 0 20px;
     }
   }
 }
@@ -120,9 +137,17 @@
       margin: 0;
     }
   }
+
+  #pagination {
+    margin-left: 5px;
+    .pager-navigation {
+      padding: 5px 3px;
+      margin: 0;
+    }
+  }
 }
 
-@media (max-width: 350px) {
+@media (max-width: 400px) {
   .navbar {
     .navbar-nav {
       width: 100%;
@@ -138,7 +163,16 @@
     font-size: 10px;
   }
 
-  #search-container #searchSite {
-    width: 100px;
+  #search-container {
+    #pagination {
+      margin-left: 5px;
+      .pager-navigation {
+        padding: 5px;
+        margin: 0;
+      }
+    }
+    #searchSite {
+      width: 100px;
+    }
   }
 }
