@@ -22,10 +22,10 @@
 
 #search-container {
   float: right;
-  margin: -55px 40px 0 0;
+  margin: -55px 30px 0 0;
   display: none;
   padding: 0px;
-  width: 260px;
+  width: 280px;
   text-align: center;
   /* search textbox */
   /* search button */ }
@@ -56,7 +56,8 @@
     #search-container #pagination .pager-navigation {
       background-color: #7399ea;
       margin: 0px 5px;
-      padding: 1px 10px; }
+      padding: 1px 10px;
+      font-size: 12px; }
     #search-container #pagination .disabled {
       color: #3d3c3c;
       background-color: #cac9c9 !important; }

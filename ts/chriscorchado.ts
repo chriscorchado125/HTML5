@@ -424,6 +424,8 @@ const renderPage = (
     itemTechnology = '';
     imgPieces = [];
 
+    let itemTrackImage = '';
+
     if (data.included) {
       data.included.forEach((included_element: Array[string]) => {
         /* get Courses screenshot filenames */
@@ -441,6 +443,16 @@ const renderPage = (
           element.relationships.field_award_pdf.data.id == included_element.id
         ) {
           itemPDF = included_element.attributes.filename;
+        }
+
+        /* get Courses Track image filename */
+        if (
+          element.relationships.field_track_image &&
+          element.relationships.field_track_image.data &&
+          element.relationships.field_track_image.data.id == included_element.id &&
+          included_element.attributes.filename.length > 0
+        ) {
+          itemTrackImage = included_element.attributes.filename;
         }
 
         /* get Company screenshot filenames */
@@ -564,27 +576,38 @@ const renderPage = (
         item += `<h2>${itemTitle}</h2>`;
         item += `<div>`;
 
-        /* if there is a PDF, link to it */
-        if (itemPDF) {
-          item += `<a href="${getFullUrlByPage(
-            itemPDF,
-            page
-          )}" target="_blank"><img src="${getFullUrlByPage(
-            imgPieces[0],
-            page
-          )}" alt="${itemTitle.replace(/(<([^>]+)>)/gi, '')}" /></a>`; // replace HTML for ALT tag
-        } else {
-          item += `<img src="${getFullUrlByPage(
-            imgPieces[0],
-            page
-          )}" alt="${itemTitle}" />`;
-        }
+        item += `<img src="${getFullUrlByPage(
+          imgPieces[0],
+          page
+        )}"  alt="${itemTitle.replace(/(<([^>]+)>)/gi, '')}" title="${itemTitle.replace(
+          /(<([^>]+)>)/gi,
+          ''
+        )}" />`;
 
         item += `</div>`;
-        item += `<div class="course-date">${itemDate}</div>`;
-        item += `</div>`; //course-box box
+        item += `<div class="course-wrapper">`;
+        item += `<span class="course-date">${itemDate}</span>`;
 
-        setPageMessage('click an image to view the PDF');
+        item += `<span class="course-links">
+          <a href="${getFullUrlByPage(itemPDF, page)}" target="_blank">
+          <img src="https://chriscorchado.com/images/pdfIcon.jpg" height="25" title="View the PDF Certificate" />
+          </a></span>`;
+
+        // TODO: Create bigger version and add to content type
+        //  item += `<span class="course-links">
+        //   <a href="${getFullUrlByPage(imgPieces[0], page)}" data-featherlight="image">
+        //   <img src="https://chriscorchado.com/images/jpg_icon.png" height="25" title="View the Certificate" />
+        //   </a></span>`;
+
+        if (itemTrackImage) {
+          item += `<span class="course-links">
+          <a href="${getFullUrlByPage(itemTrackImage, page)}" data-featherlight="image">
+          <img src="https://chriscorchado.com/images/linkedIn-track.png" height="25" title="View the Courses in the Track" />
+          </a></span>`;
+        }
+        item += `</div>`;
+
+        item += `</div>`; //course-box box
         break;
 
       case 'projects':
@@ -669,8 +692,6 @@ const renderPage = (
       galleryFadeIn: 200 /* fadeIn speed when slide is loaded */,
       galleryFadeOut: 300 /* fadeOut speed before slide is loaded */,
     });
-
-    $('section').featherlight(); // must init after adding items
   }
 
   setItemCount(itemCount, data.passedInCount.currentCount, prev, next);

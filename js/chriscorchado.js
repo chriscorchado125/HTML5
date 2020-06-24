@@ -313,6 +313,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
         itemWorkType = element.attributes.field_type = 'full' ? 'Full-Time' : 'Contract';
         itemTechnology = '';
         imgPieces = [];
+        var itemTrackImage = '';
         if (data.included) {
             data.included.forEach(function (included_element) {
                 if (element.relationships.field_award_images) {
@@ -323,6 +324,12 @@ var renderPage = function (data, page, searchedFor, next, prev) {
                 if (element.relationships.field_award_pdf &&
                     element.relationships.field_award_pdf.data.id == included_element.id) {
                     itemPDF = included_element.attributes.filename;
+                }
+                if (element.relationships.field_track_image &&
+                    element.relationships.field_track_image.data &&
+                    element.relationships.field_track_image.data.id == included_element.id &&
+                    included_element.attributes.filename.length > 0) {
+                    itemTrackImage = included_element.attributes.filename;
                 }
                 if (element.relationships.field_company_screenshot) {
                     if (element.relationships.field_company_screenshot.data.some(function (field_screenshot) {
@@ -404,16 +411,16 @@ var renderPage = function (data, page, searchedFor, next, prev) {
                 item += "<div class=\"course-box box\">";
                 item += "<h2>" + itemTitle + "</h2>";
                 item += "<div>";
-                if (itemPDF) {
-                    item += "<a href=\"" + getFullUrlByPage(itemPDF, page) + "\" target=\"_blank\"><img src=\"" + getFullUrlByPage(imgPieces[0], page) + "\" alt=\"" + itemTitle.replace(/(<([^>]+)>)/gi, '') + "\" /></a>";
-                }
-                else {
-                    item += "<img src=\"" + getFullUrlByPage(imgPieces[0], page) + "\" alt=\"" + itemTitle + "\" />";
+                item += "<img src=\"" + getFullUrlByPage(imgPieces[0], page) + "\"  alt=\"" + itemTitle.replace(/(<([^>]+)>)/gi, '') + "\" title=\"" + itemTitle.replace(/(<([^>]+)>)/gi, '') + "\" />";
+                item += "</div>";
+                item += "<div class=\"course-wrapper\">";
+                item += "<span class=\"course-date\">" + itemDate + "</span>";
+                item += "<span class=\"course-links\">\n          <a href=\"" + getFullUrlByPage(itemPDF, page) + "\" target=\"_blank\">\n          <img src=\"https://chriscorchado.com/images/pdfIcon.jpg\" height=\"25\" title=\"View the PDF Certificate\" />\n          </a></span>";
+                if (itemTrackImage) {
+                    item += "<span class=\"course-links\">\n          <a href=\"" + getFullUrlByPage(itemTrackImage, page) + "\" data-featherlight=\"image\">\n          <img src=\"https://chriscorchado.com/images/linkedIn-track.png\" height=\"25\" title=\"View the Courses in the Track\" />\n          </a></span>";
                 }
                 item += "</div>";
-                item += "<div class=\"course-date\">" + itemDate + "</div>";
                 item += "</div>";
-                setPageMessage('click an image to view the PDF');
                 break;
             case 'projects':
                 currentNavItem = 'projects-link';
@@ -465,7 +472,6 @@ var renderPage = function (data, page, searchedFor, next, prev) {
             galleryFadeIn: 200,
             galleryFadeOut: 300,
         });
-        $('section').featherlight();
     }
     setItemCount(itemCount, data.passedInCount.currentCount, prev, next);
 };

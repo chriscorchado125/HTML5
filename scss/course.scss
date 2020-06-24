@@ -17,11 +17,22 @@
 .course-box {
   padding: 20px;
   margin: 0 0 20px 0;
+  font-size: 12px;
   img {
     max-width: 200px;
   }
+  .course-wrapper {
+    max-width: 190px;
+    margin: auto;
+    padding: 0 5px;
+  }
   .course-date {
-    font-size: 12px;
+    float: left;
+    margin-top: 4px;
+  }
+  .course-links {
+    float: right;
+    padding: 0 2px;
   }
 }
 

@@ -31,10 +31,10 @@
 
 #search-container {
   float: right;
-  margin: -55px 40px 0 0;
+  margin: -55px 30px 0 0;
   display: none;
   padding: 0px;
-  width: 260px;
+  width: 280px;
   text-align: center;
   #searchCount {
     font-size: 12px;
@@ -77,6 +77,7 @@
       background-color: $main_color;
       margin: 0px 5px;
       padding: 1px 10px;
+      font-size: 12px;
     }
     .disabled {
       color: rgb(61, 60, 60);
