@@ -669,7 +669,7 @@ const renderPage = (
           });
         }
 
-        item += `<div class="project-technology">${itemTechnology}</div>`;
+        item += `<div class="project-technology">${itemTechnology.slice(0, -2)}</div>`;
         item += `</div>`;
 
         setPageMessage('click an image to enlarge it');

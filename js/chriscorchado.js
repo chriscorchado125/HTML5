@@ -454,7 +454,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
                         item += "<a href=\"" + img + "\" \n          data-featherlight=\"iframe\" \n          data-featherlight-iframe-frameborder=\"0\" \n          data-featherlight-iframe-allowfullscreen=\"true\" \n          data-featherlight-iframe-allow=\"autoplay; encrypted-media\"\n          data-featherlight-iframe-style=\"display:block;border:none;height:85vh;width:85vw;\" class=\"play-video\">Play Video<img src=\"images/play_vidoe_icon.png\" width=\"20\" /></a>";
                     });
                 }
-                item += "<div class=\"project-technology\">" + itemTechnology + "</div>";
+                item += "<div class=\"project-technology\">" + itemTechnology.slice(0, -2) + "</div>";
                 item += "</div>";
                 setPageMessage('click an image to enlarge it');
                 break;
