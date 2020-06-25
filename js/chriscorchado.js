@@ -275,6 +275,9 @@ var getMonthYear = function (dateString) {
 };
 var renderPage = function (data, page, searchedFor, next, prev) {
     document.getElementById('preloader').style.display = 'none';
+    if (document.getElementById('noRecords')) {
+        document.getElementById('noRecords').style.display = 'none';
+    }
     if (page == 'about') {
         document.getElementById('search-container').style.display = 'none';
         document.getElementById('profiles').style.display = 'block';
@@ -299,10 +302,25 @@ var renderPage = function (data, page, searchedFor, next, prev) {
     }
     var screenshotCount = 0, imgAltCount = 0, itemCount = 0;
     var imgPieces = [''];
-    var item = '', itemBody = '', currentNavItem = '', itemGridClass = '', itemTitle = '', itemDate = '', startDate = '', endDate = '', itemJobTitle = '', itemTechnology = '', itemCompanyName = '', itemWorkType = '', itemPDF = '', section = '', projectImage = '';
-    var newDate = new Date();
+    var item = '', itemBody = '', currentNavItem = '', itemGridClass = '', itemTitle = '', itemDate = '', startDate = '', endDate = '', itemJobTitle = '', itemTechnology = '', itemCompanyName = '', itemWorkType = '', itemPDF = '', itemTrackImage = '', section = '', projectImage = '';
     var pageIsSearchable = false;
-    $('#noRecords').remove();
+    var includedAssetFilename = {};
+    var includedCompanyName = {};
+    var includedTechnologyName = {};
+    if (data.included) {
+        data.included.forEach(function (included_element) {
+            if (included_element.attributes.filename) {
+                includedAssetFilename[included_element.id] = included_element.attributes.filename;
+            }
+            if (included_element.attributes.field_company_name) {
+                includedCompanyName[included_element.id] =
+                    included_element.attributes.field_company_name;
+            }
+            if (included_element.attributes.name) {
+                includedTechnologyName[included_element.id] = included_element.attributes.name;
+            }
+        });
+    }
     data.data.forEach(function (element) {
         itemTitle = element.attributes.title;
         itemBody = element.attributes.body ? element.attributes.body.value : '';
@@ -310,48 +328,46 @@ var renderPage = function (data, page, searchedFor, next, prev) {
         itemJobTitle = element.attributes.field_job_title;
         startDate = element.attributes.field_start_date;
         endDate = element.attributes.field_end_date;
-        itemWorkType = element.attributes.field_type = 'full' ? 'Full-Time' : 'Contract';
+        itemWorkType = element.attributes.field_type = 'Full-Time' ? 'Full-Time' : 'Contract';
         itemTechnology = '';
+        itemTrackImage = '';
         imgPieces = [];
-        var itemTrackImage = '';
-        if (data.included) {
-            data.included.forEach(function (included_element) {
-                if (element.relationships.field_award_images) {
-                    if (element.relationships.field_award_images.data[0].id == included_element.id) {
-                        imgPieces.push(included_element.attributes.filename);
-                    }
+        if (element.relationships) {
+            if (element.relationships.field_award_images &&
+                element.relationships.field_award_images.data) {
+                imgPieces.push(includedAssetFilename[element.relationships.field_award_images.data[0].id]);
+            }
+            if (element.relationships.field_award_pdf &&
+                element.relationships.field_award_pdf.data) {
+                itemPDF = includedAssetFilename[element.relationships.field_award_pdf.data.id];
+            }
+            if (element.relationships.field_track_image &&
+                element.relationships.field_track_image.data) {
+                itemTrackImage =
+                    includedAssetFilename[element.relationships.field_track_image.data.id];
+            }
+            if (element.relationships.field_company &&
+                element.relationships.field_company.data) {
+                itemCompanyName =
+                    includedCompanyName[element.relationships.field_company.data.id];
+            }
+            if (element.relationships.field_company_screenshot &&
+                element.relationships.field_company_screenshot.data) {
+                imgPieces.push(includedAssetFilename[element.relationships.field_company_screenshot.data[0].id]);
+            }
+            if (element.relationships.field_screenshot &&
+                element.relationships.field_screenshot.data) {
+                for (var i = 0; i < element.relationships.field_screenshot.data.length; i++) {
+                    imgPieces.push(includedAssetFilename[element.relationships.field_screenshot.data[i].id]);
                 }
-                if (element.relationships.field_award_pdf &&
-                    element.relationships.field_award_pdf.data.id == included_element.id) {
-                    itemPDF = included_element.attributes.filename;
+            }
+            if (element.relationships.field_project_technology &&
+                element.relationships.field_project_technology.data) {
+                for (var i = 0; i < element.relationships.field_project_technology.data.length; i++) {
+                    itemTechnology +=
+                        includedTechnologyName[element.relationships.field_project_technology.data[i].id] + ', ';
                 }
-                if (element.relationships.field_track_image &&
-                    element.relationships.field_track_image.data &&
-                    element.relationships.field_track_image.data.id == included_element.id &&
-                    included_element.attributes.filename.length > 0) {
-                    itemTrackImage = included_element.attributes.filename;
-                }
-                if (element.relationships.field_company_screenshot) {
-                    if (element.relationships.field_company_screenshot.data.some(function (field_screenshot) {
-                        return field_screenshot.id == included_element.id;
-                    })) {
-                        imgPieces.push(included_element.attributes.filename);
-                    }
-                }
-                if (element.relationships.field_screenshot) {
-                    if (element.relationships.field_company.data.id == included_element.id) {
-                        itemCompanyName = included_element.attributes.field_company_name;
-                    }
-                    if (element.relationships.field_screenshot.data.some(function (field_screenshot) {
-                        return field_screenshot.id == included_element.id;
-                    })) {
-                        imgPieces.push(included_element.attributes.filename);
-                    }
-                    if (element.relationships.field_project_technology.data.some(function (technology) { return technology.id == included_element.id; })) {
-                        itemTechnology += included_element.attributes.name + ', ';
-                    }
-                }
-            });
+            }
         }
         if (itemDate) {
             if (page == 'projects') {
@@ -401,7 +417,6 @@ var renderPage = function (data, page, searchedFor, next, prev) {
                 item += "<img src=" + getFullUrlByPage(imgPieces[0], page) + " class=\"company-screenshot\"  alt=\"" + element.title + " Screenshot\" />";
                 item += "</div>";
                 item += "<div class=\"employment-dates\">" + startDate + " - " + endDate;
-                item += "<div class=\"employment-type\">" + itemWorkType + "</div>";
                 item += "</div>";
                 item += "</div>";
                 break;

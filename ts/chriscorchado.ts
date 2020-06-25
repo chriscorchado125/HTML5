@@ -353,6 +353,10 @@ const renderPage = (
 ) => {
   document.getElementById('preloader').style.display = 'none';
 
+  if (document.getElementById('noRecords')) {
+    document.getElementById('noRecords').style.display = 'none';
+  }
+
   // add border to logo and hide search box on About page (homepage)
   if (page == 'about') {
     document.getElementById('search-container').style.display = 'none';
@@ -404,14 +408,33 @@ const renderPage = (
     itemCompanyName = '',
     itemWorkType = '',
     itemPDF = '',
+    itemTrackImage = '',
     section = '',
     projectImage = '';
 
-  let newDate = new Date();
-
   let pageIsSearchable = false;
 
-  $('#noRecords').remove();
+  let includedAssetFilename = {};
+  let includedCompanyName = {};
+  let includedTechnologyName = {};
+
+  if (data.included) {
+    data.included.forEach((included_element: Array[string]) => {
+      //
+      if (included_element.attributes.filename) {
+        includedAssetFilename[included_element.id] = included_element.attributes.filename;
+      }
+
+      if (included_element.attributes.field_company_name) {
+        includedCompanyName[included_element.id] =
+          included_element.attributes.field_company_name;
+      }
+
+      if (included_element.attributes.name) {
+        includedTechnologyName[included_element.id] = included_element.attributes.name;
+      }
+    });
+  }
 
   data.data.forEach((element: any) => {
     itemTitle = element.attributes.title;
@@ -420,82 +443,89 @@ const renderPage = (
     itemJobTitle = element.attributes.field_job_title;
     startDate = element.attributes.field_start_date;
     endDate = element.attributes.field_end_date;
-    itemWorkType = element.attributes.field_type = 'full' ? 'Full-Time' : 'Contract';
+    itemWorkType = element.attributes.field_type = 'Full-Time' ? 'Full-Time' : 'Contract';
     itemTechnology = '';
+    itemTrackImage = '';
     imgPieces = [];
 
-    let itemTrackImage = '';
+    if (element.relationships) {
+      /* get Courses screenshot filenames */
+      if (
+        element.relationships.field_award_images &&
+        element.relationships.field_award_images.data
+      ) {
+        imgPieces.push(
+          includedAssetFilename[element.relationships.field_award_images.data[0].id]
+        );
+      }
 
-    if (data.included) {
-      data.included.forEach((included_element: Array[string]) => {
-        /* get Courses screenshot filenames */
-        if (element.relationships.field_award_images) {
-          if (
-            element.relationships.field_award_images.data[0].id == included_element.id
-          ) {
-            imgPieces.push(included_element.attributes.filename);
-          }
+      /* get Courses PDF filenames */
+      if (
+        element.relationships.field_award_pdf &&
+        element.relationships.field_award_pdf.data
+      ) {
+        itemPDF = includedAssetFilename[element.relationships.field_award_pdf.data.id];
+      }
+
+      /*get Courses Track image filename */
+      if (
+        element.relationships.field_track_image &&
+        element.relationships.field_track_image.data
+      ) {
+        itemTrackImage =
+          includedAssetFilename[element.relationships.field_track_image.data.id];
+      }
+
+      /* get Company name */
+      if (
+        element.relationships.field_company &&
+        element.relationships.field_company.data
+      ) {
+        itemCompanyName =
+          includedCompanyName[element.relationships.field_company.data.id];
+      }
+
+      /* get Company screenshot filenames */
+      if (
+        element.relationships.field_company_screenshot &&
+        element.relationships.field_company_screenshot.data
+      ) {
+        imgPieces.push(
+          includedAssetFilename[element.relationships.field_company_screenshot.data[0].id]
+        );
+      }
+
+      /* get Project screenshots filenames */
+      if (
+        element.relationships.field_screenshot &&
+        element.relationships.field_screenshot.data
+      ) {
+        for (let i = 0; i < element.relationships.field_screenshot.data.length; i++) {
+          imgPieces.push(
+            includedAssetFilename[element.relationships.field_screenshot.data[i].id]
+          );
         }
+      }
 
-        /* get Courses PDF filenames */
-        if (
-          element.relationships.field_award_pdf &&
-          element.relationships.field_award_pdf.data.id == included_element.id
+      /* get Project technology names */
+      if (
+        element.relationships.field_project_technology &&
+        element.relationships.field_project_technology.data
+      ) {
+        for (
+          let i = 0;
+          i < element.relationships.field_project_technology.data.length;
+          i++
         ) {
-          itemPDF = included_element.attributes.filename;
+          itemTechnology +=
+            includedTechnologyName[
+              element.relationships.field_project_technology.data[i].id
+            ] + ', ';
         }
+      }
+    } // if (element.relationships)
 
-        /* get Courses Track image filename */
-        if (
-          element.relationships.field_track_image &&
-          element.relationships.field_track_image.data &&
-          element.relationships.field_track_image.data.id == included_element.id &&
-          included_element.attributes.filename.length > 0
-        ) {
-          itemTrackImage = included_element.attributes.filename;
-        }
-
-        /* get Company screenshot filenames */
-        if (element.relationships.field_company_screenshot) {
-          if (
-            element.relationships.field_company_screenshot.data.some(
-              (field_screenshot: Array[string]) =>
-                field_screenshot.id == included_element.id
-            )
-          ) {
-            imgPieces.push(included_element.attributes.filename);
-          }
-        }
-
-        /* get Company name */
-        if (element.relationships.field_screenshot) {
-          if (element.relationships.field_company.data.id == included_element.id) {
-            itemCompanyName = included_element.attributes.field_company_name;
-          }
-
-          /* get Project screenshot filenames */
-          if (
-            element.relationships.field_screenshot.data.some(
-              (field_screenshot: Array[string]) =>
-                field_screenshot.id == included_element.id
-            )
-          ) {
-            imgPieces.push(included_element.attributes.filename);
-          }
-
-          /* get technology names */
-          if (
-            element.relationships.field_project_technology.data.some(
-              (technology: Array[string]) => technology.id == included_element.id
-            )
-          ) {
-            itemTechnology += included_element.attributes.name + ', ';
-          }
-        }
-      });
-    } // if data_included
-
-    /* get dates */
+    /* get Project and Course dates */
     if (itemDate) {
       if (page == 'projects') {
         itemDate = itemDate.split('-')[0]; // only year
@@ -563,7 +593,7 @@ const renderPage = (
         item += `</div>`;
 
         item += `<div class="employment-dates">${startDate} - ${endDate}`;
-        item += `<div class="employment-type">${itemWorkType}</div>`;
+        //item += `<div class="employment-type">${itemWorkType}</div>`;
         item += `</div>`;
 
         item += `</div>`;
@@ -674,7 +704,7 @@ const renderPage = (
 
         setPageMessage('click an image to enlarge it');
         break;
-    }
+    } // end switch
   }); // data.data forEach
 
   $('#' + currentNavItem).addClass('nav-item-active');
