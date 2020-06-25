@@ -345,8 +345,7 @@ const getMonthYear = (dateString: string) => {
  * @param {Object=} prev - (Optional) - search string
  */
 const renderPage = (
-  // data: Object = {},
-  data: Object[''],
+  data: any,
   page: string,
   searchedFor?: string,
   next?: Object,
@@ -424,7 +423,7 @@ const renderPage = (
   let includedTechnologyName = [''];
 
   if (data.included) {
-    data.included.forEach((included_element: Object['']) => {
+    data.included.forEach((included_element: any) => {
       //
       if (included_element.attributes.filename) {
         includedAssetFilename[included_element.id] = included_element.attributes.filename;
@@ -666,11 +665,9 @@ const renderPage = (
           section = `<section data-featherlight-gallery data-featherlight-filter="a" class="${itemGridClass}">`;
 
           let screenshotAlt = new Array();
-          element.relationships.field_screenshot.data.forEach(
-            (screenshot: Object['']) => {
-              screenshotAlt.push(screenshot.meta.alt);
-            }
-          );
+          element.relationships.field_screenshot.data.forEach((screenshot: any) => {
+            screenshotAlt.push(screenshot.meta.alt);
+          });
 
           imgAltCount = 0; // reset
           imgPieces.forEach((img) => {
@@ -723,6 +720,7 @@ const renderPage = (
       document.getElementById('search-container').style.display = 'block';
     }
 
+    // @ts-ignore
     $('a.gallery').featherlightGallery({
       previousIcon: '&#9664;' /* Code that is used as previous icon */,
       nextIcon: '&#9654;' /* Code that is used as next icon */,
@@ -769,12 +767,7 @@ const getFullUrlByPage = (linkToFix: string, page: string) => {
  * @param {Object=} prev - (optional) - link to previous results
  * @param {Object=} next - (optional) - link to next results
  */
-const setItemCount = (
-  count: number,
-  paginationTotal: number,
-  prev?: Object,
-  next?: Object
-) => {
+const setItemCount = (count: number, paginationTotal: number, prev?: any, next?: any) => {
   let dataOffset = 0;
   let dataOffsetText = '';
   let prevLink = null;
