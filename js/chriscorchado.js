@@ -84,8 +84,7 @@ function getPage(page, search, pagingURL) {
                             else {
                                 data = "<h1>Contact</h1>" + form + " " + script;
                             }
-                        })
-                            .catch(function (error) {
+                        })["catch"](function (error) {
                             alert("Sorry an error has occurred: " + error);
                         })];
                 case 1:
@@ -148,7 +147,7 @@ function getPage(page, search, pagingURL) {
                     passedInCount = {
                         currentCount: document.getElementById('lastCount')
                             ? document.getElementById('lastCount').textContent
-                            : 1,
+                            : 1
                     };
                     data = __assign(__assign({}, data), { passedInCount: passedInCount });
                     if (data.data.length) {
@@ -183,10 +182,10 @@ var getData = function (dataURL) {
     var result = $.ajax({
         dataType: 'json',
         accepts: {
-            json: 'application/vnd.api+json',
+            json: 'application/vnd.api+json'
         },
         url: dataURL,
-        type: 'GET',
+        type: 'GET'
     });
     return result;
 };
@@ -295,7 +294,8 @@ var renderPage = function (data, page, searchedFor, next, prev) {
         }
         else {
             $('#contact-link').addClass('nav-item-active');
-            document.getElementById('edit-field-site-0-value').value = location;
+            var webLocation = document.getElementById('edit-field-site-0-value');
+            webLocation.value = location.toString();
             $('#edit-name').focus();
         }
         return false;
@@ -304,9 +304,9 @@ var renderPage = function (data, page, searchedFor, next, prev) {
     var imgPieces = [''];
     var item = '', itemBody = '', currentNavItem = '', itemGridClass = '', itemTitle = '', itemDate = '', startDate = '', endDate = '', itemJobTitle = '', itemTechnology = '', itemCompanyName = '', itemWorkType = '', itemPDF = '', itemTrackImage = '', section = '', projectImage = '';
     var pageIsSearchable = false;
-    var includedAssetFilename = {};
-    var includedCompanyName = {};
-    var includedTechnologyName = {};
+    var includedAssetFilename = [''];
+    var includedCompanyName = [''];
+    var includedTechnologyName = [''];
     if (data.included) {
         data.included.forEach(function (included_element) {
             if (included_element.attributes.filename) {
@@ -449,7 +449,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
                     screenshotCount = +imgPieces.length;
                     itemGridClass = "project-item-grid project-items" + screenshotCount;
                     section = "<section data-featherlight-gallery data-featherlight-filter=\"a\" class=\"" + itemGridClass + "\">";
-                    var screenshotAlt_1 = [];
+                    var screenshotAlt_1 = new Array();
                     element.relationships.field_screenshot.data.forEach(function (screenshot) {
                         screenshotAlt_1.push(screenshot.meta.alt);
                     });
@@ -485,7 +485,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
             previousIcon: '&#9664;',
             nextIcon: '&#9654;',
             galleryFadeIn: 200,
-            galleryFadeOut: 300,
+            galleryFadeOut: 300
         });
     }
     setItemCount(itemCount, data.passedInCount.currentCount, prev, next);
@@ -571,47 +571,41 @@ var setPageMessage = function (msg) {
 };
 function updateMenuPages(currentPage, targetContainer) {
     return __awaiter(this, void 0, void 0, function () {
-        var error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4, fetch(API_BASE + "/api/menu_items/main?_format=json")
-                            .then(function (resp) {
-                            return resp.ok ? resp.json() : Promise.reject(resp.statusText);
-                        })
-                            .then(function (pageData) {
-                            var pageName = '';
-                            var pageLink = '';
-                            var homepageStyle = '';
-                            if (currentPage == 'about') {
-                                homepageStyle = 'border: 1px dashed rgb(115, 153, 234);';
+                case 0: return [4, fetch(API_BASE + "/api/menu_items/main?_format=json")
+                        .then(function (resp) {
+                        return resp.ok ? resp.json() : Promise.reject(resp.statusText);
+                    })
+                        .then(function (pageData) {
+                        var pageName = '';
+                        var pageLink = '';
+                        var homepageStyle = '';
+                        if (currentPage == 'about') {
+                            homepageStyle = 'border: 1px dashed rgb(115, 153, 234);';
+                        }
+                        var generatedPageLinks = "<a href=\"index.html\" class=\"navbar-brand\" id=\"logo\" style=\"" + homepageStyle + "\">\n        <img src=\"./images/chriscorchado-initials-logo.png\" title=\"Home\" alt=\"Home\">\n      </a>";
+                        for (var page in pageData) {
+                            pageName = pageData[page].title;
+                            if (pageName == 'Home' || pageName == 'About' || !pageData[page].enabled) {
+                                continue;
                             }
-                            var generatedPageLinks = "<a href=\"index.html\" class=\"navbar-brand\" id=\"logo\" style=\"" + homepageStyle + "\">\n          <img src=\"./images/chriscorchado-initials-logo.png\" title=\"Home\" alt=\"Home\">\n        </a>";
-                            for (var page in pageData) {
-                                pageName = pageData[page].title;
-                                if (pageName == 'Home' || pageName == 'About' || !pageData[page].enabled) {
-                                    continue;
-                                }
-                                var activeNavItem = '';
-                                if (currentPage == pageName.toLowerCase()) {
-                                    activeNavItem = 'nav-item-active';
-                                }
-                                pageLink = pageName;
-                                if (pageName == 'Companies')
-                                    pageName = 'History';
-                                generatedPageLinks += "<a href=\"" + pageLink.toLowerCase() + ".html\" \n          class=\"nav-item nav-link " + activeNavItem + "\" \n          title=\"" + pageName + "\" \n          id=\"" + pageName.toLowerCase() + "-link\">" + pageName + "</a>";
+                            var activeNavItem = '';
+                            if (currentPage == pageName.toLowerCase()) {
+                                activeNavItem = 'nav-item-active';
                             }
-                            document.getElementById(targetContainer).innerHTML = generatedPageLinks;
-                        })];
+                            pageLink = pageName;
+                            if (pageName == 'Companies')
+                                pageName = 'History';
+                            generatedPageLinks += "<a href=\"" + pageLink.toLowerCase() + ".html\" \n        class=\"nav-item nav-link " + activeNavItem + "\" \n        title=\"" + pageName + "\" \n        id=\"" + pageName.toLowerCase() + "-link\">" + pageName + "</a>";
+                        }
+                        document.getElementById(targetContainer).innerHTML = generatedPageLinks;
+                    })["catch"](function (error) {
+                        alert("Sorry an error has occurred: " + error);
+                    })];
                 case 1:
                     _a.sent();
-                    return [3, 3];
-                case 2:
-                    error_1 = _a.sent();
-                    console.log('Error Occured ' + error_1);
-                    return [3, 3];
-                case 3: return [2];
+                    return [2];
             }
         });
     });

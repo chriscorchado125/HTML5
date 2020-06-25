@@ -174,7 +174,7 @@ const updateInterface = (search?: string) => {
 /**
  * Get data from Drupal 8 datastore
  * @param {string} dataURL - url to fetch data from
- * @return {object} - object of data
+ * @return {Object} - object of data
  */
 const getData = (dataURL: string) => {
   const result = $.ajax({
@@ -338,14 +338,15 @@ const getMonthYear = (dateString: string) => {
 
 /**
  * Create HTML for page
- * @param {object[]} data - page items
+ * @param {Object[]} data - page items
  * @param {string} page - page name
  * @param {string=} searchedFor - (Optional) - search string
  * @param {Object=} next - (Optional) - page name
  * @param {Object=} prev - (Optional) - search string
  */
 const renderPage = (
-  data: Object[],
+  // data: Object = {},
+  data: Object[''],
   page: string,
   searchedFor?: string,
   next?: Object,
@@ -382,7 +383,11 @@ const renderPage = (
       $('#contact-link').addClass('nav-item-active');
 
       //capture current site
-      document.getElementById('edit-field-site-0-value').value = location;
+      const webLocation = document.getElementById(
+        'edit-field-site-0-value'
+      )! as HTMLInputElement;
+
+      webLocation.value = location.toString();
 
       $('#edit-name').focus();
     }
@@ -414,12 +419,12 @@ const renderPage = (
 
   let pageIsSearchable = false;
 
-  let includedAssetFilename = {};
-  let includedCompanyName = {};
-  let includedTechnologyName = {};
+  let includedAssetFilename = [''];
+  let includedCompanyName = [''];
+  let includedTechnologyName = [''];
 
   if (data.included) {
-    data.included.forEach((included_element: Array[string]) => {
+    data.included.forEach((included_element: Object['']) => {
       //
       if (included_element.attributes.filename) {
         includedAssetFilename[included_element.id] = included_element.attributes.filename;
@@ -660,10 +665,12 @@ const renderPage = (
 
           section = `<section data-featherlight-gallery data-featherlight-filter="a" class="${itemGridClass}">`;
 
-          let screenshotAlt = [];
-          element.relationships.field_screenshot.data.forEach((screenshot: String[]) => {
-            screenshotAlt.push(screenshot.meta.alt);
-          });
+          let screenshotAlt = new Array();
+          element.relationships.field_screenshot.data.forEach(
+            (screenshot: Object['']) => {
+              screenshotAlt.push(screenshot.meta.alt);
+            }
+          );
 
           imgAltCount = 0; // reset
           imgPieces.forEach((img) => {
@@ -759,14 +766,14 @@ const getFullUrlByPage = (linkToFix: string, page: string) => {
  * Set/update the current page item counts
  * @param {int} count - number of items
  * @param {int} paginationTotal - last pagination value
- * @param {object=} prev - (optional) - link to previous results
- * @param {object=} next - (optional) - link to next results
+ * @param {Object=} prev - (optional) - link to previous results
+ * @param {Object=} next - (optional) - link to next results
  */
 const setItemCount = (
   count: number,
   paginationTotal: number,
-  prev?: object,
-  next?: object
+  prev?: Object,
+  next?: Object
 ) => {
   let dataOffset = 0;
   let dataOffsetText = '';
@@ -864,49 +871,48 @@ const setPageMessage = (msg: string) => {
  * @param {string} targetContainer - id of html container for the menu items
  */
 async function updateMenuPages(currentPage: string, targetContainer: string) {
-  try {
-    await fetch(`${API_BASE}/api/menu_items/main?_format=json`)
-      .then((resp) => {
-        return resp.ok ? resp.json() : Promise.reject(resp.statusText);
-      })
-      .then((pageData) => {
-        let pageName = '';
-        let pageLink = '';
+  await fetch(`${API_BASE}/api/menu_items/main?_format=json`)
+    .then((resp) => {
+      return resp.ok ? resp.json() : Promise.reject(resp.statusText);
+    })
+    .then((pageData) => {
+      let pageName = '';
+      let pageLink = '';
 
-        let homepageStyle = '';
-        if (currentPage == 'about') {
-          homepageStyle = 'border: 1px dashed rgb(115, 153, 234);';
+      let homepageStyle = '';
+      if (currentPage == 'about') {
+        homepageStyle = 'border: 1px dashed rgb(115, 153, 234);';
+      }
+
+      let generatedPageLinks = `<a href="index.html" class="navbar-brand" id="logo" style="${homepageStyle}">
+        <img src="./images/chriscorchado-initials-logo.png" title="Home" alt="Home">
+      </a>`;
+
+      for (let page in pageData) {
+        pageName = pageData[page].title;
+        if (pageName == 'Home' || pageName == 'About' || !pageData[page].enabled) {
+          continue;
         }
 
-        let generatedPageLinks = `<a href="index.html" class="navbar-brand" id="logo" style="${homepageStyle}">
-          <img src="./images/chriscorchado-initials-logo.png" title="Home" alt="Home">
-        </a>`;
-
-        for (let page in pageData) {
-          pageName = pageData[page].title;
-          if (pageName == 'Home' || pageName == 'About' || !pageData[page].enabled) {
-            continue;
-          }
-
-          let activeNavItem = '';
-          if (currentPage == pageName.toLowerCase()) {
-            activeNavItem = 'nav-item-active';
-          }
-
-          pageLink = pageName; // capture correct link name before pageName is updated
-          if (pageName == 'Companies') pageName = 'History';
-
-          generatedPageLinks += `<a href="${pageLink.toLowerCase()}.html" 
-          class="nav-item nav-link ${activeNavItem}" 
-          title="${pageName}" 
-          id="${pageName.toLowerCase()}-link">${pageName}</a>`;
+        let activeNavItem = '';
+        if (currentPage == pageName.toLowerCase()) {
+          activeNavItem = 'nav-item-active';
         }
 
-        document.getElementById(targetContainer).innerHTML = generatedPageLinks;
-      });
-  } catch (error) {
-    console.log('Error Occured ' + error);
-  }
+        pageLink = pageName; // capture correct link name before pageName is updated
+        if (pageName == 'Companies') pageName = 'History';
+
+        generatedPageLinks += `<a href="${pageLink.toLowerCase()}.html" 
+        class="nav-item nav-link ${activeNavItem}" 
+        title="${pageName}" 
+        id="${pageName.toLowerCase()}-link">${pageName}</a>`;
+      }
+
+      document.getElementById(targetContainer).innerHTML = generatedPageLinks;
+    })
+    .catch((error) => {
+      alert(`Sorry an error has occurred: ${error}`);
+    });
 }
 
 /**
