@@ -74,6 +74,16 @@
     border-radius: 0 0 10px 10px;
     background-color: #e2eafb;
     font-size: 10px; }
+  .project-container #technology-item-wrapper {
+    display: inline-block;
+    width: 45px;
+    text-align: center;
+    margin: 0 1px;
+    font-size: 10px; }
+    .project-container #technology-item-wrapper .project-technology-icon {
+      height: 30px;
+      display: block;
+      margin: auto; }
 
 @media (max-width: 1000px) {
   .project-container {

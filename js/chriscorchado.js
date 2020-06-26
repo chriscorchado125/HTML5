@@ -302,13 +302,19 @@ var renderPage = function (data, page, searchedFor, next, prev) {
     }
     var screenshotCount = 0, imgAltCount = 0, itemCount = 0;
     var imgPieces = [''];
-    var item = '', itemBody = '', currentNavItem = '', itemGridClass = '', itemTitle = '', itemDate = '', startDate = '', endDate = '', itemJobTitle = '', itemTechnology = '', itemCompanyName = '', itemWorkType = '', itemPDF = '', itemTrackImage = '', section = '', projectImage = '';
+    var item = '', itemBody = '', currentNavItem = '', itemGridClass = '', itemTitle = '', itemDate = '', startDate = '', endDate = '', itemJobTitle = '', itemTechnology = '', itemTechnologyIcon = '', itemCompanyName = '', itemWorkType = '', itemPDF = '', itemTrackImage = '', section = '', projectImage = '';
     var pageIsSearchable = false;
     var includedAssetFilename = [''];
     var includedCompanyName = [''];
     var includedTechnologyName = [''];
+    var includedTechnologyIcon = [''];
+    var includedTechnologyItem = [{}];
     if (data.included) {
         data.included.forEach(function (included_element) {
+            if (included_element.attributes.description) {
+                var iconFileNamePath = /"(.*?)"/.exec(included_element.attributes.description.value);
+                includedTechnologyIcon[included_element.id] = iconFileNamePath[1];
+            }
             if (included_element.attributes.filename) {
                 includedAssetFilename[included_element.id] = included_element.attributes.filename;
             }
@@ -332,6 +338,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
         itemTechnology = '';
         itemTrackImage = '';
         imgPieces = [];
+        includedTechnologyItem = [];
         if (element.relationships) {
             if (element.relationships.field_award_images &&
                 element.relationships.field_award_images.data) {
@@ -366,6 +373,13 @@ var renderPage = function (data, page, searchedFor, next, prev) {
                 for (var i = 0; i < element.relationships.field_project_technology.data.length; i++) {
                     itemTechnology +=
                         includedTechnologyName[element.relationships.field_project_technology.data[i].id] + ', ';
+                    itemTechnologyIcon +=
+                        includedTechnologyIcon[element.relationships.field_project_technology.data[i].id] + ', ';
+                    var technologyItem = {
+                        name: includedTechnologyName[element.relationships.field_project_technology.data[i].id],
+                        image: includedTechnologyIcon[element.relationships.field_project_technology.data[i].id]
+                    };
+                    includedTechnologyItem.push(technologyItem);
                 }
             }
         }

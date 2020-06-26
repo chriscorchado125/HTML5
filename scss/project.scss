@@ -104,6 +104,20 @@
     background-color: $main_color_light;
     font-size: 10px;
   }
+
+  #technology-item-wrapper {
+    display: inline-block;
+
+    width: 45px;
+    text-align: center;
+    margin: 0 1px;
+    font-size: 10px;
+    .project-technology-icon {
+      height: 30px;
+      display: block;
+      margin: auto;
+    }
+  }
 }
 
 @media (max-width: 1000px) {

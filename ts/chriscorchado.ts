@@ -409,6 +409,7 @@ const renderPage = (
     endDate = '',
     itemJobTitle = '',
     itemTechnology = '',
+    itemTechnologyIcon = '',
     itemCompanyName = '',
     itemWorkType = '',
     itemPDF = '',
@@ -421,10 +422,20 @@ const renderPage = (
   let includedAssetFilename = [''];
   let includedCompanyName = [''];
   let includedTechnologyName = [''];
+  let includedTechnologyIcon = [''];
+  let includedTechnologyItem = [{}];
 
   if (data.included) {
     data.included.forEach((included_element: any) => {
       //
+      if (included_element.attributes.description) {
+        // extract image URL within quotes
+        let iconFileNamePath = /"(.*?)"/.exec(
+          included_element.attributes.description.value
+        );
+        includedTechnologyIcon[included_element.id] = iconFileNamePath[1];
+      }
+
       if (included_element.attributes.filename) {
         includedAssetFilename[included_element.id] = included_element.attributes.filename;
       }
@@ -451,6 +462,7 @@ const renderPage = (
     itemTechnology = '';
     itemTrackImage = '';
     imgPieces = [];
+    includedTechnologyItem = [];
 
     if (element.relationships) {
       /* get Courses screenshot filenames */
@@ -525,8 +537,28 @@ const renderPage = (
             includedTechnologyName[
               element.relationships.field_project_technology.data[i].id
             ] + ', ';
+
+          itemTechnologyIcon +=
+            includedTechnologyIcon[
+              element.relationships.field_project_technology.data[i].id
+            ] + ', ';
+
+          let technologyItem = {
+            name:
+              includedTechnologyName[
+                element.relationships.field_project_technology.data[i].id
+              ],
+            image:
+              includedTechnologyIcon[
+                element.relationships.field_project_technology.data[i].id
+              ],
+          };
+
+          includedTechnologyItem.push(technologyItem);
         }
       }
+
+      //console.log(element.relationships);
     } // if (element.relationships)
 
     /* get Project and Course dates */
@@ -704,6 +736,15 @@ const renderPage = (
         }
 
         item += `<div class="project-technology">${itemTechnology.slice(0, -2)}</div>`;
+
+        // item += `<div class="project-technology">`;
+
+        // for (const [key, value] of Object.entries(includedTechnologyItem)) {
+        //   item += `<div id="technology-item-wrapper">${value.name}`;
+        //   item += `<img src="${value.image}" class="project-technology-icon" /></div>`;
+        // }
+
+        // item += `</div>`;
         item += `</div>`;
 
         setPageMessage('click an image to enlarge it');
