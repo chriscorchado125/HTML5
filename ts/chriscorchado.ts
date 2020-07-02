@@ -558,7 +558,6 @@ const renderPage = (
         }
       }
 
-      //console.log(element.relationships);
     } // if (element.relationships)
 
     /* get Project and Course dates */
@@ -968,9 +967,7 @@ const getCurrentPage = () => {
   return pageName;
 };
 
-/**
- * Get current page when the resources are loaded
- */
+
 window.onload = () => {
   getPage(getCurrentPage());
 };
