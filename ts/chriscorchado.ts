@@ -8,6 +8,20 @@ $('#navigation').load('includes/nav.html');
 $('#footer').load('includes/footer.html');
 
 /**
+ * Show and hide the loading of a page
+ * @param {boolean} loadingStatus
+ */
+function setLoading(loadingStatus: boolean) {
+  if (loadingStatus) {
+    document.getElementById('preloader').style.display = 'block';
+    $('.container').hide();
+  } else {
+    document.getElementById('preloader').style.display = 'none';
+    $('.container').fadeIn(250);
+  }
+}
+
+/**
  * Load page
  * @param {string} page - page name
  * @param {string=} search - (optional) - search string
@@ -16,8 +30,7 @@ $('#footer').load('includes/footer.html');
 async function getPage(page: string, search?: string, pagingURL?: string) {
   let data = null;
 
-  document.getElementById('preloader').style.display = 'block';
-  $('.container').hide();
+  setLoading(true);
 
   if (search) {
     //ga('send', 'pageview', location.pathname + '?search=' + search);
@@ -351,8 +364,6 @@ const renderPage = (
   next?: Object,
   prev?: Object
 ) => {
-  document.getElementById('preloader').style.display = 'none';
-
   if (document.getElementById('noRecords')) {
     document.getElementById('noRecords').style.display = 'none';
   }
@@ -368,7 +379,9 @@ const renderPage = (
 
   /* show the form or the thank you screen after submission which fowards to the homepage  */
   if (page == 'contact') {
-    $('.container').html(data.toString()).fadeIn(300);
+    $('.container').html(data.toString());
+
+    setLoading(false);
 
     let loc = location.toString().indexOf('contact.html?submitted');
     if (loc !== -1) {
@@ -753,7 +766,7 @@ const renderPage = (
   $('#' + currentNavItem).addClass('nav-item-active');
 
   if (itemCount > 0) {
-    $('.container').html(item).fadeIn(300);
+    $('.container').html(item);
 
     if (pageIsSearchable) {
       document.getElementById('search-container').style.display = 'block';
@@ -769,6 +782,8 @@ const renderPage = (
   }
 
   setItemCount(itemCount, data.passedInCount.currentCount, prev, next);
+
+  setLoading(false);
 };
 
 /**

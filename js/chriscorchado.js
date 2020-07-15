@@ -50,6 +50,16 @@ var API_BASE = 'https://chriscorchado.com/drupal8';
 var pageLimit = 50;
 $('#navigation').load('includes/nav.html');
 $('#footer').load('includes/footer.html');
+function setLoading(loadingStatus) {
+    if (loadingStatus) {
+        document.getElementById('preloader').style.display = 'block';
+        $('.container').hide();
+    }
+    else {
+        document.getElementById('preloader').style.display = 'none';
+        $('.container').fadeIn(250);
+    }
+}
 function getPage(page, search, pagingURL) {
     return __awaiter(this, void 0, void 0, function () {
         var data, _a, passedInCount;
@@ -57,8 +67,7 @@ function getPage(page, search, pagingURL) {
             switch (_b.label) {
                 case 0:
                     data = null;
-                    document.getElementById('preloader').style.display = 'block';
-                    $('.container').hide();
+                    setLoading(true);
                     if (search) {
                     }
                     if (!(page == 'contact')) return [3, 2];
@@ -273,7 +282,6 @@ var getMonthYear = function (dateString) {
         newDate.getFullYear().toString());
 };
 var renderPage = function (data, page, searchedFor, next, prev) {
-    document.getElementById('preloader').style.display = 'none';
     if (document.getElementById('noRecords')) {
         document.getElementById('noRecords').style.display = 'none';
     }
@@ -284,7 +292,8 @@ var renderPage = function (data, page, searchedFor, next, prev) {
             '1px dashed #7399EA';
     }
     if (page == 'contact') {
-        $('.container').html(data.toString()).fadeIn(300);
+        $('.container').html(data.toString());
+        setLoading(false);
         var loc_1 = location.toString().indexOf('contact.html?submitted');
         if (loc_1 !== -1) {
             setInterval(showCountDown, 1000);
@@ -491,7 +500,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
     });
     $('#' + currentNavItem).addClass('nav-item-active');
     if (itemCount > 0) {
-        $('.container').html(item).fadeIn(300);
+        $('.container').html(item);
         if (pageIsSearchable) {
             document.getElementById('search-container').style.display = 'block';
         }
@@ -503,6 +512,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
         });
     }
     setItemCount(itemCount, data.passedInCount.currentCount, prev, next);
+    setLoading(false);
 };
 var getFullUrlByPage = function (linkToFix, page) {
     var pathToResource = 'No Path Found';
