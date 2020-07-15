@@ -206,7 +206,7 @@ const getData = (dataURL: string) => {
  * Search data after the user pauses typing for half a second
  */
 const searchData = () => {
-  let timeout = 0;
+  let timeout: any = 0;
   const inputSearchBox = document.getElementById('searchSite')! as HTMLInputElement;
 
   inputSearchBox.addEventListener('keyup', function (e) {
@@ -216,10 +216,8 @@ const searchData = () => {
 
     clearTimeout(timeout);
 
-    +timeout = setTimeout(function () {
+    timeout = setTimeout(function () {
       getPage(getCurrentPage(), inputSearchBox.value);
-
-      document.getElementById('searchBtn').style.display = 'inline-block';
     }, 500);
   });
 };
