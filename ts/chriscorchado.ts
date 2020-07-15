@@ -216,7 +216,7 @@ const searchData = () => {
 
     clearTimeout(timeout);
 
-    timeout = setTimeout(function () {
+    +timeout = setTimeout(function () {
       getPage(getCurrentPage(), inputSearchBox.value);
 
       document.getElementById('searchBtn').style.display = 'inline-block';
