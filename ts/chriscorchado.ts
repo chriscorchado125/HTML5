@@ -20,7 +20,7 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
   $('.container').hide();
 
   if (search) {
-    ga('send', 'pageview', location.pathname + '?search=' + search);
+    //ga('send', 'pageview', location.pathname + '?search=' + search);
   }
 
   if (page == 'contact') {
@@ -557,7 +557,6 @@ const renderPage = (
           includedTechnologyItem.push(technologyItem);
         }
       }
-
     } // if (element.relationships)
 
     /* get Project and Course dates */
@@ -966,7 +965,6 @@ const getCurrentPage = () => {
 
   return pageName;
 };
-
 
 window.onload = () => {
   getPage(getCurrentPage());

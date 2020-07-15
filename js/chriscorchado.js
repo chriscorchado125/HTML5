@@ -60,7 +60,6 @@ function getPage(page, search, pagingURL) {
                     document.getElementById('preloader').style.display = 'block';
                     $('.container').hide();
                     if (search) {
-                        ga('send', 'pageview', location.pathname + '?search=' + search);
                     }
                     if (!(page == 'contact')) return [3, 2];
                     return [4, fetch(API_BASE + "/contact/feedback")
@@ -84,7 +83,8 @@ function getPage(page, search, pagingURL) {
                             else {
                                 data = "<h1>Contact</h1>" + form + " " + script;
                             }
-                        })["catch"](function (error) {
+                        })
+                            .catch(function (error) {
                             alert("Sorry an error has occurred: " + error);
                         })];
                 case 1:
@@ -147,7 +147,7 @@ function getPage(page, search, pagingURL) {
                     passedInCount = {
                         currentCount: document.getElementById('lastCount')
                             ? document.getElementById('lastCount').textContent
-                            : 1
+                            : 1,
                     };
                     data = __assign(__assign({}, data), { passedInCount: passedInCount });
                     if (data.data.length) {
@@ -182,10 +182,10 @@ var getData = function (dataURL) {
     var result = $.ajax({
         dataType: 'json',
         accepts: {
-            json: 'application/vnd.api+json'
+            json: 'application/vnd.api+json',
         },
         url: dataURL,
-        type: 'GET'
+        type: 'GET',
     });
     return result;
 };
@@ -377,7 +377,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
                         includedTechnologyIcon[element.relationships.field_project_technology.data[i].id] + ', ';
                     var technologyItem = {
                         name: includedTechnologyName[element.relationships.field_project_technology.data[i].id],
-                        image: includedTechnologyIcon[element.relationships.field_project_technology.data[i].id]
+                        image: includedTechnologyIcon[element.relationships.field_project_technology.data[i].id],
                     };
                     includedTechnologyItem.push(technologyItem);
                 }
@@ -499,7 +499,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
             previousIcon: '&#9664;',
             nextIcon: '&#9654;',
             galleryFadeIn: 200,
-            galleryFadeOut: 300
+            galleryFadeOut: 300,
         });
     }
     setItemCount(itemCount, data.passedInCount.currentCount, prev, next);
@@ -614,7 +614,8 @@ function updateMenuPages(currentPage, targetContainer) {
                             generatedPageLinks += "<a href=\"" + pageLink.toLowerCase() + ".html\" \n        class=\"nav-item nav-link " + activeNavItem + "\" \n        title=\"" + pageName + "\" \n        id=\"" + pageName.toLowerCase() + "-link\">" + pageName + "</a>";
                         }
                         document.getElementById(targetContainer).innerHTML = generatedPageLinks;
-                    })["catch"](function (error) {
+                    })
+                        .catch(function (error) {
                         alert("Sorry an error has occurred: " + error);
                     })];
                 case 1:
