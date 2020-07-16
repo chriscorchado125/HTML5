@@ -280,34 +280,97 @@ var getMonthYear = function (dateString) {
         ' ' +
         newDate.getFullYear().toString());
 };
+var setPageHTML = function (values) {
+    var page = values[0];
+    var data = values[1];
+    var itemTitle = values[2];
+    var itemJobTitle = values[3];
+    var itemBody = values[4];
+    var imgPieces = values[5];
+    var startDate = values[6];
+    var endDate = values[7];
+    var itemTrackImage = values[8];
+    var itemPDF = values[9];
+    var itemDate = values[10];
+    var itemCompanyName = values[11];
+    var itemTechnology = values[12];
+    var searchedFor = values[13];
+    switch (page) {
+        case 'about':
+            document.getElementById('search-container').style.display = 'none';
+            document.getElementById('profiles').style.display = 'block';
+            document.getElementById('logo').getElementsByTagName('img')[0].style.border =
+                '1px dashed #7399EA';
+            var aboutData = data.attributes.body.value.toString().split('<hr />');
+            document.getElementById('profiles').innerHTML = aboutData[1];
+            return "<h1>" + itemTitle + "</h1> " + aboutData[0];
+            break;
+        case 'contact':
+            $('.container').html(data.toString());
+            setLoading(false);
+            var loc_1 = location.toString().indexOf('contact.html?submitted');
+            if (loc_1 !== -1) {
+                setInterval(showCountDown, 1000);
+                setTimeout(function () {
+                    window.location.replace(location.toString().substr(0, loc_1));
+                }, seconds * 1000);
+            }
+            else {
+                $('#contact-link').addClass('nav-item-active');
+                var webLocation = document.getElementById('edit-field-site-0-value');
+                webLocation.value = location.toString();
+                $('#edit-mail').focus();
+            }
+            break;
+        case 'companies':
+            return "<div class=\"company-container col shadow\">\n\n          <div class=\"company-name\">" + itemTitle + "</div>\n          <div class=\"company-job-title\">" + itemJobTitle + "</div>\n          <div class=\"body-container\">" + itemBody + "</div>\n\n          <div class=\"screenshot-container\">\n            <img src=" + getFullUrlByPage(imgPieces[0], page) + " \n            class=\"company-screenshot\" \n            alt=\"" + data.attributes.title + " Screenshot\" \n            title=\"" + data.attributes.title + " Screenshot\"/>\n          </div>\n\n          <div class=\"employment-dates\">" + startDate + " - " + endDate + "</div>\n        </div>";
+            break;
+        case 'courses':
+            var item_1 = "<div class=\"course-box box\">\n          <h2>" + itemTitle + "</h2>\n\n          <div>\n            <img src=\"" + getFullUrlByPage(imgPieces[0], page) + "\" \n              alt=\"" + itemTitle.replace(/(<([^>]+)>)/gi, '') + "\" \n              title=\"" + itemTitle.replace(/(<([^>]+)>)/gi, '') + "\" />\n          </div>\n\n          <div class=\"course-wrapper\">\n\n            <span class=\"course-date\">" + itemDate + "</span>\n\n            <span class=\"course-links\">\n              <a href=\"" + getFullUrlByPage(itemPDF, page) + "\" target=\"_blank\">\n                <img src=\"https://chriscorchado.com/images/pdfIcon.jpg\" height=\"25\" \n                title=\"View the PDF Certificate\" alt=\"View the PDF Certificate\"/>\n              </a>\n            </span>";
+            if (itemTrackImage) {
+                item_1 += "<span class=\"course-links\">\n              <a href=\"" + getFullUrlByPage(itemTrackImage, page) + "\" data-featherlight=\"image\">\n                <img src=\"https://chriscorchado.com/images/linkedIn-track.png\" height=\"25\" \n                title=\"View the Courses in the Track\" alt=\"View the Courses in the Track\" />\n              </a>\n            </span>";
+            }
+            item_1 += "</div></div>";
+            return item_1;
+            break;
+        case 'projects':
+            var imgAltCount_1 = 0;
+            item_1 = "<div class=\"project col\">\n        <div class=\"project-title\">" + itemTitle + "</div>\n        <div class=\"project-company\">" + itemCompanyName + " <span class=\"project-date\">(" + itemDate + ")</span></div> \n        <div class=\"body-container\">" + itemBody + "</div>";
+            if (imgPieces) {
+                var itemGridClass = "project-item-grid project-items" + imgPieces.length;
+                var section_1 = "<section data-featherlight-gallery data-featherlight-filter=\"a\" class=\"" + itemGridClass + "\">";
+                var screenshotAlt_1 = new Array();
+                data.relationships.field_screenshot.data.forEach(function (screenshot) {
+                    screenshotAlt_1.push(screenshot.meta.alt);
+                });
+                imgAltCount_1 = 0;
+                imgPieces.forEach(function (img) {
+                    var projectImage = getFullUrlByPage(img, page);
+                    section_1 += "<div class=\"project-item shadow\">\n            \n              <a href=" + projectImage + " class=\"gallery\">\n                <div class=\"project-item-desc\">" + itemWithSearchHighlight(screenshotAlt_1[imgAltCount_1], searchedFor) + "</div>\n                <img src=" + projectImage + " alt=" + screenshotAlt_1[imgAltCount_1] + " \n                  title=" + screenshotAlt_1[imgAltCount_1] + " />\n              </a>\n            </div>";
+                    imgAltCount_1++;
+                });
+                section_1 += "</section>";
+                item_1 += section_1;
+            }
+            if (data.attributes.field_video_url) {
+                data.attributes.field_video_url.forEach(function (img) {
+                    item_1 += "<a href=\"" + img + "\" \n          data-featherlight=\"iframe\" \n          data-featherlight-iframe-frameborder=\"0\" \n          data-featherlight-iframe-allowfullscreen=\"true\" \n          data-featherlight-iframe-allow=\"autoplay; encrypted-media\"\n          data-featherlight-iframe-style=\"display:block;border:none;height:85vh;width:85vw;\" class=\"play-video\">\n            Play Video <img src=\"images/play_vidoe_icon.png\" title=\"Play Video\" alt=\"Play Video\" width=\"20\" />\n          </a>";
+                });
+            }
+            item_1 += "<div class=\"project-technology\">" + itemTechnology.slice(0, -2) + "</div>\n        </div>";
+            console.log(item_1);
+            console.log('----');
+            if (item_1 !== undefined)
+                return item_1;
+            break;
+    }
+};
 var renderPage = function (data, page, searchedFor, next, prev) {
     if (document.getElementById('noRecords')) {
         document.getElementById('noRecords').style.display = 'none';
     }
-    if (page == 'about') {
-        document.getElementById('search-container').style.display = 'none';
-        document.getElementById('profiles').style.display = 'block';
-        document.getElementById('logo').getElementsByTagName('img')[0].style.border =
-            '1px dashed #7399EA';
-    }
-    if (page == 'contact') {
-        $('.container').html(data.toString());
-        setLoading(false);
-        var loc_1 = location.toString().indexOf('contact.html?submitted');
-        if (loc_1 !== -1) {
-            setInterval(showCountDown, 1000);
-            setTimeout(function () {
-                window.location.replace(location.toString().substr(0, loc_1));
-            }, seconds * 1000);
-        }
-        else {
-            $('#contact-link').addClass('nav-item-active');
-            var webLocation = document.getElementById('edit-field-site-0-value');
-            webLocation.value = location.toString();
-            $('#edit-name').focus();
-        }
-        return false;
-    }
+    if (page == 'contact')
+        setPageHTML([page, data]);
     var screenshotCount = 0, imgAltCount = 0, itemCount = 0;
     var imgPieces = [''];
     var item = '', itemBody = '', currentNavItem = '', itemGridClass = '', itemTitle = '', itemDate = '', startDate = '', endDate = '', itemJobTitle = '', itemTechnology = '', itemTechnologyIcon = '', itemCompanyName = '', itemWorkType = '', itemPDF = '', itemTrackImage = '', section = '', projectImage = '';
@@ -392,19 +455,15 @@ var renderPage = function (data, page, searchedFor, next, prev) {
             }
         }
         if (itemDate) {
-            if (page == 'projects') {
+            if (page == 'projects')
                 itemDate = itemDate.split('-')[0];
-            }
-            if (page == 'courses') {
+            if (page == 'courses')
                 itemDate = getMonthYear(itemDate);
-            }
         }
-        if (startDate) {
+        if (startDate)
             startDate = getMonthYear(startDate);
-        }
-        if (endDate) {
+        if (endDate)
             endDate = getMonthYear(endDate);
-        }
         itemTitle = itemTitle.replace('&amp;', '&');
         if (searchedFor) {
             itemTitle = itemWithSearchHighlight(itemTitle, searchedFor);
@@ -420,54 +479,41 @@ var renderPage = function (data, page, searchedFor, next, prev) {
             }
         }
         itemCount++;
+        var allValues = [
+            page,
+            element,
+            itemTitle,
+            itemJobTitle,
+            itemBody,
+            imgPieces,
+            startDate,
+            endDate,
+            itemTrackImage,
+            itemPDF,
+            itemDate,
+            itemCompanyName,
+            itemTechnology,
+            searchedFor,
+        ];
         switch (page) {
             case 'about':
                 currentNavItem = 'about-link';
-                var aboutData = element.attributes.body.value.toString().split('<hr />');
-                item = "<h1>" + itemTitle + "</h1> " + aboutData[0];
-                document.getElementById('profiles').innerHTML = aboutData[1];
+                item = setPageHTML(allValues);
                 break;
             case 'companies':
                 currentNavItem = 'companies-link';
+                item += setPageHTML(allValues);
                 pageIsSearchable = true;
-                item += "<div class=\"company-container col shadow\">\n\n          <div class=\"company-name\">" + itemTitle + "</div>\n          <div class=\"company-job-title\">" + itemJobTitle + "</div>\n          <div class=\"body-container\">" + itemBody + "</div>\n\n          <div class=\"screenshot-container\">\n            <img src=" + getFullUrlByPage(imgPieces[0], page) + " \n            class=\"company-screenshot\" \n            alt=\"" + element.attributes.title + " Screenshot\" \n            title=\"" + element.attributes.title + " Screenshot\"/>\n          </div>\n\n          <div class=\"employment-dates\">" + startDate + " - " + endDate + "</div>\n        </div>";
                 break;
             case 'courses':
                 currentNavItem = 'courses-link';
+                item += setPageHTML(allValues);
                 pageIsSearchable = true;
-                item += "<div class=\"course-box box\">\n          <h2>" + itemTitle + "</h2>\n\n          <div>\n            <img src=\"" + getFullUrlByPage(imgPieces[0], page) + "\" \n              alt=\"" + itemTitle.replace(/(<([^>]+)>)/gi, '') + "\" \n              title=\"" + itemTitle.replace(/(<([^>]+)>)/gi, '') + "\" />\n          </div>\n\n          <div class=\"course-wrapper\">\n\n            <span class=\"course-date\">" + itemDate + "</span>\n\n            <span class=\"course-links\">\n              <a href=\"" + getFullUrlByPage(itemPDF, page) + "\" target=\"_blank\">\n                <img src=\"https://chriscorchado.com/images/pdfIcon.jpg\" height=\"25\" \n                title=\"View the PDF Certificate\" alt=\"View the PDF Certificate\"/>\n              </a>\n            </span>";
-                if (itemTrackImage) {
-                    item += "<span class=\"course-links\">\n              <a href=\"" + getFullUrlByPage(itemTrackImage, page) + "\" data-featherlight=\"image\">\n                <img src=\"https://chriscorchado.com/images/linkedIn-track.png\" height=\"25\" \n                title=\"View the Courses in the Track\" alt=\"View the Courses in the Track\" />\n              </a>\n            </span>";
-                }
-                item += "</div></div>";
                 break;
             case 'projects':
                 currentNavItem = 'projects-link';
+                item += setPageHTML(allValues);
                 pageIsSearchable = true;
-                item += "<div class=\"project col\">\n        <div class=\"project-title\">" + itemTitle + "</div>\n        <div class=\"project-company\">" + itemCompanyName + " <span class=\"project-date\">(" + itemDate + ")</span></div> \n        <div class=\"body-container\">" + itemBody + "</div>";
-                if (imgPieces) {
-                    screenshotCount = +imgPieces.length;
-                    itemGridClass = "project-item-grid project-items" + screenshotCount;
-                    section = "<section data-featherlight-gallery data-featherlight-filter=\"a\" class=\"" + itemGridClass + "\">";
-                    var screenshotAlt_1 = new Array();
-                    element.relationships.field_screenshot.data.forEach(function (screenshot) {
-                        screenshotAlt_1.push(screenshot.meta.alt);
-                    });
-                    imgAltCount = 0;
-                    imgPieces.forEach(function (img) {
-                        projectImage = getFullUrlByPage(img, page);
-                        section += "<div class=\"project-item shadow\">\n            \n              <a href=" + projectImage + " class=\"gallery\">\n                <div class=\"project-item-desc\">" + itemWithSearchHighlight(screenshotAlt_1[imgAltCount], searchedFor) + "</div>\n                <img src=" + projectImage + " alt=" + screenshotAlt_1[imgAltCount] + " \n                  title=" + screenshotAlt_1[imgAltCount] + " />\n              </a>\n            </div>";
-                        imgAltCount++;
-                    });
-                    section += "</section>";
-                    item += section;
-                }
-                if (element.attributes.field_video_url) {
-                    element.attributes.field_video_url.forEach(function (img) {
-                        item += "<a href=\"" + img + "\" \n          data-featherlight=\"iframe\" \n          data-featherlight-iframe-frameborder=\"0\" \n          data-featherlight-iframe-allowfullscreen=\"true\" \n          data-featherlight-iframe-allow=\"autoplay; encrypted-media\"\n          data-featherlight-iframe-style=\"display:block;border:none;height:85vh;width:85vw;\" class=\"play-video\">\n            Play Video <img src=\"images/play_vidoe_icon.png\" title=\"Play Video\" alt=\"Play Video\" width=\"20\" />\n          </a>";
-                    });
-                }
-                item += "<div class=\"project-technology\">" + itemTechnology.slice(0, -2) + "</div>\n        </div>";
                 setPageMessage('click an image to enlarge it');
                 break;
         }

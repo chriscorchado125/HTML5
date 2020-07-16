@@ -390,6 +390,200 @@ const getMonthYear = (dateString: string) => {
   );
 };
 
+const setPageHTML = (values: any) => {
+  let page = values[0];
+  let data = values[1];
+  let itemTitle = values[2];
+  let itemJobTitle = values[3];
+  let itemBody = values[4];
+  let imgPieces = values[5];
+  let startDate = values[6];
+  let endDate = values[7];
+  let itemTrackImage = values[8];
+  let itemPDF = values[9];
+  let itemDate = values[10];
+  let itemCompanyName = values[11];
+  let itemTechnology = values[12];
+  let searchedFor = values[13];
+
+  switch (page) {
+    case 'about':
+      // hide search box on About page (homepage)
+      document.getElementById('search-container').style.display = 'none';
+      document.getElementById('profiles').style.display = 'block';
+
+      // add border to logo
+      document.getElementById('logo').getElementsByTagName('img')[0].style.border =
+        '1px dashed #7399EA';
+
+      let aboutData = data.attributes.body.value.toString().split('<hr />');
+
+      document.getElementById('profiles').innerHTML = aboutData[1]; // resume, linkedin and azure links
+      return `<h1>${itemTitle}</h1> ${aboutData[0]}`;
+
+      break;
+    case 'contact':
+      // show the form or the thank you screen after submission which fowards to the homepage
+      $('.container').html(data.toString());
+
+      setLoading(false);
+
+      let loc = location.toString().indexOf('contact.html?submitted');
+      if (loc !== -1) {
+        setInterval(showCountDown, 1000);
+
+        /* get the homepage url and forward to it after ${seconds} */
+        setTimeout(function () {
+          window.location.replace(location.toString().substr(0, loc));
+        }, seconds * 1000);
+      } else {
+        $('#contact-link').addClass('nav-item-active');
+
+        //capture current site
+        const webLocation = document.getElementById(
+          'edit-field-site-0-value'
+        )! as HTMLInputElement;
+
+        webLocation.value = location.toString();
+
+        $('#edit-mail').focus();
+      }
+      break;
+    case 'companies':
+      return `<div class="company-container col shadow">
+
+          <div class="company-name">${itemTitle}</div>
+          <div class="company-job-title">${itemJobTitle}</div>
+          <div class="body-container">${itemBody}</div>
+
+          <div class="screenshot-container">
+            <img src=${getFullUrlByPage(imgPieces[0], page)} 
+            class="company-screenshot" 
+            alt="${data.attributes.title} Screenshot" 
+            title="${data.attributes.title} Screenshot"/>
+          </div>
+
+          <div class="employment-dates">${startDate} - ${endDate}</div>
+        </div>`;
+
+      //item += `<div class="employment-type">${itemWorkType}</div>`;
+      break;
+    case 'courses':
+      let item = `<div class="course-box box">
+          <h2>${itemTitle}</h2>
+
+          <div>
+            <img src="${getFullUrlByPage(imgPieces[0], page)}" 
+              alt="${itemTitle.replace(/(<([^>]+)>)/gi, '')}" 
+              title="${itemTitle.replace(/(<([^>]+)>)/gi, '')}" />
+          </div>
+
+          <div class="course-wrapper">
+
+            <span class="course-date">${itemDate}</span>
+
+            <span class="course-links">
+              <a href="${getFullUrlByPage(itemPDF, page)}" target="_blank">
+                <img src="https://chriscorchado.com/images/pdfIcon.jpg" height="25" 
+                title="View the PDF Certificate" alt="View the PDF Certificate"/>
+              </a>
+            </span>`;
+
+      // TODO: Create bigger version and add to content type
+      //  item += `<span class="course-links">
+      //   <a href="${getFullUrlByPage(imgPieces[0], page)}" data-featherlight="image">
+      //     <img src="https://chriscorchado.com/images/jpg_icon.png" height="25"
+      //       title="View the Certificate" alt="View the Certificate"/>
+      //   </a></span>`;
+
+      if (itemTrackImage) {
+        item += `<span class="course-links">
+              <a href="${getFullUrlByPage(
+                itemTrackImage,
+                page
+              )}" data-featherlight="image">
+                <img src="https://chriscorchado.com/images/linkedIn-track.png" height="25" 
+                title="View the Courses in the Track" alt="View the Courses in the Track" />
+              </a>
+            </span>`;
+      }
+      item += `</div></div>`; //course-box box
+      return item;
+      break;
+    case 'projects':
+      //console.log(itemTitle);
+
+      let imgAltCount = 0;
+      item = `<div class="project col">
+        <div class="project-title">${itemTitle}</div>
+        <div class="project-company">${itemCompanyName} <span class="project-date">(${itemDate})</span></div> 
+        <div class="body-container">${itemBody}</div>`;
+
+      /* Screenshot Section */
+      if (imgPieces) {
+        let itemGridClass = `project-item-grid project-items${imgPieces.length}`;
+        let section = `<section data-featherlight-gallery data-featherlight-filter="a" class="${itemGridClass}">`;
+
+        let screenshotAlt = new Array();
+        data.relationships.field_screenshot.data.forEach((screenshot: any) => {
+          screenshotAlt.push(screenshot.meta.alt);
+        });
+
+        imgAltCount = 0; // reset
+        imgPieces.forEach((img: string) => {
+          let projectImage = getFullUrlByPage(img, page);
+
+          section += `<div class="project-item shadow">
+            
+              <a href=${projectImage} class="gallery">
+                <div class="project-item-desc">${itemWithSearchHighlight(
+                  screenshotAlt[imgAltCount],
+                  searchedFor
+                )}</div>
+                <img src=${projectImage} alt=${screenshotAlt[imgAltCount]} 
+                  title=${screenshotAlt[imgAltCount]} />
+              </a>
+            </div>`;
+          imgAltCount++;
+        });
+
+        section += `</section>`;
+        item += section;
+      }
+
+      /* Video Section */
+      if (data.attributes.field_video_url) {
+        data.attributes.field_video_url.forEach((img: string) => {
+          item += `<a href="${img}" 
+          data-featherlight="iframe" 
+          data-featherlight-iframe-frameborder="0" 
+          data-featherlight-iframe-allowfullscreen="true" 
+          data-featherlight-iframe-allow="autoplay; encrypted-media"
+          data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;" class="play-video">
+            Play Video <img src="images/play_vidoe_icon.png" title="Play Video" alt="Play Video" width="20" />
+          </a>`;
+        });
+      }
+
+      item += `<div class="project-technology">${itemTechnology.slice(0, -2)}</div>
+        </div>`;
+
+      // item += `<div class="project-technology">`;
+
+      // for (const [key, value] of Object.entries(includedTechnologyItem)) {
+      //   item += `<div id="technology-item-wrapper">${value.name}
+      //     <img src="${value.image}" class="project-technology-icon" title="${value.name}" alt="${value.name}" /></div>`;
+      // }
+
+      // item += `</div>`;
+      console.log(item);
+      console.log('----');
+
+      if (item !== undefined) return item;
+      //return item;
+      break;
+  }
+};
 /**
  * Create HTML for page
  * @param {Object[]} data - page items
@@ -409,43 +603,7 @@ const renderPage = (
     document.getElementById('noRecords').style.display = 'none';
   }
 
-  // add border to logo and hide search box on About page (homepage)
-  if (page == 'about') {
-    document.getElementById('search-container').style.display = 'none';
-    document.getElementById('profiles').style.display = 'block';
-
-    document.getElementById('logo').getElementsByTagName('img')[0].style.border =
-      '1px dashed #7399EA';
-  }
-
-  /* show the form or the thank you screen after submission which fowards to the homepage  */
-  if (page == 'contact') {
-    $('.container').html(data.toString());
-
-    setLoading(false);
-
-    let loc = location.toString().indexOf('contact.html?submitted');
-    if (loc !== -1) {
-      setInterval(showCountDown, 1000);
-
-      /* get the homepage url and forward to it after ${seconds} */
-      setTimeout(function () {
-        window.location.replace(location.toString().substr(0, loc));
-      }, seconds * 1000);
-    } else {
-      $('#contact-link').addClass('nav-item-active');
-
-      //capture current site
-      const webLocation = document.getElementById(
-        'edit-field-site-0-value'
-      )! as HTMLInputElement;
-
-      webLocation.value = location.toString();
-
-      $('#edit-name').focus();
-    }
-    return false;
-  }
+  if (page == 'contact') setPageHTML([page, data]);
 
   let screenshotCount = 0,
     imgAltCount = 0,
@@ -615,23 +773,13 @@ const renderPage = (
 
     /* get Project and Course dates */
     if (itemDate) {
-      if (page == 'projects') {
-        itemDate = itemDate.split('-')[0]; // only year
-      }
-
-      if (page == 'courses') {
-        itemDate = getMonthYear(itemDate);
-      }
+      if (page == 'projects') itemDate = itemDate.split('-')[0]; // only year
+      if (page == 'courses') itemDate = getMonthYear(itemDate);
     }
 
     /* Work History Dates - month and year*/
-    if (startDate) {
-      startDate = getMonthYear(startDate);
-    }
-
-    if (endDate) {
-      endDate = getMonthYear(endDate);
-    }
+    if (startDate) startDate = getMonthYear(startDate);
+    if (endDate) endDate = getMonthYear(endDate);
 
     itemTitle = itemTitle.replace('&amp;', '&');
 
@@ -653,151 +801,42 @@ const renderPage = (
 
     itemCount++;
 
+    const allValues = [
+      page,
+      element,
+      itemTitle,
+      itemJobTitle,
+      itemBody,
+      imgPieces,
+      startDate,
+      endDate,
+      itemTrackImage,
+      itemPDF,
+      itemDate,
+      itemCompanyName,
+      itemTechnology,
+      searchedFor,
+    ];
+
     switch (page) {
       case 'about':
         currentNavItem = 'about-link';
-
-        let aboutData = element.attributes.body.value.toString().split('<hr />');
-        item = `<h1>${itemTitle}</h1> ${aboutData[0]}`;
-        document.getElementById('profiles').innerHTML = aboutData[1]; // resume, linkedin and azure links
+        item = setPageHTML(allValues);
         break;
       case 'companies':
         currentNavItem = 'companies-link';
+        item += setPageHTML(allValues);
         pageIsSearchable = true;
-
-        item += `<div class="company-container col shadow">
-
-          <div class="company-name">${itemTitle}</div>
-          <div class="company-job-title">${itemJobTitle}</div>
-          <div class="body-container">${itemBody}</div>
-
-          <div class="screenshot-container">
-            <img src=${getFullUrlByPage(imgPieces[0], page)} 
-            class="company-screenshot" 
-            alt="${element.attributes.title} Screenshot" 
-            title="${element.attributes.title} Screenshot"/>
-          </div>
-
-          <div class="employment-dates">${startDate} - ${endDate}</div>
-        </div>`;
-
-        //item += `<div class="employment-type">${itemWorkType}</div>`;
         break;
       case 'courses':
         currentNavItem = 'courses-link';
+        item += setPageHTML(allValues);
         pageIsSearchable = true;
-
-        item += `<div class="course-box box">
-          <h2>${itemTitle}</h2>
-
-          <div>
-            <img src="${getFullUrlByPage(imgPieces[0], page)}" 
-              alt="${itemTitle.replace(/(<([^>]+)>)/gi, '')}" 
-              title="${itemTitle.replace(/(<([^>]+)>)/gi, '')}" />
-          </div>
-
-          <div class="course-wrapper">
-
-            <span class="course-date">${itemDate}</span>
-
-            <span class="course-links">
-              <a href="${getFullUrlByPage(itemPDF, page)}" target="_blank">
-                <img src="https://chriscorchado.com/images/pdfIcon.jpg" height="25" 
-                title="View the PDF Certificate" alt="View the PDF Certificate"/>
-              </a>
-            </span>`;
-
-        // TODO: Create bigger version and add to content type
-        //  item += `<span class="course-links">
-        //   <a href="${getFullUrlByPage(imgPieces[0], page)}" data-featherlight="image">
-        //     <img src="https://chriscorchado.com/images/jpg_icon.png" height="25"
-        //       title="View the Certificate" alt="View the Certificate"/>
-        //   </a></span>`;
-
-        if (itemTrackImage) {
-          item += `<span class="course-links">
-              <a href="${getFullUrlByPage(
-                itemTrackImage,
-                page
-              )}" data-featherlight="image">
-                <img src="https://chriscorchado.com/images/linkedIn-track.png" height="25" 
-                title="View the Courses in the Track" alt="View the Courses in the Track" />
-              </a>
-            </span>`;
-        }
-        item += `</div></div>`; //course-box box
         break;
-
       case 'projects':
         currentNavItem = 'projects-link';
+        item += setPageHTML(allValues);
         pageIsSearchable = true;
-
-        item += `<div class="project col">
-        <div class="project-title">${itemTitle}</div>
-        <div class="project-company">${itemCompanyName} <span class="project-date">(${itemDate})</span></div> 
-        <div class="body-container">${itemBody}</div>`;
-
-        /* Screenshot Section */
-        if (imgPieces) {
-          screenshotCount = +imgPieces.length;
-
-          itemGridClass = `project-item-grid project-items${screenshotCount}`;
-
-          section = `<section data-featherlight-gallery data-featherlight-filter="a" class="${itemGridClass}">`;
-
-          let screenshotAlt = new Array();
-          element.relationships.field_screenshot.data.forEach((screenshot: any) => {
-            screenshotAlt.push(screenshot.meta.alt);
-          });
-
-          imgAltCount = 0; // reset
-          imgPieces.forEach((img) => {
-            projectImage = getFullUrlByPage(img, page);
-
-            section += `<div class="project-item shadow">
-            
-              <a href=${projectImage} class="gallery">
-                <div class="project-item-desc">${itemWithSearchHighlight(
-                  screenshotAlt[imgAltCount],
-                  searchedFor
-                )}</div>
-                <img src=${projectImage} alt=${screenshotAlt[imgAltCount]} 
-                  title=${screenshotAlt[imgAltCount]} />
-              </a>
-            </div>`;
-            imgAltCount++;
-          });
-
-          section += `</section>`;
-          item += section;
-        }
-
-        /* Video Section */
-        if (element.attributes.field_video_url) {
-          element.attributes.field_video_url.forEach((img: string) => {
-            item += `<a href="${img}" 
-          data-featherlight="iframe" 
-          data-featherlight-iframe-frameborder="0" 
-          data-featherlight-iframe-allowfullscreen="true" 
-          data-featherlight-iframe-allow="autoplay; encrypted-media"
-          data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;" class="play-video">
-            Play Video <img src="images/play_vidoe_icon.png" title="Play Video" alt="Play Video" width="20" />
-          </a>`;
-          });
-        }
-
-        item += `<div class="project-technology">${itemTechnology.slice(0, -2)}</div>
-        </div>`;
-
-        // item += `<div class="project-technology">`;
-
-        // for (const [key, value] of Object.entries(includedTechnologyItem)) {
-        //   item += `<div id="technology-item-wrapper">${value.name}
-        //     <img src="${value.image}" class="project-technology-icon" title="${value.name}" alt="${value.name}" /></div>`;
-        // }
-
-        // item += `</div>`;
-
         setPageMessage('click an image to enlarge it');
         break;
     } // end switch
