@@ -313,7 +313,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
     var includedCompanyName = [''];
     var includedTechnologyName = [''];
     var includedTechnologyIcon = [''];
-    var includedTechnologyItem = [{}];
+    var includedTechnologyItem = [];
     if (data.included) {
         data.included.forEach(function (included_element) {
             if (included_element.attributes.description) {
@@ -427,14 +427,14 @@ var renderPage = function (data, page, searchedFor, next, prev) {
             case 'companies':
                 currentNavItem = 'companies-link';
                 pageIsSearchable = true;
-                item += "<div class=\"company-container col shadow\">\n\n          <div class=\"company-name\">" + itemTitle + "</div>\n          <div class=\"company-job-title\">" + itemJobTitle + "</div>\n          <div class=\"body-container\">" + itemBody + "</div>\n\n          <div class=\"screenshot-container\">\n            <img src=" + getFullUrlByPage(imgPieces[0], page) + " class=\"company-screenshot\"  alt=\"" + element.title + " Screenshot\" />\n          </div>\n\n          <div class=\"employment-dates\">" + startDate + " - " + endDate + "</div>\n        </div>";
+                item += "<div class=\"company-container col shadow\">\n\n          <div class=\"company-name\">" + itemTitle + "</div>\n          <div class=\"company-job-title\">" + itemJobTitle + "</div>\n          <div class=\"body-container\">" + itemBody + "</div>\n\n          <div class=\"screenshot-container\">\n            <img src=" + getFullUrlByPage(imgPieces[0], page) + " \n            class=\"company-screenshot\" \n            alt=\"" + element.attributes.title + " Screenshot\" \n            title=\"" + element.attributes.title + " Screenshot\"/>\n          </div>\n\n          <div class=\"employment-dates\">" + startDate + " - " + endDate + "</div>\n        </div>";
                 break;
             case 'courses':
                 currentNavItem = 'courses-link';
                 pageIsSearchable = true;
-                item += "<div class=\"course-box box\">\n          <h2>" + itemTitle + "</h2>\n\n          <div>\n            <img src=\"" + getFullUrlByPage(imgPieces[0], page) + "\" \n              alt=\"" + itemTitle.replace(/(<([^>]+)>)/gi, '') + "\" \n              title=\"" + itemTitle.replace(/(<([^>]+)>)/gi, '') + "\" />\n          </div>\n\n          <div class=\"course-wrapper\">\n\n            <span class=\"course-date\">" + itemDate + "</span>\n\n            <span class=\"course-links\">\n              <a href=\"" + getFullUrlByPage(itemPDF, page) + "\" target=\"_blank\">\n                <img src=\"https://chriscorchado.com/images/pdfIcon.jpg\" height=\"25\" title=\"View the PDF Certificate\" />\n              </a>\n            </span>";
+                item += "<div class=\"course-box box\">\n          <h2>" + itemTitle + "</h2>\n\n          <div>\n            <img src=\"" + getFullUrlByPage(imgPieces[0], page) + "\" \n              alt=\"" + itemTitle.replace(/(<([^>]+)>)/gi, '') + "\" \n              title=\"" + itemTitle.replace(/(<([^>]+)>)/gi, '') + "\" />\n          </div>\n\n          <div class=\"course-wrapper\">\n\n            <span class=\"course-date\">" + itemDate + "</span>\n\n            <span class=\"course-links\">\n              <a href=\"" + getFullUrlByPage(itemPDF, page) + "\" target=\"_blank\">\n                <img src=\"https://chriscorchado.com/images/pdfIcon.jpg\" height=\"25\" \n                title=\"View the PDF Certificate\" alt=\"View the PDF Certificate\"/>\n              </a>\n            </span>";
                 if (itemTrackImage) {
-                    item += "<span class=\"course-links\">\n              <a href=\"" + getFullUrlByPage(itemTrackImage, page) + "\" data-featherlight=\"image\">\n                <img src=\"https://chriscorchado.com/images/linkedIn-track.png\" height=\"25\" title=\"View the Courses in the Track\" />\n              </a>\n            </span>";
+                    item += "<span class=\"course-links\">\n              <a href=\"" + getFullUrlByPage(itemTrackImage, page) + "\" data-featherlight=\"image\">\n                <img src=\"https://chriscorchado.com/images/linkedIn-track.png\" height=\"25\" \n                title=\"View the Courses in the Track\" alt=\"View the Courses in the Track\" />\n              </a>\n            </span>";
                 }
                 item += "</div></div>";
                 break;
@@ -453,7 +453,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
                     imgAltCount = 0;
                     imgPieces.forEach(function (img) {
                         projectImage = getFullUrlByPage(img, page);
-                        section += "<div class=\"project-item shadow\">\n            \n              <a href=" + projectImage + " class=\"gallery\">\n                <div class=\"project-item-desc\">" + itemWithSearchHighlight(screenshotAlt_1[imgAltCount], searchedFor) + "</div>\n                <img src=" + projectImage + " alt=" + screenshotAlt_1[imgAltCount] + " />\n              </a>\n            </div>";
+                        section += "<div class=\"project-item shadow\">\n            \n              <a href=" + projectImage + " class=\"gallery\">\n                <div class=\"project-item-desc\">" + itemWithSearchHighlight(screenshotAlt_1[imgAltCount], searchedFor) + "</div>\n                <img src=" + projectImage + " alt=" + screenshotAlt_1[imgAltCount] + " \n                  title=" + screenshotAlt_1[imgAltCount] + " />\n              </a>\n            </div>";
                         imgAltCount++;
                     });
                     section += "</section>";
@@ -461,7 +461,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
                 }
                 if (element.attributes.field_video_url) {
                     element.attributes.field_video_url.forEach(function (img) {
-                        item += "<a href=\"" + img + "\" \n          data-featherlight=\"iframe\" \n          data-featherlight-iframe-frameborder=\"0\" \n          data-featherlight-iframe-allowfullscreen=\"true\" \n          data-featherlight-iframe-allow=\"autoplay; encrypted-media\"\n          data-featherlight-iframe-style=\"display:block;border:none;height:85vh;width:85vw;\" class=\"play-video\">Play Video<img src=\"images/play_vidoe_icon.png\" width=\"20\" /></a>";
+                        item += "<a href=\"" + img + "\" \n          data-featherlight=\"iframe\" \n          data-featherlight-iframe-frameborder=\"0\" \n          data-featherlight-iframe-allowfullscreen=\"true\" \n          data-featherlight-iframe-allow=\"autoplay; encrypted-media\"\n          data-featherlight-iframe-style=\"display:block;border:none;height:85vh;width:85vw;\" class=\"play-video\">\n            Play Video <img src=\"images/play_vidoe_icon.png\" title=\"Play Video\" alt=\"Play Video\" width=\"20\" />\n          </a>";
                     });
                 }
                 item += "<div class=\"project-technology\">" + itemTechnology.slice(0, -2) + "</div>\n        </div>";

@@ -421,7 +421,7 @@ const renderPage = (
   let includedCompanyName = [''];
   let includedTechnologyName = [''];
   let includedTechnologyIcon = [''];
-  let includedTechnologyItem = [{}];
+  let includedTechnologyItem = [];
 
   if (data.included) {
     data.included.forEach((included_element: any) => {
@@ -616,10 +616,10 @@ const renderPage = (
           <div class="body-container">${itemBody}</div>
 
           <div class="screenshot-container">
-            <img src=${getFullUrlByPage(
-              imgPieces[0],
-              page
-            )} class="company-screenshot"  alt="${element.title} Screenshot" />
+            <img src=${getFullUrlByPage(imgPieces[0], page)} 
+            class="company-screenshot" 
+            alt="${element.attributes.title} Screenshot" 
+            title="${element.attributes.title} Screenshot"/>
           </div>
 
           <div class="employment-dates">${startDate} - ${endDate}</div>
@@ -646,14 +646,16 @@ const renderPage = (
 
             <span class="course-links">
               <a href="${getFullUrlByPage(itemPDF, page)}" target="_blank">
-                <img src="https://chriscorchado.com/images/pdfIcon.jpg" height="25" title="View the PDF Certificate" />
+                <img src="https://chriscorchado.com/images/pdfIcon.jpg" height="25" 
+                title="View the PDF Certificate" alt="View the PDF Certificate"/>
               </a>
             </span>`;
 
         // TODO: Create bigger version and add to content type
         //  item += `<span class="course-links">
         //   <a href="${getFullUrlByPage(imgPieces[0], page)}" data-featherlight="image">
-        //   <img src="https://chriscorchado.com/images/jpg_icon.png" height="25" title="View the Certificate" />
+        //     <img src="https://chriscorchado.com/images/jpg_icon.png" height="25"
+        //       title="View the Certificate" alt="View the Certificate"/>
         //   </a></span>`;
 
         if (itemTrackImage) {
@@ -662,11 +664,11 @@ const renderPage = (
                 itemTrackImage,
                 page
               )}" data-featherlight="image">
-                <img src="https://chriscorchado.com/images/linkedIn-track.png" height="25" title="View the Courses in the Track" />
+                <img src="https://chriscorchado.com/images/linkedIn-track.png" height="25" 
+                title="View the Courses in the Track" alt="View the Courses in the Track" />
               </a>
             </span>`;
         }
-
         item += `</div></div>`; //course-box box
         break;
 
@@ -703,7 +705,8 @@ const renderPage = (
                   screenshotAlt[imgAltCount],
                   searchedFor
                 )}</div>
-                <img src=${projectImage} alt=${screenshotAlt[imgAltCount]} />
+                <img src=${projectImage} alt=${screenshotAlt[imgAltCount]} 
+                  title=${screenshotAlt[imgAltCount]} />
               </a>
             </div>`;
             imgAltCount++;
@@ -721,7 +724,9 @@ const renderPage = (
           data-featherlight-iframe-frameborder="0" 
           data-featherlight-iframe-allowfullscreen="true" 
           data-featherlight-iframe-allow="autoplay; encrypted-media"
-          data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;" class="play-video">Play Video<img src="images/play_vidoe_icon.png" width="20" /></a>`;
+          data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;" class="play-video">
+            Play Video <img src="images/play_vidoe_icon.png" title="Play Video" alt="Play Video" width="20" />
+          </a>`;
           });
         }
 
@@ -732,7 +737,7 @@ const renderPage = (
 
         // for (const [key, value] of Object.entries(includedTechnologyItem)) {
         //   item += `<div id="technology-item-wrapper">${value.name}
-        //     <img src="${value.image}" class="project-technology-icon" /></div>`;
+        //     <img src="${value.image}" class="project-technology-icon" title="${value.name}" alt="${value.name}" /></div>`;
         // }
 
         // item += `</div>`;
