@@ -808,8 +808,8 @@ const getFullUrlByPage = (linkToFix: string, page: string) => {
 const setItemCount = (count: number, paginationTotal: number, prev?: any, next?: any) => {
   let dataOffset = 0;
   let dataOffsetText = '';
-  let prevLink = null;
-  let nextLink = null;
+  let prevLink = '';
+  let nextLink = '';
 
   if (next) {
     let nextURL = next.href

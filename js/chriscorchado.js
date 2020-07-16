@@ -508,8 +508,8 @@ var getFullUrlByPage = function (linkToFix, page) {
 var setItemCount = function (count, paginationTotal, prev, next) {
     var dataOffset = 0;
     var dataOffsetText = '';
-    var prevLink = null;
-    var nextLink = null;
+    var prevLink = '';
+    var nextLink = '';
     if (next) {
         var nextURL = next.href
             .replace(/%2C/g, ',')
