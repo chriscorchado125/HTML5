@@ -112,39 +112,39 @@ function getPage(page, search, pagingURL) {
                         case 'projects': return [3, 17];
                     }
                     return [3, 22];
-                case 5: return [4, getData(API_BASE + "/jsonapi/node/page?fields[node--page]=id,title,body&filter[id][operator]=CONTAINS&filter[id][value]=ca23f416-ad70-41c2-9228-52ba6577abfe")];
+                case 5: return [4, getData(API_BASE + "/jsonapi/node/page?fields[node--page]=id,title,body&\n              filter[id][operator]=CONTAINS&\n              filter[id][value]=ca23f416-ad70-41c2-9228-52ba6577abfe")];
                 case 6:
                     data = _b.sent();
                     return [3, 22];
                 case 7:
                     if (!search) return [3, 9];
-                    return [4, getData(API_BASE + "/jsonapi/node/company?filter[or-group][group][conjunction]=OR&filter[field_company_name][operator]=CONTAINS&filter[field_company_name][value]=" + search + "&filter[field_company_name][condition][memberOf]=or-group&filter[field_job_title][operator]=CONTAINS&filter[field_job_title][value]=" + search + "&filter[field_job_title][condition][memberOf]=or-group&filter[body.value][operator]=CONTAINS&filter[body.value][value]=" + search + "&filter[body.value][condition][memberOf]=or-group&sort=-field_end_date&include=field_company_screenshot&page[limit]=" + pageLimit)];
+                    return [4, getData(API_BASE + "/jsonapi/node/company?filter[or-group][group][conjunction]=OR&\n                filter[field_company_name][operator]=CONTAINS&\n                filter[field_company_name][value]=" + search + "&\n                filter[field_company_name][condition][memberOf]=or-group&\n                filter[field_job_title][operator]=CONTAINS&\n                filter[field_job_title][value]=" + search + "&\n                filter[field_job_title][condition][memberOf]=or-group&\n                filter[body.value][operator]=CONTAINS&\n                filter[body.value][value]=" + search + "&\n                filter[body.value][condition][memberOf]=or-group&\n                sort=-field_end_date&\n                include=field_company_screenshot&\n                page[limit]=" + pageLimit)];
                 case 8:
                     data = _b.sent();
                     return [3, 11];
-                case 9: return [4, getData(API_BASE + "/jsonapi/node/company?sort=-field_end_date&include=field_company_screenshot&page[limit]=" + pageLimit)];
+                case 9: return [4, getData(API_BASE + "/jsonapi/node/company?sort=-field_end_date&\n                include=field_company_screenshot&\n                page[limit]=" + pageLimit)];
                 case 10:
                     data = _b.sent();
                     _b.label = 11;
                 case 11: return [3, 22];
                 case 12:
                     if (!search) return [3, 14];
-                    return [4, getData(API_BASE + "/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=" + search + "&filter[title][condition][memberOf]=or-group&filter[field_award_date][operator]=CONTAINS&filter[field_award_date][value]=" + search + "&filter[field_award_date][condition][memberOf]=or-group&sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=" + pageLimit)];
+                    return [4, getData(API_BASE + "/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&\n                filter[title][operator]=CONTAINS&\n                filter[title][value]=" + search + "&\n                filter[title][condition][memberOf]=or-group&\n                filter[field_award_date][operator]=CONTAINS&\n                filter[field_award_date][value]=" + search + "&\n                filter[field_award_date][condition][memberOf]=or-group&\n                sort=-field_award_date&\n                include=field_award_pdf,field_track_image,field_award_images&\n                page[limit]=" + pageLimit)];
                 case 13:
                     data = _b.sent();
                     return [3, 16];
-                case 14: return [4, getData(API_BASE + "/jsonapi/node/awards?sort=-field_award_date&include=field_award_pdf,field_track_image,field_award_images&page[limit]=" + pageLimit)];
+                case 14: return [4, getData(API_BASE + "/jsonapi/node/awards?sort=-field_award_date&\n                include=field_award_pdf,field_track_image,field_award_images&\n                page[limit]=" + pageLimit)];
                 case 15:
                     data = _b.sent();
                     _b.label = 16;
                 case 16: return [3, 22];
                 case 17:
                     if (!search) return [3, 19];
-                    return [4, getData(API_BASE + "/jsonapi/node/project?filter[or-group][group][conjunction]=OR&filter[title][operator]=CONTAINS&filter[title][value]=" + search + "&filter[title][condition][memberOf]=or-group&filter[taxonomy_term--tags][path]=field_project_technology.name&filter[taxonomy_term--tags][operator]=CONTAINS&filter[taxonomy_term--tags][value]=" + search + "&filter[taxonomy_term--tags][condition][memberOf]=or-group&filter[field_company.title][operator]=CONTAINS&filter[field_company.title][value]=" + search + "&filter[field_company.title][condition][memberOf]=or-group&filter[field_screenshot.meta.alt][operator]=CONTAINS&filter[field_screenshot.meta.alt][value]=" + search + "&filter[field_screenshot.meta.alt][condition][memberOf]=or-group&filter[field_date][operator]=CONTAINS&filter[field_date][value]=" + search + "&filter[field_date][condition][memberOf]=or-group&sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&page[limit]=" + pageLimit)];
+                    return [4, getData(API_BASE + "/jsonapi/node/project?filter[or-group][group][conjunction]=OR&\n              filter[title][operator]=CONTAINS&\n              filter[title][value]=" + search + "&\n              filter[title][condition][memberOf]=or-group&\n              filter[taxonomy_term--tags][path]=field_project_technology.name&\n              filter[taxonomy_term--tags][operator]=CONTAINS&\n              filter[taxonomy_term--tags][value]=" + search + "&\n              filter[taxonomy_term--tags][condition][memberOf]=or-group&\n              filter[field_company.title][operator]=CONTAINS&\n              filter[field_company.title][value]=" + search + "&\n              filter[field_company.title][condition][memberOf]=or-group&\n              filter[field_screenshot.meta.alt][operator]=CONTAINS&\n              filter[field_screenshot.meta.alt][value]=" + search + "&\n              filter[field_screenshot.meta.alt][condition][memberOf]=or-group&\n              filter[field_date][operator]=CONTAINS&filter[field_date][value]=" + search + "&\n              filter[field_date][condition][memberOf]=or-group&\n              sort=-field_date&\n              include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&\n              fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&\n              page[limit]=" + pageLimit)];
                 case 18:
                     data = _b.sent();
                     return [3, 21];
-                case 19: return [4, getData(API_BASE + "/jsonapi/node/project?sort=-field_date&include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&page[limit]=" + pageLimit)];
+                case 19: return [4, getData(API_BASE + "/jsonapi/node/project?sort=-field_date&\n                include=field_project_technology,field_company,field_screenshot&\n                fields[node--company]=field_company_name,field_video_url&\n                fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&\n                page[limit]=" + pageLimit)];
                 case 20:
                     data = _b.sent();
                     _b.label = 21;
@@ -269,7 +269,7 @@ var seconds = 5;
 var showCountDown = function () {
     seconds -= 1;
     document.getElementById('contact').style.padding = '50px';
-    document.getElementById('contact').innerHTML = "\n    <h2>Thanks for the Feedback</h2>\n    <h4>You will be redirected to the homepage in " + seconds + " seconds.</h4><img id=\"timer\" src=\"https://chriscorchado.com/images/timer.gif\" />";
+    document.getElementById('contact').innerHTML = "\n    <h2>Thanks for the Feedback</h2>\n    <h4>You will be redirected to the homepage in " + seconds + " seconds.</h4>\n    <img id=\"timer\" src=\"https://chriscorchado.com/images/timer.gif\" />";
 };
 var getMonthYear = function (dateString) {
     var newDate = new Date(dateString);
@@ -544,10 +544,10 @@ var setItemCount = function (count, paginationTotal, prev, next) {
         }
         document.getElementById('searchCount').innerHTML = "<span id=\"paging-info\">" + dataOffsetText + "</span>";
         prevLink = prev
-            ? "<a href=\"#\" class=\"pager-navigation\" title=\"View the previous page\" onclick=\"getPage(getCurrentPage(), document.getElementById('searchSite').value,'" + prev.href + "')\">Prev</a>"
+            ? "<a href=\"#\" class=\"pager-navigation\" title=\"View the previous page\" \n          onclick=\"getPage(getCurrentPage(), document.getElementById('searchSite').value,'" + prev.href + "')\">Prev</a>"
             : "<span class=\"pager-navigation disabled\" title=\"There is no previous page available\">Prev</span>";
         nextLink = next
-            ? "<a href=\"#\" class=\"pager-navigation\" title=\"View the next page\" onclick=\"getPage(getCurrentPage(), document.getElementById('searchSite').value,'" + next.href + "')\">Next</a>"
+            ? "<a href=\"#\" class=\"pager-navigation\" title=\"View the next page\" \n          onclick=\"getPage(getCurrentPage(), document.getElementById('searchSite').value,'" + next.href + "')\">Next</a>"
             : "<span class=\"pager-navigation disabled\" title=\"There is no next page available\">Next</span>";
     }
     if (count < pageLimit && paginationTotal === 1) {
