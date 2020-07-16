@@ -521,17 +521,17 @@ var getSearchCount = function (count, searchCountID) {
         return count + " " + (count == 1 ? 'Item' : 'Items') + " ";
     }
 };
+var getSearchOffset = function (link) {
+    var nextURL = link.href.replace(/%2C/g, ',').replace(/%5B/g, '[').replace(/%5D/g, ']');
+    return nextURL.substring(nextURL.search('offset') + 8, nextURL.search('limit') - 6);
+};
 var setItemCount = function (count, paginationTotal, prev, next) {
     var dataOffset = 0;
     var dataOffsetText = '';
     var prevLink = '';
     var nextLink = '';
     if (next) {
-        var nextURL = next.href
-            .replace(/%2C/g, ',')
-            .replace(/%5B/g, '[')
-            .replace(/%5D/g, ']');
-        dataOffset = nextURL.substring(nextURL.search('offset') + 8, nextURL.search('limit') - 6);
+        dataOffset = getSearchOffset(next);
     }
     dataOffsetText = getSearchCount(count, 'searchCount');
     if (!next && !prev) {

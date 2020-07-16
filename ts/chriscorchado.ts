@@ -875,6 +875,16 @@ const getSearchCount = (count: number, searchCountID: string) => {
 };
 
 /**
+ * Get the search item offset
+ * @param {link} any - URL
+ * @return {number} - offset number
+ */
+const getSearchOffset = (link: any) => {
+  let nextURL = link.href.replace(/%2C/g, ',').replace(/%5B/g, '[').replace(/%5D/g, ']');
+  return nextURL.substring(nextURL.search('offset') + 8, nextURL.search('limit') - 6);
+};
+
+/**
  * Set/update the current page item counts
  * @param {int} count - number of items
  * @param {int} paginationTotal - last pagination value
@@ -888,15 +898,7 @@ const setItemCount = (count: number, paginationTotal: number, prev?: any, next?:
   let nextLink = '';
 
   if (next) {
-    let nextURL = next.href
-      .replace(/%2C/g, ',')
-      .replace(/%5B/g, '[')
-      .replace(/%5D/g, ']');
-
-    dataOffset = nextURL.substring(
-      nextURL.search('offset') + 8,
-      nextURL.search('limit') - 6
-    );
+    dataOffset = getSearchOffset(next);
   }
 
   dataOffsetText = getSearchCount(count, 'searchCount');
