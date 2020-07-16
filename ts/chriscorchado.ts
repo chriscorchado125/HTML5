@@ -43,30 +43,17 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
       .then((resp) => {
         return resp.ok ? resp.text() : Promise.reject(resp.statusText);
       })
-      .then((document) => {
+      .then((page) => {
         /* get the HTML and update the URLs from relative to absolute */
-        data = document.substr(0, document.indexOf('</html>') + 8);
+        data = page.substr(0, page.indexOf('</html>') + 8);
         data = data.replace(/\/drupal8/g, API_BASE);
 
         /* get form */
         let form = data.substr(data.indexOf('<form'), data.indexOf('</form>'));
         form = form.substr(0, form.indexOf('</form>') + 8);
 
-        /* remove the form style */
-        form = form.replace(
-          'class="contact-message-feedback-form contact-message-form contact-form"',
-          ''
-        );
-
-        /* replace the form name and email label text */
-        form = form.replace('Your name', 'Name');
+        /* replace the form email label text */
         form = form.replace('Your email address', 'Email');
-
-        /* add 'searchBtn' style/class to the submit button */
-        form = form.replace(
-          'class="button button--primary js-form-submit form-submit"',
-          'class="button button--primary js-form-submit form-submit searchBtn"'
-        );
 
         /* get scripts */
         let script = data.substr(

@@ -75,15 +75,12 @@ function getPage(page, search, pagingURL) {
                             .then(function (resp) {
                             return resp.ok ? resp.text() : Promise.reject(resp.statusText);
                         })
-                            .then(function (document) {
-                            data = document.substr(0, document.indexOf('</html>') + 8);
+                            .then(function (page) {
+                            data = page.substr(0, page.indexOf('</html>') + 8);
                             data = data.replace(/\/drupal8/g, API_BASE);
                             var form = data.substr(data.indexOf('<form'), data.indexOf('</form>'));
                             form = form.substr(0, form.indexOf('</form>') + 8);
-                            form = form.replace('class="contact-message-feedback-form contact-message-form contact-form"', '');
-                            form = form.replace('Your name', 'Name');
                             form = form.replace('Your email address', 'Email');
-                            form = form.replace('class="button button--primary js-form-submit form-submit"', 'class="button button--primary js-form-submit form-submit searchBtn"');
                             var script = data.substr(data.indexOf('<script type="application/json" data-drupal-selector="drupal-settings-json">'), data.indexOf('></script>'));
                             script = script.substr(0, script.indexOf('</script>') + 9);
                             if (location.toString().indexOf('submitted') !== -1) {
