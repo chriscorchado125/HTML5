@@ -2,6 +2,7 @@
 
 const API_BASE = 'https://chriscorchado.com/drupal8';
 const pageLimit = 50;
+const SITE_SEARCH_ID = 'searchSite';
 
 /* Load navigation and footer */
 $('#navigation').load('includes/nav.html');
@@ -241,10 +242,11 @@ const getData = (dataURL: string) => {
 
 /**
  * Search data after the user pauses typing for half a second
+ * @param {string} searchTextBoxID - id of search textbox
  */
-const searchData = () => {
+const searchData = (searchTextBoxID: string) => {
   let timeout: any = 0;
-  const inputSearchBox = document.getElementById('searchSite')! as HTMLInputElement;
+  const inputSearchBox = document.getElementById(searchTextBoxID)! as HTMLInputElement;
 
   inputSearchBox.addEventListener('keyup', function (e) {
     if (!inputSearchBox.value) {
@@ -261,9 +263,10 @@ const searchData = () => {
 
 /**
  * Clear current search
+ * @param {string} searchTextBoxID - id of search textbox
  */
-const searchClear = () => {
-  const inputSearchBox = document.getElementById('searchSite')! as HTMLInputElement;
+const searchClear = (searchTextBoxID: string) => {
+  const inputSearchBox = document.getElementById(searchTextBoxID)! as HTMLInputElement;
   if (inputSearchBox.value !== '') {
     $('#noRecords').hide();
     inputSearchBox.value = '';
@@ -875,7 +878,7 @@ const setItemCount = (count: number, paginationTotal: number, prev?: any, next?:
   }
 
   /* handle searching  */
-  if ($('#searchSite').val()) {
+  if ($(`#${SITE_SEARCH_ID}`).val()) {
     dataOffsetText = `${count} ${count == 1 ? 'Item' : 'Items'} `;
 
     if (count <= pageLimit) {
@@ -919,11 +922,11 @@ const setItemCount = (count: number, paginationTotal: number, prev?: any, next?:
     /* configure next and prev links */
     prevLink = prev
       ? `<a href="#" class="pager-navigation" title="View the previous page" 
-          onclick="getPage(getCurrentPage(), document.getElementById('searchSite').value,'${prev.href}')">Prev</a>`
+          onclick="getPage(getCurrentPage(), document.getElementById('${SITE_SEARCH_ID}').value,'${prev.href}')">Prev</a>`
       : `<span class="pager-navigation disabled" title="There is no previous page available">Prev</span>`;
     nextLink = next
       ? `<a href="#" class="pager-navigation" title="View the next page" 
-          onclick="getPage(getCurrentPage(), document.getElementById('searchSite').value,'${next.href}')">Next</a>`
+          onclick="getPage(getCurrentPage(), document.getElementById('${SITE_SEARCH_ID}').value,'${next.href}')">Next</a>`
       : `<span class="pager-navigation disabled" title="There is no next page available">Next</span>`;
   }
 

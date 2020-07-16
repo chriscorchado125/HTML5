@@ -48,6 +48,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var API_BASE = 'https://chriscorchado.com/drupal8';
 var pageLimit = 50;
+var SITE_SEARCH_ID = 'searchSite';
 $('#navigation').load('includes/nav.html');
 $('#footer').load('includes/footer.html');
 function setLoading(loadingStatus) {
@@ -195,9 +196,9 @@ var getData = function (dataURL) {
     });
     return result;
 };
-var searchData = function () {
+var searchData = function (searchTextBoxID) {
     var timeout = 0;
-    var inputSearchBox = document.getElementById('searchSite');
+    var inputSearchBox = document.getElementById(searchTextBoxID);
     inputSearchBox.addEventListener('keyup', function (e) {
         if (!inputSearchBox.value) {
             updateInterface();
@@ -208,8 +209,8 @@ var searchData = function () {
         }, 500);
     });
 };
-var searchClear = function () {
-    var inputSearchBox = document.getElementById('searchSite');
+var searchClear = function (searchTextBoxID) {
+    var inputSearchBox = document.getElementById(searchTextBoxID);
     if (inputSearchBox.value !== '') {
         $('#noRecords').hide();
         inputSearchBox.value = '';
@@ -517,7 +518,7 @@ var setItemCount = function (count, paginationTotal, prev, next) {
             .replace(/%5D/g, ']');
         dataOffset = nextURL.substring(nextURL.search('offset') + 8, nextURL.search('limit') - 6);
     }
-    if ($('#searchSite').val()) {
+    if ($("#" + SITE_SEARCH_ID).val()) {
         dataOffsetText = count + " " + (count == 1 ? 'Item' : 'Items') + " ";
         if (count <= pageLimit) {
             $('#searchCount').html(count + ("  " + (count == 1 ? 'Item' : 'Items')));
@@ -544,10 +545,10 @@ var setItemCount = function (count, paginationTotal, prev, next) {
         }
         document.getElementById('searchCount').innerHTML = "<span id=\"paging-info\">" + dataOffsetText + "</span>";
         prevLink = prev
-            ? "<a href=\"#\" class=\"pager-navigation\" title=\"View the previous page\" \n          onclick=\"getPage(getCurrentPage(), document.getElementById('searchSite').value,'" + prev.href + "')\">Prev</a>"
+            ? "<a href=\"#\" class=\"pager-navigation\" title=\"View the previous page\" \n          onclick=\"getPage(getCurrentPage(), document.getElementById('" + SITE_SEARCH_ID + "').value,'" + prev.href + "')\">Prev</a>"
             : "<span class=\"pager-navigation disabled\" title=\"There is no previous page available\">Prev</span>";
         nextLink = next
-            ? "<a href=\"#\" class=\"pager-navigation\" title=\"View the next page\" \n          onclick=\"getPage(getCurrentPage(), document.getElementById('searchSite').value,'" + next.href + "')\">Next</a>"
+            ? "<a href=\"#\" class=\"pager-navigation\" title=\"View the next page\" \n          onclick=\"getPage(getCurrentPage(), document.getElementById('" + SITE_SEARCH_ID + "').value,'" + next.href + "')\">Next</a>"
             : "<span class=\"pager-navigation disabled\" title=\"There is no next page available\">Next</span>";
     }
     if (count < pageLimit && paginationTotal === 1) {
