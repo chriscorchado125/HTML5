@@ -456,7 +456,7 @@ const renderPage = (
     itemJobTitle = element.attributes.field_job_title;
     startDate = element.attributes.field_start_date;
     endDate = element.attributes.field_end_date;
-    itemWorkType = element.attributes.field_type = 'Full-Time' ? 'Full-Time' : 'Contract';
+    itemWorkType = element.attributes.field_type == 'full' ? 'Full-Time' : 'Contract';
     itemTechnology = '';
     itemTrackImage = '';
     imgPieces = [];
