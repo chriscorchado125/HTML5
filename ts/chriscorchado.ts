@@ -821,7 +821,7 @@ const renderPage = (
     });
   }
 
-  setItemCount(itemCount, data.passedInCount.currentCount, prev, next);
+  setPagination(itemCount, data.passedInCount.currentCount, prev, next);
 
   setLoading(false);
 };
@@ -885,23 +885,25 @@ const getSearchOffset = (link: any) => {
 };
 
 /**
- * Set/update the current page item counts
+ * Setup pagination
  * @param {int} count - number of items
  * @param {int} paginationTotal - last pagination value
  * @param {Object=} prev - (optional) - link to previous results
  * @param {Object=} next - (optional) - link to next results
  */
-const setItemCount = (count: number, paginationTotal: number, prev?: any, next?: any) => {
+const setPagination = (
+  count: number,
+  paginationTotal: number,
+  prev?: any,
+  next?: any
+) => {
   let dataOffset = 0;
-  let dataOffsetText = '';
   let prevLink = '';
   let nextLink = '';
 
-  if (next) {
-    dataOffset = getSearchOffset(next);
-  }
+  if (next) dataOffset = getSearchOffset(next);
 
-  dataOffsetText = getSearchCount(count, 'searchCount');
+  let dataOffsetText = getSearchCount(count, 'searchCount');
 
   /* Show pagination if there is a next or prev link */
   if (!next && !prev) {

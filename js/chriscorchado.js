@@ -485,7 +485,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
             galleryFadeOut: 300,
         });
     }
-    setItemCount(itemCount, data.passedInCount.currentCount, prev, next);
+    setPagination(itemCount, data.passedInCount.currentCount, prev, next);
     setLoading(false);
 };
 var getFullUrlByPage = function (linkToFix, page) {
@@ -525,15 +525,13 @@ var getSearchOffset = function (link) {
     var nextURL = link.href.replace(/%2C/g, ',').replace(/%5B/g, '[').replace(/%5D/g, ']');
     return nextURL.substring(nextURL.search('offset') + 8, nextURL.search('limit') - 6);
 };
-var setItemCount = function (count, paginationTotal, prev, next) {
+var setPagination = function (count, paginationTotal, prev, next) {
     var dataOffset = 0;
-    var dataOffsetText = '';
     var prevLink = '';
     var nextLink = '';
-    if (next) {
+    if (next)
         dataOffset = getSearchOffset(next);
-    }
-    dataOffsetText = getSearchCount(count, 'searchCount');
+    var dataOffsetText = getSearchCount(count, 'searchCount');
     if (!next && !prev) {
         document.getElementById('searchCount').innerHTML = "<span id=\"totalItems\">" + count + "</span>\n   " + (count == 1 ? 'Item' : 'Items');
     }
