@@ -3,6 +3,7 @@
 const API_BASE = 'https://chriscorchado.com/drupal8';
 const pageLimit = 50;
 const SITE_SEARCH_ID = 'searchSite';
+const CONTACT_CONTAINER_ID = 'contact';
 
 /* Load navigation and footer */
 $('#navigation').load('includes/nav.html');
@@ -362,12 +363,13 @@ const itemWithSearchHighlight = (itemToHighlight: string, searchedFor: string) =
 
 /**
  * Create the countdown after submitting the contact form
+ * @param {string} containerID - id of the form container
  */
 let seconds = 5;
-const showCountDown = () => {
+const showCountDown = (containerID: string = CONTACT_CONTAINER_ID) => {
   seconds -= 1;
-  document.getElementById('contact').style.padding = '50px';
-  document.getElementById('contact').innerHTML = `
+  document.getElementById(containerID).style.padding = '50px';
+  document.getElementById(containerID).innerHTML = `
     <h2>Thanks for the Feedback</h2>
     <h4>You will be redirected to the homepage in ${seconds} seconds.</h4>
     <img id="timer" src="https://chriscorchado.com/images/timer.gif" />`;

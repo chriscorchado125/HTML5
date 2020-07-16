@@ -49,6 +49,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var API_BASE = 'https://chriscorchado.com/drupal8';
 var pageLimit = 50;
 var SITE_SEARCH_ID = 'searchSite';
+var CONTACT_CONTAINER_ID = 'contact';
 $('#navigation').load('includes/nav.html');
 $('#footer').load('includes/footer.html');
 function setLoading(loadingStatus) {
@@ -267,10 +268,11 @@ var itemWithSearchHighlight = function (itemToHighlight, searchedFor) {
     return dataToReturn || itemToHighlight;
 };
 var seconds = 5;
-var showCountDown = function () {
+var showCountDown = function (containerID) {
+    if (containerID === void 0) { containerID = CONTACT_CONTAINER_ID; }
     seconds -= 1;
-    document.getElementById('contact').style.padding = '50px';
-    document.getElementById('contact').innerHTML = "\n    <h2>Thanks for the Feedback</h2>\n    <h4>You will be redirected to the homepage in " + seconds + " seconds.</h4>\n    <img id=\"timer\" src=\"https://chriscorchado.com/images/timer.gif\" />";
+    document.getElementById(containerID).style.padding = '50px';
+    document.getElementById(containerID).innerHTML = "\n    <h2>Thanks for the Feedback</h2>\n    <h4>You will be redirected to the homepage in " + seconds + " seconds.</h4>\n    <img id=\"timer\" src=\"https://chriscorchado.com/images/timer.gif\" />";
 };
 var getMonthYear = function (dateString) {
     var newDate = new Date(dateString);
