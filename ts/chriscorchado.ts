@@ -855,6 +855,26 @@ const getFullUrlByPage = (linkToFix: string, page: string) => {
 };
 
 /**
+ * Handle search counts
+ * @param {number} count - item count
+ * @param {string} searchCountID - search count container id
+ * @return {string} - item count with either 'Items' or 'Item'
+ */
+const getSearchCount = (count: number, searchCountID: string) => {
+  if ($(`#${SITE_SEARCH_ID}`).val()) {
+    if (count <= pageLimit) {
+      document.getElementById(searchCountID).innerHTML =
+        count + `  ${count == 1 ? 'Item' : 'Items'}`;
+    } else {
+      document.getElementById(searchCountID).innerHTML =
+        pageLimit + `  ${+pageLimit == 1 ? 'Item' : 'Items'}`;
+    }
+
+    return `${count} ${count == 1 ? 'Item' : 'Items'} `;
+  }
+};
+
+/**
  * Set/update the current page item counts
  * @param {int} count - number of items
  * @param {int} paginationTotal - last pagination value
@@ -879,16 +899,7 @@ const setItemCount = (count: number, paginationTotal: number, prev?: any, next?:
     );
   }
 
-  /* handle searching  */
-  if ($(`#${SITE_SEARCH_ID}`).val()) {
-    dataOffsetText = `${count} ${count == 1 ? 'Item' : 'Items'} `;
-
-    if (count <= pageLimit) {
-      $('#searchCount').html(count + `  ${count == 1 ? 'Item' : 'Items'}`);
-    } else {
-      $('#searchCount').html(pageLimit + `  ${+pageLimit == 1 ? 'Item' : 'Items'}`);
-    }
-  }
+  dataOffsetText = getSearchCount(count, 'searchCount');
 
   /* Show pagination if there is a next or prev link */
   if (!next && !prev) {

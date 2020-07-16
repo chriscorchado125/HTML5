@@ -508,6 +508,19 @@ var getFullUrlByPage = function (linkToFix, page) {
     }
     return API_BASE + "/sites/default/files/" + pathToResource + "/" + linkToFix;
 };
+var getSearchCount = function (count, searchCountID) {
+    if ($("#" + SITE_SEARCH_ID).val()) {
+        if (count <= pageLimit) {
+            document.getElementById(searchCountID).innerHTML =
+                count + ("  " + (count == 1 ? 'Item' : 'Items'));
+        }
+        else {
+            document.getElementById(searchCountID).innerHTML =
+                pageLimit + ("  " + (+pageLimit == 1 ? 'Item' : 'Items'));
+        }
+        return count + " " + (count == 1 ? 'Item' : 'Items') + " ";
+    }
+};
 var setItemCount = function (count, paginationTotal, prev, next) {
     var dataOffset = 0;
     var dataOffsetText = '';
@@ -520,15 +533,7 @@ var setItemCount = function (count, paginationTotal, prev, next) {
             .replace(/%5D/g, ']');
         dataOffset = nextURL.substring(nextURL.search('offset') + 8, nextURL.search('limit') - 6);
     }
-    if ($("#" + SITE_SEARCH_ID).val()) {
-        dataOffsetText = count + " " + (count == 1 ? 'Item' : 'Items') + " ";
-        if (count <= pageLimit) {
-            $('#searchCount').html(count + ("  " + (count == 1 ? 'Item' : 'Items')));
-        }
-        else {
-            $('#searchCount').html(pageLimit + ("  " + (+pageLimit == 1 ? 'Item' : 'Items')));
-        }
-    }
+    dataOffsetText = getSearchCount(count, 'searchCount');
     if (!next && !prev) {
         document.getElementById('searchCount').innerHTML = "<span id=\"totalItems\">" + count + "</span>\n   " + (count == 1 ? 'Item' : 'Items');
     }
