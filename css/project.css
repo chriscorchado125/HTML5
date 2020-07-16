@@ -19,7 +19,7 @@
     max-width: 330px; }
   .project-container .project-title {
     color: rgba(0, 0, 0, 0.7);
-    padding: 10px 0 0 0;
+    padding: 10px 0 10px 0;
     background-color: #e2eafb;
     border-radius: 10px 10px 0 0; }
   .project-container .project-company {

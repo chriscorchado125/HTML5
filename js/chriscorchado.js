@@ -421,49 +421,27 @@ var renderPage = function (data, page, searchedFor, next, prev) {
             case 'about':
                 currentNavItem = 'about-link';
                 var aboutData = element.attributes.body.value.toString().split('<hr />');
-                item = "<h1>" + itemTitle + "</h1>";
-                item += aboutData[0];
+                item = "<h1>" + itemTitle + "</h1> " + aboutData[0];
                 document.getElementById('profiles').innerHTML = aboutData[1];
                 break;
             case 'companies':
                 currentNavItem = 'companies-link';
                 pageIsSearchable = true;
-                item += "<div class=\"company-container col shadow\">";
-                item += "<div class=\"company-name\">" + itemTitle + "</div>";
-                item += "<div class=\"company-job-title\">" + itemJobTitle + "</div>";
-                item += "<div class=\"body-container\">" + itemBody + "</div>";
-                item += "<div class=\"screenshot-container\">";
-                item += "<img src=" + getFullUrlByPage(imgPieces[0], page) + " class=\"company-screenshot\"  alt=\"" + element.title + " Screenshot\" />";
-                item += "</div>";
-                item += "<div class=\"employment-dates\">" + startDate + " - " + endDate;
-                item += "</div>";
-                item += "</div>";
+                item += "<div class=\"company-container col shadow\">\n\n          <div class=\"company-name\">" + itemTitle + "</div>\n          <div class=\"company-job-title\">" + itemJobTitle + "</div>\n          <div class=\"body-container\">" + itemBody + "</div>\n\n          <div class=\"screenshot-container\">\n            <img src=" + getFullUrlByPage(imgPieces[0], page) + " class=\"company-screenshot\"  alt=\"" + element.title + " Screenshot\" />\n          </div>\n\n          <div class=\"employment-dates\">" + startDate + " - " + endDate + "</div>\n        </div>";
                 break;
             case 'courses':
                 currentNavItem = 'courses-link';
                 pageIsSearchable = true;
-                item += "<div class=\"course-box box\">";
-                item += "<h2>" + itemTitle + "</h2>";
-                item += "<div>";
-                item += "<img src=\"" + getFullUrlByPage(imgPieces[0], page) + "\"  alt=\"" + itemTitle.replace(/(<([^>]+)>)/gi, '') + "\" title=\"" + itemTitle.replace(/(<([^>]+)>)/gi, '') + "\" />";
-                item += "</div>";
-                item += "<div class=\"course-wrapper\">";
-                item += "<span class=\"course-date\">" + itemDate + "</span>";
-                item += "<span class=\"course-links\">\n          <a href=\"" + getFullUrlByPage(itemPDF, page) + "\" target=\"_blank\">\n          <img src=\"https://chriscorchado.com/images/pdfIcon.jpg\" height=\"25\" title=\"View the PDF Certificate\" />\n          </a></span>";
+                item += "<div class=\"course-box box\">\n          <h2>" + itemTitle + "</h2>\n\n          <div>\n            <img src=\"" + getFullUrlByPage(imgPieces[0], page) + "\" \n              alt=\"" + itemTitle.replace(/(<([^>]+)>)/gi, '') + "\" \n              title=\"" + itemTitle.replace(/(<([^>]+)>)/gi, '') + "\" />\n          </div>\n\n          <div class=\"course-wrapper\">\n\n            <span class=\"course-date\">" + itemDate + "</span>\n\n            <span class=\"course-links\">\n              <a href=\"" + getFullUrlByPage(itemPDF, page) + "\" target=\"_blank\">\n                <img src=\"https://chriscorchado.com/images/pdfIcon.jpg\" height=\"25\" title=\"View the PDF Certificate\" />\n              </a>\n            </span>";
                 if (itemTrackImage) {
-                    item += "<span class=\"course-links\">\n          <a href=\"" + getFullUrlByPage(itemTrackImage, page) + "\" data-featherlight=\"image\">\n          <img src=\"https://chriscorchado.com/images/linkedIn-track.png\" height=\"25\" title=\"View the Courses in the Track\" />\n          </a></span>";
+                    item += "<span class=\"course-links\">\n              <a href=\"" + getFullUrlByPage(itemTrackImage, page) + "\" data-featherlight=\"image\">\n                <img src=\"https://chriscorchado.com/images/linkedIn-track.png\" height=\"25\" title=\"View the Courses in the Track\" />\n              </a>\n            </span>";
                 }
-                item += "</div>";
-                item += "</div>";
+                item += "</div></div>";
                 break;
             case 'projects':
                 currentNavItem = 'projects-link';
                 pageIsSearchable = true;
-                item += "<div class=\"project col\">";
-                item += "<div class=\"project-title\">" + itemTitle;
-                item += "<div class=\"project-company\">" + itemCompanyName + " <span class=\"project-date\">(" + itemDate + ")</span></div>";
-                item += "</div>";
-                item += "<div class=\"body-container\">" + itemBody + "</div>";
+                item += "<div class=\"project col\">\n        <div class=\"project-title\">" + itemTitle + "</div>\n        <div class=\"project-company\">" + itemCompanyName + " <span class=\"project-date\">(" + itemDate + ")</span></div> \n        <div class=\"body-container\">" + itemBody + "</div>";
                 if (imgPieces) {
                     screenshotCount = +imgPieces.length;
                     itemGridClass = "project-item-grid project-items" + screenshotCount;
@@ -475,9 +453,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
                     imgAltCount = 0;
                     imgPieces.forEach(function (img) {
                         projectImage = getFullUrlByPage(img, page);
-                        section += "<div class=\"project-item shadow\">";
-                        section += "<a href=" + projectImage + " class=\"gallery\">\n            <div class=\"project-item-desc\">" + itemWithSearchHighlight(screenshotAlt_1[imgAltCount], searchedFor) + "</div>\n            <img src=" + projectImage + " alt=" + screenshotAlt_1[imgAltCount] + " />\n            </a>";
-                        section += "</div>";
+                        section += "<div class=\"project-item shadow\">\n            \n              <a href=" + projectImage + " class=\"gallery\">\n                <div class=\"project-item-desc\">" + itemWithSearchHighlight(screenshotAlt_1[imgAltCount], searchedFor) + "</div>\n                <img src=" + projectImage + " alt=" + screenshotAlt_1[imgAltCount] + " />\n              </a>\n            </div>";
                         imgAltCount++;
                     });
                     section += "</section>";
@@ -488,8 +464,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
                         item += "<a href=\"" + img + "\" \n          data-featherlight=\"iframe\" \n          data-featherlight-iframe-frameborder=\"0\" \n          data-featherlight-iframe-allowfullscreen=\"true\" \n          data-featherlight-iframe-allow=\"autoplay; encrypted-media\"\n          data-featherlight-iframe-style=\"display:block;border:none;height:85vh;width:85vw;\" class=\"play-video\">Play Video<img src=\"images/play_vidoe_icon.png\" width=\"20\" /></a>";
                     });
                 }
-                item += "<div class=\"project-technology\">" + itemTechnology.slice(0, -2) + "</div>";
-                item += "</div>";
+                item += "<div class=\"project-technology\">" + itemTechnology.slice(0, -2) + "</div>\n        </div>";
                 setPageMessage('click an image to enlarge it');
                 break;
         }

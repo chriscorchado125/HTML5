@@ -600,60 +600,55 @@ const renderPage = (
     switch (page) {
       case 'about':
         currentNavItem = 'about-link';
+
         let aboutData = element.attributes.body.value.toString().split('<hr />');
-
-        item = `<h1>${itemTitle}</h1>`;
-        item += aboutData[0];
-
-        document.getElementById('profiles').innerHTML = aboutData[1];
+        item = `<h1>${itemTitle}</h1> ${aboutData[0]}`;
+        document.getElementById('profiles').innerHTML = aboutData[1]; // resume, linkedin and azure links
         break;
       case 'companies':
         currentNavItem = 'companies-link';
         pageIsSearchable = true;
 
-        item += `<div class="company-container col shadow">`;
-        item += `<div class="company-name">${itemTitle}</div>`;
-        item += `<div class="company-job-title">${itemJobTitle}</div>`;
+        item += `<div class="company-container col shadow">
 
-        item += `<div class="body-container">${itemBody}</div>`;
+          <div class="company-name">${itemTitle}</div>
+          <div class="company-job-title">${itemJobTitle}</div>
+          <div class="body-container">${itemBody}</div>
 
-        item += `<div class="screenshot-container">`;
-        item += `<img src=${getFullUrlByPage(
-          imgPieces[0],
-          page
-        )} class="company-screenshot"  alt="${element.title} Screenshot" />`;
-        item += `</div>`;
+          <div class="screenshot-container">
+            <img src=${getFullUrlByPage(
+              imgPieces[0],
+              page
+            )} class="company-screenshot"  alt="${element.title} Screenshot" />
+          </div>
 
-        item += `<div class="employment-dates">${startDate} - ${endDate}`;
+          <div class="employment-dates">${startDate} - ${endDate}</div>
+        </div>`;
+
         //item += `<div class="employment-type">${itemWorkType}</div>`;
-        item += `</div>`;
-
-        item += `</div>`;
         break;
       case 'courses':
         currentNavItem = 'courses-link';
         pageIsSearchable = true;
 
-        item += `<div class="course-box box">`;
-        item += `<h2>${itemTitle}</h2>`;
-        item += `<div>`;
+        item += `<div class="course-box box">
+          <h2>${itemTitle}</h2>
 
-        item += `<img src="${getFullUrlByPage(
-          imgPieces[0],
-          page
-        )}"  alt="${itemTitle.replace(/(<([^>]+)>)/gi, '')}" title="${itemTitle.replace(
-          /(<([^>]+)>)/gi,
-          ''
-        )}" />`;
+          <div>
+            <img src="${getFullUrlByPage(imgPieces[0], page)}" 
+              alt="${itemTitle.replace(/(<([^>]+)>)/gi, '')}" 
+              title="${itemTitle.replace(/(<([^>]+)>)/gi, '')}" />
+          </div>
 
-        item += `</div>`;
-        item += `<div class="course-wrapper">`;
-        item += `<span class="course-date">${itemDate}</span>`;
+          <div class="course-wrapper">
 
-        item += `<span class="course-links">
-          <a href="${getFullUrlByPage(itemPDF, page)}" target="_blank">
-          <img src="https://chriscorchado.com/images/pdfIcon.jpg" height="25" title="View the PDF Certificate" />
-          </a></span>`;
+            <span class="course-date">${itemDate}</span>
+
+            <span class="course-links">
+              <a href="${getFullUrlByPage(itemPDF, page)}" target="_blank">
+                <img src="https://chriscorchado.com/images/pdfIcon.jpg" height="25" title="View the PDF Certificate" />
+              </a>
+            </span>`;
 
         // TODO: Create bigger version and add to content type
         //  item += `<span class="course-links">
@@ -663,26 +658,26 @@ const renderPage = (
 
         if (itemTrackImage) {
           item += `<span class="course-links">
-          <a href="${getFullUrlByPage(itemTrackImage, page)}" data-featherlight="image">
-          <img src="https://chriscorchado.com/images/linkedIn-track.png" height="25" title="View the Courses in the Track" />
-          </a></span>`;
+              <a href="${getFullUrlByPage(
+                itemTrackImage,
+                page
+              )}" data-featherlight="image">
+                <img src="https://chriscorchado.com/images/linkedIn-track.png" height="25" title="View the Courses in the Track" />
+              </a>
+            </span>`;
         }
-        item += `</div>`;
 
-        item += `</div>`; //course-box box
+        item += `</div></div>`; //course-box box
         break;
 
       case 'projects':
         currentNavItem = 'projects-link';
         pageIsSearchable = true;
 
-        item += `<div class="project col">`;
-
-        item += `<div class="project-title">${itemTitle}`;
-        item += `<div class="project-company">${itemCompanyName} <span class="project-date">(${itemDate})</span></div>`;
-        item += `</div>`;
-
-        item += `<div class="body-container">${itemBody}</div>`;
+        item += `<div class="project col">
+        <div class="project-title">${itemTitle}</div>
+        <div class="project-company">${itemCompanyName} <span class="project-date">(${itemDate})</span></div> 
+        <div class="body-container">${itemBody}</div>`;
 
         /* Screenshot Section */
         if (imgPieces) {
@@ -701,17 +696,16 @@ const renderPage = (
           imgPieces.forEach((img) => {
             projectImage = getFullUrlByPage(img, page);
 
-            section += `<div class="project-item shadow">`;
-
-            section += `<a href=${projectImage} class="gallery">
-            <div class="project-item-desc">${itemWithSearchHighlight(
-              screenshotAlt[imgAltCount],
-              searchedFor
-            )}</div>
-            <img src=${projectImage} alt=${screenshotAlt[imgAltCount]} />
-            </a>`;
-
-            section += `</div>`;
+            section += `<div class="project-item shadow">
+            
+              <a href=${projectImage} class="gallery">
+                <div class="project-item-desc">${itemWithSearchHighlight(
+                  screenshotAlt[imgAltCount],
+                  searchedFor
+                )}</div>
+                <img src=${projectImage} alt=${screenshotAlt[imgAltCount]} />
+              </a>
+            </div>`;
             imgAltCount++;
           });
 
@@ -731,17 +725,17 @@ const renderPage = (
           });
         }
 
-        item += `<div class="project-technology">${itemTechnology.slice(0, -2)}</div>`;
+        item += `<div class="project-technology">${itemTechnology.slice(0, -2)}</div>
+        </div>`;
 
         // item += `<div class="project-technology">`;
 
         // for (const [key, value] of Object.entries(includedTechnologyItem)) {
-        //   item += `<div id="technology-item-wrapper">${value.name}`;
-        //   item += `<img src="${value.image}" class="project-technology-icon" /></div>`;
+        //   item += `<div id="technology-item-wrapper">${value.name}
+        //     <img src="${value.image}" class="project-technology-icon" /></div>`;
         // }
 
         // item += `</div>`;
-        item += `</div>`;
 
         setPageMessage('click an image to enlarge it');
         break;
