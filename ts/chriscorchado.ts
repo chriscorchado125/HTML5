@@ -242,27 +242,6 @@ const getData = (dataURL: string) => {
 };
 
 /**
- * Search data after the user pauses typing for half a second
- * @param {string} searchTextBoxID - id of search textbox
- */
-const searchData = (searchTextBoxID: string) => {
-  let timeout: any = 0;
-  const inputSearchBox = document.getElementById(searchTextBoxID)! as HTMLInputElement;
-
-  inputSearchBox.addEventListener('keyup', function (e) {
-    if (!inputSearchBox.value) {
-      updateInterface();
-    }
-
-    clearTimeout(timeout);
-
-    timeout = setTimeout(function () {
-      getPage(getCurrentPage(), inputSearchBox.value);
-    }, 500);
-  });
-};
-
-/**
  * Clear current search
  * @param {string} searchTextBoxID - id of search textbox
  */
@@ -498,21 +477,17 @@ const setPageHTML = (values: any) => {
 
       if (itemTrackImage) {
         item += `<span class="course-links">
-              <a href="${getFullUrlByPage(
-                itemTrackImage,
-                page
-              )}" data-featherlight="image">
-                <img src="https://chriscorchado.com/images/linkedIn-track.png" height="25" 
-                title="View the Courses in the Track" alt="View the Courses in the Track" />
-              </a>
-            </span>`;
+            <a href="${getFullUrlByPage(itemTrackImage, page)}" data-featherlight="image">
+              <img src="https://chriscorchado.com/images/linkedIn-track.png" height="25" 
+              title="View the Courses in the Track" alt="View the Courses in the Track" />
+            </a>
+          </span>`;
       }
+
       item += `</div></div>`; //course-box box
       return item;
       break;
     case 'projects':
-      //console.log(itemTitle);
-
       let imgAltCount = 0;
       item = `<div class="project col">
         <div class="project-title">${itemTitle}</div>
@@ -536,10 +511,10 @@ const setPageHTML = (values: any) => {
           section += `<div class="project-item shadow">
             
               <a href=${projectImage} class="gallery">
-                <div class="project-item-desc">${itemWithSearchHighlight(
-                  screenshotAlt[imgAltCount],
-                  searchedFor
-                )}</div>
+                <div class="project-item-desc">
+                  ${itemWithSearchHighlight(screenshotAlt[imgAltCount], searchedFor)}
+                </div>
+
                 <img src=${projectImage} alt=${screenshotAlt[imgAltCount]} 
                   title=${screenshotAlt[imgAltCount]} />
               </a>
@@ -576,11 +551,8 @@ const setPageHTML = (values: any) => {
       // }
 
       // item += `</div>`;
-      console.log(item);
-      console.log('----');
 
       if (item !== undefined) return item;
-      //return item;
       break;
   }
 };
@@ -599,22 +571,21 @@ const renderPage = (
   next?: Object,
   prev?: Object
 ) => {
+  if (page == 'contact') {
+    setPageHTML([page, data]);
+    return;
+  }
+
   if (document.getElementById('noRecords')) {
     document.getElementById('noRecords').style.display = 'none';
   }
 
-  if (page == 'contact') setPageHTML([page, data]);
-
-  let screenshotCount = 0,
-    imgAltCount = 0,
-    itemCount = 0;
-
+  let itemCount = 0;
   let imgPieces = [''];
 
   let item = '',
     itemBody = '',
     currentNavItem = '',
-    itemGridClass = '',
     itemTitle = '',
     itemDate = '',
     startDate = '',
@@ -625,9 +596,7 @@ const renderPage = (
     itemCompanyName = '',
     itemWorkType = '',
     itemPDF = '',
-    itemTrackImage = '',
-    section = '',
-    projectImage = '';
+    itemTrackImage = '';
 
   let pageIsSearchable = false;
 
@@ -1080,3 +1049,32 @@ const getCurrentPage = () => {
 window.onload = () => {
   getPage(getCurrentPage());
 };
+
+/**
+ * Debounce requests in order to improve performance
+ * @param {any} function
+ * @param {number} wait - time to wait in milliseconds before invoking search
+ * @return {function} - as long as it continues to be invoked, will not be triggered.
+ */
+const debounce = (func: any, wait: number) => {
+  let timeout: any;
+
+  return function executedFunction(...args: any) {
+    // callback to be executed
+    const later = () => {
+      timeout = null; // indicate the debounce ended
+      func(...args); // execute the callback
+    };
+
+    clearTimeout(timeout); // on every function execution
+    timeout = setTimeout(later, wait); // restart the waiting period timeout
+  };
+};
+
+const debounceMe = debounce(() => {
+  const inputSearchBox = document.getElementById(SITE_SEARCH_ID)! as HTMLInputElement;
+
+  getPage(getCurrentPage(), inputSearchBox.value);
+
+  if (!inputSearchBox.value) updateInterface();
+}, 500);

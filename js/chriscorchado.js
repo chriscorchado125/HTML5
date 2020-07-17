@@ -197,19 +197,6 @@ var getData = function (dataURL) {
     });
     return result;
 };
-var searchData = function (searchTextBoxID) {
-    var timeout = 0;
-    var inputSearchBox = document.getElementById(searchTextBoxID);
-    inputSearchBox.addEventListener('keyup', function (e) {
-        if (!inputSearchBox.value) {
-            updateInterface();
-        }
-        clearTimeout(timeout);
-        timeout = setTimeout(function () {
-            getPage(getCurrentPage(), inputSearchBox.value);
-        }, 500);
-    });
-};
 var searchClear = function (searchTextBoxID) {
     var inputSearchBox = document.getElementById(searchTextBoxID);
     if (inputSearchBox.value !== '') {
@@ -328,7 +315,7 @@ var setPageHTML = function (values) {
         case 'courses':
             var item_1 = "<div class=\"course-box box\">\n          <h2>" + itemTitle + "</h2>\n\n          <div>\n            <img src=\"" + getFullUrlByPage(imgPieces[0], page) + "\" \n              alt=\"" + itemTitle.replace(/(<([^>]+)>)/gi, '') + "\" \n              title=\"" + itemTitle.replace(/(<([^>]+)>)/gi, '') + "\" />\n          </div>\n\n          <div class=\"course-wrapper\">\n\n            <span class=\"course-date\">" + itemDate + "</span>\n\n            <span class=\"course-links\">\n              <a href=\"" + getFullUrlByPage(itemPDF, page) + "\" target=\"_blank\">\n                <img src=\"https://chriscorchado.com/images/pdfIcon.jpg\" height=\"25\" \n                title=\"View the PDF Certificate\" alt=\"View the PDF Certificate\"/>\n              </a>\n            </span>";
             if (itemTrackImage) {
-                item_1 += "<span class=\"course-links\">\n              <a href=\"" + getFullUrlByPage(itemTrackImage, page) + "\" data-featherlight=\"image\">\n                <img src=\"https://chriscorchado.com/images/linkedIn-track.png\" height=\"25\" \n                title=\"View the Courses in the Track\" alt=\"View the Courses in the Track\" />\n              </a>\n            </span>";
+                item_1 += "<span class=\"course-links\">\n            <a href=\"" + getFullUrlByPage(itemTrackImage, page) + "\" data-featherlight=\"image\">\n              <img src=\"https://chriscorchado.com/images/linkedIn-track.png\" height=\"25\" \n              title=\"View the Courses in the Track\" alt=\"View the Courses in the Track\" />\n            </a>\n          </span>";
             }
             item_1 += "</div></div>";
             return item_1;
@@ -346,7 +333,7 @@ var setPageHTML = function (values) {
                 imgAltCount_1 = 0;
                 imgPieces.forEach(function (img) {
                     var projectImage = getFullUrlByPage(img, page);
-                    section_1 += "<div class=\"project-item shadow\">\n            \n              <a href=" + projectImage + " class=\"gallery\">\n                <div class=\"project-item-desc\">" + itemWithSearchHighlight(screenshotAlt_1[imgAltCount_1], searchedFor) + "</div>\n                <img src=" + projectImage + " alt=" + screenshotAlt_1[imgAltCount_1] + " \n                  title=" + screenshotAlt_1[imgAltCount_1] + " />\n              </a>\n            </div>";
+                    section_1 += "<div class=\"project-item shadow\">\n            \n              <a href=" + projectImage + " class=\"gallery\">\n                <div class=\"project-item-desc\">\n                  " + itemWithSearchHighlight(screenshotAlt_1[imgAltCount_1], searchedFor) + "\n                </div>\n\n                <img src=" + projectImage + " alt=" + screenshotAlt_1[imgAltCount_1] + " \n                  title=" + screenshotAlt_1[imgAltCount_1] + " />\n              </a>\n            </div>";
                     imgAltCount_1++;
                 });
                 section_1 += "</section>";
@@ -358,22 +345,22 @@ var setPageHTML = function (values) {
                 });
             }
             item_1 += "<div class=\"project-technology\">" + itemTechnology.slice(0, -2) + "</div>\n        </div>";
-            console.log(item_1);
-            console.log('----');
             if (item_1 !== undefined)
                 return item_1;
             break;
     }
 };
 var renderPage = function (data, page, searchedFor, next, prev) {
+    if (page == 'contact') {
+        setPageHTML([page, data]);
+        return;
+    }
     if (document.getElementById('noRecords')) {
         document.getElementById('noRecords').style.display = 'none';
     }
-    if (page == 'contact')
-        setPageHTML([page, data]);
-    var screenshotCount = 0, imgAltCount = 0, itemCount = 0;
+    var itemCount = 0;
     var imgPieces = [''];
-    var item = '', itemBody = '', currentNavItem = '', itemGridClass = '', itemTitle = '', itemDate = '', startDate = '', endDate = '', itemJobTitle = '', itemTechnology = '', itemTechnologyIcon = '', itemCompanyName = '', itemWorkType = '', itemPDF = '', itemTrackImage = '', section = '', projectImage = '';
+    var item = '', itemBody = '', currentNavItem = '', itemTitle = '', itemDate = '', startDate = '', endDate = '', itemJobTitle = '', itemTechnology = '', itemTechnologyIcon = '', itemCompanyName = '', itemWorkType = '', itemPDF = '', itemTrackImage = '';
     var pageIsSearchable = false;
     var includedAssetFilename = [''];
     var includedCompanyName = [''];
@@ -673,4 +660,25 @@ var getCurrentPage = function () {
 window.onload = function () {
     getPage(getCurrentPage());
 };
+var debounce = function (func, wait) {
+    var timeout;
+    return function executedFunction() {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        var later = function () {
+            timeout = null;
+            func.apply(void 0, args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+};
+var debounceMe = debounce(function () {
+    var inputSearchBox = document.getElementById(SITE_SEARCH_ID);
+    getPage(getCurrentPage(), inputSearchBox.value);
+    if (!inputSearchBox.value)
+        updateInterface();
+}, 500);
 //# sourceMappingURL=chriscorchado.js.map
