@@ -81,13 +81,13 @@ function getPage(page, search, pagingURL) {
                             return resp.ok ? resp.text() : Promise.reject(resp.statusText);
                         })
                             .then(function (page) {
-                            data = page.replace(/\/drupal8/g, API_BASE);
-                            var form = data.substr(data.indexOf('<form'), data.indexOf('</form>'));
-                            form = form.substr(0, form.indexOf('</form>') + 8);
-                            form = form.replace('Your email address', 'Email');
-                            var script = data.substr(data.indexOf('<script type="application/json" data-drupal-selector="drupal-settings-json">'), data.indexOf('></script>'));
-                            script = script.substr(0, script.indexOf('</script>') + 9);
                             if (location.toString().indexOf('submitted') == -1) {
+                                data = page.replace(/\/drupal8/g, API_BASE);
+                                var form = data.substr(data.indexOf('<form'), data.indexOf('</form>'));
+                                form = form.substr(0, form.indexOf('</form>') + 8);
+                                form = form.replace('Your email address', 'Email');
+                                var script = data.substr(data.indexOf('<script type="application/json" data-drupal-selector="drupal-settings-json">'), data.indexOf('></script>'));
+                                script = script.substr(0, script.indexOf('</script>') + 9);
                                 data = "<h1>Contact</h1>" + form + " " + script;
                             }
                         })
