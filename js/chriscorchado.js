@@ -47,7 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var API_BASE = 'https://chriscorchado.com/drupal8';
-var pageLimit = 50;
+var MAX_ITEMS_PER_PAGE = 50;
 var SITE_SEARCH_ID = 'searchSite';
 var CONTACT_CONTAINER_ID = 'contact';
 $('#navigation').load('includes/nav.html');
@@ -78,17 +78,13 @@ function getPage(page, search, pagingURL) {
                             return resp.ok ? resp.text() : Promise.reject(resp.statusText);
                         })
                             .then(function (page) {
-                            data = page.substr(0, page.indexOf('</html>') + 8);
-                            data = data.replace(/\/drupal8/g, API_BASE);
+                            data = page.replace(/\/drupal8/g, API_BASE);
                             var form = data.substr(data.indexOf('<form'), data.indexOf('</form>'));
                             form = form.substr(0, form.indexOf('</form>') + 8);
                             form = form.replace('Your email address', 'Email');
                             var script = data.substr(data.indexOf('<script type="application/json" data-drupal-selector="drupal-settings-json">'), data.indexOf('></script>'));
                             script = script.substr(0, script.indexOf('</script>') + 9);
-                            if (location.toString().indexOf('submitted') !== -1) {
-                                data = '';
-                            }
-                            else {
+                            if (location.toString().indexOf('submitted') == -1) {
                                 data = "<h1>Contact</h1>" + form + " " + script;
                             }
                         })
@@ -120,33 +116,33 @@ function getPage(page, search, pagingURL) {
                     return [3, 22];
                 case 7:
                     if (!search) return [3, 9];
-                    return [4, getData(API_BASE + "/jsonapi/node/company?filter[or-group][group][conjunction]=OR&\n                filter[field_company_name][operator]=CONTAINS&\n                filter[field_company_name][value]=" + search + "&\n                filter[field_company_name][condition][memberOf]=or-group&\n                filter[field_job_title][operator]=CONTAINS&\n                filter[field_job_title][value]=" + search + "&\n                filter[field_job_title][condition][memberOf]=or-group&\n                filter[body.value][operator]=CONTAINS&\n                filter[body.value][value]=" + search + "&\n                filter[body.value][condition][memberOf]=or-group&\n                sort=-field_end_date&\n                include=field_company_screenshot&\n                page[limit]=" + pageLimit)];
+                    return [4, getData(API_BASE + "/jsonapi/node/company?filter[or-group][group][conjunction]=OR&\n                filter[field_company_name][operator]=CONTAINS&\n                filter[field_company_name][value]=" + search + "&\n                filter[field_company_name][condition][memberOf]=or-group&\n                filter[field_job_title][operator]=CONTAINS&\n                filter[field_job_title][value]=" + search + "&\n                filter[field_job_title][condition][memberOf]=or-group&\n                filter[body.value][operator]=CONTAINS&\n                filter[body.value][value]=" + search + "&\n                filter[body.value][condition][memberOf]=or-group&\n                sort=-field_end_date&\n                include=field_company_screenshot&\n                page[limit]=" + MAX_ITEMS_PER_PAGE)];
                 case 8:
                     data = _b.sent();
                     return [3, 11];
-                case 9: return [4, getData(API_BASE + "/jsonapi/node/company?sort=-field_end_date&\n                include=field_company_screenshot&\n                page[limit]=" + pageLimit)];
+                case 9: return [4, getData(API_BASE + "/jsonapi/node/company?sort=-field_end_date&\n                include=field_company_screenshot&\n                page[limit]=" + MAX_ITEMS_PER_PAGE)];
                 case 10:
                     data = _b.sent();
                     _b.label = 11;
                 case 11: return [3, 22];
                 case 12:
                     if (!search) return [3, 14];
-                    return [4, getData(API_BASE + "/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&\n                filter[title][operator]=CONTAINS&\n                filter[title][value]=" + search + "&\n                filter[title][condition][memberOf]=or-group&\n                filter[field_award_date][operator]=CONTAINS&\n                filter[field_award_date][value]=" + search + "&\n                filter[field_award_date][condition][memberOf]=or-group&\n                sort=-field_award_date&\n                include=field_award_pdf,field_track_image,field_award_images&\n                page[limit]=" + pageLimit)];
+                    return [4, getData(API_BASE + "/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&\n                filter[title][operator]=CONTAINS&\n                filter[title][value]=" + search + "&\n                filter[title][condition][memberOf]=or-group&\n                filter[field_award_date][operator]=CONTAINS&\n                filter[field_award_date][value]=" + search + "&\n                filter[field_award_date][condition][memberOf]=or-group&\n                sort=-field_award_date&\n                include=field_award_pdf,field_track_image,field_award_images&\n                page[limit]=" + MAX_ITEMS_PER_PAGE)];
                 case 13:
                     data = _b.sent();
                     return [3, 16];
-                case 14: return [4, getData(API_BASE + "/jsonapi/node/awards?sort=-field_award_date&\n                include=field_award_pdf,field_track_image,field_award_images&\n                page[limit]=" + pageLimit)];
+                case 14: return [4, getData(API_BASE + "/jsonapi/node/awards?sort=-field_award_date&\n                include=field_award_pdf,field_track_image,field_award_images&\n                page[limit]=" + MAX_ITEMS_PER_PAGE)];
                 case 15:
                     data = _b.sent();
                     _b.label = 16;
                 case 16: return [3, 22];
                 case 17:
                     if (!search) return [3, 19];
-                    return [4, getData(API_BASE + "/jsonapi/node/project?filter[or-group][group][conjunction]=OR&\n              filter[title][operator]=CONTAINS&\n              filter[title][value]=" + search + "&\n              filter[title][condition][memberOf]=or-group&\n              filter[taxonomy_term--tags][path]=field_project_technology.name&\n              filter[taxonomy_term--tags][operator]=CONTAINS&\n              filter[taxonomy_term--tags][value]=" + search + "&\n              filter[taxonomy_term--tags][condition][memberOf]=or-group&\n              filter[field_company.title][operator]=CONTAINS&\n              filter[field_company.title][value]=" + search + "&\n              filter[field_company.title][condition][memberOf]=or-group&\n              filter[field_screenshot.meta.alt][operator]=CONTAINS&\n              filter[field_screenshot.meta.alt][value]=" + search + "&\n              filter[field_screenshot.meta.alt][condition][memberOf]=or-group&\n              filter[field_date][operator]=CONTAINS&filter[field_date][value]=" + search + "&\n              filter[field_date][condition][memberOf]=or-group&\n              sort=-field_date&\n              include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&\n              fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&\n              page[limit]=" + pageLimit)];
+                    return [4, getData(API_BASE + "/jsonapi/node/project?filter[or-group][group][conjunction]=OR&\n              filter[title][operator]=CONTAINS&\n              filter[title][value]=" + search + "&\n              filter[title][condition][memberOf]=or-group&\n              filter[taxonomy_term--tags][path]=field_project_technology.name&\n              filter[taxonomy_term--tags][operator]=CONTAINS&\n              filter[taxonomy_term--tags][value]=" + search + "&\n              filter[taxonomy_term--tags][condition][memberOf]=or-group&\n              filter[field_company.title][operator]=CONTAINS&\n              filter[field_company.title][value]=" + search + "&\n              filter[field_company.title][condition][memberOf]=or-group&\n              filter[field_screenshot.meta.alt][operator]=CONTAINS&\n              filter[field_screenshot.meta.alt][value]=" + search + "&\n              filter[field_screenshot.meta.alt][condition][memberOf]=or-group&\n              filter[field_date][operator]=CONTAINS&filter[field_date][value]=" + search + "&\n              filter[field_date][condition][memberOf]=or-group&\n              sort=-field_date&\n              include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&\n              fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&\n              page[limit]=" + MAX_ITEMS_PER_PAGE)];
                 case 18:
                     data = _b.sent();
                     return [3, 21];
-                case 19: return [4, getData(API_BASE + "/jsonapi/node/project?sort=-field_date&\n                include=field_project_technology,field_company,field_screenshot&\n                fields[node--company]=field_company_name,field_video_url&\n                fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&\n                page[limit]=" + pageLimit)];
+                case 19: return [4, getData(API_BASE + "/jsonapi/node/project?sort=-field_date&\n                include=field_project_technology,field_company,field_screenshot&\n                fields[node--company]=field_company_name,field_video_url&\n                fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&\n                page[limit]=" + MAX_ITEMS_PER_PAGE)];
                 case 20:
                     data = _b.sent();
                     _b.label = 21;
@@ -164,7 +160,6 @@ function getPage(page, search, pagingURL) {
                     else {
                         updateInterface(search);
                     }
-                    updateMenuPages(page, 'navbar-nav');
                     return [2];
             }
         });
@@ -285,7 +280,6 @@ var setPageHTML = function (values) {
     switch (page) {
         case 'about':
             document.getElementById('search-container').style.display = 'none';
-            document.getElementById('profiles').style.display = 'block';
             document.getElementById('logo').getElementsByTagName('img')[0].style.border =
                 '1px dashed #7399EA';
             var aboutData = data.attributes.body.value.toString().split('<hr />');
@@ -293,8 +287,6 @@ var setPageHTML = function (values) {
             return "<h1>" + itemTitle + "</h1> " + aboutData[0];
             break;
         case 'contact':
-            $('.container').html(data.toString());
-            setLoading(false);
             var loc_1 = location.toString().indexOf('contact.html?submitted');
             if (loc_1 !== -1) {
                 setInterval(showCountDown, 1000);
@@ -303,11 +295,13 @@ var setPageHTML = function (values) {
                 }, seconds * 1000);
             }
             else {
+                $('.container').html(data.toString());
                 $('#contact-link').addClass('nav-item-active');
                 var webLocation = document.getElementById('edit-field-site-0-value');
                 webLocation.value = location.toString();
                 $('#edit-mail').focus();
             }
+            setLoading(false);
             break;
         case 'companies':
             return "<div class=\"company-container col shadow\">\n\n          <div class=\"company-name\">" + itemTitle + "</div>\n          <div class=\"company-job-title\">" + itemJobTitle + "</div>\n          <div class=\"body-container\">" + itemBody + "</div>\n\n          <div class=\"screenshot-container\">\n            <img src=" + getFullUrlByPage(imgPieces[0], page) + " \n            class=\"company-screenshot\" \n            alt=\"" + data.attributes.title + " Screenshot\" \n            title=\"" + data.attributes.title + " Screenshot\"/>\n          </div>\n\n          <div class=\"employment-dates\">" + startDate + " - " + endDate + "</div>\n        </div>";
@@ -317,8 +311,7 @@ var setPageHTML = function (values) {
             if (itemTrackImage) {
                 item_1 += "<span class=\"course-links\">\n            <a href=\"" + getFullUrlByPage(itemTrackImage, page) + "\" data-featherlight=\"image\">\n              <img src=\"https://chriscorchado.com/images/linkedIn-track.png\" height=\"25\" \n              title=\"View the Courses in the Track\" alt=\"View the Courses in the Track\" />\n            </a>\n          </span>";
             }
-            item_1 += "</div></div>";
-            return item_1;
+            return (item_1 += "</div></div>");
             break;
         case 'projects':
             var imgAltCount_1 = 0;
@@ -344,7 +337,7 @@ var setPageHTML = function (values) {
                     item_1 += "<a href=\"" + img + "\" \n          data-featherlight=\"iframe\" \n          data-featherlight-iframe-frameborder=\"0\" \n          data-featherlight-iframe-allowfullscreen=\"true\" \n          data-featherlight-iframe-allow=\"autoplay; encrypted-media\"\n          data-featherlight-iframe-style=\"display:block;border:none;height:85vh;width:85vw;\" class=\"play-video\">\n            Play Video <img src=\"images/play_vidoe_icon.png\" title=\"Play Video\" alt=\"Play Video\" width=\"20\" />\n          </a>";
                 });
             }
-            item_1 += "<div class=\"project-technology\">" + itemTechnology.slice(0, -2) + "</div>\n        </div>";
+            item_1 += "<div class=\"project-technology\">" + itemTechnology.slice(0, -2) + "</div>\n      </div>";
             if (item_1 !== undefined)
                 return item_1;
             break;
@@ -484,40 +477,48 @@ var renderPage = function (data, page, searchedFor, next, prev) {
         ];
         switch (page) {
             case 'about':
-                currentNavItem = 'about-link';
                 item = setPageHTML(allValues);
                 break;
             case 'companies':
-                currentNavItem = 'companies-link';
                 item += setPageHTML(allValues);
-                pageIsSearchable = true;
                 break;
             case 'courses':
-                currentNavItem = 'courses-link';
                 item += setPageHTML(allValues);
-                pageIsSearchable = true;
                 break;
             case 'projects':
-                currentNavItem = 'projects-link';
                 item += setPageHTML(allValues);
-                pageIsSearchable = true;
-                setPageMessage('click an image to enlarge it');
                 break;
         }
     });
-    $('#' + currentNavItem).addClass('nav-item-active');
-    if (itemCount > 0) {
-        $('.container').html(item);
-        if (pageIsSearchable) {
-            document.getElementById('search-container').style.display = 'block';
-        }
-        $('a.gallery').featherlightGallery({
-            previousIcon: '&#9664;',
-            nextIcon: '&#9654;',
-            galleryFadeIn: 200,
-            galleryFadeOut: 300,
-        });
+    switch (page) {
+        case 'about':
+            currentNavItem = 'about-link';
+            break;
+        case 'companies':
+            currentNavItem = 'companies-link';
+            pageIsSearchable = true;
+            break;
+        case 'courses':
+            currentNavItem = 'courses-link';
+            pageIsSearchable = true;
+            break;
+        case 'projects':
+            currentNavItem = 'projects-link';
+            pageIsSearchable = true;
+            setPageMessage('click an image to enlarge it');
+            break;
     }
+    $('#' + currentNavItem).addClass('nav-item-active');
+    $('.container').html(item);
+    if (pageIsSearchable) {
+        document.getElementById('search-container').style.display = 'block';
+    }
+    $('a.gallery').featherlightGallery({
+        previousIcon: '&#9664;',
+        nextIcon: '&#9654;',
+        galleryFadeIn: 200,
+        galleryFadeOut: 300,
+    });
     setPagination(itemCount, data.passedInCount.currentCount, prev, next);
     setLoading(false);
 };
@@ -543,13 +544,13 @@ var getFullUrlByPage = function (linkToFix, page) {
 };
 var getSearchCount = function (count, searchCountID) {
     if ($("#" + SITE_SEARCH_ID).val()) {
-        if (count <= pageLimit) {
+        if (count <= MAX_ITEMS_PER_PAGE) {
             document.getElementById(searchCountID).innerHTML =
                 count + ("  " + (count == 1 ? 'Item' : 'Items'));
         }
         else {
             document.getElementById(searchCountID).innerHTML =
-                pageLimit + ("  " + (+pageLimit == 1 ? 'Item' : 'Items'));
+                MAX_ITEMS_PER_PAGE + ("  " + (+MAX_ITEMS_PER_PAGE == 1 ? 'Item' : 'Items'));
         }
         return count + " " + (count == 1 ? 'Item' : 'Items') + " ";
     }
@@ -569,13 +570,13 @@ var setPagination = function (count, paginationTotal, prev, next) {
         document.getElementById('searchCount').innerHTML = "<span id=\"totalItems\">" + count + "</span>\n   " + (count == 1 ? 'Item' : 'Items');
     }
     else {
-        var currentCount = +dataOffset / pageLimit;
+        var currentCount = +dataOffset / MAX_ITEMS_PER_PAGE;
         if (count == dataOffset) {
-            dataOffsetText = "Items 1-<span id=\"lastCount\">" + pageLimit + "</span>";
+            dataOffsetText = "Items 1-<span id=\"lastCount\">" + MAX_ITEMS_PER_PAGE + "</span>";
         }
         else {
             if (currentCount !== 0) {
-                dataOffsetText = "Items " + (currentCount * pageLimit - pageLimit) + "-<span id=\"lastCount\">" + currentCount * pageLimit + "</span>";
+                dataOffsetText = "Items " + (currentCount * MAX_ITEMS_PER_PAGE - MAX_ITEMS_PER_PAGE) + "-<span id=\"lastCount\">" + currentCount * MAX_ITEMS_PER_PAGE + "</span>";
             }
             else {
                 dataOffsetText = "Items " + paginationTotal + "-<span id=\"lastCount\">" + (+paginationTotal + count) + "</span>";
@@ -589,7 +590,7 @@ var setPagination = function (count, paginationTotal, prev, next) {
             ? "<a href=\"#\" class=\"pager-navigation\" title=\"View the next page\" \n          onclick=\"getPage(getCurrentPage(), document.getElementById('" + SITE_SEARCH_ID + "').value,'" + next.href + "')\">Next</a>"
             : "<span class=\"pager-navigation disabled\" title=\"There is no next page available\">Next</span>";
     }
-    if (count < pageLimit && paginationTotal === 1) {
+    if (count < MAX_ITEMS_PER_PAGE && paginationTotal === 1) {
         $('#pagination').hide();
     }
     else {
@@ -646,19 +647,16 @@ function updateMenuPages(currentPage, targetContainer) {
     });
 }
 var getCurrentPage = function () {
-    var getCurrentPage = window.location.pathname
+    var thisPage = window.location.pathname
         .split('/')
         .filter(function (pathnamePieces) {
         return pathnamePieces.length;
     })
         .pop();
-    var pageName = getCurrentPage.split('.')[0];
+    var pageName = thisPage.split('.')[0];
     if (pageName == 'index' || pageName == 'html5')
         pageName = 'about';
     return pageName;
-};
-window.onload = function () {
-    getPage(getCurrentPage());
 };
 var debounce = function (func, wait) {
     var timeout;
@@ -681,4 +679,7 @@ var debounceMe = debounce(function () {
     if (!inputSearchBox.value)
         updateInterface();
 }, 500);
+window.onload = function () {
+    getPage(getCurrentPage());
+};
 //# sourceMappingURL=chriscorchado.js.map

@@ -51,6 +51,11 @@
     width: 130px;
   }
 
+  /* remove IE “clear field or cross” X button from inputs field */
+  ::-ms-clear {
+    display: none;
+  }
+
   /* search button */
   .searchBtn {
     padding: 3px;

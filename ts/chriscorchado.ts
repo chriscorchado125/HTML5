@@ -1,16 +1,15 @@
 'use strict';
 
 const API_BASE = 'https://chriscorchado.com/drupal8';
-const pageLimit = 50;
+const MAX_ITEMS_PER_PAGE = 50;
 const SITE_SEARCH_ID = 'searchSite';
 const CONTACT_CONTAINER_ID = 'contact';
 
-/* Load navigation and footer */
 $('#navigation').load('includes/nav.html');
 $('#footer').load('includes/footer.html');
 
 /**
- * Show and hide the loading of a page
+ * Toggle content and preloader when loading pages
  * @param {boolean} loadingStatus
  */
 function setLoading(loadingStatus: boolean) {
@@ -39,25 +38,20 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
   }
 
   if (page == 'contact') {
-    /* get the feedback form and javascript from the Drupal 8 site */
-
-    await fetch(`${API_BASE}/contact/feedback`)
+    await fetch(`${API_BASE}/contact/feedback`) // get the feedback form
       .then((resp) => {
         return resp.ok ? resp.text() : Promise.reject(resp.statusText);
       })
       .then((page) => {
-        /* get the HTML and update the URLs from relative to absolute */
-        data = page.substr(0, page.indexOf('</html>') + 8);
-        data = data.replace(/\/drupal8/g, API_BASE);
+        data = page.replace(/\/drupal8/g, API_BASE); // update the HTML URLs from relative to absolute
 
-        /* get form */
+        // get the feedback form HTML
         let form = data.substr(data.indexOf('<form'), data.indexOf('</form>'));
         form = form.substr(0, form.indexOf('</form>') + 8);
 
-        /* replace the form email label text */
         form = form.replace('Your email address', 'Email');
 
-        /* get scripts */
+        // get the feedback form JavaScript
         let script = data.substr(
           data.indexOf(
             '<script type="application/json" data-drupal-selector="drupal-settings-json">'
@@ -66,10 +60,8 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
         );
         script = script.substr(0, script.indexOf('</script>') + 9);
 
-        /* show form or submitted message */
-        if (location.toString().indexOf('submitted') !== -1) {
-          data = '';
-        } else {
+        // show the contact form as long as it has not been submitted
+        if (location.toString().indexOf('submitted') == -1) {
           data = `<h1>Contact</h1>${form} ${script}`;
         }
       })
@@ -107,13 +99,13 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
                 filter[body.value][condition][memberOf]=or-group&
                 sort=-field_end_date&
                 include=field_company_screenshot&
-                page[limit]=${pageLimit}`
+                page[limit]=${MAX_ITEMS_PER_PAGE}`
             );
           } else {
             data = await getData(
               `${API_BASE}/jsonapi/node/company?sort=-field_end_date&
                 include=field_company_screenshot&
-                page[limit]=${pageLimit}`
+                page[limit]=${MAX_ITEMS_PER_PAGE}`
             );
           }
           break;
@@ -129,13 +121,13 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
                 filter[field_award_date][condition][memberOf]=or-group&
                 sort=-field_award_date&
                 include=field_award_pdf,field_track_image,field_award_images&
-                page[limit]=${pageLimit}`
+                page[limit]=${MAX_ITEMS_PER_PAGE}`
             );
           } else {
             data = await getData(
               `${API_BASE}/jsonapi/node/awards?sort=-field_award_date&
                 include=field_award_pdf,field_track_image,field_award_images&
-                page[limit]=${pageLimit}`
+                page[limit]=${MAX_ITEMS_PER_PAGE}`
             );
           }
           break;
@@ -161,7 +153,7 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
               sort=-field_date&
               include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&
               fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&
-              page[limit]=${pageLimit}`
+              page[limit]=${MAX_ITEMS_PER_PAGE}`
             );
           } else {
             data = await getData(
@@ -169,7 +161,7 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
                 include=field_project_technology,field_company,field_screenshot&
                 fields[node--company]=field_company_name,field_video_url&
                 fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&
-                page[limit]=${pageLimit}`
+                page[limit]=${MAX_ITEMS_PER_PAGE}`
             );
           }
           break;
@@ -177,7 +169,7 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
     }
   }
 
-  /* create object with current pagination count to append to data */
+  // create object with the last pagination count or a default of 1
   let passedInCount = {
     currentCount: document.getElementById('lastCount')
       ? document.getElementById('lastCount').textContent
@@ -191,13 +183,10 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
   } else {
     updateInterface(search);
   }
-
-  /* update menu via API */
-  updateMenuPages(page, 'navbar-nav');
 }
 
 /**
- * Show/Hide UI elements
+ * Toggle the preloader, searchCount, paging-info, pagination and message elements
  * @param {string=} search - (optional) searched for text
  */
 const updateInterface = (search?: string) => {
@@ -224,9 +213,9 @@ const updateInterface = (search?: string) => {
 };
 
 /**
- * Get data from Drupal 8 datastore
- * @param {string} dataURL - url to fetch data from
- * @return {Object} - object of data
+ * Get data
+ * @param {string} dataURL - URL to fetch data from
+ * @return {Object} - JSON object of data
  */
 const getData = (dataURL: string) => {
   const result = $.ajax({
@@ -274,7 +263,7 @@ const searchFilter = (event: KeyboardEvent) => {
 };
 
 /**
- * Highlight search term with a string
+ * Highlight search term within a string
  * @param {string} itemToHighlight - string to search
  * @param {string} searchedFor - string to search for
  * @return {string} - search result with/without highlight
@@ -299,15 +288,12 @@ const itemWithSearchHighlight = (itemToHighlight: string, searchedFor: string) =
     if (searchString.indexOf('<ul>') !== -1) {
       let listItem = '';
 
-      // remove ul tags and break the li items into an array
-      let searchWithHTML = searchString.replace('<ul>', '').replace('</ul>', '');
-
-      searchStringArray = searchWithHTML.split('<li>');
+      let searchWithHTML = searchString.replace('<ul>', '').replace('</ul>', ''); // remove ul tags
+      searchStringArray = searchWithHTML.split('<li>'); // break the li items into an array
 
       searchStringArray.forEach((element) => {
         if (element.length > 3) {
-          // remove closing li tag
-          searchString = element.slice(0, element.lastIndexOf('<'));
+          searchString = element.slice(0, element.lastIndexOf('<')); // remove closing li tag
 
           if (searchString.match(searchTerm)) {
             results = searchString.replace(
@@ -341,7 +327,7 @@ const itemWithSearchHighlight = (itemToHighlight: string, searchedFor: string) =
 };
 
 /**
- * Create the countdown after submitting the contact form
+ * Create a countdown after submitting the contact form
  * @param {string} containerID - id of the form container
  */
 let seconds = 5;
@@ -355,7 +341,7 @@ const showCountDown = (containerID: string = CONTACT_CONTAINER_ID) => {
 };
 
 /**
- * Change date to month as text plus the 4 digit year
+ * Change date to name of the month plus the 4 digit year
  * @param {string} dateString - date value
  * @return {string} - month and year - example: January 2020
  */
@@ -369,6 +355,11 @@ const getMonthYear = (dateString: string) => {
   );
 };
 
+/**
+ * Configure the HTML for each page
+ * @param {array} values - all item values for the page
+ * @return {string} - HTML for the page
+ */
 const setPageHTML = (values: any) => {
   let page = values[0];
   let data = values[1];
@@ -386,39 +377,38 @@ const setPageHTML = (values: any) => {
   let searchedFor = values[13];
 
   switch (page) {
-    case 'about':
-      // hide search box on About page (homepage)
-      document.getElementById('search-container').style.display = 'none';
-      document.getElementById('profiles').style.display = 'block';
+    case 'about': // homepage
+      document.getElementById('search-container').style.display = 'none'; // hide search box
 
-      // add border to logo
+      // add a border to the site logo
       document.getElementById('logo').getElementsByTagName('img')[0].style.border =
         '1px dashed #7399EA';
 
+      // TODO: change to a content type vs basic page split
       let aboutData = data.attributes.body.value.toString().split('<hr />');
 
-      document.getElementById('profiles').innerHTML = aboutData[1]; // resume, linkedin and azure links
+      document.getElementById('profiles').innerHTML = aboutData[1]; // add resume, linkedin and azure links
       return `<h1>${itemTitle}</h1> ${aboutData[0]}`;
 
       break;
     case 'contact':
-      // show the form or the thank you screen after submission which fowards to the homepage
-      $('.container').html(data.toString());
-
-      setLoading(false);
-
+      // if the form was submitted then show the thank you screen and forward to the homepage
       let loc = location.toString().indexOf('contact.html?submitted');
+
       if (loc !== -1) {
+        // form sumitted
         setInterval(showCountDown, 1000);
 
-        /* get the homepage url and forward to it after ${seconds} */
         setTimeout(function () {
           window.location.replace(location.toString().substr(0, loc));
         }, seconds * 1000);
       } else {
+        // show the form
+        $('.container').html(data.toString());
+
         $('#contact-link').addClass('nav-item-active');
 
-        //capture current site
+        // capture the current site URL
         const webLocation = document.getElementById(
           'edit-field-site-0-value'
         )! as HTMLInputElement;
@@ -427,6 +417,8 @@ const setPageHTML = (values: any) => {
 
         $('#edit-mail').focus();
       }
+
+      setLoading(false);
       break;
     case 'companies':
       return `<div class="company-container col shadow">
@@ -445,7 +437,7 @@ const setPageHTML = (values: any) => {
           <div class="employment-dates">${startDate} - ${endDate}</div>
         </div>`;
 
-      //item += `<div class="employment-type">${itemWorkType}</div>`;
+      // item += `<div class="employment-type">${itemWorkType}</div>`;
       break;
     case 'courses':
       let item = `<div class="course-box box">
@@ -484,8 +476,7 @@ const setPageHTML = (values: any) => {
           </span>`;
       }
 
-      item += `</div></div>`; //course-box box
-      return item;
+      return (item += `</div></div>`); // course-box box
       break;
     case 'projects':
       let imgAltCount = 0;
@@ -494,7 +485,7 @@ const setPageHTML = (values: any) => {
         <div class="project-company">${itemCompanyName} <span class="project-date">(${itemDate})</span></div> 
         <div class="body-container">${itemBody}</div>`;
 
-      /* Screenshot Section */
+      // screenshots
       if (imgPieces) {
         let itemGridClass = `project-item-grid project-items${imgPieces.length}`;
         let section = `<section data-featherlight-gallery data-featherlight-filter="a" class="${itemGridClass}">`;
@@ -504,7 +495,7 @@ const setPageHTML = (values: any) => {
           screenshotAlt.push(screenshot.meta.alt);
         });
 
-        imgAltCount = 0; // reset
+        imgAltCount = 0; // reset alt attribute counter
         imgPieces.forEach((img: string) => {
           let projectImage = getFullUrlByPage(img, page);
 
@@ -526,7 +517,7 @@ const setPageHTML = (values: any) => {
         item += section;
       }
 
-      /* Video Section */
+      // videos
       if (data.attributes.field_video_url) {
         data.attributes.field_video_url.forEach((img: string) => {
           item += `<a href="${img}" 
@@ -540,9 +531,11 @@ const setPageHTML = (values: any) => {
         });
       }
 
+      // HTML, CSS, JavaScript, etc..
       item += `<div class="project-technology">${itemTechnology.slice(0, -2)}</div>
-        </div>`;
+      </div>`;
 
+      // Icons for HTML, CSS, JavaScript, etc..
       // item += `<div class="project-technology">`;
 
       // for (const [key, value] of Object.entries(includedTechnologyItem)) {
@@ -556,13 +549,14 @@ const setPageHTML = (values: any) => {
       break;
   }
 };
+
 /**
- * Create HTML for page
+ * Generate the webpage
  * @param {Object[]} data - page items
  * @param {string} page - page name
- * @param {string=} searchedFor - (Optional) - search string
- * @param {Object=} next - (Optional) - page name
- * @param {Object=} prev - (Optional) - search string
+ * @param {string=} searchedFor - (optional) - search string
+ * @param {Object=} next - (optional) - link to next page of results
+ * @param {Object=} prev - (optional) - link to previous page of the results
  */
 const renderPage = (
   data: any,
@@ -646,7 +640,7 @@ const renderPage = (
     includedTechnologyItem = [];
 
     if (element.relationships) {
-      /* get Courses screenshot filenames */
+      // get course screenshot filename
       if (
         element.relationships.field_award_images &&
         element.relationships.field_award_images.data
@@ -656,7 +650,7 @@ const renderPage = (
         );
       }
 
-      /* get Courses PDF filenames */
+      // get course PDF filename
       if (
         element.relationships.field_award_pdf &&
         element.relationships.field_award_pdf.data
@@ -664,7 +658,7 @@ const renderPage = (
         itemPDF = includedAssetFilename[element.relationships.field_award_pdf.data.id];
       }
 
-      /*get Courses Track image filename */
+      // get course track image filename
       if (
         element.relationships.field_track_image &&
         element.relationships.field_track_image.data
@@ -673,7 +667,7 @@ const renderPage = (
           includedAssetFilename[element.relationships.field_track_image.data.id];
       }
 
-      /* get Company name */
+      // get company name
       if (
         element.relationships.field_company &&
         element.relationships.field_company.data
@@ -682,7 +676,7 @@ const renderPage = (
           includedCompanyName[element.relationships.field_company.data.id];
       }
 
-      /* get Company screenshot filenames */
+      // get company screenshot filename
       if (
         element.relationships.field_company_screenshot &&
         element.relationships.field_company_screenshot.data
@@ -692,7 +686,7 @@ const renderPage = (
         );
       }
 
-      /* get Project screenshots filenames */
+      // get project screenshot filename
       if (
         element.relationships.field_screenshot &&
         element.relationships.field_screenshot.data
@@ -704,7 +698,7 @@ const renderPage = (
         }
       }
 
-      /* get Project technology names */
+      // get project technology name
       if (
         element.relationships.field_project_technology &&
         element.relationships.field_project_technology.data
@@ -740,20 +734,20 @@ const renderPage = (
       }
     } // if (element.relationships)
 
-    /* get Project and Course dates */
+    // get project and course dates
     if (itemDate) {
-      if (page == 'projects') itemDate = itemDate.split('-')[0]; // only year
+      if (page == 'projects') itemDate = itemDate.split('-')[0]; // only the year
       if (page == 'courses') itemDate = getMonthYear(itemDate);
     }
 
-    /* Work History Dates - month and year*/
+    // get work history dates - month and year
     if (startDate) startDate = getMonthYear(startDate);
     if (endDate) endDate = getMonthYear(endDate);
 
     itemTitle = itemTitle.replace('&amp;', '&');
 
     if (searchedFor) {
-      /* TODO pass in array[itemTitle, itemDate, etc..] and searchedFor then destructure */
+      // TODO pass in array[itemTitle, itemDate, etc..] and searchedFor then destructure
       itemTitle = itemWithSearchHighlight(itemTitle, searchedFor);
       itemDate = itemWithSearchHighlight(itemDate, searchedFor);
       startDate = itemWithSearchHighlight(startDate, searchedFor);
@@ -789,45 +783,54 @@ const renderPage = (
 
     switch (page) {
       case 'about':
-        currentNavItem = 'about-link';
         item = setPageHTML(allValues);
         break;
       case 'companies':
-        currentNavItem = 'companies-link';
         item += setPageHTML(allValues);
-        pageIsSearchable = true;
         break;
       case 'courses':
-        currentNavItem = 'courses-link';
         item += setPageHTML(allValues);
-        pageIsSearchable = true;
         break;
       case 'projects':
-        currentNavItem = 'projects-link';
         item += setPageHTML(allValues);
-        pageIsSearchable = true;
-        setPageMessage('click an image to enlarge it');
         break;
-    } // end switch
+    }
   }); // data.data forEach
+
+  switch (page) {
+    case 'about':
+      currentNavItem = 'about-link';
+      break;
+    case 'companies':
+      currentNavItem = 'companies-link';
+      pageIsSearchable = true;
+      break;
+    case 'courses':
+      currentNavItem = 'courses-link';
+      pageIsSearchable = true;
+      break;
+    case 'projects':
+      currentNavItem = 'projects-link';
+      pageIsSearchable = true;
+      setPageMessage('click an image to enlarge it');
+      break;
+  }
 
   $('#' + currentNavItem).addClass('nav-item-active');
 
-  if (itemCount > 0) {
-    $('.container').html(item);
+  $('.container').html(item);
 
-    if (pageIsSearchable) {
-      document.getElementById('search-container').style.display = 'block';
-    }
-
-    // @ts-ignore
-    $('a.gallery').featherlightGallery({
-      previousIcon: '&#9664;' /* Code that is used as previous icon */,
-      nextIcon: '&#9654;' /* Code that is used as next icon */,
-      galleryFadeIn: 200 /* fadeIn speed when slide is loaded */,
-      galleryFadeOut: 300 /* fadeOut speed before slide is loaded */,
-    });
+  if (pageIsSearchable) {
+    document.getElementById('search-container').style.display = 'block';
   }
+
+  // @ts-ignore
+  $('a.gallery').featherlightGallery({
+    previousIcon: '&#9664;' /* Code that is used as previous icon */,
+    nextIcon: '&#9654;' /* Code that is used as next icon */,
+    galleryFadeIn: 200 /* fadeIn speed when slide is loaded */,
+    galleryFadeOut: 300 /* fadeOut speed before slide is loaded */,
+  });
 
   setPagination(itemCount, data.passedInCount.currentCount, prev, next);
 
@@ -863,19 +866,19 @@ const getFullUrlByPage = (linkToFix: string, page: string) => {
 };
 
 /**
- * Handle search counts
+ * Get the current search count
  * @param {number} count - item count
  * @param {string} searchCountID - search count container id
  * @return {string} - item count with either 'Items' or 'Item'
  */
 const getSearchCount = (count: number, searchCountID: string) => {
   if ($(`#${SITE_SEARCH_ID}`).val()) {
-    if (count <= pageLimit) {
+    if (count <= MAX_ITEMS_PER_PAGE) {
       document.getElementById(searchCountID).innerHTML =
         count + `  ${count == 1 ? 'Item' : 'Items'}`;
     } else {
       document.getElementById(searchCountID).innerHTML =
-        pageLimit + `  ${+pageLimit == 1 ? 'Item' : 'Items'}`;
+        MAX_ITEMS_PER_PAGE + `  ${+MAX_ITEMS_PER_PAGE == 1 ? 'Item' : 'Items'}`;
     }
 
     return `${count} ${count == 1 ? 'Item' : 'Items'} `;
@@ -913,38 +916,38 @@ const setPagination = (
 
   let dataOffsetText = getSearchCount(count, 'searchCount');
 
-  /* Show pagination if there is a next or prev link */
+  // if there is a next or prev link then show the pagination
   if (!next && !prev) {
     document.getElementById(
       'searchCount'
     ).innerHTML = `<span id="totalItems">${count}</span>
    ${count == 1 ? 'Item' : 'Items'}`;
   } else {
-    let currentCount = +dataOffset / pageLimit;
+    let currentCount = +dataOffset / MAX_ITEMS_PER_PAGE;
 
-    /* generate first page item counts*/
+    // first page item count
     if (count == dataOffset) {
-      dataOffsetText = `Items 1-<span id="lastCount">${pageLimit}</span>`;
+      dataOffsetText = `Items 1-<span id="lastCount">${MAX_ITEMS_PER_PAGE}</span>`;
     } else {
-      /* generate middle pages item counts*/
+      // middle pages item counts
       if (currentCount !== 0) {
         dataOffsetText = `Items ${
-          currentCount * pageLimit - pageLimit
-        }-<span id="lastCount">${currentCount * pageLimit}</span>`;
+          currentCount * MAX_ITEMS_PER_PAGE - MAX_ITEMS_PER_PAGE
+        }-<span id="lastCount">${currentCount * MAX_ITEMS_PER_PAGE}</span>`;
       } else {
-        /* generate last page item counts*/
+        // last page item count
         dataOffsetText = `Items ${paginationTotal}-<span id="lastCount">${
           +paginationTotal + count
         }</span>`;
       }
     }
 
-    /* add item counts to page */
+    // add item counts to the page
     document.getElementById(
       'searchCount'
     ).innerHTML = `<span id="paging-info">${dataOffsetText}</span>`;
 
-    /* configure next and prev links */
+    // configure next and prev links
     prevLink = prev
       ? `<a href="#" class="pager-navigation" title="View the previous page" 
           onclick="getPage(getCurrentPage(), document.getElementById('${SITE_SEARCH_ID}').value,'${prev.href}')">Prev</a>`
@@ -955,8 +958,8 @@ const setPagination = (
       : `<span class="pager-navigation disabled" title="There is no next page available">Next</span>`;
   }
 
-  /* hide pagination when the item count is less than the page limit and on the first page */
-  if (count < pageLimit && paginationTotal === 1) {
+  // hide pagination when the item count is less than the page limit and on the first page
+  if (count < MAX_ITEMS_PER_PAGE && paginationTotal === 1) {
     $('#pagination').hide();
   } else {
     $('#pagination').html(`${prevLink}  ${nextLink}`);
@@ -1028,33 +1031,28 @@ async function updateMenuPages(currentPage: string, targetContainer: string) {
 }
 
 /**
- * Get current page
+ * Get the current page name
  * @return {string} - page name
  */
 const getCurrentPage = () => {
-  //get the page name
-  let getCurrentPage = window.location.pathname
+  let thisPage = window.location.pathname
     .split('/')
     .filter(function (pathnamePieces) {
       return pathnamePieces.length;
     })
     .pop();
 
-  let pageName = getCurrentPage.split('.')[0];
+  let pageName = thisPage.split('.')[0];
   if (pageName == 'index' || pageName == 'html5') pageName = 'about';
 
   return pageName;
 };
 
-window.onload = () => {
-  getPage(getCurrentPage());
-};
-
 /**
- * Debounce requests in order to improve performance
+ * Debounce search requests in order to improve performance
  * @param {any} function
  * @param {number} wait - time to wait in milliseconds before invoking search
- * @return {function} - as long as it continues to be invoked, will not be triggered.
+ * @return {function} - as long as it continues to be invoked the function will not be triggered.
  */
 const debounce = (func: any, wait: number) => {
   let timeout: any;
@@ -1071,6 +1069,9 @@ const debounce = (func: any, wait: number) => {
   };
 };
 
+/**
+ * Triggered on the keyup event within search input box
+ */
 const debounceMe = debounce(() => {
   const inputSearchBox = document.getElementById(SITE_SEARCH_ID)! as HTMLInputElement;
 
@@ -1078,3 +1079,7 @@ const debounceMe = debounce(() => {
 
   if (!inputSearchBox.value) updateInterface();
 }, 500);
+
+window.onload = () => {
+  getPage(getCurrentPage());
+};

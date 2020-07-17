@@ -1,3 +1,4 @@
+@charset "UTF-8";
 #logo img {
   height: 60px; }
 
@@ -28,6 +29,7 @@
   width: 280px;
   text-align: center;
   /* search textbox */
+  /* remove IE “clear field or cross” X button from inputs field */
   /* search button */ }
   #search-container #searchCount {
     font-size: 12px;
@@ -37,6 +39,8 @@
     display: inline-block; }
   #search-container #searchSite {
     width: 130px; }
+  #search-container ::-ms-clear {
+    display: none; }
   #search-container .searchBtn {
     padding: 3px;
     margin-top: -3px;
