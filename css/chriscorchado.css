@@ -163,9 +163,7 @@ body {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  scrollbar-color: #7399ea #e2eafb; }
-
-body {
+  scrollbar-color: #7399ea #e2eafb;
   background-image: url(../images/cclogobg.jpg);
   background-attachment: fixed; }
 
