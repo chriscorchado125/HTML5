@@ -210,7 +210,8 @@ h1 {
   margin-top: 90px;
   text-align: center;
   padding: 20px 5px 100px 5px;
-  background-color: #fff; }
+  background-color: #fff;
+  opacity: 0; }
 
 #noRecords {
   font-size: 36px;

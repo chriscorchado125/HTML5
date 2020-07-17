@@ -53,13 +53,16 @@ var CONTACT_CONTAINER_ID = 'contact';
 $('#navigation').load('includes/nav.html');
 $('#footer').load('includes/footer.html');
 function setLoading(loadingStatus) {
+    var preloadingGif = document.getElementById('preloader');
     if (loadingStatus) {
-        document.getElementById('preloader').style.display = 'block';
-        $('.container').hide();
+        preloadingGif.style.display = 'block';
+        if (document.getElementById('noRecords')) {
+            document.getElementById('noRecords').style.display = 'none';
+        }
     }
     else {
-        document.getElementById('preloader').style.display = 'none';
-        $('.container').fadeIn(250);
+        preloadingGif.style.display = 'none';
+        fadeIn(document.getElementsByClassName('container')[0]);
     }
 }
 function getPage(page, search, pagingURL) {
@@ -679,6 +682,27 @@ var debounceMe = debounce(function () {
     if (!inputSearchBox.value)
         updateInterface();
 }, 500);
+function fadeOut(el) {
+    el.style.opacity = 1;
+    (function fade() {
+        if ((el.style.opacity -= 0.1) < 0) {
+            el.style.display = 'none';
+        }
+        else {
+            requestAnimationFrame(fade);
+        }
+    })();
+}
+function fadeIn(el) {
+    el.style.opacity = 0;
+    (function fade() {
+        var val = parseFloat(el.style.opacity);
+        if (!((val += 0.1) > 1)) {
+            el.style.opacity = val;
+            requestAnimationFrame(fade);
+        }
+    })();
+}
 window.onload = function () {
     getPage(getCurrentPage());
 };

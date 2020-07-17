@@ -13,12 +13,17 @@ $('#footer').load('includes/footer.html');
  * @param {boolean} loadingStatus
  */
 function setLoading(loadingStatus: boolean) {
+  let preloadingGif = document.getElementById('preloader');
+
   if (loadingStatus) {
-    document.getElementById('preloader').style.display = 'block';
-    $('.container').hide();
+    preloadingGif.style.display = 'block';
+
+    if (document.getElementById('noRecords')) {
+      document.getElementById('noRecords').style.display = 'none';
+    }
   } else {
-    document.getElementById('preloader').style.display = 'none';
-    $('.container').fadeIn(250);
+    preloadingGif.style.display = 'none';
+    fadeIn(document.getElementsByClassName('container')[0]); // main content
   }
 }
 
@@ -34,7 +39,7 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
   setLoading(true);
 
   if (search) {
-    //ga('send', 'pageview', location.pathname + '?search=' + search);
+    // ga('send', 'pageview', location.pathname + '?search=' + search);
   }
 
   if (page == 'contact') {
@@ -1079,6 +1084,38 @@ const debounceMe = debounce(() => {
 
   if (!inputSearchBox.value) updateInterface();
 }, 500);
+
+/**
+ * Pure JS fade in using opacity
+ * @param {any} HTML element
+ */
+function fadeOut(el: any) {
+  el.style.opacity = 1;
+
+  (function fade() {
+    if ((el.style.opacity -= 0.1) < 0) {
+      el.style.display = 'none';
+    } else {
+      requestAnimationFrame(fade);
+    }
+  })();
+}
+
+/**
+ * Pure JS fade out using opacity
+ * @param {any} HTML element
+ */
+function fadeIn(el: any) {
+  el.style.opacity = 0;
+
+  (function fade() {
+    var val = parseFloat(el.style.opacity);
+    if (!((val += 0.1) > 1)) {
+      el.style.opacity = val;
+      requestAnimationFrame(fade);
+    }
+  })();
+}
 
 window.onload = () => {
   getPage(getCurrentPage());
