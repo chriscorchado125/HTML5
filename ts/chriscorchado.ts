@@ -13,17 +13,16 @@ $('#footer').load('includes/footer.html');
  * @param {boolean} loadingStatus
  */
 function setLoading(loadingStatus: boolean) {
-  let preloadingGif = document.getElementById('preloader');
+  let preloader = document.getElementById('preloader');
+  let contentContainer = document.getElementsByClassName('container')[0];
 
   if (loadingStatus) {
-    preloadingGif.style.display = 'block';
-
-    if (document.getElementById('noRecords')) {
-      document.getElementById('noRecords').style.display = 'none';
-    }
+    preloader.style.display = 'block';
+    contentContainer.setAttribute('style', 'opacity:0');
   } else {
-    preloadingGif.style.display = 'none';
-    fadeIn(document.getElementsByClassName('container')[0]); // main content
+    preloader.style.display = 'none';
+    contentContainer.setAttribute('style', 'opacity:100');
+    fadeIn(contentContainer);
   }
 }
 
@@ -210,11 +209,7 @@ const updateInterface = (search?: string) => {
     }
   });
 
-  if (!$('#noRecords').html() && search) {
-    $('body').append(
-      `<div id="noRecords" class="shadow">No matches found for '${search}'</div>`
-    );
-  }
+  noRecordsFound('noRecords', search, 'navigation', 'No matches found for');
 };
 
 /**
@@ -242,7 +237,6 @@ const getData = (dataURL: string) => {
 const searchClear = (searchTextBoxID: string) => {
   const inputSearchBox = document.getElementById(searchTextBoxID)! as HTMLInputElement;
   if (inputSearchBox.value !== '') {
-    $('#noRecords').hide();
     inputSearchBox.value = '';
     getPage(getCurrentPage());
     updateInterface();
@@ -556,6 +550,31 @@ const setPageHTML = (values: any) => {
 };
 
 /**
+ * Handle no records
+ * @param {string} noRecordID - id of div to create
+ * @param {string} search - searched for text
+ * @param {string} appendToID - id of element to append to
+ * @param {string} msg - message
+ */
+const noRecordsFound = (
+  noRecordID: string,
+  search: string,
+  appendToID: string,
+  msg: string
+) => {
+  if (document.getElementById(noRecordID)) {
+    document.getElementById(noRecordID).remove();
+  }
+
+  if (!document.getElementById(noRecordID) && search) {
+    let notFound = document.createElement('div');
+    notFound.id = noRecordID;
+    notFound.innerHTML = `${msg} '${search}'`;
+    document.getElementById(appendToID).appendChild(notFound);
+  }
+};
+
+/**
  * Generate the webpage
  * @param {Object[]} data - page items
  * @param {string} page - page name
@@ -573,10 +592,6 @@ const renderPage = (
   if (page == 'contact') {
     setPageHTML([page, data]);
     return;
-  }
-
-  if (document.getElementById('noRecords')) {
-    document.getElementById('noRecords').style.display = 'none';
   }
 
   let itemCount = 0;
@@ -1110,6 +1125,7 @@ function fadeIn(el: any) {
 
   (function fade() {
     var val = parseFloat(el.style.opacity);
+
     if (!((val += 0.1) > 1)) {
       el.style.opacity = val;
       requestAnimationFrame(fade);

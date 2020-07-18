@@ -53,16 +53,16 @@ var CONTACT_CONTAINER_ID = 'contact';
 $('#navigation').load('includes/nav.html');
 $('#footer').load('includes/footer.html');
 function setLoading(loadingStatus) {
-    var preloadingGif = document.getElementById('preloader');
+    var preloader = document.getElementById('preloader');
+    var contentContainer = document.getElementsByClassName('container')[0];
     if (loadingStatus) {
-        preloadingGif.style.display = 'block';
-        if (document.getElementById('noRecords')) {
-            document.getElementById('noRecords').style.display = 'none';
-        }
+        preloader.style.display = 'block';
+        contentContainer.setAttribute('style', 'opacity:0');
     }
     else {
-        preloadingGif.style.display = 'none';
-        fadeIn(document.getElementsByClassName('container')[0]);
+        preloader.style.display = 'none';
+        contentContainer.setAttribute('style', 'opacity:100');
+        fadeIn(contentContainer);
     }
 }
 function getPage(page, search, pagingURL) {
@@ -180,9 +180,7 @@ var updateInterface = function (search) {
             document.getElementById(element).style.display = action;
         }
     });
-    if (!$('#noRecords').html() && search) {
-        $('body').append("<div id=\"noRecords\" class=\"shadow\">No matches found for '" + search + "'</div>");
-    }
+    noRecordsFound('noRecords', search, 'navigation', 'No matches found for');
 };
 var getData = function (dataURL) {
     var result = $.ajax({
@@ -198,7 +196,6 @@ var getData = function (dataURL) {
 var searchClear = function (searchTextBoxID) {
     var inputSearchBox = document.getElementById(searchTextBoxID);
     if (inputSearchBox.value !== '') {
-        $('#noRecords').hide();
         inputSearchBox.value = '';
         getPage(getCurrentPage());
         updateInterface();
@@ -346,13 +343,21 @@ var setPageHTML = function (values) {
             break;
     }
 };
+var noRecordsFound = function (noRecordID, search, appendToID, msg) {
+    if (document.getElementById(noRecordID)) {
+        document.getElementById(noRecordID).remove();
+    }
+    if (!document.getElementById(noRecordID) && search) {
+        var notFound = document.createElement('div');
+        notFound.id = noRecordID;
+        notFound.innerHTML = msg + " '" + search + "'";
+        document.getElementById(appendToID).appendChild(notFound);
+    }
+};
 var renderPage = function (data, page, searchedFor, next, prev) {
     if (page == 'contact') {
         setPageHTML([page, data]);
         return;
-    }
-    if (document.getElementById('noRecords')) {
-        document.getElementById('noRecords').style.display = 'none';
     }
     var itemCount = 0;
     var imgPieces = [''];
