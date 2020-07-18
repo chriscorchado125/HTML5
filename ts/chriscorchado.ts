@@ -832,7 +832,6 @@ const renderPage = (
     case 'projects':
       currentNavItem = 'projects-link';
       pageIsSearchable = true;
-      setPageMessage('click an image to enlarge it');
       break;
   }
 
@@ -984,20 +983,6 @@ const setPagination = (
   } else {
     $('#pagination').html(`${prevLink}  ${nextLink}`);
   }
-};
-
-/**
- * Set page message
- * @param {string} msg - message text
- */
-const setPageMessage = (msg: string) => {
-  document.getElementById('msg').innerHTML = `(${msg})`;
-  document.getElementById('msg').style.display = 'block';
-
-  setTimeout(function () {
-    //document.getElementById('msg').style.display = 'none';
-    $('#msg').fadeOut(3000);
-  }, 2500);
 };
 
 /**

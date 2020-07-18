@@ -513,7 +513,6 @@ var renderPage = function (data, page, searchedFor, next, prev) {
         case 'projects':
             currentNavItem = 'projects-link';
             pageIsSearchable = true;
-            setPageMessage('click an image to enlarge it');
             break;
     }
     $('#' + currentNavItem).addClass('nav-item-active');
@@ -604,13 +603,6 @@ var setPagination = function (count, paginationTotal, prev, next) {
     else {
         $('#pagination').html(prevLink + "  " + nextLink);
     }
-};
-var setPageMessage = function (msg) {
-    document.getElementById('msg').innerHTML = "(" + msg + ")";
-    document.getElementById('msg').style.display = 'block';
-    setTimeout(function () {
-        $('#msg').fadeOut(3000);
-    }, 2500);
 };
 function updateMenuPages(currentPage, targetContainer) {
     return __awaiter(this, void 0, void 0, function () {
