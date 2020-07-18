@@ -3,7 +3,6 @@
 const API_BASE = 'https://chriscorchado.com/drupal8';
 const MAX_ITEMS_PER_PAGE = 50;
 const SITE_SEARCH_ID = 'searchSite';
-const CONTACT_CONTAINER_ID = 'contact';
 
 $('#navigation').load('includes/nav.html');
 $('#footer').load('includes/footer.html');
@@ -74,6 +73,8 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
       });
 
     renderPage(data, page);
+
+    setLoading(false);
 
     return false;
   } else {
@@ -326,17 +327,32 @@ const itemWithSearchHighlight = (itemToHighlight: string, searchedFor: string) =
 };
 
 /**
- * Create a countdown after submitting the contact form
- * @param {string} containerID - id of the form container
+ * After a form is submitted set a thank you message
+ * with a countdown that then forward to the homepage
+ * @param {number} second - number of seconds to count down
  */
-let seconds = 5;
-const showCountDown = (containerID: string = CONTACT_CONTAINER_ID) => {
-  seconds -= 1;
-  document.getElementById(containerID).style.padding = '50px';
-  document.getElementById(containerID).innerHTML = `
-    <h2>Thanks for the Feedback</h2>
-    <h4>You will be redirected to the homepage in ${seconds} seconds.</h4>
+const formSubmitted = (seconds: number) => {
+  let countDown = document.createElement('div');
+  countDown.style.padding = '50px';
+
+  countDown.innerHTML = `<h2>Thanks For Your Submission</h2>
+    <h4>Redirecting to the homepage in <span id="secondCountDown">${seconds}</span> seconds</h4>
     <img id="timer" src="https://chriscorchado.com/images/timer.gif" />`;
+
+  document.getElementsByClassName('container')[0].append(countDown);
+
+  let updateCountDown = setInterval(function () {
+    seconds--;
+    document.getElementById('secondCountDown').innerHTML = seconds.toString();
+
+    if (seconds === 0) {
+      clearInterval(updateCountDown);
+      window.location.replace(
+        // use replace instead of assign for the sake of history
+        location.href.substring(0, location.href.lastIndexOf('/') + 1) // get the base site URL including sub-folder
+      );
+    }
+  }, 1000);
 };
 
 /**
@@ -391,16 +407,9 @@ const setPageHTML = (values: any) => {
 
       break;
     case 'contact':
-      // if the form was submitted then show the thank you screen and forward to the homepage
-      let loc = location.toString().indexOf('contact.html?submitted');
-
-      if (loc !== -1) {
-        // form sumitted
-        setInterval(showCountDown, 1000);
-
-        setTimeout(function () {
-          window.location.replace(location.toString().substr(0, loc));
-        }, seconds * 1000);
+      // form sumitted
+      if (location.toString().indexOf('/contact.html?submitted=true') !== -1) {
+        formSubmitted(5);
       } else {
         // show the form
         $('.container').html(data.toString());
@@ -416,8 +425,6 @@ const setPageHTML = (values: any) => {
 
         $('#edit-mail').focus();
       }
-
-      setLoading(false);
       break;
     case 'companies':
       return `<div class="company-container col shadow">

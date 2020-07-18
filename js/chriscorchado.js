@@ -49,7 +49,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var API_BASE = 'https://chriscorchado.com/drupal8';
 var MAX_ITEMS_PER_PAGE = 50;
 var SITE_SEARCH_ID = 'searchSite';
-var CONTACT_CONTAINER_ID = 'contact';
 $('#navigation').load('includes/nav.html');
 $('#footer').load('includes/footer.html');
 function setLoading(loadingStatus) {
@@ -97,6 +96,7 @@ function getPage(page, search, pagingURL) {
                 case 1:
                     _b.sent();
                     renderPage(data, page);
+                    setLoading(false);
                     return [2, false];
                 case 2:
                     if (!pagingURL) return [3, 4];
@@ -249,12 +249,19 @@ var itemWithSearchHighlight = function (itemToHighlight, searchedFor) {
     }
     return dataToReturn || itemToHighlight;
 };
-var seconds = 5;
-var showCountDown = function (containerID) {
-    if (containerID === void 0) { containerID = CONTACT_CONTAINER_ID; }
-    seconds -= 1;
-    document.getElementById(containerID).style.padding = '50px';
-    document.getElementById(containerID).innerHTML = "\n    <h2>Thanks for the Feedback</h2>\n    <h4>You will be redirected to the homepage in " + seconds + " seconds.</h4>\n    <img id=\"timer\" src=\"https://chriscorchado.com/images/timer.gif\" />";
+var formSubmitted = function (seconds) {
+    var countDown = document.createElement('div');
+    countDown.style.padding = '50px';
+    countDown.innerHTML = "<h2>Thanks For Your Submission</h2>\n    <h4>Redirecting to the homepage in <span id=\"secondCountDown\">" + seconds + "</span> seconds</h4>\n    <img id=\"timer\" src=\"https://chriscorchado.com/images/timer.gif\" />";
+    document.getElementsByClassName('container')[0].append(countDown);
+    var updateCountDown = setInterval(function () {
+        seconds--;
+        document.getElementById('secondCountDown').innerHTML = seconds.toString();
+        if (seconds === 0) {
+            clearInterval(updateCountDown);
+            window.location.replace(location.href.substring(0, location.href.lastIndexOf('/') + 1));
+        }
+    }, 1000);
 };
 var getMonthYear = function (dateString) {
     var newDate = new Date(dateString);
@@ -287,12 +294,8 @@ var setPageHTML = function (values) {
             return "<h1>" + itemTitle + "</h1> " + aboutData[0];
             break;
         case 'contact':
-            var loc_1 = location.toString().indexOf('contact.html?submitted');
-            if (loc_1 !== -1) {
-                setInterval(showCountDown, 1000);
-                setTimeout(function () {
-                    window.location.replace(location.toString().substr(0, loc_1));
-                }, seconds * 1000);
+            if (location.toString().indexOf('/contact.html?submitted=true') !== -1) {
+                formSubmitted(5);
             }
             else {
                 $('.container').html(data.toString());
@@ -301,7 +304,6 @@ var setPageHTML = function (values) {
                 webLocation.value = location.toString();
                 $('#edit-mail').focus();
             }
-            setLoading(false);
             break;
         case 'companies':
             return "<div class=\"company-container col shadow\">\n\n          <div class=\"company-name\">" + itemTitle + "</div>\n          <div class=\"company-job-title\">" + itemJobTitle + "</div>\n          <div class=\"body-container\">" + itemBody + "</div>\n\n          <div class=\"screenshot-container\">\n            <img src=" + getFullUrlByPage(imgPieces[0], page) + " \n            class=\"company-screenshot\" \n            alt=\"" + data.attributes.title + " Screenshot\" \n            title=\"" + data.attributes.title + " Screenshot\"/>\n          </div>\n\n          <div class=\"employment-dates\">" + startDate + " - " + endDate + "</div>\n        </div>";
