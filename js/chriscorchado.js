@@ -180,13 +180,22 @@ var updateInterface = function (search) {
     });
     noRecordsFound('noRecords', search, 'navigation', 'No matches found for');
 };
+var cleanURL = function (urlToClean) {
+    var fixedURL = '';
+    var strings = urlToClean.split(' ');
+    strings.forEach(function (element) {
+        if (element)
+            fixedURL += element.replace(/$\n^\s*/gm, '');
+    });
+    return fixedURL;
+};
 var getData = function (dataURL) {
     var result = $.ajax({
         dataType: 'json',
         accepts: {
             json: 'application/vnd.api+json',
         },
-        url: dataURL,
+        url: cleanURL(dataURL),
         type: 'GET',
     });
     return result;

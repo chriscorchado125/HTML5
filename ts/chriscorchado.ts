@@ -219,6 +219,20 @@ const updateInterface = (search?: string) => {
 };
 
 /**
+ * Remove newline characters and spaces from URLs created using multi-line template literals
+ * @param {string} urlToClean - URL to fix
+ * @return {string} - fixed URL
+ */
+const cleanURL = (urlToClean: string) => {
+  let fixedURL = '';
+  let strings = urlToClean.split(' ');
+  strings.forEach((element: string) => {
+    if (element) fixedURL += element.replace(/$\n^\s*/gm, '');
+  });
+  return fixedURL;
+};
+
+/**
  * Get data
  * @param {string} dataURL - URL to fetch data from
  * @return {Object} - JSON object of data
@@ -229,7 +243,7 @@ const getData = (dataURL: string) => {
     accepts: {
       json: 'application/vnd.api+json',
     },
-    url: dataURL,
+    url: cleanURL(dataURL),
     type: 'GET',
   });
 
