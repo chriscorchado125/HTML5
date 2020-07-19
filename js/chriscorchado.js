@@ -52,16 +52,13 @@ var SITE_SEARCH_ID = 'searchSite';
 $('#navigation').load('includes/nav.html');
 $('#footer').load('includes/footer.html');
 function setLoading(loadingStatus) {
-    var preloader = document.getElementById('preloader');
-    var contentContainer = document.getElementsByClassName('container')[0];
     if (loadingStatus) {
-        preloader.style.display = 'block';
-        contentContainer.setAttribute('style', 'opacity:0');
+        var preloader = document.createElement('div');
+        preloader.innerHTML = "\n      <div class=\"preloadAnimation\">\n        <div class=\"bounce1\"></div>\n        <div class=\"bounce2\"></div>\n        <div class=\"bounce3\"></div>\n        <br />Loading\n      </div>";
+        document.body.append(preloader);
     }
     else {
-        preloader.style.display = 'none';
-        contentContainer.setAttribute('style', 'opacity:100');
-        fadeIn(contentContainer);
+        fadeIn(document.getElementsByClassName('container')[0]);
     }
 }
 function getPage(page, search, pagingURL) {

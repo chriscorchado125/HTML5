@@ -8,20 +8,24 @@ $('#navigation').load('includes/nav.html');
 $('#footer').load('includes/footer.html');
 
 /**
- * Toggle content and preloader when loading pages
+ * Toggle content and preloader
  * @param {boolean} loadingStatus
  */
 function setLoading(loadingStatus: boolean) {
-  let preloader = document.getElementById('preloader');
-  let contentContainer = document.getElementsByClassName('container')[0];
-
   if (loadingStatus) {
-    preloader.style.display = 'block';
-    contentContainer.setAttribute('style', 'opacity:0');
+    let preloader = document.createElement('div');
+
+    preloader.innerHTML = `
+      <div class="preloadAnimation">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+        <br />Loading
+      </div>`;
+
+    document.body.append(preloader);
   } else {
-    preloader.style.display = 'none';
-    contentContainer.setAttribute('style', 'opacity:100');
-    fadeIn(contentContainer);
+    fadeIn(document.getElementsByClassName('container')[0]);
   }
 }
 
