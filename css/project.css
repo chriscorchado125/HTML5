@@ -39,12 +39,12 @@
     color: rgba(0, 0, 0, 0.7); }
   .project-container .project-item {
     margin: 10px;
-    width: 150px;
+    max-width: 150px;
+    min-width: 50px;
     border: 1px solid #ccdaf7; }
   .project-container .gallery img {
     padding: 10px;
-    max-width: 90%;
-    min-width: 50%; }
+    max-width: 90%; }
   .project-container .project-item-grid {
     display: grid;
     justify-items: center;

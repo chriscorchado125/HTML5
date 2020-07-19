@@ -551,7 +551,7 @@ const setPageHTML = (values: any) => {
           data-featherlight-iframe-allowfullscreen="true" 
           data-featherlight-iframe-allow="autoplay; encrypted-media"
           data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;" class="play-video">
-            Play Video <img loading=lazy src="images/play_vidoe_icon.png" title="Play Video" alt="Play Video" width="20" />
+            Play Video <img loading=lazy src="https://chriscorchado.com/images/play_vidoe_icon.png" title="Play Video" alt="Play Video" width="20" />
           </a>`;
         });
       }

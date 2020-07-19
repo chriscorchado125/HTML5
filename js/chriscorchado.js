@@ -343,7 +343,7 @@ var setPageHTML = function (values) {
             }
             if (data.attributes.field_video_url) {
                 data.attributes.field_video_url.forEach(function (img) {
-                    item_1 += "<a href=\"" + img + "\" \n          data-featherlight=\"iframe\" \n          data-featherlight-iframe-frameborder=\"0\" \n          data-featherlight-iframe-allowfullscreen=\"true\" \n          data-featherlight-iframe-allow=\"autoplay; encrypted-media\"\n          data-featherlight-iframe-style=\"display:block;border:none;height:85vh;width:85vw;\" class=\"play-video\">\n            Play Video <img loading=lazy src=\"images/play_vidoe_icon.png\" title=\"Play Video\" alt=\"Play Video\" width=\"20\" />\n          </a>";
+                    item_1 += "<a href=\"" + img + "\" \n          data-featherlight=\"iframe\" \n          data-featherlight-iframe-frameborder=\"0\" \n          data-featherlight-iframe-allowfullscreen=\"true\" \n          data-featherlight-iframe-allow=\"autoplay; encrypted-media\"\n          data-featherlight-iframe-style=\"display:block;border:none;height:85vh;width:85vw;\" class=\"play-video\">\n            Play Video <img loading=lazy src=\"https://chriscorchado.com/images/play_vidoe_icon.png\" title=\"Play Video\" alt=\"Play Video\" width=\"20\" />\n          </a>";
                 });
             }
             item_1 += "<div class=\"project-technology\">" + itemTechnology.slice(0, -2) + "</div>\n      </div>";
