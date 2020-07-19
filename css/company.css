@@ -39,6 +39,7 @@
 
 .company-screenshot {
   max-width: 320px;
+  min-width: 280px;
   margin-bottom: 50px; }
 
 .employment-dates {
