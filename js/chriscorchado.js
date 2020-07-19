@@ -54,10 +54,11 @@ $('#footer').load('includes/footer.html');
 function setLoading(loadingStatus) {
     if (loadingStatus) {
         var preloader = document.createElement('div');
-        preloader.innerHTML = "\n      <div class=\"preloadAnimation\">\n        <div class=\"bounce1\"></div>\n        <div class=\"bounce2\"></div>\n        <div class=\"bounce3\"></div>\n        <br />Loading\n      </div>";
+        preloader.innerHTML = "\n      <div class=\"preloadAnimation\" id=\"preloadAnimation\">\n        <div class=\"bounce1\"></div>\n        <div class=\"bounce2\"></div>\n        <div class=\"bounce3\"></div>\n        <br />Loading\n      </div>";
         document.body.append(preloader);
     }
     else {
+        document.getElementById('preloadAnimation').remove();
         fadeIn(document.getElementsByClassName('container')[0]);
     }
 }

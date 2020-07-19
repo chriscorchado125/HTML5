@@ -16,7 +16,7 @@ function setLoading(loadingStatus: boolean) {
     let preloader = document.createElement('div');
 
     preloader.innerHTML = `
-      <div class="preloadAnimation">
+      <div class="preloadAnimation" id="preloadAnimation">
         <div class="bounce1"></div>
         <div class="bounce2"></div>
         <div class="bounce3"></div>
@@ -25,6 +25,7 @@ function setLoading(loadingStatus: boolean) {
 
     document.body.append(preloader);
   } else {
+    document.getElementById('preloadAnimation').remove();
     fadeIn(document.getElementsByClassName('container')[0]);
   }
 }
