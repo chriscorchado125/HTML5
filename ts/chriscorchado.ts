@@ -439,7 +439,7 @@ const setPageHTML = (values: any) => {
           <div class="body-container">${itemBody}</div>
 
           <div class="screenshot-container">
-            <img src=${getFullUrlByPage(imgPieces[0], page)} 
+            <img loading=lazy src=${getFullUrlByPage(imgPieces[0], page)} 
             class="company-screenshot" 
             alt="${data.attributes.title} Screenshot" 
             title="${data.attributes.title} Screenshot"/>
@@ -455,7 +455,7 @@ const setPageHTML = (values: any) => {
           <h2>${itemTitle}</h2>
 
           <div>
-            <img src="${getFullUrlByPage(imgPieces[0], page)}" 
+            <img loading=lazy src="${getFullUrlByPage(imgPieces[0], page)}" 
               alt="${itemTitle.replace(/(<([^>]+)>)/gi, '')}" 
               title="${itemTitle.replace(/(<([^>]+)>)/gi, '')}" />
           </div>
@@ -466,7 +466,7 @@ const setPageHTML = (values: any) => {
 
             <span class="course-links">
               <a href="${getFullUrlByPage(itemPDF, page)}" target="_blank">
-                <img src="https://chriscorchado.com/images/pdfIcon.jpg" height="25" 
+                <img loading=lazy src="https://chriscorchado.com/images/pdfIcon.jpg" height="25" 
                 title="View the PDF Certificate" alt="View the PDF Certificate"/>
               </a>
             </span>`;
@@ -474,14 +474,14 @@ const setPageHTML = (values: any) => {
       // TODO: Create bigger version and add to content type
       //  item += `<span class="course-links">
       //   <a href="${getFullUrlByPage(imgPieces[0], page)}" data-featherlight="image">
-      //     <img src="https://chriscorchado.com/images/jpg_icon.png" height="25"
+      //     <img loading=lazy src="https://chriscorchado.com/images/jpg_icon.png" height="25"
       //       title="View the Certificate" alt="View the Certificate"/>
       //   </a></span>`;
 
       if (itemTrackImage) {
         item += `<span class="course-links">
             <a href="${getFullUrlByPage(itemTrackImage, page)}" data-featherlight="image">
-              <img src="https://chriscorchado.com/images/linkedIn-track.png" height="25" 
+              <img loading=lazy src="https://chriscorchado.com/images/linkedIn-track.png" height="25" 
               title="View the Courses in the Track" alt="View the Courses in the Track" />
             </a>
           </span>`;
@@ -517,7 +517,7 @@ const setPageHTML = (values: any) => {
                   ${itemWithSearchHighlight(screenshotAlt[imgAltCount], searchedFor)}
                 </div>
 
-                <img src=${projectImage} alt=${screenshotAlt[imgAltCount]} 
+                <img loading=lazy src=${projectImage} alt=${screenshotAlt[imgAltCount]} 
                   title=${screenshotAlt[imgAltCount]} />
               </a>
             </div>`;
@@ -537,7 +537,7 @@ const setPageHTML = (values: any) => {
           data-featherlight-iframe-allowfullscreen="true" 
           data-featherlight-iframe-allow="autoplay; encrypted-media"
           data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;" class="play-video">
-            Play Video <img src="images/play_vidoe_icon.png" title="Play Video" alt="Play Video" width="20" />
+            Play Video <img loading=lazy src="images/play_vidoe_icon.png" title="Play Video" alt="Play Video" width="20" />
           </a>`;
         });
       }
@@ -551,7 +551,7 @@ const setPageHTML = (values: any) => {
 
       // for (const [key, value] of Object.entries(includedTechnologyItem)) {
       //   item += `<div id="technology-item-wrapper">${value.name}
-      //     <img src="${value.image}" class="project-technology-icon" title="${value.name}" alt="${value.name}" /></div>`;
+      //     <img loading=lazy src="${value.image}" class="project-technology-icon" title="${value.name}" alt="${value.name}" /></div>`;
       // }
 
       // item += `</div>`;
