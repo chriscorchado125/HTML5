@@ -361,6 +361,11 @@ var noRecordsFound = function (noRecordID, search, appendToID, msg) {
         notFound.id = noRecordID;
         notFound.innerHTML = msg + " '" + search + "'";
         document.getElementById(appendToID).appendChild(notFound);
+        document.getElementById('preloadAnimation').remove();
+        $('.container').hide();
+    }
+    else {
+        $('.container').fadeIn();
     }
 };
 var renderPage = function (data, page, searchedFor, next, prev) {
@@ -685,8 +690,7 @@ var debounce = function (func, wait) {
 var debounceMe = debounce(function () {
     var inputSearchBox = document.getElementById(SITE_SEARCH_ID);
     getPage(getCurrentPage(), inputSearchBox.value);
-    if (!inputSearchBox.value)
-        updateInterface();
+    updateInterface();
 }, 500);
 function fadeOut(el) {
     el.style.opacity = 1;

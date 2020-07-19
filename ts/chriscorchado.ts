@@ -597,6 +597,10 @@ const noRecordsFound = (
     notFound.id = noRecordID;
     notFound.innerHTML = `${msg} '${search}'`;
     document.getElementById(appendToID).appendChild(notFound);
+    document.getElementById('preloadAnimation').remove();
+    $('.container').hide();
+  } else {
+    $('.container').fadeIn();
   }
 };
 
@@ -1108,7 +1112,7 @@ const debounceMe = debounce(() => {
 
   getPage(getCurrentPage(), inputSearchBox.value);
 
-  if (!inputSearchBox.value) updateInterface();
+  updateInterface();
 }, 500);
 
 /**
