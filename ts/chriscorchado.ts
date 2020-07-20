@@ -512,7 +512,7 @@ const setPageHTML = (values: any) => {
 
       // screenshots
       if (imgPieces) {
-        let itemGridClass = `project-item-grid project-items${imgPieces.length}`;
+        let itemGridClass = `project-item-grid project-items${data.relationships.field_screenshot.data.length}`;
         let section = `<section data-featherlight-gallery data-featherlight-filter="a" class="${itemGridClass}">`;
 
         let screenshotAlt = new Array();
@@ -522,20 +522,27 @@ const setPageHTML = (values: any) => {
 
         imgAltCount = 0; // reset alt attribute counter
         imgPieces.forEach((img: string) => {
-          let projectImage = getFullUrlByPage(img, page);
+          let pieces = img.split(',');
 
-          section += `<div class="project-item shadow">
+          pieces.forEach((item: string) => {
+            let projectImage = getFullUrlByPage(item, page);
+
+            section += `<div class="project-item shadow">
             
               <a href=${projectImage} class="gallery">
                 <div class="project-item-desc">
                   ${itemWithSearchHighlight(screenshotAlt[imgAltCount], searchedFor)}
                 </div>
 
-                <img loading=lazy src=${projectImage} alt=${screenshotAlt[imgAltCount]} 
-                  title=${screenshotAlt[imgAltCount]} />
+                <img loading=lazy src='${projectImage}' alt='${
+              screenshotAlt[imgAltCount]
+            }' 
+                  title='${screenshotAlt[imgAltCount]}' />
               </a>
             </div>`;
-          imgAltCount++;
+
+            imgAltCount++;
+          });
         });
 
         section += `</section>`;
@@ -545,14 +552,14 @@ const setPageHTML = (values: any) => {
       // videos
       if (data.attributes.field_video_url) {
         data.attributes.field_video_url.forEach((img: string) => {
-          item += `<a href="${img}" 
+          item += `<span title="Play Video"><a href="${img}" 
           data-featherlight="iframe" 
           data-featherlight-iframe-frameborder="0" 
           data-featherlight-iframe-allowfullscreen="true" 
           data-featherlight-iframe-allow="autoplay; encrypted-media"
           data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;" class="play-video">
-            Play Video <img loading=lazy src="https://chriscorchado.com/images/play_vidoe_icon.png" title="Play Video" alt="Play Video" width="20" />
-          </a>`;
+            Play Video <img loading=lazy src="https://chriscorchado.com/images/play_vidoe_icon.png" alt="Play Video" width="20" />
+          </a></span>`;
         });
       }
 
@@ -607,7 +614,7 @@ const noRecordsFound = (
 /**
  * Parse out included data and return arrays
  * @param {Object} data - array of included data
- * @return {Array[]} - array of included data arrays
+ * @return {Array} - array of included data arrays
  */
 const getIncludedData = (data: any) => {
   let includedAssetFilename = [''];
@@ -643,6 +650,126 @@ const getIncludedData = (data: any) => {
     includedAssetFilename,
     includedTechnologyName,
     includedTechnologyIcon,
+  ];
+};
+
+/**
+ * Parse out element relationship data
+ * @param {Object} element -  relationship data
+ * @param {Array} includedAssetFilename
+ * @param {Array} includedCompanyName
+ * @param {Array} includedTechnologyName
+ * @param {Array} includedTechnologyIcon
+ * @return {Array} array of element relationship arrays
+ */
+const getElementRelationships = (
+  element: any,
+  includedAssetFilename: any,
+  includedCompanyName: any,
+  includedTechnologyName: any,
+  includedTechnologyIcon: any
+) => {
+  let imgPieces = [];
+  let itemPDF = '';
+  let itemTrackImage = '';
+  let itemCompanyName = '';
+  let itemTechnology = '';
+  let itemTechnologyIcon = '';
+  let includedTechnologyItem = [];
+
+  // get course screenshot filename
+  if (
+    element.relationships.field_award_images &&
+    element.relationships.field_award_images.data
+  ) {
+    imgPieces.push(
+      includedAssetFilename[element.relationships.field_award_images.data[0].id]
+    );
+  }
+
+  // get course PDF filename
+  if (
+    element.relationships.field_award_pdf &&
+    element.relationships.field_award_pdf.data
+  ) {
+    itemPDF = includedAssetFilename[element.relationships.field_award_pdf.data.id];
+  }
+
+  // get course track image filename
+  if (
+    element.relationships.field_track_image &&
+    element.relationships.field_track_image.data
+  ) {
+    itemTrackImage =
+      includedAssetFilename[element.relationships.field_track_image.data.id];
+  }
+
+  // get company name
+  if (element.relationships.field_company && element.relationships.field_company.data) {
+    itemCompanyName = includedCompanyName[element.relationships.field_company.data.id];
+  }
+
+  // get company screenshot filename
+  if (
+    element.relationships.field_company_screenshot &&
+    element.relationships.field_company_screenshot.data
+  ) {
+    imgPieces.push(
+      includedAssetFilename[element.relationships.field_company_screenshot.data[0].id]
+    );
+  }
+
+  // get project screenshot filename
+  if (
+    element.relationships.field_screenshot &&
+    element.relationships.field_screenshot.data
+  ) {
+    for (let i = 0; i < element.relationships.field_screenshot.data.length; i++) {
+      imgPieces.push(
+        includedAssetFilename[element.relationships.field_screenshot.data[i].id]
+      );
+    }
+  }
+
+  // get project technology name
+  if (
+    element.relationships.field_project_technology &&
+    element.relationships.field_project_technology.data
+  ) {
+    for (let i = 0; i < element.relationships.field_project_technology.data.length; i++) {
+      itemTechnology +=
+        includedTechnologyName[
+          element.relationships.field_project_technology.data[i].id
+        ] + ', ';
+
+      itemTechnologyIcon +=
+        includedTechnologyIcon[
+          element.relationships.field_project_technology.data[i].id
+        ] + ', ';
+
+      let technologyItem = {
+        name:
+          includedTechnologyName[
+            element.relationships.field_project_technology.data[i].id
+          ],
+        image:
+          includedTechnologyIcon[
+            element.relationships.field_project_technology.data[i].id
+          ],
+      };
+
+      includedTechnologyItem.push(technologyItem);
+    }
+  }
+
+  return [
+    imgPieces,
+    itemPDF,
+    itemTrackImage,
+    itemCompanyName,
+    itemTechnology,
+    itemTechnologyIcon,
+    includedTechnologyItem,
   ];
 };
 
@@ -714,99 +841,28 @@ const renderPage = (
     includedTechnologyItem = [];
 
     if (element.relationships) {
-      // get course screenshot filename
-      if (
-        element.relationships.field_award_images &&
-        element.relationships.field_award_images.data
-      ) {
-        imgPieces.push(
-          includedAssetFilename[element.relationships.field_award_images.data[0].id]
-        );
+      let relationshipData = getElementRelationships(
+        element,
+        includedAssetFilename,
+        includedCompanyName,
+        includedTechnologyName,
+        includedTechnologyIcon
+      );
+
+      // course, company and project screenshot filenames
+      if (!imgPieces.includes(relationshipData[0].toString())) {
+        imgPieces.push(relationshipData[0].toString());
       }
 
-      // get course PDF filename
-      if (
-        element.relationships.field_award_pdf &&
-        element.relationships.field_award_pdf.data
-      ) {
-        itemPDF = includedAssetFilename[element.relationships.field_award_pdf.data.id];
-      }
+      // course PDF filename and track image
+      itemPDF = relationshipData[1].toString();
+      if (relationshipData[2]) itemTrackImage = relationshipData[2].toString();
 
-      // get course track image filename
-      if (
-        element.relationships.field_track_image &&
-        element.relationships.field_track_image.data
-      ) {
-        itemTrackImage =
-          includedAssetFilename[element.relationships.field_track_image.data.id];
-      }
-
-      // get company name
-      if (
-        element.relationships.field_company &&
-        element.relationships.field_company.data
-      ) {
-        itemCompanyName =
-          includedCompanyName[element.relationships.field_company.data.id];
-      }
-
-      // get company screenshot filename
-      if (
-        element.relationships.field_company_screenshot &&
-        element.relationships.field_company_screenshot.data
-      ) {
-        imgPieces.push(
-          includedAssetFilename[element.relationships.field_company_screenshot.data[0].id]
-        );
-      }
-
-      // get project screenshot filename
-      if (
-        element.relationships.field_screenshot &&
-        element.relationships.field_screenshot.data
-      ) {
-        for (let i = 0; i < element.relationships.field_screenshot.data.length; i++) {
-          imgPieces.push(
-            includedAssetFilename[element.relationships.field_screenshot.data[i].id]
-          );
-        }
-      }
-
-      // get project technology name
-      if (
-        element.relationships.field_project_technology &&
-        element.relationships.field_project_technology.data
-      ) {
-        for (
-          let i = 0;
-          i < element.relationships.field_project_technology.data.length;
-          i++
-        ) {
-          itemTechnology +=
-            includedTechnologyName[
-              element.relationships.field_project_technology.data[i].id
-            ] + ', ';
-
-          itemTechnologyIcon +=
-            includedTechnologyIcon[
-              element.relationships.field_project_technology.data[i].id
-            ] + ', ';
-
-          let technologyItem = {
-            name:
-              includedTechnologyName[
-                element.relationships.field_project_technology.data[i].id
-              ],
-            image:
-              includedTechnologyIcon[
-                element.relationships.field_project_technology.data[i].id
-              ],
-          };
-
-          includedTechnologyItem.push(technologyItem);
-        }
-      }
-    } // if (element.relationships)
+      itemCompanyName = relationshipData[3].toString();
+      itemTechnology += relationshipData[4].toString();
+      itemTechnologyIcon += relationshipData[5].toString();
+      includedTechnologyItem.push(relationshipData[6]);
+    }
 
     // get project and course dates
     if (itemDate) {

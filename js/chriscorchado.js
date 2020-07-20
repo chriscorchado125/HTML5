@@ -326,7 +326,7 @@ var setPageHTML = function (values) {
             var imgAltCount_1 = 0;
             item_1 = "<div class=\"project col\">\n        <div class=\"project-title\">" + itemTitle + "</div>\n        <div class=\"project-company\">" + itemCompanyName + " <span class=\"project-date\">(" + itemDate + ")</span></div> \n        <div class=\"body-container\">" + itemBody + "</div>";
             if (imgPieces) {
-                var itemGridClass = "project-item-grid project-items" + imgPieces.length;
+                var itemGridClass = "project-item-grid project-items" + data.relationships.field_screenshot.data.length;
                 var section_1 = "<section data-featherlight-gallery data-featherlight-filter=\"a\" class=\"" + itemGridClass + "\">";
                 var screenshotAlt_1 = new Array();
                 data.relationships.field_screenshot.data.forEach(function (screenshot) {
@@ -334,16 +334,19 @@ var setPageHTML = function (values) {
                 });
                 imgAltCount_1 = 0;
                 imgPieces.forEach(function (img) {
-                    var projectImage = getFullUrlByPage(img, page);
-                    section_1 += "<div class=\"project-item shadow\">\n            \n              <a href=" + projectImage + " class=\"gallery\">\n                <div class=\"project-item-desc\">\n                  " + itemWithSearchHighlight(screenshotAlt_1[imgAltCount_1], searchedFor) + "\n                </div>\n\n                <img loading=lazy src=" + projectImage + " alt=" + screenshotAlt_1[imgAltCount_1] + " \n                  title=" + screenshotAlt_1[imgAltCount_1] + " />\n              </a>\n            </div>";
-                    imgAltCount_1++;
+                    var pieces = img.split(',');
+                    pieces.forEach(function (item) {
+                        var projectImage = getFullUrlByPage(item, page);
+                        section_1 += "<div class=\"project-item shadow\">\n            \n              <a href=" + projectImage + " class=\"gallery\">\n                <div class=\"project-item-desc\">\n                  " + itemWithSearchHighlight(screenshotAlt_1[imgAltCount_1], searchedFor) + "\n                </div>\n\n                <img loading=lazy src='" + projectImage + "' alt='" + screenshotAlt_1[imgAltCount_1] + "' \n                  title='" + screenshotAlt_1[imgAltCount_1] + "' />\n              </a>\n            </div>";
+                        imgAltCount_1++;
+                    });
                 });
                 section_1 += "</section>";
                 item_1 += section_1;
             }
             if (data.attributes.field_video_url) {
                 data.attributes.field_video_url.forEach(function (img) {
-                    item_1 += "<a href=\"" + img + "\" \n          data-featherlight=\"iframe\" \n          data-featherlight-iframe-frameborder=\"0\" \n          data-featherlight-iframe-allowfullscreen=\"true\" \n          data-featherlight-iframe-allow=\"autoplay; encrypted-media\"\n          data-featherlight-iframe-style=\"display:block;border:none;height:85vh;width:85vw;\" class=\"play-video\">\n            Play Video <img loading=lazy src=\"https://chriscorchado.com/images/play_vidoe_icon.png\" title=\"Play Video\" alt=\"Play Video\" width=\"20\" />\n          </a>";
+                    item_1 += "<span title=\"Play Video\"><a href=\"" + img + "\" \n          data-featherlight=\"iframe\" \n          data-featherlight-iframe-frameborder=\"0\" \n          data-featherlight-iframe-allowfullscreen=\"true\" \n          data-featherlight-iframe-allow=\"autoplay; encrypted-media\"\n          data-featherlight-iframe-style=\"display:block;border:none;height:85vh;width:85vw;\" class=\"play-video\">\n            Play Video <img loading=lazy src=\"https://chriscorchado.com/images/play_vidoe_icon.png\" alt=\"Play Video\" width=\"20\" />\n          </a></span>";
                 });
             }
             item_1 += "<div class=\"project-technology\">" + itemTechnology.slice(0, -2) + "</div>\n      </div>";
@@ -396,6 +399,64 @@ var getIncludedData = function (data) {
         includedTechnologyIcon,
     ];
 };
+var getElementRelationships = function (element, includedAssetFilename, includedCompanyName, includedTechnologyName, includedTechnologyIcon) {
+    var imgPieces = [];
+    var itemPDF = '';
+    var itemTrackImage = '';
+    var itemCompanyName = '';
+    var itemTechnology = '';
+    var itemTechnologyIcon = '';
+    var includedTechnologyItem = [];
+    if (element.relationships.field_award_images &&
+        element.relationships.field_award_images.data) {
+        imgPieces.push(includedAssetFilename[element.relationships.field_award_images.data[0].id]);
+    }
+    if (element.relationships.field_award_pdf &&
+        element.relationships.field_award_pdf.data) {
+        itemPDF = includedAssetFilename[element.relationships.field_award_pdf.data.id];
+    }
+    if (element.relationships.field_track_image &&
+        element.relationships.field_track_image.data) {
+        itemTrackImage =
+            includedAssetFilename[element.relationships.field_track_image.data.id];
+    }
+    if (element.relationships.field_company && element.relationships.field_company.data) {
+        itemCompanyName = includedCompanyName[element.relationships.field_company.data.id];
+    }
+    if (element.relationships.field_company_screenshot &&
+        element.relationships.field_company_screenshot.data) {
+        imgPieces.push(includedAssetFilename[element.relationships.field_company_screenshot.data[0].id]);
+    }
+    if (element.relationships.field_screenshot &&
+        element.relationships.field_screenshot.data) {
+        for (var i = 0; i < element.relationships.field_screenshot.data.length; i++) {
+            imgPieces.push(includedAssetFilename[element.relationships.field_screenshot.data[i].id]);
+        }
+    }
+    if (element.relationships.field_project_technology &&
+        element.relationships.field_project_technology.data) {
+        for (var i = 0; i < element.relationships.field_project_technology.data.length; i++) {
+            itemTechnology +=
+                includedTechnologyName[element.relationships.field_project_technology.data[i].id] + ', ';
+            itemTechnologyIcon +=
+                includedTechnologyIcon[element.relationships.field_project_technology.data[i].id] + ', ';
+            var technologyItem = {
+                name: includedTechnologyName[element.relationships.field_project_technology.data[i].id],
+                image: includedTechnologyIcon[element.relationships.field_project_technology.data[i].id],
+            };
+            includedTechnologyItem.push(technologyItem);
+        }
+    }
+    return [
+        imgPieces,
+        itemPDF,
+        itemTrackImage,
+        itemCompanyName,
+        itemTechnology,
+        itemTechnologyIcon,
+        includedTechnologyItem,
+    ];
+};
 var renderPage = function (data, page, searchedFor, next, prev) {
     var pageIsSearchable = false;
     if (page == 'contact') {
@@ -430,48 +491,17 @@ var renderPage = function (data, page, searchedFor, next, prev) {
         imgPieces = [];
         includedTechnologyItem = [];
         if (element.relationships) {
-            if (element.relationships.field_award_images &&
-                element.relationships.field_award_images.data) {
-                imgPieces.push(includedAssetFilename[element.relationships.field_award_images.data[0].id]);
+            var relationshipData = getElementRelationships(element, includedAssetFilename, includedCompanyName, includedTechnologyName, includedTechnologyIcon);
+            if (!imgPieces.includes(relationshipData[0].toString())) {
+                imgPieces.push(relationshipData[0].toString());
             }
-            if (element.relationships.field_award_pdf &&
-                element.relationships.field_award_pdf.data) {
-                itemPDF = includedAssetFilename[element.relationships.field_award_pdf.data.id];
-            }
-            if (element.relationships.field_track_image &&
-                element.relationships.field_track_image.data) {
-                itemTrackImage =
-                    includedAssetFilename[element.relationships.field_track_image.data.id];
-            }
-            if (element.relationships.field_company &&
-                element.relationships.field_company.data) {
-                itemCompanyName =
-                    includedCompanyName[element.relationships.field_company.data.id];
-            }
-            if (element.relationships.field_company_screenshot &&
-                element.relationships.field_company_screenshot.data) {
-                imgPieces.push(includedAssetFilename[element.relationships.field_company_screenshot.data[0].id]);
-            }
-            if (element.relationships.field_screenshot &&
-                element.relationships.field_screenshot.data) {
-                for (var i = 0; i < element.relationships.field_screenshot.data.length; i++) {
-                    imgPieces.push(includedAssetFilename[element.relationships.field_screenshot.data[i].id]);
-                }
-            }
-            if (element.relationships.field_project_technology &&
-                element.relationships.field_project_technology.data) {
-                for (var i = 0; i < element.relationships.field_project_technology.data.length; i++) {
-                    itemTechnology +=
-                        includedTechnologyName[element.relationships.field_project_technology.data[i].id] + ', ';
-                    itemTechnologyIcon +=
-                        includedTechnologyIcon[element.relationships.field_project_technology.data[i].id] + ', ';
-                    var technologyItem = {
-                        name: includedTechnologyName[element.relationships.field_project_technology.data[i].id],
-                        image: includedTechnologyIcon[element.relationships.field_project_technology.data[i].id],
-                    };
-                    includedTechnologyItem.push(technologyItem);
-                }
-            }
+            itemPDF = relationshipData[1].toString();
+            if (relationshipData[2])
+                itemTrackImage = relationshipData[2].toString();
+            itemCompanyName = relationshipData[3].toString();
+            itemTechnology += relationshipData[4].toString();
+            itemTechnologyIcon += relationshipData[5].toString();
+            includedTechnologyItem.push(relationshipData[6]);
         }
         if (itemDate) {
             if (page == 'projects')
