@@ -528,7 +528,9 @@ const setPageHTML = (values: any) => {
           pieces.forEach((item: string) => {
             let projectImage = getFullUrlByPage(item, page);
 
-            section += `<div class="project-item shadow">
+            section += `<div class="project-item shadow" title='${
+              screenshotAlt[imgAltCount]
+            }'>
             
               <a href=${projectImage} class="gallery">
                 <div class="project-item-desc">

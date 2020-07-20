@@ -338,7 +338,7 @@ var setPageHTML = function (values) {
                     var pieces = img.split(',');
                     pieces.forEach(function (item) {
                         var projectImage = getFullUrlByPage(item, page);
-                        section_1 += "<div class=\"project-item shadow\">\n            \n              <a href=" + projectImage + " class=\"gallery\">\n                <div class=\"project-item-desc\">\n                  " + itemWithSearchHighlight(screenshotAlt_1[imgAltCount_1], searchedFor) + "\n                </div>\n\n                <img loading=lazy src='" + projectImage + "' alt='" + screenshotAlt_1[imgAltCount_1] + "' \n                  title='" + screenshotAlt_1[imgAltCount_1] + "' />\n              </a>\n            </div>";
+                        section_1 += "<div class=\"project-item shadow\" title='" + screenshotAlt_1[imgAltCount_1] + "'>\n            \n              <a href=" + projectImage + " class=\"gallery\">\n                <div class=\"project-item-desc\">\n                  " + itemWithSearchHighlight(screenshotAlt_1[imgAltCount_1], searchedFor) + "\n                </div>\n\n                <img loading=lazy src='" + projectImage + "' alt='" + screenshotAlt_1[imgAltCount_1] + "' \n                  title='" + screenshotAlt_1[imgAltCount_1] + "' />\n              </a>\n            </div>";
                         imgAltCount_1++;
                     });
                 });
