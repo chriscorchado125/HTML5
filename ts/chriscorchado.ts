@@ -46,13 +46,13 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
   }
 
   if (page == 'contact') {
-    await fetch(`${API_BASE}/contact/feedback`) // get the feedback form
-      .then((resp) => {
-        return resp.ok ? resp.text() : Promise.reject(resp.statusText);
-      })
-      .then((page) => {
-        // generate the contact form as long as it has not been submitted
-        if (location.toString().indexOf('submitted') == -1) {
+    // generate the contact form as long as it has not been submitted
+    if (location.toString().indexOf('submitted') == -1) {
+      await fetch(`${API_BASE}/contact/feedback`) // get the feedback form as text
+        .then((resp) => {
+          return resp.ok ? resp.text() : Promise.reject(resp.statusText);
+        })
+        .then((page) => {
           data = page.replace(/\/drupal8/g, API_BASE); // update the HTML URLs from relative to absolute
 
           // get the contact form HTML
@@ -71,11 +71,11 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
           script = script.substr(0, script.indexOf('</script>') + 9);
 
           data = `<h1>Contact</h1>${form} ${script}`;
-        }
-      })
-      .catch((error) => {
-        alert(`Sorry an error has occurred: ${error}`);
-      });
+        })
+        .catch((error) => {
+          alert(`Sorry an error has occurred: ${error}`);
+        });
+    }
 
     renderPage(data, page);
 

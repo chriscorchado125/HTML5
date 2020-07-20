@@ -72,83 +72,84 @@ function getPage(page, search, pagingURL) {
                     setLoading(true);
                     if (search) {
                     }
-                    if (!(page == 'contact')) return [3, 2];
+                    if (!(page == 'contact')) return [3, 3];
+                    if (!(location.toString().indexOf('submitted') == -1)) return [3, 2];
                     return [4, fetch(API_BASE + "/contact/feedback")
                             .then(function (resp) {
                             return resp.ok ? resp.text() : Promise.reject(resp.statusText);
                         })
                             .then(function (page) {
-                            if (location.toString().indexOf('submitted') == -1) {
-                                data = page.replace(/\/drupal8/g, API_BASE);
-                                var form = data.substr(data.indexOf('<form'), data.indexOf('</form>'));
-                                form = form.substr(0, form.indexOf('</form>') + 8);
-                                form = form.replace('Your email address', 'Email');
-                                var script = data.substr(data.indexOf('<script type="application/json" data-drupal-selector="drupal-settings-json">'), data.indexOf('></script>'));
-                                script = script.substr(0, script.indexOf('</script>') + 9);
-                                data = "<h1>Contact</h1>" + form + " " + script;
-                            }
+                            data = page.replace(/\/drupal8/g, API_BASE);
+                            var form = data.substr(data.indexOf('<form'), data.indexOf('</form>'));
+                            form = form.substr(0, form.indexOf('</form>') + 8);
+                            form = form.replace('Your email address', 'Email');
+                            var script = data.substr(data.indexOf('<script type="application/json" data-drupal-selector="drupal-settings-json">'), data.indexOf('></script>'));
+                            script = script.substr(0, script.indexOf('</script>') + 9);
+                            data = "<h1>Contact</h1>" + form + " " + script;
                         })
                             .catch(function (error) {
                             alert("Sorry an error has occurred: " + error);
                         })];
                 case 1:
                     _b.sent();
+                    _b.label = 2;
+                case 2:
                     renderPage(data, page);
                     setLoading(false);
                     return [2, false];
-                case 2:
-                    if (!pagingURL) return [3, 4];
-                    return [4, getData(pagingURL)];
                 case 3:
-                    data = _b.sent();
-                    return [3, 22];
+                    if (!pagingURL) return [3, 5];
+                    return [4, getData(pagingURL)];
                 case 4:
+                    data = _b.sent();
+                    return [3, 23];
+                case 5:
                     _a = page;
                     switch (_a) {
-                        case 'about': return [3, 5];
-                        case 'companies': return [3, 7];
-                        case 'courses': return [3, 12];
-                        case 'projects': return [3, 17];
+                        case 'about': return [3, 6];
+                        case 'companies': return [3, 8];
+                        case 'courses': return [3, 13];
+                        case 'projects': return [3, 18];
                     }
-                    return [3, 22];
-                case 5: return [4, getData(API_BASE + "/jsonapi/node/page?fields[node--page]=id,title,body&\n              filter[id][operator]=CONTAINS&\n              filter[id][value]=ca23f416-ad70-41c2-9228-52ba6577abfe")];
-                case 6:
-                    data = _b.sent();
-                    return [3, 22];
+                    return [3, 23];
+                case 6: return [4, getData(API_BASE + "/jsonapi/node/page?fields[node--page]=id,title,body&\n              filter[id][operator]=CONTAINS&\n              filter[id][value]=ca23f416-ad70-41c2-9228-52ba6577abfe")];
                 case 7:
-                    if (!search) return [3, 9];
-                    return [4, getData(API_BASE + "/jsonapi/node/company?filter[or-group][group][conjunction]=OR&\n                filter[field_company_name][operator]=CONTAINS&\n                filter[field_company_name][value]=" + search + "&\n                filter[field_company_name][condition][memberOf]=or-group&\n                filter[field_job_title][operator]=CONTAINS&\n                filter[field_job_title][value]=" + search + "&\n                filter[field_job_title][condition][memberOf]=or-group&\n                filter[body.value][operator]=CONTAINS&\n                filter[body.value][value]=" + search + "&\n                filter[body.value][condition][memberOf]=or-group&\n                sort=-field_end_date&\n                include=field_company_screenshot&\n                page[limit]=" + MAX_ITEMS_PER_PAGE)];
+                    data = _b.sent();
+                    return [3, 23];
                 case 8:
+                    if (!search) return [3, 10];
+                    return [4, getData(API_BASE + "/jsonapi/node/company?filter[or-group][group][conjunction]=OR&\n                filter[field_company_name][operator]=CONTAINS&\n                filter[field_company_name][value]=" + search + "&\n                filter[field_company_name][condition][memberOf]=or-group&\n                filter[field_job_title][operator]=CONTAINS&\n                filter[field_job_title][value]=" + search + "&\n                filter[field_job_title][condition][memberOf]=or-group&\n                filter[body.value][operator]=CONTAINS&\n                filter[body.value][value]=" + search + "&\n                filter[body.value][condition][memberOf]=or-group&\n                sort=-field_end_date&\n                include=field_company_screenshot&\n                page[limit]=" + MAX_ITEMS_PER_PAGE)];
+                case 9:
                     data = _b.sent();
-                    return [3, 11];
-                case 9: return [4, getData(API_BASE + "/jsonapi/node/company?sort=-field_end_date&\n                include=field_company_screenshot&\n                page[limit]=" + MAX_ITEMS_PER_PAGE)];
-                case 10:
+                    return [3, 12];
+                case 10: return [4, getData(API_BASE + "/jsonapi/node/company?sort=-field_end_date&\n                include=field_company_screenshot&\n                page[limit]=" + MAX_ITEMS_PER_PAGE)];
+                case 11:
                     data = _b.sent();
-                    _b.label = 11;
-                case 11: return [3, 22];
-                case 12:
-                    if (!search) return [3, 14];
-                    return [4, getData(API_BASE + "/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&\n                filter[title][operator]=CONTAINS&\n                filter[title][value]=" + search + "&\n                filter[title][condition][memberOf]=or-group&\n                filter[field_award_date][operator]=CONTAINS&\n                filter[field_award_date][value]=" + search + "&\n                filter[field_award_date][condition][memberOf]=or-group&\n                sort=-field_award_date&\n                include=field_award_pdf,field_track_image,field_award_images&\n                page[limit]=" + MAX_ITEMS_PER_PAGE)];
+                    _b.label = 12;
+                case 12: return [3, 23];
                 case 13:
+                    if (!search) return [3, 15];
+                    return [4, getData(API_BASE + "/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&\n                filter[title][operator]=CONTAINS&\n                filter[title][value]=" + search + "&\n                filter[title][condition][memberOf]=or-group&\n                filter[field_award_date][operator]=CONTAINS&\n                filter[field_award_date][value]=" + search + "&\n                filter[field_award_date][condition][memberOf]=or-group&\n                sort=-field_award_date&\n                include=field_award_pdf,field_track_image,field_award_images&\n                page[limit]=" + MAX_ITEMS_PER_PAGE)];
+                case 14:
                     data = _b.sent();
-                    return [3, 16];
-                case 14: return [4, getData(API_BASE + "/jsonapi/node/awards?sort=-field_award_date&\n                include=field_award_pdf,field_track_image,field_award_images&\n                page[limit]=" + MAX_ITEMS_PER_PAGE)];
-                case 15:
+                    return [3, 17];
+                case 15: return [4, getData(API_BASE + "/jsonapi/node/awards?sort=-field_award_date&\n                include=field_award_pdf,field_track_image,field_award_images&\n                page[limit]=" + MAX_ITEMS_PER_PAGE)];
+                case 16:
                     data = _b.sent();
-                    _b.label = 16;
-                case 16: return [3, 22];
-                case 17:
-                    if (!search) return [3, 19];
-                    return [4, getData(API_BASE + "/jsonapi/node/project?filter[or-group][group][conjunction]=OR&\n              filter[title][operator]=CONTAINS&\n              filter[title][value]=" + search + "&\n              filter[title][condition][memberOf]=or-group&\n              filter[taxonomy_term--tags][path]=field_project_technology.name&\n              filter[taxonomy_term--tags][operator]=CONTAINS&\n              filter[taxonomy_term--tags][value]=" + search + "&\n              filter[taxonomy_term--tags][condition][memberOf]=or-group&\n              filter[field_company.title][operator]=CONTAINS&\n              filter[field_company.title][value]=" + search + "&\n              filter[field_company.title][condition][memberOf]=or-group&\n              filter[field_screenshot.meta.alt][operator]=CONTAINS&\n              filter[field_screenshot.meta.alt][value]=" + search + "&\n              filter[field_screenshot.meta.alt][condition][memberOf]=or-group&\n              filter[field_date][operator]=CONTAINS&filter[field_date][value]=" + search + "&\n              filter[field_date][condition][memberOf]=or-group&\n              sort=-field_date&\n              include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&\n              fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&\n              page[limit]=" + MAX_ITEMS_PER_PAGE)];
+                    _b.label = 17;
+                case 17: return [3, 23];
                 case 18:
+                    if (!search) return [3, 20];
+                    return [4, getData(API_BASE + "/jsonapi/node/project?filter[or-group][group][conjunction]=OR&\n              filter[title][operator]=CONTAINS&\n              filter[title][value]=" + search + "&\n              filter[title][condition][memberOf]=or-group&\n              filter[taxonomy_term--tags][path]=field_project_technology.name&\n              filter[taxonomy_term--tags][operator]=CONTAINS&\n              filter[taxonomy_term--tags][value]=" + search + "&\n              filter[taxonomy_term--tags][condition][memberOf]=or-group&\n              filter[field_company.title][operator]=CONTAINS&\n              filter[field_company.title][value]=" + search + "&\n              filter[field_company.title][condition][memberOf]=or-group&\n              filter[field_screenshot.meta.alt][operator]=CONTAINS&\n              filter[field_screenshot.meta.alt][value]=" + search + "&\n              filter[field_screenshot.meta.alt][condition][memberOf]=or-group&\n              filter[field_date][operator]=CONTAINS&filter[field_date][value]=" + search + "&\n              filter[field_date][condition][memberOf]=or-group&\n              sort=-field_date&\n              include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&\n              fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&\n              page[limit]=" + MAX_ITEMS_PER_PAGE)];
+                case 19:
                     data = _b.sent();
-                    return [3, 21];
-                case 19: return [4, getData(API_BASE + "/jsonapi/node/project?sort=-field_date&\n                include=field_project_technology,field_company,field_screenshot&\n                fields[node--company]=field_company_name,field_video_url&\n                fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&\n                page[limit]=" + MAX_ITEMS_PER_PAGE)];
-                case 20:
+                    return [3, 22];
+                case 20: return [4, getData(API_BASE + "/jsonapi/node/project?sort=-field_date&\n                include=field_project_technology,field_company,field_screenshot&\n                fields[node--company]=field_company_name,field_video_url&\n                fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&\n                page[limit]=" + MAX_ITEMS_PER_PAGE)];
+                case 21:
                     data = _b.sent();
-                    _b.label = 21;
-                case 21: return [3, 22];
-                case 22:
+                    _b.label = 22;
+                case 22: return [3, 23];
+                case 23:
                     passedInCount = {
                         currentCount: document.getElementById('lastCount')
                             ? document.getElementById('lastCount').textContent
