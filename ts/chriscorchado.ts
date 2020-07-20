@@ -11,7 +11,7 @@ $('#footer').load('includes/footer.html');
  * Toggle content and preloader
  * @param {boolean} loadingStatus
  */
-function setLoading(loadingStatus: boolean) {
+const setLoading = (loadingStatus: boolean) => {
   if (loadingStatus) {
     let preloader = document.createElement('div');
 
@@ -28,7 +28,7 @@ function setLoading(loadingStatus: boolean) {
     document.getElementById('preloadAnimation').remove();
     fadeIn(document.getElementsByClassName('container')[0]);
   }
-}
+};
 
 /**
  * Load page
@@ -36,7 +36,7 @@ function setLoading(loadingStatus: boolean) {
  * @param {string=} search - (optional) - search string
  * @param {string=} pagingURL - (optional) - Prev/Next links
  */
-async function getPage(page: string, search?: string, pagingURL?: string) {
+const getPage = async (page: string, search?: string, pagingURL?: string) => {
   let data = null;
 
   setLoading(true);
@@ -193,7 +193,7 @@ async function getPage(page: string, search?: string, pagingURL?: string) {
   } else {
     updateInterface(search);
   }
-}
+};
 
 /**
  * Toggle the preloader, searchCount, paging-info, pagination and message elements
@@ -1104,7 +1104,7 @@ const setPagination = (
  * @param {string} currentPage - page name
  * @param {string} targetContainer - id of html container for the menu items
  */
-async function updateMenuPages(currentPage: string, targetContainer: string) {
+const updateMenuPages = async (currentPage: string, targetContainer: string) => {
   await fetch(`${API_BASE}/api/menu_items/main?_format=json`)
     .then((resp) => {
       return resp.ok ? resp.json() : Promise.reject(resp.statusText);
@@ -1147,7 +1147,7 @@ async function updateMenuPages(currentPage: string, targetContainer: string) {
     .catch((error) => {
       alert(`Sorry an error has occurred: ${error}`);
     });
-}
+};
 
 /**
  * Get the current page name
@@ -1204,7 +1204,7 @@ const debounceMe = debounce(() => {
  * Pure JS fade in using opacity
  * @param {any} HTML element
  */
-function fadeOut(el: any) {
+const fadeOut = (el: any) => {
   el.style.opacity = 1;
 
   (function fade() {
@@ -1214,13 +1214,13 @@ function fadeOut(el: any) {
       requestAnimationFrame(fade);
     }
   })();
-}
+};
 
 /**
  * Pure JS fade out using opacity
  * @param {any} HTML element
  */
-function fadeIn(el: any) {
+const fadeIn = (el: any) => {
   el.style.opacity = 0;
 
   (function fade() {
@@ -1231,7 +1231,7 @@ function fadeIn(el: any) {
       requestAnimationFrame(fade);
     }
   })();
-}
+};
 
 window.onload = () => {
   getPage(getCurrentPage());
