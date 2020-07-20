@@ -368,38 +368,55 @@ var noRecordsFound = function (noRecordID, search, appendToID, msg) {
         $('.container').fadeIn();
     }
 };
-var renderPage = function (data, page, searchedFor, next, prev) {
-    if (page == 'contact') {
-        setPageHTML([page, data]);
-        return;
-    }
-    var itemCount = 0;
-    var imgPieces = [''];
-    var item = '', itemBody = '', currentNavItem = '', itemTitle = '', itemDate = '', startDate = '', endDate = '', itemJobTitle = '', itemTechnology = '', itemTechnologyIcon = '', itemCompanyName = '', itemWorkType = '', itemPDF = '', itemTrackImage = '';
-    var pageIsSearchable = false;
+var getIncludedData = function (data) {
     var includedAssetFilename = [''];
     var includedCompanyName = [''];
     var includedTechnologyName = [''];
     var includedTechnologyIcon = [''];
-    var includedTechnologyItem = [];
-    if (data.included) {
-        data.included.forEach(function (included_element) {
-            if (included_element.attributes.description) {
-                var iconFileNamePath = /"(.*?)"/.exec(included_element.attributes.description.value);
-                includedTechnologyIcon[included_element.id] = iconFileNamePath[1];
-            }
-            if (included_element.attributes.filename) {
-                includedAssetFilename[included_element.id] = included_element.attributes.filename;
-            }
-            if (included_element.attributes.field_company_name) {
-                includedCompanyName[included_element.id] =
-                    included_element.attributes.field_company_name;
-            }
-            if (included_element.attributes.name) {
-                includedTechnologyName[included_element.id] = included_element.attributes.name;
-            }
-        });
+    data.included.forEach(function (included_element) {
+        if (included_element.attributes.description) {
+            var iconFileNamePath = /"(.*?)"/.exec(included_element.attributes.description.value);
+            includedTechnologyIcon[included_element.id] = iconFileNamePath[1];
+        }
+        if (included_element.attributes.filename) {
+            includedAssetFilename[included_element.id] = included_element.attributes.filename;
+        }
+        if (included_element.attributes.field_company_name) {
+            includedCompanyName[included_element.id] =
+                included_element.attributes.field_company_name;
+        }
+        if (included_element.attributes.name) {
+            includedTechnologyName[included_element.id] = included_element.attributes.name;
+        }
+    });
+    return [
+        includedCompanyName,
+        includedAssetFilename,
+        includedTechnologyName,
+        includedTechnologyIcon,
+    ];
+};
+var renderPage = function (data, page, searchedFor, next, prev) {
+    var pageIsSearchable = false;
+    if (page == 'contact') {
+        setPageHTML([page, data]);
+        return;
     }
+    var includedCompanyName = [''];
+    var includedAssetFilename = [''];
+    var includedTechnologyName = [''];
+    var includedTechnologyIcon = [''];
+    if (data.included) {
+        var allIncludedData = getIncludedData(data);
+        includedCompanyName = allIncludedData[0];
+        includedAssetFilename = allIncludedData[1];
+        includedTechnologyName = allIncludedData[2];
+        includedTechnologyIcon = allIncludedData[3];
+    }
+    var item = '', itemBody = '', currentNavItem = '', itemTitle = '', itemDate = '', startDate = '', endDate = '', itemJobTitle = '', itemTechnology = '', itemTechnologyIcon = '', itemCompanyName = '', itemWorkType = '', itemPDF = '', itemTrackImage = '';
+    var itemCount = 0;
+    var imgPieces = [''];
+    var includedTechnologyItem = [];
     data.data.forEach(function (element) {
         itemTitle = element.attributes.title;
         itemBody = element.attributes.body ? element.attributes.body.value : '';

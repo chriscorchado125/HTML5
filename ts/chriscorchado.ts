@@ -605,6 +605,48 @@ const noRecordsFound = (
 };
 
 /**
+ * Parse out included data and return arrays
+ * @param {Object} data - array of included data
+ * @return {Array[]} - array of included data arrays
+ */
+const getIncludedData = (data: any) => {
+  let includedAssetFilename = [''];
+  let includedCompanyName = [''];
+  let includedTechnologyName = [''];
+  let includedTechnologyIcon = [''];
+
+  data.included.forEach((included_element: any) => {
+    if (included_element.attributes.description) {
+      // extract image URL within quotes
+      let iconFileNamePath = /"(.*?)"/.exec(
+        included_element.attributes.description.value
+      );
+      includedTechnologyIcon[included_element.id] = iconFileNamePath[1];
+    }
+
+    if (included_element.attributes.filename) {
+      includedAssetFilename[included_element.id] = included_element.attributes.filename;
+    }
+
+    if (included_element.attributes.field_company_name) {
+      includedCompanyName[included_element.id] =
+        included_element.attributes.field_company_name;
+    }
+
+    if (included_element.attributes.name) {
+      includedTechnologyName[included_element.id] = included_element.attributes.name;
+    }
+  });
+
+  return [
+    includedCompanyName,
+    includedAssetFilename,
+    includedTechnologyName,
+    includedTechnologyIcon,
+  ];
+};
+
+/**
  * Generate the webpage
  * @param {Object[]} data - page items
  * @param {string} page - page name
@@ -619,13 +661,25 @@ const renderPage = (
   next?: Object,
   prev?: Object
 ) => {
+  let pageIsSearchable = false;
+
   if (page == 'contact') {
     setPageHTML([page, data]);
     return;
   }
 
-  let itemCount = 0;
-  let imgPieces = [''];
+  let includedCompanyName = [''];
+  let includedAssetFilename = [''];
+  let includedTechnologyName = [''];
+  let includedTechnologyIcon = [''];
+
+  if (data.included) {
+    let allIncludedData = getIncludedData(data);
+    includedCompanyName = allIncludedData[0];
+    includedAssetFilename = allIncludedData[1];
+    includedTechnologyName = allIncludedData[2];
+    includedTechnologyIcon = allIncludedData[3];
+  }
 
   let item = '',
     itemBody = '',
@@ -642,39 +696,9 @@ const renderPage = (
     itemPDF = '',
     itemTrackImage = '';
 
-  let pageIsSearchable = false;
-
-  let includedAssetFilename = [''];
-  let includedCompanyName = [''];
-  let includedTechnologyName = [''];
-  let includedTechnologyIcon = [''];
+  let itemCount = 0;
+  let imgPieces = [''];
   let includedTechnologyItem = [];
-
-  if (data.included) {
-    data.included.forEach((included_element: any) => {
-      //
-      if (included_element.attributes.description) {
-        // extract image URL within quotes
-        let iconFileNamePath = /"(.*?)"/.exec(
-          included_element.attributes.description.value
-        );
-        includedTechnologyIcon[included_element.id] = iconFileNamePath[1];
-      }
-
-      if (included_element.attributes.filename) {
-        includedAssetFilename[included_element.id] = included_element.attributes.filename;
-      }
-
-      if (included_element.attributes.field_company_name) {
-        includedCompanyName[included_element.id] =
-          included_element.attributes.field_company_name;
-      }
-
-      if (included_element.attributes.name) {
-        includedTechnologyName[included_element.id] = included_element.attributes.name;
-      }
-    });
-  }
 
   data.data.forEach((element: any) => {
     itemTitle = element.attributes.title;
