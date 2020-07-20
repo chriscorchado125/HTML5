@@ -1139,6 +1139,7 @@ const debounceMe = debounce(() => {
   updateInterface();
 }, 500);
 
+// https://gist.github.com/alirezas/c4f9f43e9fe1abba9a4824dd6fc60a55
 /**
  * Pure JS fade in using opacity
  * @param {any} HTML element
