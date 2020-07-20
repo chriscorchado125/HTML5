@@ -409,6 +409,7 @@ const setPageHTML = (values: any) => {
   let itemCompanyName = values[11];
   let itemTechnology = values[12];
   let searchedFor = values[13];
+  let includedTechnologyItem = values[14];
 
   switch (page) {
     case 'about': // homepage
@@ -563,21 +564,21 @@ const setPageHTML = (values: any) => {
         });
       }
 
-      // HTML, CSS, JavaScript, etc..
-      item += `<div class="project-technology">${itemTechnology.slice(0, -2)}</div>
-      </div>`;
+      // Text for HTML, CSS, JavaScript, etc..
+      item += `<div class="project-technology">${itemTechnology.slice(0, -2)}</div>`;
 
       // Icons for HTML, CSS, JavaScript, etc..
       // item += `<div class="project-technology">`;
-
       // for (const [key, value] of Object.entries(includedTechnologyItem)) {
-      //   item += `<div id="technology-item-wrapper">${value.name}
-      //     <img loading=lazy src="${value.image}" class="project-technology-icon" title="${value.name}" alt="${value.name}" /></div>`;
+      //   for (const [key1, value1] of Object.entries(value)) {
+      //     item += `<div id="technology-item-wrapper">${value1.name}
+      //     <img loading=lazy src="${value1.image}" class="project-technology-icon" title="${value1.name}" alt="${value1.name}" /></div>`;
+      //   }
       // }
-
       // item += `</div>`;
 
-      if (item !== undefined) return item;
+      item += `</div>`;
+      return item;
       break;
   }
 };
@@ -909,6 +910,7 @@ const renderPage = (
       itemCompanyName,
       itemTechnology,
       searchedFor,
+      includedTechnologyItem,
     ];
 
     switch (page) {

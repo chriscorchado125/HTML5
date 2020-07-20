@@ -291,6 +291,7 @@ var setPageHTML = function (values) {
     var itemCompanyName = values[11];
     var itemTechnology = values[12];
     var searchedFor = values[13];
+    var includedTechnologyItem = values[14];
     switch (page) {
         case 'about':
             document.getElementById('search-container').style.display = 'none';
@@ -349,9 +350,9 @@ var setPageHTML = function (values) {
                     item_1 += "<span title=\"Play Video\"><a href=\"" + img + "\" \n          data-featherlight=\"iframe\" \n          data-featherlight-iframe-frameborder=\"0\" \n          data-featherlight-iframe-allowfullscreen=\"true\" \n          data-featherlight-iframe-allow=\"autoplay; encrypted-media\"\n          data-featherlight-iframe-style=\"display:block;border:none;height:85vh;width:85vw;\" class=\"play-video\">\n            Play Video <img loading=lazy src=\"https://chriscorchado.com/images/play_vidoe_icon.png\" alt=\"Play Video\" width=\"20\" />\n          </a></span>";
                 });
             }
-            item_1 += "<div class=\"project-technology\">" + itemTechnology.slice(0, -2) + "</div>\n      </div>";
-            if (item_1 !== undefined)
-                return item_1;
+            item_1 += "<div class=\"project-technology\">" + itemTechnology.slice(0, -2) + "</div>";
+            item_1 += "</div>";
+            return item_1;
             break;
     }
 };
@@ -543,6 +544,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
             itemCompanyName,
             itemTechnology,
             searchedFor,
+            includedTechnologyItem,
         ];
         switch (page) {
             case 'about':
