@@ -40,10 +40,8 @@
     font-size: 12px;
     text-align: right;
     margin-right: 5px;
-  }
-
-  .input-wrapper {
     display: inline-block;
+    width: 85px;
   }
 
   /* search textbox */
@@ -63,6 +61,7 @@
     font-size: 12px;
     border-radius: 5px;
     box-shadow: 0 2px #999;
+    visibility: hidden;
   }
 
   .searchBtn:hover {
@@ -73,7 +72,9 @@
 
   #pagination {
     text-align: center;
-    margin: 5px -32px 0 0;
+    padding-left: 55px;
+    margin-top: 5px;
+
     a {
       color: #ffffff;
     }
@@ -108,26 +109,25 @@
     justify-content: space-between;
     width: 90%;
     .nav-item {
-      display: flex;
       justify-content: left;
       width: 60px;
       margin-left: 15px;
     }
-
-    #searchSite {
-      width: 120px;
-    }
   }
 
   #search-container {
-    text-align: center;
     float: none;
     width: 100%;
     padding: 5px 0;
     margin-top: 0px;
     #pagination {
       padding-left: 0;
-      margin: 0 0 0 20px;
+      margin: 0;
+    }
+
+    /* search textbox */
+    #searchSite {
+      width: 120px;
     }
   }
 }
@@ -136,19 +136,19 @@
   #logo img {
     height: 50px;
   }
-  #pagination {
-    /* next / prev text */
-    .pager-navigation {
-      font-size: 12px;
-      margin: 0;
+  #search-container {
+    #searchCount {
+      width: 65px;
+      margin-right: 0;
     }
-  }
-
-  #pagination {
-    margin-left: 5px;
-    .pager-navigation {
-      padding: 5px 3px;
-      margin: 0;
+    #pagination {
+      .pager-navigation {
+        padding: 5px;
+        margin: 0;
+      }
+    }
+    #searchSite {
+      width: 100px;
     }
   }
 }
@@ -167,18 +167,5 @@
 
   #paging-info {
     font-size: 10px;
-  }
-
-  #search-container {
-    #pagination {
-      margin-left: 5px;
-      .pager-navigation {
-        padding: 5px;
-        margin: 0;
-      }
-    }
-    #searchSite {
-      width: 100px;
-    }
   }
 }

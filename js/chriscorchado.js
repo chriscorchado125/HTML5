@@ -166,17 +166,6 @@ var getPage = function (page, search, pagingURL) { return __awaiter(void 0, void
     });
 }); };
 var updateInterface = function (search) {
-    var action = 'none';
-    if (!search) {
-        action = '';
-        document.getElementById('searchBtn').style.display = '';
-    }
-    var uiElements = ['preloader', 'searchCount', 'paging-info', 'pagination', 'msg'];
-    uiElements.forEach(function (element) {
-        if (document.getElementById(element)) {
-            document.getElementById(element).style.display = action;
-        }
-    });
     noRecordsFound('noRecords', search, 'navigation', 'No matches found for');
 };
 var cleanURL = function (urlToClean) {
@@ -201,11 +190,10 @@ var getData = function (dataURL) {
 };
 var searchClear = function (searchTextBoxID) {
     var inputSearchBox = document.getElementById(searchTextBoxID);
-    if (inputSearchBox.value !== '') {
-        inputSearchBox.value = '';
-        getPage(getCurrentPage());
-        updateInterface();
-    }
+    inputSearchBox.value = '';
+    getPage(getCurrentPage());
+    updateInterface();
+    document.getElementById('searchBtn').style.visibility = 'hidden';
 };
 var searchFilter = function (event) {
     var charCode = event.keyCode || event.which;
@@ -360,15 +348,19 @@ var noRecordsFound = function (noRecordID, search, appendToID, msg) {
         document.getElementById(noRecordID).remove();
     }
     if (!document.getElementById(noRecordID) && search) {
+        document.getElementById('pagination').style.display = 'none';
+        document.getElementsByClassName('container')[0].removeAttribute('style');
         var notFound = document.createElement('div');
         notFound.id = noRecordID;
         notFound.innerHTML = msg + " '" + search + "'";
         document.getElementById(appendToID).appendChild(notFound);
         document.getElementById('preloadAnimation').remove();
-        $('.container').hide();
+        document.getElementById('searchCount').innerHTML =
+            '<b style="color:red">No match</b>';
     }
     else {
-        $('.container').fadeIn();
+        document.getElementById('pagination').style.display = 'inline-block';
+        document.getElementById('searchBtn').style.visibility = 'visible';
     }
 };
 var getIncludedData = function (data) {

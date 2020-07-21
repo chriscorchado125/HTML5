@@ -200,21 +200,6 @@ const getPage = async (page: string, search?: string, pagingURL?: string) => {
  * @param {string=} search - (optional) searched for text
  */
 const updateInterface = (search?: string) => {
-  let action = 'none';
-
-  if (!search) {
-    action = '';
-    document.getElementById('searchBtn').style.display = '';
-  }
-
-  let uiElements = ['preloader', 'searchCount', 'paging-info', 'pagination', 'msg'];
-
-  uiElements.forEach((element) => {
-    if (document.getElementById(element)) {
-      document.getElementById(element).style.display = action;
-    }
-  });
-
   noRecordsFound('noRecords', search, 'navigation', 'No matches found for');
 };
 
@@ -256,11 +241,10 @@ const getData = (dataURL: string) => {
  */
 const searchClear = (searchTextBoxID: string) => {
   const inputSearchBox = document.getElementById(searchTextBoxID)! as HTMLInputElement;
-  if (inputSearchBox.value !== '') {
-    inputSearchBox.value = '';
-    getPage(getCurrentPage());
-    updateInterface();
-  }
+  inputSearchBox.value = '';
+  getPage(getCurrentPage());
+  updateInterface();
+  document.getElementById('searchBtn').style.visibility = 'hidden';
 };
 
 /**
@@ -603,14 +587,19 @@ const noRecordsFound = (
   }
 
   if (!document.getElementById(noRecordID) && search) {
+    document.getElementById('pagination').style.display = 'none';
+
     let notFound = document.createElement('div');
     notFound.id = noRecordID;
     notFound.innerHTML = `${msg} '${search}'`;
     document.getElementById(appendToID).appendChild(notFound);
     document.getElementById('preloadAnimation').remove();
-    $('.container').hide();
+
+    document.getElementById('searchCount').innerHTML =
+      '<b style="color:red">No match</b>';
   } else {
-    $('.container').fadeIn();
+    document.getElementById('pagination').style.display = 'inline-block';
+    document.getElementById('searchBtn').style.visibility = 'visible';
   }
 };
 

@@ -34,27 +34,25 @@
   </div>
 
   <div id="search-container">
-    <div class="input-wrapper">
-      <span id="searchCount">Loading...</span>
-      <input
-        type="text"
-        id="searchSite"
-        placeholder="Search items"
-        onkeyup="debounceMe()"
-        onkeypress="return searchFilter(event)"
-        class="ccBtn"
-        title="Enter something to search for"
-      />
-      <button
-        id="searchBtn"
-        class="searchBtn"
-        onclick="searchClear(SITE_SEARCH_ID)"
-        title="Clear the search"
-      >
-        clear
-      </button>
+    <span id="searchCount">Loading...</span>
+    <input
+      type="text"
+      id="searchSite"
+      placeholder="Search items"
+      onkeyup="debounceMe()"
+      onkeypress="return searchFilter(event)"
+      class="ccBtn"
+      title="Enter something to search for"
+    />
+    <button
+      id="searchBtn"
+      class="searchBtn"
+      onclick="searchClear(SITE_SEARCH_ID)"
+      title="Clear the search"
+    >
+      clear
+    </button>
 
-      <div id="pagination"></div>
-    </div>
+    <div id="pagination"></div>
   </div>
 </nav>

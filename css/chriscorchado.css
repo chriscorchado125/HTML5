@@ -34,9 +34,9 @@
   #search-container #searchCount {
     font-size: 12px;
     text-align: right;
-    margin-right: 5px; }
-  #search-container .input-wrapper {
-    display: inline-block; }
+    margin-right: 5px;
+    display: inline-block;
+    width: 85px; }
   #search-container #searchSite {
     width: 130px; }
   #search-container ::-ms-clear {
@@ -46,14 +46,16 @@
     margin-top: -3px;
     font-size: 12px;
     border-radius: 5px;
-    box-shadow: 0 2px #999; }
+    box-shadow: 0 2px #999;
+    visibility: hidden; }
   #search-container .searchBtn:hover {
     color: #fff;
     box-shadow: 0 0 #fff;
     background-color: #7399ea; }
   #search-container #pagination {
     text-align: center;
-    margin: 5px -32px 0 0;
+    padding-left: 55px;
+    margin-top: 5px;
     /* next / prev text */ }
     #search-container #pagination a {
       color: #ffffff; }
@@ -81,37 +83,33 @@
     justify-content: space-between;
     width: 90%; }
     .navbar-nav .nav-item {
-      display: flex;
       justify-content: left;
       width: 60px;
       margin-left: 15px; }
-    .navbar-nav #searchSite {
-      width: 120px; }
 
   #search-container {
-    text-align: center;
     float: none;
     width: 100%;
     padding: 5px 0;
-    margin-top: 0px; }
+    margin-top: 0px;
+    /* search textbox */ }
     #search-container #pagination {
       padding-left: 0;
-      margin: 0 0 0 20px; } }
+      margin: 0; }
+    #search-container #searchSite {
+      width: 120px; } }
 @media (max-width: 500px) {
   #logo img {
     height: 50px; }
 
-  #pagination {
-    /* next / prev text */ }
-    #pagination .pager-navigation {
-      font-size: 12px;
-      margin: 0; }
-
-  #pagination {
-    margin-left: 5px; }
-    #pagination .pager-navigation {
-      padding: 5px 3px;
-      margin: 0; } }
+  #search-container #searchCount {
+    width: 65px;
+    margin-right: 0; }
+  #search-container #pagination .pager-navigation {
+    padding: 5px;
+    margin: 0; }
+  #search-container #searchSite {
+    width: 100px; } }
 @media (max-width: 400px) {
   .navbar .navbar-nav {
     width: 100%;
@@ -121,15 +119,7 @@
       font-size: 14px; }
 
   #paging-info {
-    font-size: 10px; }
-
-  #search-container #pagination {
-    margin-left: 5px; }
-    #search-container #pagination .pager-navigation {
-      padding: 5px;
-      margin: 0; }
-  #search-container #searchSite {
-    width: 100px; } }
+    font-size: 10px; } }
 .box {
   position: relative;
   display: inline-block;
