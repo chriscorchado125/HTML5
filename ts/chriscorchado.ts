@@ -588,11 +588,13 @@ const noRecordsFound = (
 
   if (!document.getElementById(noRecordID) && search) {
     document.getElementById('pagination').style.display = 'none';
+    document.getElementsByClassName('container')[0].removeAttribute('style');
 
     let notFound = document.createElement('div');
     notFound.id = noRecordID;
     notFound.innerHTML = `${msg} '${search}'`;
     document.getElementById(appendToID).appendChild(notFound);
+
     document.getElementById('preloadAnimation').remove();
 
     document.getElementById('searchCount').innerHTML =
