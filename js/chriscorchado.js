@@ -1,15 +1,4 @@
 'use strict';
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -19,42 +8,33 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-var API_BASE = 'https://chriscorchado.com/drupal8';
-var MAX_ITEMS_PER_PAGE = 50;
-var SITE_SEARCH_ID = 'searchSite';
-$('#navigation').load('includes/nav.html');
-$('#footer').load('includes/footer.html');
-var setLoading = function (loadingStatus) {
+const API_BASE = 'https://chriscorchado.com/drupal8';
+const MAX_ITEMS_PER_PAGE = 50;
+const SITE_SEARCH_ID = 'searchSite';
+fetch('./includes/nav.html')
+    .then((response) => {
+    return response.text();
+})
+    .then((data) => {
+    document.getElementById('navigation').innerHTML = data;
+});
+fetch('./includes/footer.html')
+    .then((response) => {
+    return response.text();
+})
+    .then((data) => {
+    document.getElementById('footer').innerHTML = data;
+});
+const setLoading = (loadingStatus) => {
     if (loadingStatus) {
-        var preloader = document.createElement('div');
-        preloader.innerHTML = "\n      <div class=\"preloadAnimation\" id=\"preloadAnimation\">\n        <div class=\"bounce1\"></div>\n        <div class=\"bounce2\"></div>\n        <div class=\"bounce3\"></div>\n        <br />Loading\n      </div>";
+        let preloader = document.createElement('div');
+        preloader.innerHTML = `
+      <div class="preloadAnimation" id="preloadAnimation">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+        <br />Loading
+      </div>`;
         document.body.append(preloader);
     }
     else {
@@ -62,193 +42,215 @@ var setLoading = function (loadingStatus) {
         fadeIn(document.getElementsByClassName('container')[0]);
     }
 };
-var getPage = function (page, search, pagingURL) { return __awaiter(void 0, void 0, void 0, function () {
-    var data, _a, passedInCount;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                data = null;
-                setLoading(true);
-                if (search) {
-                }
-                if (!(page == 'contact')) return [3, 3];
-                if (!(location.toString().indexOf('submitted') == -1)) return [3, 2];
-                return [4, fetch(API_BASE + "/contact/feedback")
-                        .then(function (resp) {
-                        return resp.ok ? resp.text() : Promise.reject(resp.statusText);
-                    })
-                        .then(function (page) {
-                        data = page.replace(/\/drupal8/g, API_BASE);
-                        var form = data.substr(data.indexOf('<form'), data.indexOf('</form>'));
-                        form = form.substr(0, form.indexOf('</form>') + 8);
-                        form = form.replace('Your email address', 'Email');
-                        var script = data.substr(data.indexOf('<script type="application/json" data-drupal-selector="drupal-settings-json">'), data.indexOf('></script>'));
-                        script = script.substr(0, script.indexOf('</script>') + 9);
-                        data = "<h1>Contact</h1>" + form + " " + script;
-                    })
-                        .catch(function (error) {
-                        alert("Sorry an error has occurred: " + error);
-                    })];
-            case 1:
-                _b.sent();
-                _b.label = 2;
-            case 2:
-                renderPage(data, page);
-                setLoading(false);
-                return [2, false];
-            case 3:
-                if (!pagingURL) return [3, 5];
-                return [4, getData(pagingURL)];
-            case 4:
-                data = _b.sent();
-                return [3, 23];
-            case 5:
-                _a = page;
-                switch (_a) {
-                    case 'about': return [3, 6];
-                    case 'companies': return [3, 8];
-                    case 'courses': return [3, 13];
-                    case 'projects': return [3, 18];
-                }
-                return [3, 23];
-            case 6: return [4, getData(API_BASE + "/jsonapi/node/page?fields[node--page]=id,title,body&\n              filter[id][operator]=CONTAINS&\n              filter[id][value]=ca23f416-ad70-41c2-9228-52ba6577abfe")];
-            case 7:
-                data = _b.sent();
-                return [3, 23];
-            case 8:
-                if (!search) return [3, 10];
-                return [4, getData(API_BASE + "/jsonapi/node/company?filter[or-group][group][conjunction]=OR&\n                filter[field_company_name][operator]=CONTAINS&\n                filter[field_company_name][value]=" + search + "&\n                filter[field_company_name][condition][memberOf]=or-group&\n                filter[field_job_title][operator]=CONTAINS&\n                filter[field_job_title][value]=" + search + "&\n                filter[field_job_title][condition][memberOf]=or-group&\n                filter[body.value][operator]=CONTAINS&\n                filter[body.value][value]=" + search + "&\n                filter[body.value][condition][memberOf]=or-group&\n                sort=-field_end_date&\n                include=field_company_screenshot&\n                page[limit]=" + MAX_ITEMS_PER_PAGE)];
-            case 9:
-                data = _b.sent();
-                return [3, 12];
-            case 10: return [4, getData(API_BASE + "/jsonapi/node/company?sort=-field_end_date&\n                include=field_company_screenshot&\n                page[limit]=" + MAX_ITEMS_PER_PAGE)];
-            case 11:
-                data = _b.sent();
-                _b.label = 12;
-            case 12: return [3, 23];
-            case 13:
-                if (!search) return [3, 15];
-                return [4, getData(API_BASE + "/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&\n                filter[title][operator]=CONTAINS&\n                filter[title][value]=" + search + "&\n                filter[title][condition][memberOf]=or-group&\n                filter[field_award_date][operator]=CONTAINS&\n                filter[field_award_date][value]=" + search + "&\n                filter[field_award_date][condition][memberOf]=or-group&\n                sort=-field_award_date&\n                include=field_award_pdf,field_track_image,field_award_images&\n                page[limit]=" + MAX_ITEMS_PER_PAGE)];
-            case 14:
-                data = _b.sent();
-                return [3, 17];
-            case 15: return [4, getData(API_BASE + "/jsonapi/node/awards?sort=-field_award_date&\n                include=field_award_pdf,field_track_image,field_award_images&\n                page[limit]=" + MAX_ITEMS_PER_PAGE)];
-            case 16:
-                data = _b.sent();
-                _b.label = 17;
-            case 17: return [3, 23];
-            case 18:
-                if (!search) return [3, 20];
-                return [4, getData(API_BASE + "/jsonapi/node/project?filter[or-group][group][conjunction]=OR&\n              filter[title][operator]=CONTAINS&\n              filter[title][value]=" + search + "&\n              filter[title][condition][memberOf]=or-group&\n              filter[taxonomy_term--tags][path]=field_project_technology.name&\n              filter[taxonomy_term--tags][operator]=CONTAINS&\n              filter[taxonomy_term--tags][value]=" + search + "&\n              filter[taxonomy_term--tags][condition][memberOf]=or-group&\n              filter[field_company.title][operator]=CONTAINS&\n              filter[field_company.title][value]=" + search + "&\n              filter[field_company.title][condition][memberOf]=or-group&\n              filter[field_screenshot.meta.alt][operator]=CONTAINS&\n              filter[field_screenshot.meta.alt][value]=" + search + "&\n              filter[field_screenshot.meta.alt][condition][memberOf]=or-group&\n              filter[field_date][operator]=CONTAINS&filter[field_date][value]=" + search + "&\n              filter[field_date][condition][memberOf]=or-group&\n              sort=-field_date&\n              include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&\n              fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&\n              page[limit]=" + MAX_ITEMS_PER_PAGE)];
-            case 19:
-                data = _b.sent();
-                return [3, 22];
-            case 20: return [4, getData(API_BASE + "/jsonapi/node/project?sort=-field_date&\n                include=field_project_technology,field_company,field_screenshot&\n                fields[node--company]=field_company_name,field_video_url&\n                fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&\n                page[limit]=" + MAX_ITEMS_PER_PAGE)];
-            case 21:
-                data = _b.sent();
-                _b.label = 22;
-            case 22: return [3, 23];
-            case 23:
-                passedInCount = {
-                    currentCount: document.getElementById('lastCount')
-                        ? document.getElementById('lastCount').textContent
-                        : 1,
-                };
-                data = __assign(__assign({}, data), { passedInCount: passedInCount });
-                if (data.data.length) {
-                    renderPage(data, page, search, data.links.next, data.links.prev);
-                }
-                else {
-                    updateInterface(search);
-                }
-                return [2];
+const getPage = (page, search, pagingURL) => __awaiter(void 0, void 0, void 0, function* () {
+    let data = null;
+    setLoading(true);
+    if (search) {
+    }
+    if (page == 'contact') {
+        if (location.toString().indexOf('submitted') == -1) {
+            yield fetch(`${API_BASE}/contact/feedback`)
+                .then((resp) => {
+                return resp.ok ? resp.text() : Promise.reject(resp.statusText);
+            })
+                .then((page) => {
+                data = page.replace(/\/drupal8/g, API_BASE);
+                let form = data.substr(data.indexOf('<form'), data.indexOf('</form>'));
+                form = form.substr(0, form.indexOf('</form>') + 8);
+                form = form.replace('Your email address', 'Email');
+                let script = data.substr(data.indexOf('<script type="application/json" data-drupal-selector="drupal-settings-json">'), data.indexOf('></script>'));
+                script = script.substr(0, script.indexOf('</script>') + 9);
+                data = `<h1>Contact</h1>${form} ${script}`;
+            })
+                .catch((error) => {
+                alert(`Sorry an error has occurred: ${error}`);
+            });
         }
-    });
-}); };
-var updateInterface = function (search) {
+        renderPage(data, page);
+        setLoading(false);
+        return false;
+    }
+    else {
+        if (pagingURL) {
+            data = yield getData(pagingURL);
+        }
+        else {
+            switch (page) {
+                case 'about':
+                    data = yield getData(`${API_BASE}/jsonapi/node/page?fields[node--page]=id,title,body&
+              filter[id][operator]=CONTAINS&
+              filter[id][value]=ca23f416-ad70-41c2-9228-52ba6577abfe`);
+                    break;
+                case 'companies':
+                    if (search) {
+                        data = yield getData(`${API_BASE}/jsonapi/node/company?filter[or-group][group][conjunction]=OR&
+                filter[field_company_name][operator]=CONTAINS&
+                filter[field_company_name][value]=${search}&
+                filter[field_company_name][condition][memberOf]=or-group&
+                filter[field_job_title][operator]=CONTAINS&
+                filter[field_job_title][value]=${search}&
+                filter[field_job_title][condition][memberOf]=or-group&
+                filter[body.value][operator]=CONTAINS&
+                filter[body.value][value]=${search}&
+                filter[body.value][condition][memberOf]=or-group&
+                sort=-field_end_date&
+                include=field_company_screenshot&
+                page[limit]=${MAX_ITEMS_PER_PAGE}`);
+                    }
+                    else {
+                        data = yield getData(`${API_BASE}/jsonapi/node/company?sort=-field_end_date&
+                include=field_company_screenshot&
+                page[limit]=${MAX_ITEMS_PER_PAGE}`);
+                    }
+                    break;
+                case 'courses':
+                    if (search) {
+                        data = yield getData(`${API_BASE}/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&
+                filter[title][operator]=CONTAINS&
+                filter[title][value]=${search}&
+                filter[title][condition][memberOf]=or-group&
+                filter[field_award_date][operator]=CONTAINS&
+                filter[field_award_date][value]=${search}&
+                filter[field_award_date][condition][memberOf]=or-group&
+                sort=-field_award_date&
+                include=field_award_pdf,field_track_image,field_award_images&
+                page[limit]=${MAX_ITEMS_PER_PAGE}`);
+                    }
+                    else {
+                        data = yield getData(`${API_BASE}/jsonapi/node/awards?sort=-field_award_date&
+                include=field_award_pdf,field_track_image,field_award_images&
+                page[limit]=${MAX_ITEMS_PER_PAGE}`);
+                    }
+                    break;
+                case 'projects':
+                    if (search) {
+                        data = yield getData(`${API_BASE}/jsonapi/node/project?filter[or-group][group][conjunction]=OR&
+              filter[title][operator]=CONTAINS&
+              filter[title][value]=${search}&
+              filter[title][condition][memberOf]=or-group&
+              filter[taxonomy_term--tags][path]=field_project_technology.name&
+              filter[taxonomy_term--tags][operator]=CONTAINS&
+              filter[taxonomy_term--tags][value]=${search}&
+              filter[taxonomy_term--tags][condition][memberOf]=or-group&
+              filter[field_company.title][operator]=CONTAINS&
+              filter[field_company.title][value]=${search}&
+              filter[field_company.title][condition][memberOf]=or-group&
+              filter[field_screenshot.meta.alt][operator]=CONTAINS&
+              filter[field_screenshot.meta.alt][value]=${search}&
+              filter[field_screenshot.meta.alt][condition][memberOf]=or-group&
+              filter[field_date][operator]=CONTAINS&filter[field_date][value]=${search}&
+              filter[field_date][condition][memberOf]=or-group&
+              sort=-field_date&
+              include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&
+              fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&
+              page[limit]=${MAX_ITEMS_PER_PAGE}`);
+                    }
+                    else {
+                        data = yield getData(`${API_BASE}/jsonapi/node/project?sort=-field_date&
+                include=field_project_technology,field_company,field_screenshot&
+                fields[node--company]=field_company_name,field_video_url&
+                fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&
+                page[limit]=${MAX_ITEMS_PER_PAGE}`);
+                    }
+                    break;
+            }
+        }
+    }
+    let passedInCount = {
+        currentCount: document.getElementById('lastCount')
+            ? document.getElementById('lastCount').textContent
+            : 1,
+    };
+    data = Object.assign(Object.assign({}, data), { passedInCount });
+    if (data.data.length) {
+        renderPage(data, page, search, data.links.next, data.links.prev);
+    }
+    else {
+        updateInterface(search);
+    }
+});
+const updateInterface = (search) => {
     noRecordsFound('noRecords', search, 'navigation', 'No matches found for');
 };
-var cleanURL = function (urlToClean) {
-    var fixedURL = '';
-    var strings = urlToClean.split(' ');
-    strings.forEach(function (element) {
+const cleanURL = (urlToClean) => {
+    let fixedURL = '';
+    let strings = urlToClean.split(' ');
+    strings.forEach((element) => {
         if (element)
             fixedURL += element.replace(/$\n^\s*/gm, '');
     });
     return fixedURL;
 };
-var getData = function (dataURL) {
-    var result = $.ajax({
-        dataType: 'json',
-        accepts: {
-            json: 'application/vnd.api+json',
-        },
-        url: cleanURL(dataURL),
-        type: 'GET',
-    });
+const getData = (dataURL) => __awaiter(void 0, void 0, void 0, function* () {
+    let result = {};
+    yield fetch(cleanURL(dataURL))
+        .then((response) => response.json())
+        .then((data) => (result = data));
     return result;
-};
-var searchClear = function (searchTextBoxID) {
-    var inputSearchBox = document.getElementById(searchTextBoxID);
+});
+const searchClear = (searchTextBoxID) => {
+    const inputSearchBox = document.getElementById(searchTextBoxID);
     inputSearchBox.value = '';
     getPage(getCurrentPage());
     updateInterface();
     document.getElementById('searchBtn').style.visibility = 'hidden';
 };
-var searchFilter = function (event) {
-    var charCode = event.keyCode || event.which;
+const searchFilter = (event) => {
+    let charCode = event.keyCode || event.which;
     return ((charCode >= 65 && charCode <= 122) ||
         (charCode >= 96 && charCode <= 105) ||
         (charCode >= 48 && charCode <= 57) ||
         charCode == 16 ||
         charCode == 32);
 };
-var itemWithSearchHighlight = function (itemToHighlight, searchedFor) {
-    var dataToReturn = '';
+const itemWithSearchHighlight = (itemToHighlight, searchedFor) => {
+    let dataToReturn = '';
     if (searchedFor) {
-        var searchTerm_1 = new RegExp(searchedFor, 'gi');
-        var results_1 = '';
-        var searchString_1 = '';
-        var searchStringArray = [];
+        let searchTerm = new RegExp(searchedFor, 'gi');
+        let results = '';
+        let searchString = '';
+        let searchStringArray = [];
         if (itemToHighlight && +itemToHighlight !== -1) {
-            searchString_1 = itemToHighlight.replace('&amp;', '&').replace('&#039;', "'");
+            searchString = itemToHighlight.replace('&amp;', '&').replace('&#039;', "'");
         }
-        if (searchString_1.indexOf('<ul>') !== -1) {
-            var listItem_1 = '';
-            var searchWithHTML = searchString_1.replace('<ul>', '').replace('</ul>', '');
+        if (searchString.indexOf('<ul>') !== -1) {
+            let listItem = '';
+            let searchWithHTML = searchString.replace('<ul>', '').replace('</ul>', '');
             searchStringArray = searchWithHTML.split('<li>');
-            searchStringArray.forEach(function (element) {
+            searchStringArray.forEach((element) => {
                 if (element.length > 3) {
-                    searchString_1 = element.slice(0, element.lastIndexOf('<'));
-                    if (searchString_1.match(searchTerm_1)) {
-                        results_1 = searchString_1.replace(searchTerm_1, function (match) { return "<span class=\"highlightSearchText\">" + match + "</span>"; });
-                        listItem_1 += "<li>" + results_1 + "</li>";
+                    searchString = element.slice(0, element.lastIndexOf('<'));
+                    if (searchString.match(searchTerm)) {
+                        results = searchString.replace(searchTerm, (match) => `<span class="highlightSearchText">${match}</span>`);
+                        listItem += `<li>${results}</li>`;
                     }
                     else {
-                        listItem_1 += "<li>" + searchString_1 + "</li>";
+                        listItem += `<li>${searchString}</li>`;
                     }
                 }
             });
-            dataToReturn = "<ul>" + listItem_1 + "</ul>";
+            dataToReturn = `<ul>${listItem}</ul>`;
         }
         else {
-            if (searchString_1.match(searchTerm_1)) {
-                results_1 = searchString_1.replace(searchTerm_1, function (match) { return "<span class=\"highlightSearchText\">" + match + "</span>"; });
-                dataToReturn += results_1;
+            if (searchString.match(searchTerm)) {
+                results = searchString.replace(searchTerm, (match) => `<span class="highlightSearchText">${match}</span>`);
+                dataToReturn += results;
             }
             else {
-                dataToReturn += searchString_1;
+                dataToReturn += searchString;
             }
         }
     }
     return dataToReturn || itemToHighlight;
 };
-var formSubmitted = function (seconds) {
-    var countDown = document.createElement('div');
+const formSubmitted = (seconds) => {
+    let countDown = document.createElement('div');
     countDown.style.padding = '50px';
-    countDown.innerHTML = "<h2>Thanks For Your Submission</h2>\n    <h4>Redirecting to the homepage in <span id=\"secondCountDown\">" + seconds + "</span> seconds</h4>\n    <img id=\"timer\" src=\"https://chriscorchado.com/images/timer.gif\" />";
+    countDown.innerHTML = `<h2>Thanks For Your Submission</h2>
+    <h4>Redirecting to the homepage in <span id="secondCountDown">${seconds}</span> seconds</h4>
+    <img id="timer" src="https://chriscorchado.com/images/timer.gif" />`;
     document.getElementsByClassName('container')[0].append(countDown);
-    var updateCountDown = setInterval(function () {
+    let updateCountDown = setInterval(function () {
         seconds--;
         document.getElementById('secondCountDown').innerHTML = seconds.toString();
         if (seconds === 0) {
@@ -257,102 +259,160 @@ var formSubmitted = function (seconds) {
         }
     }, 1000);
 };
-var getMonthYear = function (dateString) {
-    var newDate = new Date(dateString);
+const getMonthYear = (dateString) => {
+    let newDate = new Date(dateString);
     return (newDate.toLocaleString('default', { month: 'long' }) +
         ' ' +
         newDate.getFullYear().toString());
 };
-var setPageHTML = function (values) {
-    var page = values[0];
-    var data = values[1];
-    var itemTitle = values[2];
-    var itemJobTitle = values[3];
-    var itemBody = values[4];
-    var imgPieces = values[5];
-    var startDate = values[6];
-    var endDate = values[7];
-    var itemTrackImage = values[8];
-    var itemPDF = values[9];
-    var itemDate = values[10];
-    var itemCompanyName = values[11];
-    var itemTechnology = values[12];
-    var searchedFor = values[13];
-    var includedTechnologyItem = values[14];
+const setPageHTML = (values) => {
+    let item = '';
+    let page = values[0];
+    let data = values[1];
+    let itemTitle = values[2];
+    let itemJobTitle = values[3];
+    let itemBody = values[4];
+    let imgPieces = values[5];
+    let startDate = values[6];
+    let endDate = values[7];
+    let itemTrackImage = values[8];
+    let itemPDF = values[9];
+    let itemDate = values[10];
+    let itemCompanyName = values[11];
+    let itemTechnology = values[12];
+    let searchedFor = values[13];
+    let includedTechnologyItem = values[14];
     switch (page) {
         case 'about':
             document.getElementById('search-container').style.display = 'none';
             document.getElementById('logo').getElementsByTagName('img')[0].style.border =
                 '1px dashed #7399EA';
-            var aboutData = data.attributes.body.value.toString().split('<hr />');
+            let aboutData = data.attributes.body.value.toString().split('<hr />');
             document.getElementById('profiles').innerHTML = aboutData[1];
-            return "<h1>" + itemTitle + "</h1> " + aboutData[0];
+            return `<h1>${itemTitle}</h1> ${aboutData[0]}`;
             break;
         case 'contact':
             if (location.toString().indexOf('/contact.html?submitted=true') !== -1) {
                 formSubmitted(5);
             }
             else {
-                $('.container').html(data.toString());
-                $('#contact-link').addClass('nav-item-active');
-                var webLocation = document.getElementById('edit-field-site-0-value');
+                document.getElementsByClassName('container')[0].innerHTML = data.toString();
+                document.getElementById('contact-link').className += ' nav-item-active';
+                const webLocation = document.getElementById('edit-field-site-0-value');
                 webLocation.value = location.toString();
-                $('#edit-mail').focus();
+                document.getElementById('edit-mail').focus();
             }
             break;
         case 'companies':
-            return "<div class=\"company-container col shadow\">\n\n          <div class=\"company-name\">" + itemTitle + "</div>\n          <div class=\"company-job-title\">" + itemJobTitle + "</div>\n          <div class=\"body-container\">" + itemBody + "</div>\n\n          <div class=\"screenshot-container\">\n            <img loading=lazy src=" + getFullUrlByPage(imgPieces[0], page) + " \n            class=\"company-screenshot\" \n            alt=\"" + data.attributes.title + " Screenshot\" \n            title=\"" + data.attributes.title + " Screenshot\"/>\n          </div>\n\n          <div class=\"employment-dates\">" + startDate + " - " + endDate + "</div>\n        </div>";
+            return `<div class="company-container col shadow">
+
+          <div class="company-name">${itemTitle}</div>
+          <div class="company-job-title">${itemJobTitle}</div>
+          <div class="body-container">${itemBody}</div>
+
+          <div class="screenshot-container">
+            <img loading=lazy src=${getFullUrlByPage(imgPieces[0], page)} 
+            class="company-screenshot" 
+            alt="${data.attributes.title} Screenshot" 
+            title="${data.attributes.title} Screenshot"/>
+          </div>
+
+          <div class="employment-dates">${startDate} - ${endDate}</div>
+        </div>`;
             break;
         case 'courses':
-            var item_1 = "<div class=\"course-box box\">\n          <h2>" + itemTitle + "</h2>\n\n          <div>\n            <img loading=lazy src=\"" + getFullUrlByPage(imgPieces[0], page) + "\" \n              alt=\"" + itemTitle.replace(/(<([^>]+)>)/gi, '') + "\" \n              title=\"" + itemTitle.replace(/(<([^>]+)>)/gi, '') + "\" />\n          </div>\n\n          <div class=\"course-wrapper\">\n\n            <span class=\"course-date\">" + itemDate + "</span>\n\n            <span class=\"course-links\">\n              <a href=\"" + getFullUrlByPage(itemPDF, page) + "\" target=\"_blank\">\n                <img loading=lazy src=\"https://chriscorchado.com/images/pdfIcon.jpg\" height=\"25\" \n                title=\"View the PDF Certificate\" alt=\"View the PDF Certificate\"/>\n              </a>\n            </span>";
+            item = `<div class="course-box box">
+          <h2>${itemTitle}</h2>
+
+          <div>
+            <img loading=lazy src="${getFullUrlByPage(imgPieces[0], page)}" 
+              alt="${itemTitle.replace(/(<([^>]+)>)/gi, '')}" 
+              title="${itemTitle.replace(/(<([^>]+)>)/gi, '')}" />
+          </div>
+
+          <div class="course-wrapper">
+
+            <span class="course-date">${itemDate}</span>
+
+            <span class="course-links">
+              <a href="${getFullUrlByPage(itemPDF, page)}" target="_blank">
+                <img loading=lazy src="https://chriscorchado.com/images/pdfIcon.jpg" height="25" 
+                title="View the PDF Certificate" alt="View the PDF Certificate"/>
+              </a>
+            </span>`;
             if (itemTrackImage) {
-                item_1 += "<span class=\"course-links\">\n            <a href=\"" + getFullUrlByPage(itemTrackImage, page) + "\" data-featherlight=\"image\">\n              <img loading=lazy src=\"https://chriscorchado.com/images/linkedIn-track.png\" height=\"25\" \n              title=\"View the Courses in the Track\" alt=\"View the Courses in the Track\" />\n            </a>\n          </span>";
+                item += `<span class="course-links">
+            <a href="${getFullUrlByPage(itemTrackImage, page)}" data-featherlight="image">
+              <img loading=lazy src="https://chriscorchado.com/images/linkedIn-track.png" height="25" 
+              title="View the Courses in the Track" alt="View the Courses in the Track" />
+            </a>
+          </span>`;
             }
-            return (item_1 += "</div></div>");
+            return (item += `</div></div>`);
             break;
         case 'projects':
-            var imgAltCount_1 = 0;
-            item_1 = "<div class=\"project col\">\n        <div class=\"project-title\">" + itemTitle + "</div>\n        <div class=\"project-company\">" + itemCompanyName + " <span class=\"project-date\">(" + itemDate + ")</span></div> \n        <div class=\"body-container\">" + itemBody + "</div>";
+            let imgAltCount = 0;
+            item = `<div class="project col">
+        <div class="project-title">${itemTitle}</div>
+        <div class="project-company">${itemCompanyName} <span class="project-date">(${itemDate})</span></div> 
+        <div class="body-container">${itemBody}</div>`;
             if (imgPieces) {
-                var itemGridClass = "project-item-grid project-items" + data.relationships.field_screenshot.data.length;
-                var section_1 = "<section data-featherlight-gallery data-featherlight-filter=\"a\" class=\"" + itemGridClass + "\">";
-                var screenshotAlt_1 = new Array();
-                data.relationships.field_screenshot.data.forEach(function (screenshot) {
-                    screenshotAlt_1.push(screenshot.meta.alt);
+                let itemGridClass = `project-item-grid project-items${data.relationships.field_screenshot.data.length}`;
+                let section = `<section data-featherlight-gallery data-featherlight-filter="a" class="${itemGridClass}">`;
+                let screenshotAlt = new Array();
+                data.relationships.field_screenshot.data.forEach((screenshot) => {
+                    screenshotAlt.push(screenshot.meta.alt);
                 });
-                imgAltCount_1 = 0;
-                imgPieces.forEach(function (img) {
-                    var pieces = img.split(',');
-                    pieces.forEach(function (item) {
-                        var projectImage = getFullUrlByPage(item, page);
-                        section_1 += "<div class=\"project-item shadow\" title='" + screenshotAlt_1[imgAltCount_1] + "'>\n            \n              <a href=" + projectImage + " class=\"gallery\">\n                <div class=\"project-item-desc\">\n                  " + itemWithSearchHighlight(screenshotAlt_1[imgAltCount_1], searchedFor) + "\n                </div>\n\n                <img loading=lazy src='" + projectImage + "' alt='" + screenshotAlt_1[imgAltCount_1] + "' \n                  title='" + screenshotAlt_1[imgAltCount_1] + "' />\n              </a>\n            </div>";
-                        imgAltCount_1++;
+                imgAltCount = 0;
+                imgPieces.forEach((img) => {
+                    let pieces = img.split(',');
+                    pieces.forEach((item) => {
+                        let projectImage = getFullUrlByPage(item, page);
+                        section += `<div class="project-item shadow" title='${screenshotAlt[imgAltCount]}'>
+            
+              <a href=${projectImage} class="gallery">
+                <div class="project-item-desc">
+                  ${itemWithSearchHighlight(screenshotAlt[imgAltCount], searchedFor)}
+                </div>
+
+                <img loading=lazy src='${projectImage}' alt='${screenshotAlt[imgAltCount]}' 
+                  title='${screenshotAlt[imgAltCount]}' />
+              </a>
+            </div>`;
+                        imgAltCount++;
                     });
                 });
-                section_1 += "</section>";
-                item_1 += section_1;
+                section += `</section>`;
+                item += section;
             }
             if (data.attributes.field_video_url) {
-                data.attributes.field_video_url.forEach(function (img) {
-                    item_1 += "<span title=\"Play Video\"><a href=\"" + img + "\" \n          data-featherlight=\"iframe\" \n          data-featherlight-iframe-frameborder=\"0\" \n          data-featherlight-iframe-allowfullscreen=\"true\" \n          data-featherlight-iframe-allow=\"autoplay; encrypted-media\"\n          data-featherlight-iframe-style=\"display:block;border:none;height:85vh;width:85vw;\" class=\"play-video\">\n            Play Video <img loading=lazy src=\"https://chriscorchado.com/images/play_vidoe_icon.png\" alt=\"Play Video\" width=\"20\" />\n          </a></span>";
+                data.attributes.field_video_url.forEach((img) => {
+                    item += `<span title="Play Video"><a href="${img}" 
+          data-featherlight="iframe" 
+          data-featherlight-iframe-frameborder="0" 
+          data-featherlight-iframe-allowfullscreen="true" 
+          data-featherlight-iframe-allow="autoplay; encrypted-media"
+          data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;" class="play-video">
+            Play Video <img loading=lazy src="https://chriscorchado.com/images/play_vidoe_icon.png" alt="Play Video" width="20" />
+          </a></span>`;
                 });
             }
-            item_1 += "<div class=\"project-technology\">" + itemTechnology.slice(0, -2) + "</div>";
-            item_1 += "</div>";
-            return item_1;
+            item += `<div class="project-technology">${itemTechnology.slice(0, -2)}</div>`;
+            item += `</div>`;
+            return item;
             break;
     }
 };
-var noRecordsFound = function (noRecordID, search, appendToID, msg) {
+const noRecordsFound = (noRecordID, search, appendToID, msg) => {
     if (document.getElementById(noRecordID)) {
         document.getElementById(noRecordID).remove();
     }
     if (!document.getElementById(noRecordID) && search) {
         document.getElementById('pagination').style.display = 'none';
         document.getElementsByClassName('container')[0].removeAttribute('style');
-        var notFound = document.createElement('div');
+        let notFound = document.createElement('div');
         notFound.id = noRecordID;
-        notFound.innerHTML = msg + " '" + search + "'";
+        notFound.innerHTML = `${msg} '${search}'`;
         document.getElementById(appendToID).appendChild(notFound);
         document.getElementById('preloadAnimation').remove();
         document.getElementById('searchCount').innerHTML =
@@ -363,14 +423,14 @@ var noRecordsFound = function (noRecordID, search, appendToID, msg) {
         document.getElementById('searchBtn').style.visibility = 'visible';
     }
 };
-var getIncludedData = function (data) {
-    var includedAssetFilename = [''];
-    var includedCompanyName = [''];
-    var includedTechnologyName = [''];
-    var includedTechnologyIcon = [''];
-    data.included.forEach(function (included_element) {
+const getIncludedData = (data) => {
+    let includedAssetFilename = [''];
+    let includedCompanyName = [''];
+    let includedTechnologyName = [''];
+    let includedTechnologyIcon = [''];
+    data.included.forEach((included_element) => {
         if (included_element.attributes.description) {
-            var iconFileNamePath = /"(.*?)"/.exec(included_element.attributes.description.value);
+            let iconFileNamePath = /"(.*?)"/.exec(included_element.attributes.description.value);
             includedTechnologyIcon[included_element.id] = iconFileNamePath[1];
         }
         if (included_element.attributes.filename) {
@@ -391,14 +451,14 @@ var getIncludedData = function (data) {
         includedTechnologyIcon,
     ];
 };
-var getElementRelationships = function (element, includedAssetFilename, includedCompanyName, includedTechnologyName, includedTechnologyIcon) {
-    var imgPieces = [];
-    var itemPDF = '';
-    var itemTrackImage = '';
-    var itemCompanyName = '';
-    var itemTechnology = '';
-    var itemTechnologyIcon = '';
-    var includedTechnologyItem = [];
+const getElementRelationships = (element, includedAssetFilename, includedCompanyName, includedTechnologyName, includedTechnologyIcon) => {
+    let imgPieces = [];
+    let itemPDF = '';
+    let itemTrackImage = '';
+    let itemCompanyName = '';
+    let itemTechnology = '';
+    let itemTechnologyIcon = '';
+    let includedTechnologyItem = [];
     if (element.relationships.field_award_images &&
         element.relationships.field_award_images.data) {
         imgPieces.push(includedAssetFilename[element.relationships.field_award_images.data[0].id]);
@@ -421,18 +481,18 @@ var getElementRelationships = function (element, includedAssetFilename, included
     }
     if (element.relationships.field_screenshot &&
         element.relationships.field_screenshot.data) {
-        for (var i = 0; i < element.relationships.field_screenshot.data.length; i++) {
+        for (let i = 0; i < element.relationships.field_screenshot.data.length; i++) {
             imgPieces.push(includedAssetFilename[element.relationships.field_screenshot.data[i].id]);
         }
     }
     if (element.relationships.field_project_technology &&
         element.relationships.field_project_technology.data) {
-        for (var i = 0; i < element.relationships.field_project_technology.data.length; i++) {
+        for (let i = 0; i < element.relationships.field_project_technology.data.length; i++) {
             itemTechnology +=
                 includedTechnologyName[element.relationships.field_project_technology.data[i].id] + ', ';
             itemTechnologyIcon +=
                 includedTechnologyIcon[element.relationships.field_project_technology.data[i].id] + ', ';
-            var technologyItem = {
+            let technologyItem = {
                 name: includedTechnologyName[element.relationships.field_project_technology.data[i].id],
                 image: includedTechnologyIcon[element.relationships.field_project_technology.data[i].id],
             };
@@ -449,28 +509,28 @@ var getElementRelationships = function (element, includedAssetFilename, included
         includedTechnologyItem,
     ];
 };
-var renderPage = function (data, page, searchedFor, next, prev) {
-    var pageIsSearchable = false;
+const renderPage = (data, page, searchedFor, next, prev) => {
+    let pageIsSearchable = false;
     if (page == 'contact') {
         setPageHTML([page, data]);
         return;
     }
-    var includedCompanyName = [''];
-    var includedAssetFilename = [''];
-    var includedTechnologyName = [''];
-    var includedTechnologyIcon = [''];
+    let includedCompanyName = [''];
+    let includedAssetFilename = [''];
+    let includedTechnologyName = [''];
+    let includedTechnologyIcon = [''];
     if (data.included) {
-        var allIncludedData = getIncludedData(data);
+        let allIncludedData = getIncludedData(data);
         includedCompanyName = allIncludedData[0];
         includedAssetFilename = allIncludedData[1];
         includedTechnologyName = allIncludedData[2];
         includedTechnologyIcon = allIncludedData[3];
     }
-    var item = '', itemBody = '', currentNavItem = '', itemTitle = '', itemDate = '', startDate = '', endDate = '', itemJobTitle = '', itemTechnology = '', itemTechnologyIcon = '', itemCompanyName = '', itemWorkType = '', itemPDF = '', itemTrackImage = '';
-    var itemCount = 0;
-    var imgPieces = [''];
-    var includedTechnologyItem = [];
-    data.data.forEach(function (element) {
+    let item = '', itemBody = '', currentNavItem = '', itemTitle = '', itemDate = '', startDate = '', endDate = '', itemJobTitle = '', itemTechnology = '', itemTechnologyIcon = '', itemCompanyName = '', itemWorkType = '', itemPDF = '', itemTrackImage = '';
+    let itemCount = 0;
+    let imgPieces = [];
+    let includedTechnologyItem = [];
+    data.data.forEach((element) => {
         itemTitle = element.attributes.title;
         itemBody = element.attributes.body ? element.attributes.body.value : '';
         itemDate = element.attributes.field_date || element.attributes.field_award_date;
@@ -483,7 +543,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
         imgPieces = [];
         includedTechnologyItem = [];
         if (element.relationships) {
-            var relationshipData = getElementRelationships(element, includedAssetFilename, includedCompanyName, includedTechnologyName, includedTechnologyIcon);
+            let relationshipData = getElementRelationships(element, includedAssetFilename, includedCompanyName, includedTechnologyName, includedTechnologyIcon);
             if (!imgPieces.includes(relationshipData[0].toString())) {
                 imgPieces.push(relationshipData[0].toString());
             }
@@ -520,7 +580,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
             }
         }
         itemCount++;
-        var allValues = [
+        const allValues = [
             page,
             element,
             itemTitle,
@@ -552,6 +612,7 @@ var renderPage = function (data, page, searchedFor, next, prev) {
                 break;
         }
     });
+    let pageHasGallery = false;
     switch (page) {
         case 'about':
             currentNavItem = 'about-link';
@@ -563,28 +624,34 @@ var renderPage = function (data, page, searchedFor, next, prev) {
         case 'courses':
             currentNavItem = 'courses-link';
             pageIsSearchable = true;
+            pageHasGallery = true;
             break;
         case 'projects':
             currentNavItem = 'projects-link';
             pageIsSearchable = true;
+            pageHasGallery = true;
             break;
     }
-    $('#' + currentNavItem).addClass('nav-item-active');
-    $('.container').html(item);
+    if (page !== 'about') {
+        document.getElementById(currentNavItem).className += ' nav-item-active';
+    }
+    document.getElementsByClassName('container')[0].innerHTML = item;
     if (pageIsSearchable) {
         document.getElementById('search-container').style.display = 'block';
     }
-    $('a.gallery').featherlightGallery({
-        previousIcon: '&#9664;',
-        nextIcon: '&#9654;',
-        galleryFadeIn: 200,
-        galleryFadeOut: 300,
-    });
+    if (pageHasGallery) {
+        $('a.gallery').featherlightGallery({
+            previousIcon: '&#9664;',
+            nextIcon: '&#9654;',
+            galleryFadeIn: 200,
+            galleryFadeOut: 300,
+        });
+    }
     setPagination(itemCount, data.passedInCount.currentCount, prev, next);
     setLoading(false);
 };
-var getFullUrlByPage = function (linkToFix, page) {
-    var pathToResource = 'No Path Found';
+const getFullUrlByPage = (linkToFix, page) => {
+    let pathToResource = 'No Path Found';
     switch (page) {
         case 'companies':
             pathToResource = 'company-screenshot';
@@ -601,136 +668,136 @@ var getFullUrlByPage = function (linkToFix, page) {
             pathToResource = 'project-screenshot';
             break;
     }
-    return API_BASE + "/sites/default/files/" + pathToResource + "/" + linkToFix;
+    return `${API_BASE}/sites/default/files/${pathToResource}/${linkToFix}`;
 };
-var getSearchCount = function (count, searchCountID) {
-    if ($("#" + SITE_SEARCH_ID).val()) {
+const getSearchCount = (count, searchCountID) => {
+    let searchElement = document.getElementById(SITE_SEARCH_ID);
+    if (searchElement.value) {
         if (count <= MAX_ITEMS_PER_PAGE) {
             document.getElementById(searchCountID).innerHTML =
-                count + ("  " + (count == 1 ? 'Item' : 'Items'));
+                count + `  ${count == 1 ? 'Item' : 'Items'}`;
         }
         else {
             document.getElementById(searchCountID).innerHTML =
-                MAX_ITEMS_PER_PAGE + ("  " + (+MAX_ITEMS_PER_PAGE == 1 ? 'Item' : 'Items'));
+                MAX_ITEMS_PER_PAGE + `  ${+MAX_ITEMS_PER_PAGE == 1 ? 'Item' : 'Items'}`;
         }
-        return count + " " + (count == 1 ? 'Item' : 'Items') + " ";
+        return `${count} ${count == 1 ? 'Item' : 'Items'} `;
     }
 };
-var getSearchOffset = function (link) {
-    var nextURL = link.href.replace(/%2C/g, ',').replace(/%5B/g, '[').replace(/%5D/g, ']');
+const getSearchOffset = (link) => {
+    let nextURL = link.href.replace(/%2C/g, ',').replace(/%5B/g, '[').replace(/%5D/g, ']');
     return nextURL.substring(nextURL.search('offset') + 8, nextURL.search('limit') - 6);
 };
-var setPagination = function (count, paginationTotal, prev, next) {
-    var dataOffset = 0;
-    var prevLink = '';
-    var nextLink = '';
+const setPagination = (count, paginationTotal, prev, next) => {
+    let dataOffset = 0;
+    let prevLink = '';
+    let nextLink = '';
     if (next)
         dataOffset = getSearchOffset(next);
-    var dataOffsetText = getSearchCount(count, 'searchCount');
+    let dataOffsetText = getSearchCount(count, 'searchCount');
     if (!next && !prev) {
-        document.getElementById('searchCount').innerHTML = "<span id=\"totalItems\">" + count + "</span>\n   " + (count == 1 ? 'Item' : 'Items');
+        document.getElementById('searchCount').innerHTML = `<span id="totalItems">${count}</span>
+   ${count == 1 ? 'Item' : 'Items'}`;
     }
     else {
-        var currentCount = +dataOffset / MAX_ITEMS_PER_PAGE;
+        let currentCount = +dataOffset / MAX_ITEMS_PER_PAGE;
         if (count == dataOffset) {
-            dataOffsetText = "Items 1-<span id=\"lastCount\">" + MAX_ITEMS_PER_PAGE + "</span>";
+            dataOffsetText = `Items 1-<span id="lastCount">${MAX_ITEMS_PER_PAGE}</span>`;
         }
         else {
             if (currentCount !== 0) {
-                dataOffsetText = "Items " + (currentCount * MAX_ITEMS_PER_PAGE - MAX_ITEMS_PER_PAGE) + "-<span id=\"lastCount\">" + currentCount * MAX_ITEMS_PER_PAGE + "</span>";
+                dataOffsetText = `Items ${currentCount * MAX_ITEMS_PER_PAGE - MAX_ITEMS_PER_PAGE}-<span id="lastCount">${currentCount * MAX_ITEMS_PER_PAGE}</span>`;
             }
             else {
-                dataOffsetText = "Items " + paginationTotal + "-<span id=\"lastCount\">" + (+paginationTotal + count) + "</span>";
+                dataOffsetText = `Items ${paginationTotal}-<span id="lastCount">${+paginationTotal + count}</span>`;
             }
         }
-        document.getElementById('searchCount').innerHTML = "<span id=\"paging-info\">" + dataOffsetText + "</span>";
+        document.getElementById('searchCount').innerHTML = `<span id="paging-info">${dataOffsetText}</span>`;
         prevLink = prev
-            ? "<a href=\"#\" class=\"pager-navigation\" title=\"View the previous page\" \n          onclick=\"getPage(getCurrentPage(), document.getElementById('" + SITE_SEARCH_ID + "').value,'" + prev.href + "')\">Prev</a>"
-            : "<span class=\"pager-navigation disabled\" title=\"There is no previous page available\">Prev</span>";
+            ? `<a href="#" class="pager-navigation" title="View the previous page" 
+          onclick="getPage(getCurrentPage(), document.getElementById('${SITE_SEARCH_ID}').value,'${prev.href}')">Prev</a>`
+            : `<span class="pager-navigation disabled" title="There is no previous page available">Prev</span>`;
         nextLink = next
-            ? "<a href=\"#\" class=\"pager-navigation\" title=\"View the next page\" \n          onclick=\"getPage(getCurrentPage(), document.getElementById('" + SITE_SEARCH_ID + "').value,'" + next.href + "')\">Next</a>"
-            : "<span class=\"pager-navigation disabled\" title=\"There is no next page available\">Next</span>";
+            ? `<a href="#" class="pager-navigation" title="View the next page" 
+          onclick="getPage(getCurrentPage(), document.getElementById('${SITE_SEARCH_ID}').value,'${next.href}')">Next</a>`
+            : `<span class="pager-navigation disabled" title="There is no next page available">Next</span>`;
     }
+    let paginationCount = document.getElementById('pagination');
     if (count < MAX_ITEMS_PER_PAGE && paginationTotal === 1) {
-        $('#pagination').hide();
+        paginationCount.style.display = 'none';
     }
     else {
-        $('#pagination').html(prevLink + "  " + nextLink);
+        paginationCount.style.display = 'inline-block';
+        paginationCount.innerHTML = `${prevLink}  ${nextLink}`;
     }
 };
-var updateMenuPages = function (currentPage, targetContainer) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4, fetch(API_BASE + "/api/menu_items/main?_format=json")
-                    .then(function (resp) {
-                    return resp.ok ? resp.json() : Promise.reject(resp.statusText);
-                })
-                    .then(function (pageData) {
-                    var pageName = '';
-                    var pageLink = '';
-                    var homepageStyle = '';
-                    if (currentPage == 'about') {
-                        homepageStyle = 'border: 1px dashed rgb(115, 153, 234);';
-                    }
-                    var generatedPageLinks = "<a href=\"index.html\" class=\"navbar-brand\" id=\"logo\" style=\"" + homepageStyle + "\">\n        <img src=\"./images/chriscorchado-initials-logo.png\" title=\"Home\" alt=\"Home\">\n      </a>";
-                    for (var page in pageData) {
-                        pageName = pageData[page].title;
-                        if (pageName == 'Home' || pageName == 'About' || !pageData[page].enabled) {
-                            continue;
-                        }
-                        var activeNavItem = '';
-                        if (currentPage == pageName.toLowerCase()) {
-                            activeNavItem = 'nav-item-active';
-                        }
-                        pageLink = pageName;
-                        if (pageName == 'Companies')
-                            pageName = 'History';
-                        generatedPageLinks += "<a href=\"" + pageLink.toLowerCase() + ".html\" \n        class=\"nav-item nav-link " + activeNavItem + "\" \n        title=\"" + pageName + "\" \n        id=\"" + pageName.toLowerCase() + "-link\">" + pageName + "</a>";
-                    }
-                    document.getElementById(targetContainer).innerHTML = generatedPageLinks;
-                })
-                    .catch(function (error) {
-                    alert("Sorry an error has occurred: " + error);
-                })];
-            case 1:
-                _a.sent();
-                return [2];
+const updateMenuPages = (currentPage, targetContainer) => __awaiter(void 0, void 0, void 0, function* () {
+    yield fetch(`${API_BASE}/api/menu_items/main?_format=json`)
+        .then((resp) => {
+        return resp.ok ? resp.json() : Promise.reject(resp.statusText);
+    })
+        .then((pageData) => {
+        let pageName = '';
+        let pageLink = '';
+        let homepageStyle = '';
+        if (currentPage == 'about') {
+            homepageStyle = 'border: 1px dashed rgb(115, 153, 234);';
         }
+        let generatedPageLinks = `<a href="index.html" class="navbar-brand" id="logo" style="${homepageStyle}">
+        <img src="./images/chriscorchado-initials-logo.png" title="Home" alt="Home">
+      </a>`;
+        for (let page in pageData) {
+            pageName = pageData[page].title;
+            if (pageName == 'Home' || pageName == 'About' || !pageData[page].enabled) {
+                continue;
+            }
+            let activeNavItem = '';
+            if (currentPage == pageName.toLowerCase()) {
+                activeNavItem = 'nav-item-active';
+            }
+            pageLink = pageName;
+            if (pageName == 'Companies')
+                pageName = 'History';
+            generatedPageLinks += `<a href="${pageLink.toLowerCase()}.html" 
+        class="nav-item nav-link ${activeNavItem}" 
+        title="${pageName}" 
+        id="${pageName.toLowerCase()}-link">${pageName}</a>`;
+        }
+        document.getElementById(targetContainer).innerHTML = generatedPageLinks;
+    })
+        .catch((error) => {
+        alert(`Sorry an error has occurred: ${error}`);
     });
-}); };
-var getCurrentPage = function () {
-    var thisPage = window.location.pathname
+});
+const getCurrentPage = () => {
+    let thisPage = window.location.pathname
         .split('/')
         .filter(function (pathnamePieces) {
         return pathnamePieces.length;
     })
         .pop();
-    var pageName = thisPage.split('.')[0];
+    let pageName = thisPage.split('.')[0];
     if (pageName == 'index' || pageName == 'html5')
         pageName = 'about';
     return pageName;
 };
-var debounce = function (func, wait) {
-    var timeout;
-    return function executedFunction() {
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i] = arguments[_i];
-        }
-        var later = function () {
+const debounce = (func, wait) => {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
             timeout = null;
-            func.apply(void 0, args);
+            func(...args);
         };
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
     };
 };
-var debounceMe = debounce(function () {
-    var inputSearchBox = document.getElementById(SITE_SEARCH_ID);
+const debounceMe = debounce(() => {
+    const inputSearchBox = document.getElementById(SITE_SEARCH_ID);
     getPage(getCurrentPage(), inputSearchBox.value);
     updateInterface();
 }, 500);
-var fadeOut = function (el) {
+const fadeOut = (el) => {
     el.style.opacity = 1;
     (function fade() {
         if ((el.style.opacity -= 0.1) < 0) {
@@ -741,7 +808,7 @@ var fadeOut = function (el) {
         }
     })();
 };
-var fadeIn = function (el) {
+const fadeIn = (el) => {
     el.style.opacity = 0;
     (function fade() {
         var val = parseFloat(el.style.opacity);
@@ -751,7 +818,6 @@ var fadeIn = function (el) {
         }
     })();
 };
-window.onload = function () {
+window.onload = () => {
     getPage(getCurrentPage());
 };
-//# sourceMappingURL=chriscorchado.js.map

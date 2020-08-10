@@ -4,8 +4,21 @@ const API_BASE = 'https://chriscorchado.com/drupal8';
 const MAX_ITEMS_PER_PAGE = 50;
 const SITE_SEARCH_ID = 'searchSite';
 
-$('#navigation').load('includes/nav.html');
-$('#footer').load('includes/footer.html');
+fetch('./includes/nav.html')
+  .then((response) => {
+    return response.text();
+  })
+  .then((data) => {
+    document.getElementById('navigation').innerHTML = data;
+  });
+
+fetch('./includes/footer.html')
+  .then((response) => {
+    return response.text();
+  })
+  .then((data) => {
+    document.getElementById('footer').innerHTML = data;
+  });
 
 /**
  * Toggle content and preloader
@@ -222,16 +235,11 @@ const cleanURL = (urlToClean: string) => {
  * @param {string} dataURL - URL to fetch data from
  * @return {Object} - JSON object of data
  */
-const getData = (dataURL: string) => {
-  const result = $.ajax({
-    dataType: 'json',
-    accepts: {
-      json: 'application/vnd.api+json',
-    },
-    url: cleanURL(dataURL),
-    type: 'GET',
-  });
-
+const getData = async (dataURL: string) => {
+  let result: any = {};
+  await fetch(cleanURL(dataURL))
+    .then((response) => response.json())
+    .then((data) => (result = data));
   return result;
 };
 
@@ -379,6 +387,7 @@ const getMonthYear = (dateString: string) => {
  * @return {string} - HTML for the page
  */
 const setPageHTML = (values: any) => {
+  let item = '';
   let page = values[0];
   let data = values[1];
   let itemTitle = values[2];
@@ -416,9 +425,8 @@ const setPageHTML = (values: any) => {
         formSubmitted(5);
       } else {
         // show the form
-        $('.container').html(data.toString());
-
-        $('#contact-link').addClass('nav-item-active');
+        document.getElementsByClassName('container')[0].innerHTML = data.toString();
+        document.getElementById('contact-link').className += ' nav-item-active';
 
         // capture the current site URL
         const webLocation = document.getElementById(
@@ -426,8 +434,7 @@ const setPageHTML = (values: any) => {
         )! as HTMLInputElement;
 
         webLocation.value = location.toString();
-
-        $('#edit-mail').focus();
+        document.getElementById('edit-mail').focus();
       }
       break;
     case 'companies':
@@ -450,7 +457,7 @@ const setPageHTML = (values: any) => {
       // item += `<div class="employment-type">${itemWorkType}</div>`;
       break;
     case 'courses':
-      let item = `<div class="course-box box">
+      item = `<div class="course-box box">
           <h2>${itemTitle}</h2>
 
           <div>
@@ -818,7 +825,7 @@ const renderPage = (
     itemTrackImage = '';
 
   let itemCount = 0;
-  let imgPieces = [''];
+  let imgPieces: any = [];
   let includedTechnologyItem = [];
 
   data.data.forEach((element: any) => {
@@ -922,6 +929,7 @@ const renderPage = (
     }
   }); // data.data forEach
 
+  let pageHasGallery = false;
   switch (page) {
     case 'about':
       currentNavItem = 'about-link';
@@ -933,28 +941,34 @@ const renderPage = (
     case 'courses':
       currentNavItem = 'courses-link';
       pageIsSearchable = true;
+      pageHasGallery = true;
       break;
     case 'projects':
       currentNavItem = 'projects-link';
       pageIsSearchable = true;
+      pageHasGallery = true;
       break;
   }
 
-  $('#' + currentNavItem).addClass('nav-item-active');
+  if (page !== 'about') {
+    document.getElementById(currentNavItem).className += ' nav-item-active';
+  }
 
-  $('.container').html(item);
+  document.getElementsByClassName('container')[0].innerHTML = item;
 
   if (pageIsSearchable) {
     document.getElementById('search-container').style.display = 'block';
   }
 
-  // @ts-ignore
-  $('a.gallery').featherlightGallery({
-    previousIcon: '&#9664;' /* Code that is used as previous icon */,
-    nextIcon: '&#9654;' /* Code that is used as next icon */,
-    galleryFadeIn: 200 /* fadeIn speed when slide is loaded */,
-    galleryFadeOut: 300 /* fadeOut speed before slide is loaded */,
-  });
+  if (pageHasGallery) {
+    // @ts-ignore
+    $('a.gallery').featherlightGallery({
+      previousIcon: '&#9664;' /* Code that is used as previous icon */,
+      nextIcon: '&#9654;' /* Code that is used as next icon */,
+      galleryFadeIn: 200 /* fadeIn speed when slide is loaded */,
+      galleryFadeOut: 300 /* fadeOut speed before slide is loaded */,
+    });
+  }
 
   setPagination(itemCount, data.passedInCount.currentCount, prev, next);
 
@@ -996,7 +1010,9 @@ const getFullUrlByPage = (linkToFix: string, page: string) => {
  * @return {string} - item count with either 'Items' or 'Item'
  */
 const getSearchCount = (count: number, searchCountID: string) => {
-  if ($(`#${SITE_SEARCH_ID}`).val()) {
+  let searchElement = <HTMLInputElement>document.getElementById(SITE_SEARCH_ID);
+
+  if (searchElement.value) {
     if (count <= MAX_ITEMS_PER_PAGE) {
       document.getElementById(searchCountID).innerHTML =
         count + `  ${count == 1 ? 'Item' : 'Items'}`;
@@ -1083,10 +1099,13 @@ const setPagination = (
   }
 
   // hide pagination when the item count is less than the page limit and on the first page
+  let paginationCount = document.getElementById('pagination');
+
   if (count < MAX_ITEMS_PER_PAGE && paginationTotal === 1) {
-    $('#pagination').hide();
+    paginationCount.style.display = 'none';
   } else {
-    $('#pagination').html(`${prevLink}  ${nextLink}`);
+    paginationCount.style.display = 'inline-block';
+    paginationCount.innerHTML = `${prevLink}  ${nextLink}`;
   }
 };
 
