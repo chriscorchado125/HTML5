@@ -283,13 +283,13 @@ a:link {
   border-top: 2px solid #7399ea; }
 
 .site-version {
-  display: inline-block;
-  max-width: 120px;
   text-align: center;
-  padding: 0 5px 0 5px;
-  font-size: 10px; }
-  .site-version img {
-    width: 30px; }
+  padding: 10px 0; }
+  .site-version div {
+    display: inline-block;
+    margin: 0 5px; }
+    .site-version div img {
+      width: 45px; }
 
 .about h1 {
   color: #7399ea; }

@@ -161,14 +161,14 @@ a:link {
 }
 
 .site-version {
-  display: inline-block;
-  max-width: 120px;
   text-align: center;
-  padding: 0 5px 0 5px;
-  font-size: 10px;
-
-  img {
-    width: 30px;
+  padding: 10px 0;
+  div {
+    display: inline-block;
+    margin: 0 5px;
+    img {
+      width: 45px;
+    }
   }
 }
 

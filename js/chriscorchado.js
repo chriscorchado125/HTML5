@@ -287,9 +287,31 @@ const setPageHTML = (values) => {
             document.getElementById('search-container').style.display = 'none';
             document.getElementById('logo').getElementsByTagName('img')[0].style.border =
                 '1px dashed #7399EA';
-            let aboutData = data.attributes.body.value.toString().split('<hr />');
-            document.getElementById('profiles').innerHTML = aboutData[1];
-            return `<h1>${itemTitle}</h1> ${aboutData[0]}`;
+            let aboutData = data.attributes.body.value.toString();
+            document.getElementById('profiles').innerHTML = `
+       
+          <div class="icon" id="pdf-resume">
+            <a href="https://chriscorchado.com/resume/Chris-Corchado-resume-2020.pdf" target="_blank">
+              <img alt="Link to PDF Resume" src="https://chriscorchado.com/images/pdfIcon.jpg" title="Link to PDF Resume" />
+              <span>Resume</span>
+            </a>
+          </div>
+
+          <div class="icon" id="profile-linkedin">
+            <a href="https://www.linkedin.com/in/chriscorchado/" target="_blank">
+              <img alt="Link to LinkedIn Profile" title="Link to LinkedIn Profile" src="https://chriscorchado.com/images/linkedInIcon.jpg" />
+              <span>LinkedIn</span>
+            </a>
+          </div>
+
+          <div class="icon" id="profile-azure">
+            <a href="https://docs.microsoft.com/en-us/users/corchadochrisit-2736/" target="_blank">
+              <img alt="Link to Azure Profile" title="Link to Azure Profile" src="https://chriscorchado.com/images/azureIcon.png" />
+              <span>Azure</span>
+            </a>
+          </div>
+          `;
+            return `<h1>${itemTitle}</h1> ${aboutData}`;
             break;
         case 'contact':
             if (location.toString().indexOf('/contact.html?submitted=true') !== -1) {
@@ -386,14 +408,10 @@ const setPageHTML = (values) => {
                 item += section;
             }
             if (data.attributes.field_video_url) {
+                let encodedName = encodeURIComponent(itemTitle);
                 data.attributes.field_video_url.forEach((img) => {
-                    item += `<span title="Play Video"><a href="${img}" 
-          data-featherlight="iframe" 
-          data-featherlight-iframe-frameborder="0" 
-          data-featherlight-iframe-allowfullscreen="true" 
-          data-featherlight-iframe-allow="autoplay; encrypted-media"
-          data-featherlight-iframe-style="display:block;border:none;height:85vh;width:85vw;" class="play-video">
-            Play Video <img loading=lazy src="https://chriscorchado.com/images/play_vidoe_icon.png" alt="Play Video" width="20" />
+                    item += `<span title="Play Video"><a href="https://chriscorchado.com/video.html?url=${data.attributes.field_video_url}&name=${encodedName}" target="_blank" class="play-video">
+            Play Video <img loading=lazy src="https://chriscorchado.com/images/play_video_new_window_icon.png" alt="Play Video" width="20" />
           </a></span>`;
                 });
             }
