@@ -1236,12 +1236,13 @@ const debounce = (func: any, wait: number) => {
 /**
  * Triggered on the keyup event within search input box
  */
-const debounceMe = debounce(() => {
+const debounceMe = debounce((event: any) => {
   const inputSearchBox = document.getElementById(SITE_SEARCH_ID)! as HTMLInputElement;
 
-  getPage(getCurrentPage(), inputSearchBox.value);
-
-  updateInterface();
+  if (event.key !== 'Tab') {
+    getPage(getCurrentPage(), inputSearchBox.value);
+    updateInterface();
+  }
 }, 500);
 
 // https://gist.github.com/alirezas/c4f9f43e9fe1abba9a4824dd6fc60a55

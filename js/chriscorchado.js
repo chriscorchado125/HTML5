@@ -823,10 +823,12 @@ const debounce = (func, wait) => {
         timeout = setTimeout(later, wait);
     };
 };
-const debounceMe = debounce(() => {
+const debounceMe = debounce((event) => {
     const inputSearchBox = document.getElementById(SITE_SEARCH_ID);
-    getPage(getCurrentPage(), inputSearchBox.value);
-    updateInterface();
+    if (event.key !== 'Tab') {
+        getPage(getCurrentPage(), inputSearchBox.value);
+        updateInterface();
+    }
 }, 500);
 const fadeOut = (el) => {
     el.style.opacity = 1;
