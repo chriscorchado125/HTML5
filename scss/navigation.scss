@@ -56,11 +56,9 @@
 
   /* search button */
   .searchBtn {
-    padding: 3px;
-    margin-top: -3px;
+    padding: 2px;
     font-size: 12px;
     border-radius: 5px;
-    box-shadow: 0 2px #999;
     visibility: hidden;
   }
 
@@ -92,18 +90,6 @@
   }
 } // #search-container
 
-#pagination-footer {
-  width: 100%;
-  position: fixed;
-  padding: 3px;
-  text-align: center;
-  background-color: red !important;
-}
-
-.highlightSearchText {
-  background-color: yellow;
-}
-
 @media (max-width: 700px) {
   .navbar-nav {
     justify-content: space-between;
@@ -120,9 +106,9 @@
     width: 100%;
     padding: 5px 0;
     margin-top: 0px;
+
     #pagination {
       padding-left: 0;
-      margin: 0;
     }
 
     /* search textbox */
@@ -138,17 +124,16 @@
   }
   #search-container {
     #searchCount {
-      width: 65px;
-      margin-right: 0;
+      margin-right: 0px;
     }
     #pagination {
       .pager-navigation {
-        padding: 5px;
-        margin: 0;
+        margin: 0px;
+        padding: 2px 5px;
       }
     }
     #searchSite {
-      width: 100px;
+      width: 80px;
     }
   }
 }
@@ -163,6 +148,10 @@
         font-size: 14px;
       }
     }
+  }
+
+  #searchCount {
+    width: 65px !important;
   }
 
   #paging-info {

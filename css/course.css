@@ -46,8 +46,7 @@
     display: inline; }
 
   .container {
-    margin-top: 100px !important;
-    padding-top: 35px !important; } }
+    padding-top: 50px !important; } }
 @media (max-width: 600px) {
   .courses-container {
     grid-template-columns: 1fr; } }
