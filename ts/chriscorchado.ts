@@ -173,14 +173,14 @@ const getPage = async (page: string, search?: string, pagingURL?: string) => {
               filter[field_screenshot.meta.alt][condition][memberOf]=or-group&
               filter[field_date][operator]=CONTAINS&filter[field_date][value]=${search}&
               filter[field_date][condition][memberOf]=or-group&
-              sort=-field_date&
+              sort=-field_date&field_company.title&
               include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&
               fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&
               page[limit]=${MAX_ITEMS_PER_PAGE}`
             );
           } else {
             data = await getData(
-              `${API_BASE}/jsonapi/node/project?sort=-field_date&
+              `${API_BASE}/jsonapi/node/project?sort=-field_date&field_company.title&
                 include=field_project_technology,field_company,field_screenshot&
                 fields[node--company]=field_company_name,field_video_url&
                 fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&
