@@ -31,7 +31,19 @@
     <link rel="stylesheet" href="css/course.css" />
   </head>
   <body>
-    <a href="#content" class="screen-reader" id="skip-links" title="Skip the Navigation"
+    <a
+      href="#content"
+      class="screen-reader"
+      id="skip-links"
+      title="Skip the Navigation"
+      style="
+        position: absolute;
+        left: -10000px;
+        top: auto;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      "
       >Skip Navigation</a
     >
     <header id="navigation"></header>
@@ -39,7 +51,7 @@
     <main role="main">
       <div class="container courses-container" id="content"></div>
     </main>
-    
+
     <footer id="footer"></footer>
 
     <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
