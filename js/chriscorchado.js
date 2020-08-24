@@ -667,18 +667,20 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     }
     setPagination(itemCount, data.passedInCount.currentCount, prev, next);
     setLoading(false);
-    let currentURL = window.location.toString();
-    if (currentURL.indexOf('/html5/') !== -1) {
-        document.getElementById('html5').setAttribute('class', 'shadow-version noLink');
-        document.getElementById('html5-here').style.display = 'block';
-    }
-    else if (currentURL.indexOf('/drupal8/') !== -1) {
-        document.getElementById('drupal8').setAttribute('class', 'shadow-version noLink');
-        document.getElementById('drupal8-here').style.display = 'block';
-    }
-    else {
-        document.getElementById('nodeJS').setAttribute('class', 'shadow-version noLink');
-        document.getElementById('nodeJS-here').style.display = 'block';
+    if (page == 'about') {
+        let currentURL = window.location.toString();
+        if (currentURL.indexOf('/html5/') !== -1) {
+            document.getElementById('html5').setAttribute('class', 'shadow-version noLink');
+            document.getElementById('html5-here').style.display = 'block';
+        }
+        else if (currentURL.indexOf('/drupal8/') !== -1) {
+            document.getElementById('drupal8').setAttribute('class', 'shadow-version noLink');
+            document.getElementById('drupal8-here').style.display = 'block';
+        }
+        else {
+            document.getElementById('nodeJS').setAttribute('class', 'shadow-version noLink');
+            document.getElementById('nodeJS-here').style.display = 'block';
+        }
     }
 };
 const getFullUrlByPage = (linkToFix, page) => {
