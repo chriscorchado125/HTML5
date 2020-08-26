@@ -1,8 +1,5 @@
-.container {
-  margin-top: 80px !important;
-  margin: auto; }
-  .container h1 {
-    color: #7399ea; }
+.container > h1 {
+  margin-top: 100px; }
 
 #contact-message-feedback-form {
   margin: auto;
@@ -18,7 +15,6 @@
   #contact-message-feedback-form label {
     display: block; }
   #contact-message-feedback-form #thank-you {
-    background-color: red;
     margin-top: 50px; }
   #contact-message-feedback-form #edit-field-site-wrapper {
     display: none; }
@@ -48,8 +44,8 @@
 /* stack name and email fields */
 @media (max-width: 800px) {
   .container {
-    margin-top: 50px !important;
-    padding: 5px 0; }
+    margin-top: 50px;
+    padding: 10px 10px 20px 10px; }
     .container #contact-message-feedback-form {
       width: 100%;
       border-radius: 0; }
@@ -62,10 +58,7 @@
   .js-form-item-mail {
     display: block !important; } }
 @media (max-width: 700px) {
-  .container {
-    margin-top: 50px !important; } }
-@media (max-width: 500px) {
-  .container {
-    margin-top: 40px !important; } }
+  .container > h1 {
+    margin-top: 60px; } }
 
 /*# sourceMappingURL=contact.css.map */

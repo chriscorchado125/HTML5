@@ -19,7 +19,8 @@ body {
   padding: 5px;
 }
 
-#logo > img:hover {
+#logo > img:hover,
+.home {
   border: 1px dashed $main_color;
 }
 
@@ -28,6 +29,7 @@ body {
   font-size: 34px;
   color: $main_color_light;
   text-shadow: 1px 1px 2px #000000;
+  margin-top: 100px;
 }
 
 .preloadAnimation > div {
@@ -85,27 +87,8 @@ body {
 }
 
 h1 {
+  color: $main_color;
   font-size: 30px;
-}
-
-#profiles {
-  margin-top: -50px;
-  margin-bottom: 10px;
-  float: right;
-  max-width: 380px;
-  text-align: center;
-  font-size: 12px;
-
-  .icon {
-    display: inline-block;
-    width: 50px;
-    padding: 0 5px;
-    margin: 0 5px;
-
-    img {
-      height: 30px;
-    }
-  }
 }
 
 .highlightSearchText {
@@ -114,10 +97,9 @@ h1 {
 
 /* space for top navigation */
 .container {
-  margin: auto;
-  margin-top: 90px;
+  margin: 0 auto;
   text-align: center;
-  padding: 20px 5px 100px 5px;
+  padding: 20px 5px 20px 5px;
   background-color: #fff;
   opacity: 0;
   border-radius: 0 0 15px 15px;
@@ -174,17 +156,6 @@ a:link {
 .featherlight-previous span {
   font-size: 34px;
   width: 35px;
-}
-
-.about {
-  padding: 20px 50px;
-  h1 {
-    color: $main_color;
-  }
-  p {
-    text-align: center;
-    padding: 5px 60px;
-  }
 }
 
 // homepage site icons
@@ -262,16 +233,7 @@ a:link {
   }
 
   h1 {
-    font-size: 20px;
-  }
-
-  .about {
-    padding: 20px 10px;
-    margin-top: 120px;
-
-    p {
-      padding: 5px 20px;
-    }
+    font-size: 24px;
   }
 }
 

@@ -39,7 +39,14 @@ const setLoading = (loadingStatus) => {
     }
     else {
         document.getElementById('preloadAnimation').remove();
-        fadeIn(document.getElementsByClassName('container')[0]);
+        if (document.getElementsByClassName('container')[0]) {
+            let mainContainer = document.getElementsByClassName('container')[0];
+            fadeIn(mainContainer);
+        }
+        if (document.getElementsByClassName('container')[1]) {
+            let dataContainer = document.getElementsByClassName('container')[1];
+            fadeIn(dataContainer);
+        }
     }
 };
 const getPage = (page, search, pagingURL) => __awaiter(void 0, void 0, void 0, function* () {
@@ -60,7 +67,7 @@ const getPage = (page, search, pagingURL) => __awaiter(void 0, void 0, void 0, f
                 form = form.replace('Your email address', 'Email');
                 let script = data.substr(data.indexOf('<script type="application/json" data-drupal-selector="drupal-settings-json">'), data.indexOf('></script>'));
                 script = script.substr(0, script.indexOf('</script>') + 9);
-                data = `<h1>Contact</h1>${form} ${script}`;
+                data = `<h1 id="content" tabindex="12">Contact</h1>${form} ${script}`;
             })
                 .catch((error) => {
                 alert(`Sorry an error has occurred: ${error}`);
@@ -282,6 +289,7 @@ const setPageHTML = (values) => {
     let itemTechnology = values[12];
     let searchedFor = values[13];
     let includedTechnologyItem = values[14];
+    let indexCount = values[15];
     switch (page) {
         case 'about':
             document.getElementById('search-container').style.display = 'none';
@@ -291,27 +299,27 @@ const setPageHTML = (values) => {
             document.getElementById('profiles').innerHTML = `
        
           <div class="icon" id="pdf-resume">
-            <a href="https://chriscorchado.com/resume/Chris-Corchado-resume-2020.pdf" target="_blank">
-              <img alt="Link to PDF Resume" src="https://chriscorchado.com/images/pdfIcon.jpg" title="Link to PDF Resume" />
+            <a href="https://chriscorchado.com/resume/Chris-Corchado-resume-2020.pdf" target="_blank" tabindex="7">
+              <img alt="Link to PDF Resume" src="https://chriscorchado.com/images/pdfIcon.jpg" />
               <span>Resume</span>
             </a>
           </div>
 
           <div class="icon" id="profile-linkedin">
-            <a href="https://www.linkedin.com/in/chriscorchado/" target="_blank">
-              <img alt="Link to LinkedIn Profile" title="Link to LinkedIn Profile" src="https://chriscorchado.com/images/linkedInIcon.jpg" />
+            <a href="https://www.linkedin.com/in/chriscorchado/" target="_blank" tabindex="8">
+              <img alt="Link to LinkedIn Profile" src="https://chriscorchado.com/images/linkedInIcon.jpg" />
               <span>LinkedIn</span>
             </a>
           </div>
 
           <div class="icon" id="profile-azure">
-            <a href="https://docs.microsoft.com/en-us/users/corchadochrisit-2736/" target="_blank">
-              <img alt="Link to Azure Profile" title="Link to Azure Profile" src="https://chriscorchado.com/images/azureIcon.png" />
+            <a href="https://docs.microsoft.com/en-us/users/corchadochrisit-2736/" target="_blank" tabindex="9">
+              <img alt="Link to Azure Profile" src="https://chriscorchado.com/images/azureIcon.png" />
               <span>Azure</span>
             </a>
           </div>
           `;
-            return `<h1>${itemTitle}</h1> ${aboutData}`;
+            return aboutData;
             break;
         case 'contact':
             if (location.toString().indexOf('/contact.html?submitted=true') !== -1) {
@@ -328,43 +336,43 @@ const setPageHTML = (values) => {
         case 'companies':
             return `<div class="company-container col shadow">
 
-          <div class="company-name">${itemTitle}</div>
-          <div class="company-job-title">${itemJobTitle}</div>
-          <div class="body-container">${itemBody}</div>
+          <div class="company-name" tabindex="${indexCount++}">${itemTitle}</div>
+          <div class="company-job-title" tabindex="${indexCount++}">${itemJobTitle}</div>
+          <div class="body-container" tabindex="${indexCount++}">${itemBody}</div>
 
           <div class="screenshot-container">
             <img loading=lazy src=${getFullUrlByPage(imgPieces[0], page)} 
             class="company-screenshot" 
             alt="${data.attributes.title} Screenshot" 
-            title="${data.attributes.title} Screenshot"/>
+            title="${data.attributes.title} Screenshot" tabindex="${indexCount++}" />
           </div>
 
-          <div class="employment-dates">${startDate} - ${endDate}</div>
+          <div class="employment-dates" tabindex="${indexCount++}">${startDate} - ${endDate}</div>
         </div>`;
             break;
         case 'courses':
             item = `<div class="course-box box">
-          <h2>${itemTitle}</h2>
+          <h2 tabindex="${indexCount++}">${itemTitle}</h2>
 
           <div>
             <img loading=lazy src="${getFullUrlByPage(imgPieces[0], page)}" 
               alt="${itemTitle.replace(/(<([^>]+)>)/gi, '')}" 
-              title="${itemTitle.replace(/(<([^>]+)>)/gi, '')}" />
+              title="${itemTitle.replace(/(<([^>]+)>)/gi, '')}"  tabindex="${indexCount++}" />
           </div>
 
           <div class="course-wrapper">
 
-            <span class="course-date">${itemDate}</span>
+            <span class="course-date"  tabindex="${indexCount++}">${itemDate}</span>
 
             <span class="course-links">
-              <a href="${getFullUrlByPage(itemPDF, page)}" target="_blank">
+              <a href="${getFullUrlByPage(itemPDF, page)}" target="_blank"  tabindex="${indexCount++}">
                 <img loading=lazy src="https://chriscorchado.com/images/pdfIcon.jpg" height="25" 
                 title="View the PDF Certificate" alt="View the PDF Certificate"/>
               </a>
             </span>`;
             if (itemTrackImage) {
                 item += `<span class="course-links">
-            <a href="${getFullUrlByPage(itemTrackImage, page)}" data-featherlight="image">
+            <a href="${getFullUrlByPage(itemTrackImage, page)}" data-featherlight="image"  tabindex="${indexCount++}">
               <img loading=lazy src="https://chriscorchado.com/images/linkedIn-track.png" height="25" 
               title="View the Courses in the Track" alt="View the Courses in the Track" />
             </a>
@@ -375,9 +383,9 @@ const setPageHTML = (values) => {
         case 'projects':
             let imgAltCount = 0;
             item = `<div class="project col">
-        <div class="project-title">${itemTitle}</div>
-        <div class="project-company">${itemCompanyName} <span class="project-date">(${itemDate})</span></div> 
-        <div class="body-container">${itemBody}</div>`;
+        <div class="project-title" tabindex="${indexCount++}">${itemTitle}</div>
+        <div class="project-company" tabindex="${indexCount++}">${itemCompanyName} <span class="project-date" tabindex="${indexCount++}">(${itemDate})</span></div> 
+        <div class="body-container" tabindex="${indexCount++}">${itemBody}</div>`;
             if (imgPieces) {
                 let itemGridClass = `project-item-grid project-items${data.relationships.field_screenshot.data.length}`;
                 let section = `<section data-featherlight-gallery data-featherlight-filter="a" class="${itemGridClass}">`;
@@ -392,7 +400,7 @@ const setPageHTML = (values) => {
                         let projectImage = getFullUrlByPage(item, page);
                         section += `<div class="project-item shadow" title='${screenshotAlt[imgAltCount]}'>
             
-              <a href=${projectImage} class="gallery">
+              <a href=${projectImage} class="gallery"  tabindex="${indexCount++}">
                 <div class="project-item-desc">
                   ${itemWithSearchHighlight(screenshotAlt[imgAltCount], searchedFor)}
                 </div>
@@ -410,12 +418,12 @@ const setPageHTML = (values) => {
             if (data.attributes.field_video_url) {
                 let encodedName = encodeURIComponent(itemTitle);
                 data.attributes.field_video_url.forEach((img) => {
-                    item += `<span title="Play Video"><a href="https://chriscorchado.com/video.html?url=${data.attributes.field_video_url}&name=${encodedName}" target="_blank" class="play-video">
+                    item += `<span title="Play Video"><a href="https://chriscorchado.com/video.html?url=${data.attributes.field_video_url}&name=${encodedName}" target="_blank" class="play-video"  tabindex="${indexCount++}">
             Play Video <img loading=lazy src="https://chriscorchado.com/images/play_video_new_window_icon.png" alt="Play Video" width="20" />
           </a></span>`;
                 });
             }
-            item += `<div class="project-technology">${itemTechnology.slice(0, -2)}</div>`;
+            item += `<div class="project-technology" tabindex="${indexCount++}">${itemTechnology.slice(0, -2)}</div>`;
             item += `</div>`;
             return item;
             break;
@@ -548,6 +556,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     let itemCount = 0;
     let imgPieces = [];
     let includedTechnologyItem = [];
+    let tabIndexCount = 0;
     data.data.forEach((element) => {
         itemTitle = element.attributes.title;
         itemBody = element.attributes.body ? element.attributes.body.value : '';
@@ -598,6 +607,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
             }
         }
         itemCount++;
+        tabIndexCount = itemCount * 15;
         const allValues = [
             page,
             element,
@@ -614,6 +624,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
             itemTechnology,
             searchedFor,
             includedTechnologyItem,
+            tabIndexCount,
         ];
         switch (page) {
             case 'about':
@@ -634,20 +645,24 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     switch (page) {
         case 'about':
             currentNavItem = 'about-link';
+            item = `<h1 id="content" tabindex="12">About Me</h1>${item}`;
             break;
         case 'companies':
             currentNavItem = 'companies-link';
             pageIsSearchable = true;
+            item = `<h1 id="content" tabindex="12">History</h1><div class="container company">${item}</div>`;
             break;
         case 'courses':
             currentNavItem = 'courses-link';
             pageIsSearchable = true;
             pageHasGallery = true;
+            item = ` <h1 id="content" tabindex="12">Courses</h1><div class="container courses-container row">${item}</div>`;
             break;
         case 'projects':
             currentNavItem = 'projects-link';
             pageIsSearchable = true;
             pageHasGallery = true;
+            item = `<h1 id="content" tabindex="12">Projects</h1><div class="container project-container row">${item}</div>`;
             break;
     }
     if (page !== 'about') {
@@ -747,13 +762,13 @@ const setPagination = (count, paginationTotal, prev, next) => {
         }
         document.getElementById('searchCount').innerHTML = `<span id="paging-info">${dataOffsetText}</span>`;
         prevLink = prev
-            ? `<a href="#" class="pager-navigation" title="View the previous page" 
+            ? `<a href="#" class="pager-navigation" title="View the previous page" tabindex="10" role="button"
           onclick="getPage(getCurrentPage(), document.getElementById('${SITE_SEARCH_ID}').value,'${prev.href}')">Prev</a>`
-            : `<span class="pager-navigation disabled" title="There is no previous page available">Prev</span>`;
+            : `<span class="pager-navigation disabled" title="There is no previous page available" tabindex="11" role="button">Prev</span>`;
         nextLink = next
-            ? `<a href="#" class="pager-navigation" title="View the next page" 
+            ? `<a href="#" class="pager-navigation" title="View the next page" tabindex="12" role="button"
           onclick="getPage(getCurrentPage(), document.getElementById('${SITE_SEARCH_ID}').value,'${next.href}')">Next</a>`
-            : `<span class="pager-navigation disabled" title="There is no next page available">Next</span>`;
+            : `<span class="pager-navigation disabled" title="There is no next page available" tabindex="13" role="button">Next</span>`;
     }
     let paginationCount = document.getElementById('pagination');
     if (count < MAX_ITEMS_PER_PAGE && paginationTotal === 1) {
