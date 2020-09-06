@@ -1,7 +1,12 @@
-@import 'variables.scss';
+@import "variables.scss";
 
 #logo img {
   height: 60px;
+}
+
+#navbarCollapse {
+  max-width: 1100px;
+  margin: auto;
 }
 
 .navbar {
