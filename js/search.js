@@ -1,0 +1,200 @@
+const getSearchCount = (count, searchCountID) => {
+    let searchElement = document.getElementById(SITE_SEARCH_ID);
+    if (searchElement.value) {
+        if (count <= MAX_ITEMS_PER_PAGE) {
+            document.getElementById(searchCountID).innerHTML =
+                count + `  ${count == 1 ? "Item" : "Items"}`;
+        }
+        else {
+            document.getElementById(searchCountID).innerHTML =
+                MAX_ITEMS_PER_PAGE + `  ${+MAX_ITEMS_PER_PAGE == 1 ? "Item" : "Items"}`;
+        }
+        return `${count} ${count == 1 ? "Item" : "Items"} `;
+    }
+};
+const getSearchOffset = (link) => {
+    let nextURL = link.href.replace(/%2C/g, ",").replace(/%5B/g, "[").replace(/%5D/g, "]");
+    return nextURL.substring(nextURL.search("offset") + 8, nextURL.search("limit") - 6);
+};
+const setPagination = (count, paginationTotal, prev, next) => {
+    let dataOffset = 0;
+    let prevLink = "";
+    let nextLink = "";
+    if (next)
+        dataOffset = getSearchOffset(next);
+    let dataOffsetText = getSearchCount(count, "searchCount");
+    if (!next && !prev) {
+        document.getElementById("searchCount").innerHTML = `<span id="totalItems">${count}</span>
+   ${count == 1 ? "Item" : "Items"}`;
+    }
+    else {
+        let currentCount = +dataOffset / MAX_ITEMS_PER_PAGE;
+        if (count == dataOffset) {
+            dataOffsetText = `Items 1-<span id="lastCount">${MAX_ITEMS_PER_PAGE}</span>`;
+        }
+        else {
+            if (currentCount !== 0) {
+                dataOffsetText = `Items ${currentCount * MAX_ITEMS_PER_PAGE - MAX_ITEMS_PER_PAGE}-<span id="lastCount">${currentCount * MAX_ITEMS_PER_PAGE}</span>`;
+            }
+            else {
+                dataOffsetText = `Items ${paginationTotal}-<span id="lastCount">${+paginationTotal + count}</span>`;
+            }
+        }
+        document.getElementById("searchCount").innerHTML = `<span id="paging-info">${dataOffsetText}</span>`;
+        prevLink = prev
+            ? `<a href="#" class="pager-navigation" title="View the previous page" tabindex="10" role="button"
+          onclick="getPage(getCurrentPage(), document.getElementById('${SITE_SEARCH_ID}').value,'${prev.href}')">Prev</a>`
+            : `<span class="pager-navigation disabled" title="There is no previous page available" tabindex="11" role="button">Prev</span>`;
+        nextLink = next
+            ? `<a href="#" class="pager-navigation" title="View the next page" tabindex="12" role="button"
+          onclick="getPage(getCurrentPage(), document.getElementById('${SITE_SEARCH_ID}').value,'${next.href}')">Next</a>`
+            : `<span class="pager-navigation disabled" title="There is no next page available" tabindex="13" role="button">Next</span>`;
+    }
+    let paginationCount = document.getElementById("pagination");
+    if (count < MAX_ITEMS_PER_PAGE && paginationTotal === 1) {
+        paginationCount.style.display = "none";
+    }
+    else {
+        paginationCount.style.display = "inline-block";
+        paginationCount.innerHTML = `${prevLink}  ${nextLink}`;
+    }
+};
+const debounce = (func, wait) => {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            timeout = null;
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+};
+const debounceMe = debounce((event) => {
+    const inputSearchBox = document.getElementById(SITE_SEARCH_ID);
+    if (event.key !== "Tab") {
+        getPage(getCurrentPage(), inputSearchBox.value);
+        updateInterface();
+    }
+}, 500);
+const searchFilter = (event) => {
+    let charCode = event.keyCode || event.which;
+    return ((charCode >= 65 && charCode <= 122) ||
+        (charCode >= 96 && charCode <= 105) ||
+        (charCode >= 48 && charCode <= 57) ||
+        charCode == 16 ||
+        charCode == 32);
+};
+const searchClear = (searchTextBoxID) => {
+    const inputSearchBox = document.getElementById(searchTextBoxID);
+    inputSearchBox.value = "";
+    getPage(getCurrentPage());
+    updateInterface();
+    document.getElementById("searchBtn").style.visibility = "hidden";
+};
+const noRecordsFound = (noRecordID, search, appendToID, msg) => {
+    if (document.getElementById(noRecordID)) {
+        document.getElementById(noRecordID).remove();
+    }
+    if (!document.getElementById(noRecordID) && search) {
+        document.getElementById("pagination").style.display = "none";
+        document.getElementsByClassName("container")[0].removeAttribute("style");
+        let notFound = document.createElement("div");
+        notFound.id = noRecordID;
+        notFound.innerHTML = `${msg} '${search}'`;
+        document.getElementById(appendToID).appendChild(notFound);
+        document.getElementById("preloadAnimation").remove();
+        document.getElementById("searchCount").innerHTML =
+            '<b style="color:red">No match</b>';
+    }
+    else {
+        document.getElementById("pagination").style.display = "inline-block";
+        document.getElementById("searchBtn").style.visibility = "visible";
+    }
+};
+const getIncludedData = (data) => {
+    let includedAssetFilename = [""];
+    let includedCompanyName = [""];
+    let includedTechnologyName = [""];
+    let includedTechnologyIcon = [""];
+    data.included.forEach((included_element) => {
+        if (included_element.attributes.description) {
+            let iconFileNamePath = /"(.*?)"/.exec(included_element.attributes.description.value);
+            includedTechnologyIcon[included_element.id] = iconFileNamePath[1];
+        }
+        if (included_element.attributes.filename) {
+            includedAssetFilename[included_element.id] = included_element.attributes.filename;
+        }
+        if (included_element.attributes.field_company_name) {
+            includedCompanyName[included_element.id] =
+                included_element.attributes.field_company_name;
+        }
+        if (included_element.attributes.name) {
+            includedTechnologyName[included_element.id] = included_element.attributes.name;
+        }
+    });
+    return [
+        includedCompanyName,
+        includedAssetFilename,
+        includedTechnologyName,
+        includedTechnologyIcon
+    ];
+};
+const getElementRelationships = (element, includedAssetFilename, includedCompanyName, includedTechnologyName, includedTechnologyIcon) => {
+    let imgPieces = [];
+    let itemPDF = "";
+    let itemTrackImage = "";
+    let itemCompanyName = "";
+    let itemTechnology = "";
+    let itemTechnologyIcon = "";
+    let includedTechnologyItem = [];
+    if (element.relationships.field_award_images &&
+        element.relationships.field_award_images.data) {
+        imgPieces.push(includedAssetFilename[element.relationships.field_award_images.data[0].id]);
+    }
+    if (element.relationships.field_award_pdf &&
+        element.relationships.field_award_pdf.data) {
+        itemPDF = includedAssetFilename[element.relationships.field_award_pdf.data.id];
+    }
+    if (element.relationships.field_track_image &&
+        element.relationships.field_track_image.data) {
+        itemTrackImage =
+            includedAssetFilename[element.relationships.field_track_image.data.id];
+    }
+    if (element.relationships.field_company && element.relationships.field_company.data) {
+        itemCompanyName = includedCompanyName[element.relationships.field_company.data.id];
+    }
+    if (element.relationships.field_company_screenshot &&
+        element.relationships.field_company_screenshot.data) {
+        imgPieces.push(includedAssetFilename[element.relationships.field_company_screenshot.data[0].id]);
+    }
+    if (element.relationships.field_screenshot &&
+        element.relationships.field_screenshot.data) {
+        for (let i = 0; i < element.relationships.field_screenshot.data.length; i++) {
+            imgPieces.push(includedAssetFilename[element.relationships.field_screenshot.data[i].id]);
+        }
+    }
+    if (element.relationships.field_project_technology &&
+        element.relationships.field_project_technology.data) {
+        for (let i = 0; i < element.relationships.field_project_technology.data.length; i++) {
+            itemTechnology +=
+                includedTechnologyName[element.relationships.field_project_technology.data[i].id] + ", ";
+            itemTechnologyIcon +=
+                includedTechnologyIcon[element.relationships.field_project_technology.data[i].id] + ", ";
+            let technologyItem = {
+                name: includedTechnologyName[element.relationships.field_project_technology.data[i].id],
+                image: includedTechnologyIcon[element.relationships.field_project_technology.data[i].id]
+            };
+            includedTechnologyItem.push(technologyItem);
+        }
+    }
+    return [
+        imgPieces,
+        itemPDF,
+        itemTrackImage,
+        itemCompanyName,
+        itemTechnology,
+        itemTechnologyIcon,
+        includedTechnologyItem
+    ];
+};

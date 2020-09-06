@@ -28,7 +28,7 @@
 
 #search-container {
   float: right;
-  margin: -55px 30px 0 0;
+  margin: -45px 30px 0 0;
   display: none;
   padding: 0px;
   width: 280px;
@@ -58,7 +58,6 @@
   #search-container #pagination {
     text-align: center;
     padding-left: 55px;
-    margin-top: 5px;
     /* next / prev text */ }
     #search-container #pagination a {
       color: #ffffff;

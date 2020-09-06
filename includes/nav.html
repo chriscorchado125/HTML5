@@ -23,39 +23,38 @@
     </div>
 
     <div id="profiles"></div>
-  </div>
+    <div id="search-container" role="search">
+      <span id="searchCount" tabindex="8">Loading...</span>
+      <label>
+        <span class="screen-reader">Search</span>
+        <input
+          type="text"
+          id="searchSite"
+          placeholder="Search items"
+          onkeyup="debounceMe(event)"
+          onkeypress="return searchFilter(event)"
+          class="ccBtn"
+          title="Search"
+          aria-label="Search"
+          tabindex="9"
+        />
+      </label>
+      <label>
+        <span class="screen-reader">Clear Search</span>
+        <button
+          id="searchBtn"
+          class="searchBtn"
+          onclick="searchClear(SITE_SEARCH_ID)"
+          aria-label="Clear Search"
+          title="Clear search"
+          role="button"
+          tabindex="10"
+        >
+          clear
+        </button>
+      </label>
 
-  <div id="search-container" role="search">
-    <span id="searchCount" tabindex="8">Loading...</span>
-    <label>
-      <span class="screen-reader">Search</span>
-      <input
-        type="text"
-        id="searchSite"
-        placeholder="Search items"
-        onkeyup="debounceMe(event)"
-        onkeypress="return searchFilter(event)"
-        class="ccBtn"
-        title="Search"
-        aria-label="Search"
-        tabindex="9"
-      />
-    </label>
-    <label>
-      <span class="screen-reader">Clear Search</span>
-      <button
-        id="searchBtn"
-        class="searchBtn"
-        onclick="searchClear(SITE_SEARCH_ID)"
-        aria-label="Clear Search"
-        title="Clear search"
-        role="button"
-        tabindex="10"
-      >
-        clear
-      </button>
-    </label>
-
-    <div id="pagination"></div>
+      <div id="pagination"></div>
+    </div>
   </div>
 </nav>

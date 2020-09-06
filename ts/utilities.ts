@@ -8,7 +8,7 @@ const fadeOut = (el: any) => {
 
   (function fade() {
     if ((el.style.opacity -= 0.1) < 0) {
-      el.style.display = 'none';
+      el.style.display = "none";
     } else {
       requestAnimationFrame(fade);
     }
@@ -33,13 +33,201 @@ const fadeIn = (el: any) => {
 };
 
 /**
+ * Replace static navigation with data from the menu API
+ * @param {string} currentPage - page name
+ * @param {string} targetContainer - id of html container for the menu items
+ */
+const updateMenuPages = async (currentPage: string, targetContainer: string) => {
+  await fetch(`${API_BASE}/api/menu_items/main?_format=json`)
+    .then((resp) => {
+      return resp.ok ? resp.json() : Promise.reject(resp.statusText);
+    })
+    .then((pageData) => {
+      let pageName = "";
+      let pageLink = "";
+
+      let homepageStyle = "";
+      if (currentPage == "about") {
+        homepageStyle = "border: 1px dashed rgb(115, 153, 234);";
+      }
+
+      let generatedPageLinks = `<a href="index.html" class="navbar-brand" id="logo" style="${homepageStyle}">
+        <img src="./images/chriscorchado-initials-logo.png" title="Home" alt="Home">
+      </a>`;
+
+      for (let page in pageData) {
+        pageName = pageData[page].title;
+        if (pageName == "Home" || pageName == "About" || !pageData[page].enabled) {
+          continue;
+        }
+
+        let activeNavItem = "";
+        if (currentPage == pageName.toLowerCase()) {
+          activeNavItem = "nav-item-active";
+        }
+
+        pageLink = pageName; // capture correct link name before pageName is updated
+        if (pageName == "Companies") pageName = "History";
+
+        generatedPageLinks += `<a href="${pageLink.toLowerCase()}.html" 
+        class="nav-item nav-link ${activeNavItem}" 
+        title="${pageName}" 
+        id="${pageName.toLowerCase()}-link">${pageName}</a>`;
+      }
+
+      document.getElementById(targetContainer).innerHTML = generatedPageLinks;
+    })
+    .catch((error) => {
+      alert(`Sorry an error has occurred: ${error}`);
+    });
+};
+
+/**
+ * Get the current page name
+ * @return {string} - page name
+ */
+const getCurrentPage = () => {
+  let thisPage = window.location.pathname
+    .split("/")
+    .filter(function (pathnamePieces) {
+      return pathnamePieces.length;
+    })
+    .pop();
+
+  let pageName = thisPage.split(".")[0];
+  if (pageName == "index" || pageName == "html5") pageName = "about";
+
+  return pageName;
+};
+
+/**
+ * Create absolute link
+ * @param {string} linkToFix - relative url
+ * @param {string} page - page name
+ * @return {string} - absolute url
+ */
+const getFullUrlByPage = (linkToFix: string, page: string) => {
+  let pathToResource = "No Path Found";
+
+  switch (page) {
+    case "companies":
+      pathToResource = "company-screenshot";
+      break;
+    case "courses":
+      if (linkToFix.indexOf(".pdf") !== -1) {
+        pathToResource = "award-pdf";
+      } else {
+        pathToResource = "award-images";
+      }
+      break;
+    case "projects":
+      pathToResource = "project-screenshot";
+      break;
+  }
+
+  return `${API_BASE}/sites/default/files/${pathToResource}/${linkToFix}`;
+};
+
+/**
+ * Highlight search term within a string
+ * @param {string} itemToHighlight - string to search
+ * @param {string} searchedFor - string to search for
+ * @return {string} - search result with/without highlight
+ */
+const itemWithSearchHighlight = (itemToHighlight: string, searchedFor: string) => {
+  let dataToReturn = "";
+
+  if (searchedFor) {
+    let searchTerm = new RegExp(searchedFor, "gi");
+    let results = "";
+
+    let searchString = "";
+    let searchStringArray = [];
+
+    if (itemToHighlight && +itemToHighlight !== -1) {
+      searchString = itemToHighlight.replace("&amp;", "&").replace("&#039;", "'");
+    }
+
+    /* check for HTML
+     * TODO: use entities within Drupal to avoid adding body content with HTML
+     */
+    if (searchString.indexOf("<ul>") !== -1) {
+      let listItem = "";
+
+      let searchWithHTML = searchString.replace("<ul>", "").replace("</ul>", ""); // remove ul tags
+      searchStringArray = searchWithHTML.split("<li>"); // break the li items into an array
+
+      searchStringArray.forEach((element) => {
+        if (element.length > 3) {
+          searchString = element.slice(0, element.lastIndexOf("<")); // remove closing li tag
+
+          if (searchString.match(searchTerm)) {
+            results = searchString.replace(
+              searchTerm,
+              (match) => `<span class="highlightSearchText">${match}</span>`
+            );
+
+            listItem += `<li>${results}</li>`;
+          } else {
+            listItem += `<li>${searchString}</li>`;
+          }
+        }
+      });
+
+      dataToReturn = `<ul>${listItem}</ul>`;
+    } else {
+      if (searchString.match(searchTerm)) {
+        results = searchString.replace(
+          searchTerm,
+          (match) => `<span class="highlightSearchText">${match}</span>`
+        );
+
+        dataToReturn += results;
+      } else {
+        dataToReturn += searchString;
+      }
+    }
+  }
+
+  return dataToReturn || itemToHighlight;
+};
+
+/**
+ * Change date to name of the month plus the 4 digit year
+ * @param {string} dateString - date value
+ * @return {string} - month and year - example: January 2020
+ */
+const getMonthYear = (dateString: string) => {
+  let newDate = new Date(dateString);
+
+  return (
+    newDate.toLocaleString("default", { month: "long" }) +
+    " " +
+    newDate.getFullYear().toString()
+  );
+};
+
+/**
+ * Remove newline characters and spaces from URLs created using multi-line template literals
+ * @param {string} urlToClean - URL to fix
+ * @return {string} - fixed URL
+ */
+const cleanURL = (urlToClean: string) => {
+  let fixedURL = "";
+  let strings = urlToClean.split(" ");
+  strings.forEach((element: string) => {
+    if (element) fixedURL += element.replace(/$\n^\s*/gm, "");
+  });
+  return fixedURL;
+};
+
+/**
  * Toggle content and preloader
  * @param {boolean} loadingStatus
  */
-
 const setLoading = (loadingStatus: boolean) => {
   if (loadingStatus) {
-    let preloader = document.createElement('div');
+    let preloader = document.createElement("div");
 
     preloader.innerHTML = `
       <div class="preloadAnimation" id="preloadAnimation">
@@ -51,9 +239,23 @@ const setLoading = (loadingStatus: boolean) => {
 
     document.body.append(preloader);
   } else {
-    document.getElementById('preloadAnimation').remove();
-    fadeIn(document.getElementsByClassName('container')[0]);
+    document.getElementById("preloadAnimation").remove();
+
+    if (document.getElementsByClassName("container")[0]) {
+      let mainContainer = document.getElementsByClassName("container")[0] as HTMLElement;
+      fadeIn(mainContainer);
+    }
+    if (document.getElementsByClassName("container")[1]) {
+      let dataContainer = document.getElementsByClassName("container")[1] as HTMLElement;
+      fadeIn(dataContainer);
+    }
   }
 };
 
-export { fadeOut, fadeIn, setLoading };
+/**
+ * Toggle the preloader, searchCount, paging-info, pagination and message elements
+ * @param {string=} search - (optional) searched for text
+ */
+const updateInterface = (search?: string) => {
+  noRecordsFound("noRecords", search, "navigation", "No matches found for");
+};
