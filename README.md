@@ -1,6 +1,8 @@
-# Vanilla version of chriscorchado.com
+# Vanilla-ish
+Vanilla-ish version of chriscorchado.com (1st Version)
 
-The site content and structure is under active development
-Currently refactoring the JavaScript code for modularity
-Will be switching from Bootstrap and JQuery to using Flex, Grid and vanilla JavaScript
-After that the site will be duplicated using different languages, libraries and frameworks
+The "-ish" part is because the site uses:
+Bootstrap for the CSS features like grid, containter and css normalization.
+Featherlight for the JavaScript lightbox which requires jQuery and a lightbox CSS file.
+
+Currently hosted on : https://chriscorchado.com/html5
