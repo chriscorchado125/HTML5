@@ -1,4 +1,12 @@
-@import 'variables.scss';
+@import "variables.scss";
+
+.navbar {
+  min-height: 60px !important;
+}
+
+#search-container {
+  display: none;
+}
 
 .container > h1 {
   margin-top: 100px;
@@ -92,5 +100,11 @@
 @media (max-width: 700px) {
   .container > h1 {
     margin-top: 60px;
+  }
+}
+
+@media (max-width: 500px) {
+  .container > h1 {
+    margin-top: 30px;
   }
 }

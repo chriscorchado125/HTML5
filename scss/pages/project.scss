@@ -1,4 +1,4 @@
-@import 'variables.scss';
+@import "variables.scss";
 
 .container > h1 {
   margin-top: 100px;
@@ -148,5 +148,15 @@
     .project {
       width: 90%;
     }
+  }
+}
+
+@media (max-width: 400px) {
+  .container > h1 {
+    margin-top: 100px;
+  }
+
+  .project {
+    margin-top: 0 !important;
   }
 }
