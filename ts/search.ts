@@ -164,7 +164,6 @@ const searchClear = (searchTextBoxID: string) => {
   inputSearchBox.value = "";
   getPage(getCurrentPage());
   updateInterface();
-  document.getElementById("searchBtn").style.visibility = "hidden";
 };
 
 /**

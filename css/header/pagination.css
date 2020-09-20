@@ -1,7 +1,10 @@
+label {
+  margin-bottom: 2px; }
+
 #pagination {
   text-align: center;
   padding-left: 55px;
-  margin-top: 0;
+  margin-top: -10px;
   display: inline-block;
   /* next / prev text */ }
   #pagination a {

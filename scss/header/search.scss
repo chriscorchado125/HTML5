@@ -2,11 +2,13 @@
 
 #search-container {
   float: right;
-  margin: -65px 0 0 0;
+  margin: -50px 0 0 0;
   padding: 0px;
-  width: 280px;
+  width: 300px;
   text-align: center;
-
+  label {
+    display: inline-block;
+  }
   #searchCount {
     font-size: 12px;
     text-align: right;
@@ -17,7 +19,7 @@
 
   /* search textbox */
   #searchSite {
-    width: 130px;
+    width: 150px;
   }
 
   /* remove IE “clear field or cross” X button from inputs field */
@@ -31,6 +33,8 @@
     font-size: 14px;
     border-radius: 5px;
     margin-left: 10px;
+    visibility: visible;
+    display: inline-block;
   }
 
   .searchBtn:hover {

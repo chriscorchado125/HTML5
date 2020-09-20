@@ -1,10 +1,15 @@
 @import "./../variables.scss";
 
+label {
+  margin-bottom: 2px;
+}
+
 #pagination {
   text-align: center;
   padding-left: 55px;
-  margin-top: 0;
+  margin-top: -10px;
   display: inline-block;
+
   a {
     color: #ffffff;
     text-shadow: 1px 1px #000;

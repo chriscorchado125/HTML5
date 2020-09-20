@@ -90,7 +90,6 @@ const searchClear = (searchTextBoxID) => {
     inputSearchBox.value = "";
     getPage(getCurrentPage());
     updateInterface();
-    document.getElementById("searchBtn").style.visibility = "hidden";
 };
 const noRecordsFound = (noRecordID, search, appendToID, msg) => {
     if (document.getElementById(noRecordID)) {
