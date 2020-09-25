@@ -141,6 +141,29 @@ const getData = (dataURL) => __awaiter(this, void 0, void 0, function* () {
         .then((data) => (result = data));
     return result;
 });
+const addProfiles = (id) => {
+    document.getElementById(id).innerHTML = `
+  <div class="icon" id="pdf-resume">
+    <a href="https://chriscorchado.com/resume/Chris-Corchado-resume-2020.pdf" target="_blank" tabindex="7">
+      <img alt="Link to PDF Resume" src="https://chriscorchado.com/images/pdfIcon.jpg" title="Link to PDF Resume" />
+      <span>Resume</span>
+    </a>
+  </div>
+
+  <div class="icon" id="profile-linkedin">
+    <a href="https://www.linkedin.com/in/chriscorchado/" target="_blank" tabindex="8">
+      <img alt="Link to LinkedIn Profile" title="Link to LinkedIn Profile" src="https://chriscorchado.com/images/linkedInIcon.jpg" />
+      <span>LinkedIn</span>
+    </a>
+  </div>
+
+  <div class="icon" id="profile-azure">
+    <a href="https://docs.microsoft.com/en-us/users/corchadochrisit-2736/" target="_blank" tabindex="9">
+      <img alt="Link to Azure Profile" title="Link to Azure Profile" src="https://chriscorchado.com/images/azureIcon.png" />
+      <span>Azure</span>
+    </a>
+  </div>`;
+};
 const setPageHTML = (values) => {
     let item = "";
     let page = values[0];
@@ -165,32 +188,11 @@ const setPageHTML = (values) => {
             document.getElementById("logo").getElementsByTagName("img")[0].style.border =
                 "1px dashed #7399EA";
             let aboutData = data.attributes.body.value.toString();
-            document.getElementById("profiles").innerHTML = `
-       
-          <div class="icon" id="pdf-resume">
-            <a href="https://chriscorchado.com/resume/Chris-Corchado-resume-2020.pdf" target="_blank" tabindex="7">
-              <img alt="Link to PDF Resume" src="https://chriscorchado.com/images/pdfIcon.jpg" />
-              <span>Resume</span>
-            </a>
-          </div>
-
-          <div class="icon" id="profile-linkedin">
-            <a href="https://www.linkedin.com/in/chriscorchado/" target="_blank" tabindex="8">
-              <img alt="Link to LinkedIn Profile" src="https://chriscorchado.com/images/linkedInIcon.jpg" />
-              <span>LinkedIn</span>
-            </a>
-          </div>
-
-          <div class="icon" id="profile-azure">
-            <a href="https://docs.microsoft.com/en-us/users/corchadochrisit-2736/" target="_blank" tabindex="9">
-              <img alt="Link to Azure Profile" src="https://chriscorchado.com/images/azureIcon.png" />
-              <span>Azure</span>
-            </a>
-          </div>
-          `;
+            addProfiles("profiles");
             return aboutData;
             break;
         case "contact":
+            addProfiles("profiles");
             if (location.toString().indexOf("/contact.html?submitted=true") !== -1) {
                 formSubmitted(5);
             }
