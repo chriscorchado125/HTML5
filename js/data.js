@@ -212,7 +212,7 @@ const setPageHTML = (values) => {
           <div class="body-container" tabindex="${indexCount++}">${itemBody}</div>
 
           <div class="screenshot-container">
-            <img loading=lazy src=${getFullUrlByPage(imgPieces[0], page)} 
+            <img loading="lazy" src=${getFullUrlByPage(imgPieces[0], page)} 
             class="company-screenshot" 
             alt="${data.attributes.title} Screenshot" 
             title="${data.attributes.title} Screenshot" tabindex="${indexCount++}" />
@@ -226,7 +226,7 @@ const setPageHTML = (values) => {
           <h2 tabindex="${indexCount++}">${itemTitle}</h2>
 
           <div>
-            <img loading=lazy src="${getFullUrlByPage(imgPieces[0], page)}" 
+            <img loading="lazy" src="${getFullUrlByPage(imgPieces[0], page)}" 
               alt="${itemTitle.replace(/(<([^>]+)>)/gi, "")}" 
               title="${itemTitle.replace(/(<([^>]+)>)/gi, "")}"  tabindex="${indexCount++}" />
           </div>
@@ -237,14 +237,14 @@ const setPageHTML = (values) => {
 
             <span class="course-links">
               <a href="${getFullUrlByPage(itemPDF, page)}" target="_blank"  tabindex="${indexCount++}">
-                <img loading=lazy src="https://chriscorchado.com/images/pdfIcon.jpg" height="25" 
+                <img loading="lazy" src="https://chriscorchado.com/images/pdfIcon.jpg" height="25" 
                 title="View the PDF Certificate" alt="View the PDF Certificate"/>
               </a>
             </span>`;
             if (itemTrackImage) {
                 item += `<span class="course-links">
             <a href="${getFullUrlByPage(itemTrackImage, page)}" data-featherlight="image"  tabindex="${indexCount++}">
-              <img loading=lazy src="https://chriscorchado.com/images/linkedIn-track.png" height="25" 
+              <img loading="lazy" src="https://chriscorchado.com/images/linkedIn-track.png" height="25" 
               title="View the Courses in the Track" alt="View the Courses in the Track" />
             </a>
           </span>`;
@@ -276,7 +276,7 @@ const setPageHTML = (values) => {
                   ${itemWithSearchHighlight(screenshotAlt[imgAltCount], searchedFor)}
                 </div>
 
-                <img loading=lazy src='${projectImage}' alt='${screenshotAlt[imgAltCount]}' 
+                <img loading="lazy" src='${projectImage}' alt='${screenshotAlt[imgAltCount]}' 
                   title='${screenshotAlt[imgAltCount]}' />
               </a>
             </div>`;
@@ -290,7 +290,7 @@ const setPageHTML = (values) => {
                 let encodedName = encodeURIComponent(itemTitle);
                 data.attributes.field_video_url.forEach((img) => {
                     item += `<span title="Play Video"><a href="https://chriscorchado.com/video.html?url=${data.attributes.field_video_url}&name=${encodedName}" target="_blank" class="play-video"  tabindex="${indexCount++}">
-            Play Video <img loading=lazy src="https://chriscorchado.com/images/play_video_new_window_icon.png" alt="Play Video" width="20" />
+            Play Video <img loading="lazy" src="https://chriscorchado.com/images/play_video_new_window_icon.png" alt="Play Video" width="20" />
           </a></span>`;
                 });
             }

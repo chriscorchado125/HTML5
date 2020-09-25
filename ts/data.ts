@@ -272,7 +272,7 @@ const setPageHTML = (values: any) => {
           <div class="body-container" tabindex="${indexCount++}">${itemBody}</div>
 
           <div class="screenshot-container">
-            <img loading=lazy src=${getFullUrlByPage(imgPieces[0], page)} 
+            <img loading="lazy" src=${getFullUrlByPage(imgPieces[0], page)} 
             class="company-screenshot" 
             alt="${data.attributes.title} Screenshot" 
             title="${data.attributes.title} Screenshot" tabindex="${indexCount++}" />
@@ -288,7 +288,7 @@ const setPageHTML = (values: any) => {
           <h2 tabindex="${indexCount++}">${itemTitle}</h2>
 
           <div>
-            <img loading=lazy src="${getFullUrlByPage(imgPieces[0], page)}" 
+            <img loading="lazy" src="${getFullUrlByPage(imgPieces[0], page)}" 
               alt="${itemTitle.replace(/(<([^>]+)>)/gi, "")}" 
               title="${itemTitle.replace(
                 /(<([^>]+)>)/gi,
@@ -305,7 +305,7 @@ const setPageHTML = (values: any) => {
                 itemPDF,
                 page
               )}" target="_blank"  tabindex="${indexCount++}">
-                <img loading=lazy src="https://chriscorchado.com/images/pdfIcon.jpg" height="25" 
+                <img loading="lazy" src="https://chriscorchado.com/images/pdfIcon.jpg" height="25" 
                 title="View the PDF Certificate" alt="View the PDF Certificate"/>
               </a>
             </span>`;
@@ -313,7 +313,7 @@ const setPageHTML = (values: any) => {
       // TODO: Create bigger version and add to content type
       //  item += `<span class="course-links">
       //   <a href="${getFullUrlByPage(imgPieces[0], page)}" data-featherlight="image">
-      //     <img loading=lazy src="https://chriscorchado.com/images/jpg_icon.png" height="25"
+      //     <img loading="lazy" src="https://chriscorchado.com/images/jpg_icon.png" height="25"
       //       title="View the Certificate" alt="View the Certificate"/>
       //   </a></span>`;
 
@@ -323,7 +323,7 @@ const setPageHTML = (values: any) => {
               itemTrackImage,
               page
             )}" data-featherlight="image"  tabindex="${indexCount++}">
-              <img loading=lazy src="https://chriscorchado.com/images/linkedIn-track.png" height="25" 
+              <img loading="lazy" src="https://chriscorchado.com/images/linkedIn-track.png" height="25" 
               title="View the Courses in the Track" alt="View the Courses in the Track" />
             </a>
           </span>`;
@@ -364,7 +364,7 @@ const setPageHTML = (values: any) => {
                   ${itemWithSearchHighlight(screenshotAlt[imgAltCount], searchedFor)}
                 </div>
 
-                <img loading=lazy src='${projectImage}' alt='${
+                <img loading="lazy" src='${projectImage}' alt='${
               screenshotAlt[imgAltCount]
             }' 
                   title='${screenshotAlt[imgAltCount]}' />
@@ -387,7 +387,7 @@ const setPageHTML = (values: any) => {
           item += `<span title="Play Video"><a href="https://chriscorchado.com/video.html?url=${
             data.attributes.field_video_url
           }&name=${encodedName}" target="_blank" class="play-video"  tabindex="${indexCount++}">
-            Play Video <img loading=lazy src="https://chriscorchado.com/images/play_video_new_window_icon.png" alt="Play Video" width="20" />
+            Play Video <img loading="lazy" src="https://chriscorchado.com/images/play_video_new_window_icon.png" alt="Play Video" width="20" />
           </a></span>`;
         });
       }
@@ -403,7 +403,7 @@ const setPageHTML = (values: any) => {
       // for (const [key, value] of Object.entries(includedTechnologyItem)) {
       //   for (const [key1, value1] of Object.entries(value)) {
       //     item += `<div id="technology-item-wrapper">${value1.name}
-      //     <img loading=lazy src="${value1.image}" class="project-technology-icon" title="${value1.name}" alt="${value1.name}" /></div>`;
+      //     <img loading="lazy" src="${value1.image}" class="project-technology-icon" title="${value1.name}" alt="${value1.name}" /></div>`;
       //   }
       // }
       // item += `</div>`;
