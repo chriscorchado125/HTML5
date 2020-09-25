@@ -9,7 +9,7 @@
   grid-gap: 5px;
   justify-items: center;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  margin-top: 0px;
+  margin: 0 0 40px 0;
   /* course title */
   h2 {
     font-size: 12px;
@@ -90,6 +90,6 @@
     }
   }
   .container > h1 {
-    margin-top: 105px;
+    margin-top: 120px;
   }
 }

@@ -53,11 +53,13 @@ const setPagination = (
 
   // if there is a next or prev link then show the pagination
   if (!next && !prev) {
+    document.getElementById("search-container").className = "paginationNo";
     document.getElementById(
       "searchCount"
     ).innerHTML = `<span id="totalItems">${count}</span>
    ${count == 1 ? "Item" : "Items"}`;
   } else {
+    document.getElementById("search-container").className = "paginationYes";
     let currentCount = +dataOffset / MAX_ITEMS_PER_PAGE;
 
     // first page item count

@@ -24,10 +24,12 @@ const setPagination = (count, paginationTotal, prev, next) => {
         dataOffset = getSearchOffset(next);
     let dataOffsetText = getSearchCount(count, "searchCount");
     if (!next && !prev) {
+        document.getElementById("search-container").className = "paginationNo";
         document.getElementById("searchCount").innerHTML = `<span id="totalItems">${count}</span>
    ${count == 1 ? "Item" : "Items"}`;
     }
     else {
+        document.getElementById("search-container").className = "paginationYes";
         let currentCount = +dataOffset / MAX_ITEMS_PER_PAGE;
         if (count == dataOffset) {
             dataOffsetText = `Items 1-<span id="lastCount">${MAX_ITEMS_PER_PAGE}</span>`;

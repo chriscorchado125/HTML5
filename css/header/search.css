@@ -13,7 +13,7 @@
   #search-container #searchCount {
     font-size: 12px;
     text-align: right;
-    margin-right: 5px;
+    margin-right: 0px;
     display: inline-block;
     width: 85px; }
   #search-container #searchSite {
@@ -21,12 +21,9 @@
   #search-container ::-ms-clear {
     display: none; }
   #search-container .searchBtn {
-    padding: 3px;
-    font-size: 14px;
-    border-radius: 5px;
-    margin-left: 10px;
-    visibility: visible;
-    display: inline-block; }
+    padding: 2px;
+    font-size: 12px;
+    margin-left: 10px; }
   #search-container .searchBtn:hover {
     color: #fff;
     box-shadow: 0 0 #fff;
@@ -42,7 +39,6 @@
   #search-container #searchSite {
     width: 105px; }
   #search-container #searchBtn {
-    padding: 0 2px;
     margin-left: 5px; }
   #search-container #searchCount {
     width: 80px; } }

@@ -1,10 +1,16 @@
 label {
   margin-bottom: 2px; }
 
+.paginationYes {
+  margin: -65px 0 0 0 !important; }
+
+.paginationNo {
+  margin: -53px 0 0 0 !important; }
+
 #pagination {
   text-align: center;
   padding-left: 55px;
-  margin-top: -10px;
+  margin-top: 5px;
   display: inline-block;
   /* next / prev text */ }
   #pagination a {
@@ -23,6 +29,12 @@ label {
   display: none; }
 
 @media (max-width: 700px) {
+  .paginationYes {
+    margin: 0 0 0 0 !important; }
+
+  .paginationNo {
+    margin: 0 0 0 0 !important; }
+
   #pagination {
     padding-left: 30px; } }
 @media (max-width: 500px) {

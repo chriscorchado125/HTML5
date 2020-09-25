@@ -7,7 +7,7 @@
   grid-template-columns: 30% 30% 30%;
   align-items: stretch;
   justify-content: space-evenly;
-  margin-top: 0;
+  margin: 0 0 60px 0;
   font-size: 12px;
   /* individual project container */
   /* project description */
