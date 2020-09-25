@@ -23,7 +23,7 @@
   #search-container .searchBtn {
     padding: 2px;
     font-size: 12px;
-    margin-left: 10px; }
+    margin-left: 0px; }
   #search-container .searchBtn:hover {
     color: #fff;
     box-shadow: 0 0 #fff;

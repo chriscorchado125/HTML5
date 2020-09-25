@@ -9,7 +9,7 @@ label {
 
 #pagination {
   text-align: center;
-  padding-left: 55px;
+  padding-left: 45px;
   margin-top: 5px;
   display: inline-block;
   /* next / prev text */ }
@@ -18,7 +18,7 @@ label {
     text-shadow: 1px 1px #000; }
   #pagination .pager-navigation {
     background-color: #7399ea;
-    margin: 0px 5px;
+    margin: 0px 3px;
     padding: 3px 10px;
     font-size: 12px; }
   #pagination .disabled {
