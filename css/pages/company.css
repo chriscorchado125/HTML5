@@ -62,7 +62,10 @@
     grid-template-columns: 45% 45%; }
 
   .company-container {
-    max-width: 455px; } }
+    max-width: 455px; }
+
+  .company-screenshot {
+    max-width: 300px; } }
 @media (max-width: 900px) {
   .company {
     grid-template-columns: 80%; } }

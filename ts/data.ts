@@ -246,7 +246,9 @@ const setPageHTML = (values: any) => {
 
       break;
     case "contact":
+      // add resume, linkedin and azure links
       addProfiles("profiles");
+
       // form sumitted
       if (location.toString().indexOf("/contact.html?submitted=true") !== -1) {
         formSubmitted(5);

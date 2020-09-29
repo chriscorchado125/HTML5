@@ -12,6 +12,7 @@
 .navbar {
   border-bottom: 2px solid #7399ea;
   display: block;
+  min-height: 80px;
   /* force nav to stay horizontal */ }
   .navbar .navbar-nav {
     flex-direction: row;
