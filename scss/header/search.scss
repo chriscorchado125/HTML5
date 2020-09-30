@@ -6,9 +6,12 @@
   padding: 0px;
   width: 300px;
   text-align: center;
+  display: none;
+
   label {
     display: inline-block;
   }
+
   #searchCount {
     font-size: 12px;
     text-align: right;

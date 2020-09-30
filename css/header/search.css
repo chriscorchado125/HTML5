@@ -5,6 +5,7 @@
   padding: 0px;
   width: 300px;
   text-align: center;
+  display: none;
   /* search textbox */
   /* remove IE “clear field or cross” X button from inputs field */
   /* search button */ }
