@@ -183,8 +183,15 @@ a:link {
 /* override the featherlight lightbox arrows */
 .featherlight-next span,
 .featherlight-previous span {
-  font-size: 34px;
-  width: 35px; }
+  font-size: 24px !important;
+  width: 35px !important; }
+
+.featherlight .featherlight-close-icon {
+  background-color: #0078d7 !important;
+  padding: 0 10px 0 3px !important;
+  border: 2px solid black !important;
+  color: white !important;
+  font-weight: bold !important; }
 
 #footer {
   display: flex;
