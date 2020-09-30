@@ -1,10 +1,13 @@
-#search-container {
-  display: none; }
-
 .container {
   padding: 20px 50px; }
   .container h1 {
     margin: 100px 0 28px 0; }
+
+.about-headline {
+  text-align: center; }
+
+p {
+  text-align: center; }
 
 .preloadAnimation {
   margin-top: 130px; }
@@ -19,12 +22,14 @@
 
 .homepage-wrapper h4 {
   font-size: 16px;
-  font-weight: bold;
-  text-align: center; }
+  font-weight: bold; }
 
 @media (max-width: 700px) {
   .about {
     padding: 10px; }
+
+  p {
+    text-align: left !important; }
 
   .container > h1 {
     margin-top: 150px;
