@@ -68,15 +68,13 @@
     max-width: 300px; } }
 @media (max-width: 900px) {
   .company {
-    grid-template-columns: 80%; } }
+    grid-template-columns: 90%; } }
 @media (max-width: 700px) {
   .container > h1 {
     margin-top: 140px; }
 
-  .company {
-    padding: 10px; }
-    .company p {
-      padding: 5px 20px; } }
+  .company p {
+    padding: 5px 20px; } }
 @media (max-width: 500px) {
   .company-screenshot {
     max-width: 250px; } }
