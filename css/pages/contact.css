@@ -66,5 +66,11 @@
 @media (max-width: 700px) {
   .container > h1 {
     margin-top: 90px; } }
+@media (max-width: 500px) {
+  #edit-message-0-value {
+    height: 150px; } }
+@media (max-width: 400px) {
+  .container > h1 {
+    margin-top: 60px; } }
 
 /*# sourceMappingURL=contact.css.map */

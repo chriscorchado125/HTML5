@@ -30,7 +30,7 @@ label {
 
 @media (max-width: 700px) {
   .paginationYes {
-    margin: 0 0 0 0 !important; }
+    margin: -2px 0 0 0 !important; }
 
   .paginationNo {
     margin: 0 0 0 0 !important; }
@@ -38,11 +38,14 @@ label {
   #pagination {
     padding-left: 30px; } }
 @media (max-width: 500px) {
+  .paginationYes {
+    margin: -5px 0 0 0 !important; }
+
   #pagination {
     padding-left: 10px; }
     #pagination .pager-navigation {
       margin: 0px 2px;
-      padding: 3px 7px; } }
+      padding: 3px 5px; } }
 @media (max-width: 400px) {
   #searchSite {
     width: 85px !important; }
