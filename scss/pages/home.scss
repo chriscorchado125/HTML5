@@ -1,5 +1,9 @@
 @import "variables.scss";
 
+#search-container {
+  display: none;
+}
+
 .container {
   padding: 20px 50px;
   h1 {
