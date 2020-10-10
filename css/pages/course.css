@@ -15,7 +15,13 @@
 .course-box {
   padding: 20px;
   margin: 0 0 20px 0;
-  font-size: 12px; }
+  font-size: 12px;
+  max-width: 260px; }
+  .course-box h2 {
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center; }
   .course-box img {
     max-width: 200px; }
   .course-box .course-wrapper {
