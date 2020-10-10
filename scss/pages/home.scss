@@ -19,6 +19,10 @@ p {
   text-align: center;
 }
 
+.how-it-works-text-wrapper {
+  text-align: left !important;
+}
+
 .preloadAnimation {
   margin-top: 130px;
 }
@@ -71,3 +75,26 @@ p {
 .shadow-version a img {
   padding: 0 !important;
 }
+
+
+.jira-versions{
+  text-align: center;
+}
+.jira-versions img{
+  max-width:185px;
+  box-shadow: 1px 1px 15px 1px #888888;
+  margin:10px;
+}
+
+.homepage-wrapper ul li{
+  padding:5px;
+}
+
+#html5-text, #nodejs-text, #vuejs-text, #drupal8-text{
+  display:none;
+}
+
+#html5-text{
+  display: inline-block;
+}
+
