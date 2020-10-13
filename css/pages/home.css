@@ -63,10 +63,12 @@ p {
 .homepage-wrapper ul li {
   padding: 5px; }
 
-#html5-text, #nodejs-text, #vuejs-text, #drupal8-text {
-  display: none; }
+#nodejs-text,
+#vuejs-text,
+#drupal8-text {
+  display: none !important; }
 
 #html5-text {
-  display: inline-block; }
+  display: inline-block !important; }
 
 /*# sourceMappingURL=home.css.map */
