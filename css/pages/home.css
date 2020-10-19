@@ -2,7 +2,7 @@
   display: none; }
 
 .container {
-  padding: 20px 50px; }
+  padding: 20px 35px; }
   .container h1 {
     margin: 100px 0 28px 0; }
 
@@ -32,22 +32,22 @@ p {
 
 @media (max-width: 700px) {
   .container {
-    min-width: 550px !important; }
+    max-width: 540px; }
     .container h1 {
-      margin-top: 150px; }
+      margin-top: 145px; }
 
   .about {
-    padding: 15px 45px; }
+    padding: 15px 35px; }
     .about p {
       text-align: left !important; }
     .about .about-headline {
       text-align: center !important; } }
 @media (max-width: 500px) {
   .container > h1 {
-    margin-top: 140px; } }
+    margin-top: 135px; } }
 @media (max-width: 400px) {
   .container > h1 {
-    margin-top: 110px; } }
+    margin: 110px 0 20px 0; } }
 #html5 a img {
   box-shadow: 5px 5px 15px 2px #888888 !important; }
 
