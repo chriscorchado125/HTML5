@@ -31,15 +31,17 @@ p {
   font-weight: bold; }
 
 @media (max-width: 700px) {
+  .container {
+    min-width: 550px !important; }
+    .container h1 {
+      margin-top: 150px; }
+
   .about {
-    padding: 10px; }
-
-  p {
-    text-align: left !important; }
-
-  .container > h1 {
-    margin-top: 150px;
-    margin-bottom: 20px; } }
+    padding: 15px 45px; }
+    .about p {
+      text-align: left !important; }
+    .about .about-headline {
+      text-align: center !important; } }
 @media (max-width: 500px) {
   .container > h1 {
     margin-top: 140px; } }
