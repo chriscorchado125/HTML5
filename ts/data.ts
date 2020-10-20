@@ -274,9 +274,9 @@ const setPageHTML = (values: any) => {
           <div class="body-container" tabindex="${indexCount++}">${itemBody}</div>
 
           <div class="screenshot-container">
-            <img loading="lazy" src=${getFullUrlByPage(imgPieces[0], page)} 
-            class="company-screenshot" 
-            alt="${data.attributes.title} Screenshot" 
+            <img loading="lazy" src=${getFullUrlByPage(imgPieces[0], page)}
+            class="company-screenshot"
+            alt="${data.attributes.title} Screenshot"
             title="${data.attributes.title} Screenshot" tabindex="${indexCount++}" />
           </div>
 
@@ -290,8 +290,8 @@ const setPageHTML = (values: any) => {
           <h2 tabindex="${indexCount++}">${itemTitle}</h2>
 
           <div>
-            <img loading="lazy" src="${getFullUrlByPage(imgPieces[0], page)}" 
-              alt="${itemTitle.replace(/(<([^>]+)>)/gi, "")}" 
+            <img loading="lazy" src="${getFullUrlByPage(imgPieces[0], page)}"
+              alt="${itemTitle.replace(/(<([^>]+)>)/gi, "")}"
               title="${itemTitle.replace(
                 /(<([^>]+)>)/gi,
                 ""
@@ -307,7 +307,7 @@ const setPageHTML = (values: any) => {
                 itemPDF,
                 page
               )}" target="_blank"  tabindex="${indexCount++}">
-                <img loading="lazy" src="https://chriscorchado.com/images/pdfIcon.jpg" height="25" 
+                <img loading="lazy" src="https://chriscorchado.com/images/pdfIcon.jpg" height="25"
                 title="View the PDF Certificate" alt="View the PDF Certificate"/>
               </a>
             </span>`;
@@ -325,7 +325,7 @@ const setPageHTML = (values: any) => {
               itemTrackImage,
               page
             )}" data-featherlight="image"  tabindex="${indexCount++}">
-              <img loading="lazy" src="https://chriscorchado.com/images/linkedIn-track.png" height="25" 
+              <img loading="lazy" src="https://chriscorchado.com/images/linkedIn-track.png" height="25"
               title="View the Courses in the Track" alt="View the Courses in the Track" />
             </a>
           </span>`;
@@ -337,7 +337,7 @@ const setPageHTML = (values: any) => {
       let imgAltCount = 0;
       item = `<div class="project col">
         <div class="project-title" tabindex="${indexCount++}">${itemTitle}</div>
-        <div class="project-company" tabindex="${indexCount++}">${itemCompanyName} <span class="project-date" tabindex="${indexCount++}">(${itemDate})</span></div> 
+        <div class="project-company" tabindex="${indexCount++}">${itemCompanyName} <span class="project-date" tabindex="${indexCount++}">(${itemDate})</span></div>
         <div class="body-container" tabindex="${indexCount++}">${itemBody}</div>`;
 
       // screenshots
@@ -360,7 +360,7 @@ const setPageHTML = (values: any) => {
             section += `<div class="project-item shadow" title='${
               screenshotAlt[imgAltCount]
             }'>
-            
+
               <a href=${projectImage} class="gallery"  tabindex="${indexCount++}">
                 <div class="project-item-desc">
                   ${itemWithSearchHighlight(screenshotAlt[imgAltCount], searchedFor)}
@@ -368,7 +368,7 @@ const setPageHTML = (values: any) => {
 
                 <img loading="lazy" src='${projectImage}' alt='${
               screenshotAlt[imgAltCount]
-            }' 
+            }'
                   title='${screenshotAlt[imgAltCount]}' />
               </a>
             </div>`;
@@ -616,8 +616,8 @@ const renderPage = (
   if (pageHasGallery) {
     // @ts-ignore
     $("a.gallery").featherlightGallery({
-      previousIcon: "&#9664;" /* Code that is used as previous icon */,
-      nextIcon: "&#9654;" /* Code that is used as next icon */,
+      previousIcon: "<img src='https://chriscorchado.com/lightbox/images/left-arrow.png' alt='Prev' />" /* &#dsfsd; Code that was used as previous icon */,
+      nextIcon: "<img src='https://chriscorchado.com/lightbox/images/left-arrow.png' alt='Prev' />" /* &#9654; Code that was used as next icon */,
       galleryFadeIn: 200 /* fadeIn speed when slide is loaded */,
       galleryFadeOut: 300 /* fadeOut speed before slide is loaded */
     });
