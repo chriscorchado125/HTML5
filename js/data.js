@@ -20,7 +20,7 @@ const getPage = (page, search, pagingURL) => __awaiter(this, void 0, void 0, fun
             })
                 .then((page) => {
                 data = page.replace(/\/drupal8/g, API_BASE);
-                let form = data.substr(data.indexOf("<form"), data.indexOf("</form>"));
+                let form = data.substr(data.indexOf("<form class="), data.indexOf("</form>"));
                 form = form.substr(0, form.indexOf("</form>") + 8);
                 form = form.replace("Your email address", "Email");
                 let script = data.substr(data.indexOf('<script type="application/json" data-drupal-selector="drupal-settings-json">'), data.indexOf("></script>"));
@@ -212,9 +212,9 @@ const setPageHTML = (values) => {
           <div class="body-container" tabindex="${indexCount++}">${itemBody}</div>
 
           <div class="screenshot-container">
-            <img loading="lazy" src=${getFullUrlByPage(imgPieces[0], page)} 
-            class="company-screenshot" 
-            alt="${data.attributes.title} Screenshot" 
+            <img loading="lazy" src=${getFullUrlByPage(imgPieces[0], page)}
+            class="company-screenshot"
+            alt="${data.attributes.title} Screenshot"
             title="${data.attributes.title} Screenshot" tabindex="${indexCount++}" />
           </div>
 
@@ -226,8 +226,8 @@ const setPageHTML = (values) => {
           <h2 tabindex="${indexCount++}">${itemTitle}</h2>
 
           <div>
-            <img loading="lazy" src="${getFullUrlByPage(imgPieces[0], page)}" 
-              alt="${itemTitle.replace(/(<([^>]+)>)/gi, "")}" 
+            <img loading="lazy" src="${getFullUrlByPage(imgPieces[0], page)}"
+              alt="${itemTitle.replace(/(<([^>]+)>)/gi, "")}"
               title="${itemTitle.replace(/(<([^>]+)>)/gi, "")}"  tabindex="${indexCount++}" />
           </div>
 
@@ -237,14 +237,14 @@ const setPageHTML = (values) => {
 
             <span class="course-links">
               <a href="${getFullUrlByPage(itemPDF, page)}" target="_blank"  tabindex="${indexCount++}">
-                <img loading="lazy" src="https://chriscorchado.com/images/pdfIcon.jpg" height="25" 
+                <img loading="lazy" src="https://chriscorchado.com/images/pdfIcon.jpg" height="25"
                 title="View the PDF Certificate" alt="View the PDF Certificate"/>
               </a>
             </span>`;
             if (itemTrackImage) {
                 item += `<span class="course-links">
             <a href="${getFullUrlByPage(itemTrackImage, page)}" data-featherlight="image"  tabindex="${indexCount++}">
-              <img loading="lazy" src="https://chriscorchado.com/images/linkedIn-track.png" height="25" 
+              <img loading="lazy" src="https://chriscorchado.com/images/linkedIn-track.png" height="25"
               title="View the Courses in the Track" alt="View the Courses in the Track" />
             </a>
           </span>`;
@@ -255,7 +255,7 @@ const setPageHTML = (values) => {
             let imgAltCount = 0;
             item = `<div class="project col">
         <div class="project-title" tabindex="${indexCount++}">${itemTitle}</div>
-        <div class="project-company" tabindex="${indexCount++}">${itemCompanyName} <span class="project-date" tabindex="${indexCount++}">(${itemDate})</span></div> 
+        <div class="project-company" tabindex="${indexCount++}">${itemCompanyName} <span class="project-date" tabindex="${indexCount++}">(${itemDate})</span></div>
         <div class="body-container" tabindex="${indexCount++}">${itemBody}</div>`;
             if (imgPieces) {
                 let itemGridClass = `project-item-grid project-items${data.relationships.field_screenshot.data.length}`;
@@ -270,13 +270,13 @@ const setPageHTML = (values) => {
                     pieces.forEach((item) => {
                         let projectImage = getFullUrlByPage(item, page);
                         section += `<div class="project-item shadow" title='${screenshotAlt[imgAltCount]}'>
-            
+
               <a href=${projectImage} class="gallery"  tabindex="${indexCount++}">
                 <div class="project-item-desc">
                   ${itemWithSearchHighlight(screenshotAlt[imgAltCount], searchedFor)}
                 </div>
 
-                <img loading="lazy" src='${projectImage}' alt='${screenshotAlt[imgAltCount]}' 
+                <img loading="lazy" src='${projectImage}' alt='${screenshotAlt[imgAltCount]}'
                   title='${screenshotAlt[imgAltCount]}' />
               </a>
             </div>`;
@@ -439,8 +439,8 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     }
     if (pageHasGallery) {
         $("a.gallery").featherlightGallery({
-            previousIcon: "&#9664;",
-            nextIcon: "&#9654;",
+            previousIcon: "<img src='https://chriscorchado.com/lightbox/images/left-arrow.png' alt='Prev' />",
+            nextIcon: "<img src='https://chriscorchado.com/lightbox/images/right-arrow.png' alt='Next' />",
             galleryFadeIn: 200,
             galleryFadeOut: 300
         });
