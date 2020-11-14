@@ -20,5 +20,11 @@ window.onload = () => {
     .then((data) => {
       document.getElementById("footer").innerHTML = data;
     });
+
   getPage(getCurrentPage());
+
+
+window.addEventListener('DOMContentLoaded', (event) => {
+   document.getElementById("content ").focus();
 };
+})

@@ -44,13 +44,13 @@ const setPagination = (count, paginationTotal, prev, next) => {
         }
         document.getElementById("searchCount").innerHTML = `<span id="paging-info">${dataOffsetText}</span>`;
         prevLink = prev
-            ? `<a href="#" class="pager-navigation" title="View the previous page" tabindex="10" role="button"
+            ? `<a href="#" class="pager-navigation" title="View the previous page" role="button"
           onclick="getPage(getCurrentPage(), document.getElementById('${SITE_SEARCH_ID}').value,'${prev.href}')">Prev</a>`
-            : `<span class="pager-navigation disabled" title="There is no previous page available" tabindex="11" role="button">Prev</span>`;
+            : `<span class="pager-navigation disabled" title="There is no previous page available" role="button">Prev</span>`;
         nextLink = next
-            ? `<a href="#" class="pager-navigation" title="View the next page" tabindex="12" role="button"
+            ? `<a href="#" class="pager-navigation" title="View the next page" role="button"
           onclick="getPage(getCurrentPage(), document.getElementById('${SITE_SEARCH_ID}').value,'${next.href}')">Next</a>`
-            : `<span class="pager-navigation disabled" title="There is no next page available" tabindex="13" role="button">Next</span>`;
+            : `<span class="pager-navigation disabled" title="There is no next page available" role="button">Next</span>`;
     }
     let paginationCount = document.getElementById("pagination");
     if (count < MAX_ITEMS_PER_PAGE && paginationTotal === 1) {
@@ -61,31 +61,14 @@ const setPagination = (count, paginationTotal, prev, next) => {
         paginationCount.innerHTML = `${prevLink}  ${nextLink}`;
     }
 };
-const debounce = (func, wait) => {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            timeout = null;
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-};
-const debounceMe = debounce((event) => {
+const search = () => {
     const inputSearchBox = document.getElementById(SITE_SEARCH_ID);
-    if (event.key !== "Tab") {
-        getPage(getCurrentPage(), inputSearchBox.value);
-        updateInterface();
-    }
-}, 500);
+    getPage(getCurrentPage(), inputSearchBox.value);
+    updateInterface();
+};
 const searchFilter = (event) => {
-    let charCode = event.keyCode || event.which;
-    return ((charCode >= 65 && charCode <= 122) ||
-        (charCode >= 96 && charCode <= 105) ||
-        (charCode >= 48 && charCode <= 57) ||
-        charCode == 16 ||
-        charCode == 32);
+    const allowOnlyLettersAndSpace = new RegExp("^(?! )[A-Za-z\s]*$");
+    return allowOnlyLettersAndSpace.test(event.key);
 };
 const searchClear = (searchTextBoxID) => {
     const inputSearchBox = document.getElementById(searchTextBoxID);

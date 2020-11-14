@@ -86,13 +86,13 @@ const setPagination = (
 
     // configure next and prev links
     prevLink = prev
-      ? `<a href="#" class="pager-navigation" title="View the previous page" tabindex="10" role="button"
+      ? `<a href="#" class="pager-navigation" title="View the previous page" role="button"
           onclick="getPage(getCurrentPage(), document.getElementById('${SITE_SEARCH_ID}').value,'${prev.href}')">Prev</a>`
-      : `<span class="pager-navigation disabled" title="There is no previous page available" tabindex="11" role="button">Prev</span>`;
+      : `<span class="pager-navigation disabled" title="There is no previous page available" role="button">Prev</span>`;
     nextLink = next
-      ? `<a href="#" class="pager-navigation" title="View the next page" tabindex="12" role="button"
+      ? `<a href="#" class="pager-navigation" title="View the next page" role="button"
           onclick="getPage(getCurrentPage(), document.getElementById('${SITE_SEARCH_ID}').value,'${next.href}')">Next</a>`
-      : `<span class="pager-navigation disabled" title="There is no next page available" tabindex="13" role="button">Next</span>`;
+      : `<span class="pager-navigation disabled" title="There is no next page available" role="button">Next</span>`;
   }
 
   // hide pagination when the item count is less than the page limit and on the first page
@@ -106,55 +106,25 @@ const setPagination = (
   }
 };
 
-/**
- * Debounce search requests in order to improve performance
- * @param {any} function
- * @param {number} wait - time to wait in milliseconds before invoking search
- * @return {function} - as long as it continues to be invoked the function will not be triggered.
- */
-const debounce = (func: any, wait: number) => {
-  let timeout: any;
-
-  return function executedFunction(...args: any) {
-    // callback to be executed
-    const later = () => {
-      timeout = null; // indicate the debounce ended
-      func(...args); // execute the callback
-    };
-
-    clearTimeout(timeout); // on every function execution
-    timeout = setTimeout(later, wait); // restart the waiting period timeout
-  };
-};
 
 /**
  * Triggered on the keyup event within search input box
  */
-const debounceMe = debounce((event: any) => {
+const search = () => {
   const inputSearchBox = document.getElementById(SITE_SEARCH_ID)! as HTMLInputElement;
-
-  if (event.key !== "Tab") {
     getPage(getCurrentPage(), inputSearchBox.value);
     updateInterface();
-  }
-}, 500);
+}
 
 /**
  * Filter what a user is allowed to enter in the search field
- * Only allow searching with a-Z, 0-9 and spaces
+ * Only allow searching with letters and spaces.  No numbers or special characters
  * @param {KeyboardEvent} event - key event
  * @return {string} - allowed characters
  */
 const searchFilter = (event: KeyboardEvent) => {
-  let charCode = event.keyCode || event.which;
-
-  return (
-    (charCode >= 65 && charCode <= 122) || // a-z
-    (charCode >= 96 && charCode <= 105) || // 0-9 numeric keypad
-    (charCode >= 48 && charCode <= 57) || // 0-9 top of keyboard
-    charCode == 16 || // shift key - A-Z
-    charCode == 32 // space
-  );
+  const allowOnlyLettersAndSpace = new RegExp("^(?! )[A-Za-z\s]*$");
+  return allowOnlyLettersAndSpace.test(event.key);
 };
 
 /**
