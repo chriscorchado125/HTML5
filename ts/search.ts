@@ -108,7 +108,7 @@ const setPagination = (
 
 
 /**
- * Triggered on the keyup event within search input box
+ * Triggered search
  */
 const search = () => {
   const inputSearchBox = document.getElementById(SITE_SEARCH_ID)! as HTMLInputElement;
