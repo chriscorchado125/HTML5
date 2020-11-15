@@ -19,6 +19,3 @@ window.onload = () => {
     });
     getPage(getCurrentPage());
 };
-window.addEventListener('DOMContentLoaded', (event) => {
-    document.getElementById("content ").focus();
-});

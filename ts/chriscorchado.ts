@@ -23,8 +23,3 @@ window.onload = () => {
 
   getPage(getCurrentPage());
 }
-
-// add focus to skip link once loaded
-window.addEventListener('DOMContentLoaded', (event) => {
-   document.getElementById("content ").focus();
-});
