@@ -1,6 +1,9 @@
-<nav class="navbar navbar-light bg-light fixed-top navbar-fixed-top shadow">
-  <div class="navbar-collapse" id="navbarCollapse">
-    <div class="navbar-nav show" id="navbar-nav" role="navigation" aria-label="Main">
+<nav class="navbar navbar-light bg-light fixed-top navbar-fixed-top shadow" aria-label="navigation-outer-wrapper">
+
+  <div class="navbar-collapse" id="navbarCollapse" aria-label="navigation-collapse-wrapper">
+
+    <div class="navbar-nav show" id="navbar-nav" role="navigation" aria-label="Navigation">
+
       <a href="index.html" class="navbar-brand" id="logo"
         ><img
           src="https://chriscorchado.com/images/chriscorchado-initials-logo.png"
@@ -40,9 +43,9 @@
           onclick="search(event)">Search</button>
       </label>
 
-      <label for="searchClear">
+      <label for="searchClearBtn">
         <span class="screen-reader">Clear Search</span>
-        <button type="reset" id="searchBtn" aria-label="Clear Search" class="searchBtn" title="Clear search" value="Clear"
+        <button type="reset" id="searchClearBtn" aria-label="Clear Search" class="searchBtn" title="Clear search" value="Clear"
           onclick="searchClear(SITE_SEARCH_ID)">Clear</button>
       </label>
 

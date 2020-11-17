@@ -104,7 +104,7 @@ const noRecordsFound = (noRecordID, search, appendToID, msg) => {
     }
     else {
         document.getElementById("pagination").style.display = "inline-block";
-        document.getElementById("searchBtn").style.visibility = "visible";
+        document.getElementById("searchClear").style.visibility = "visible";
     }
 };
 const getIncludedData = (data) => {

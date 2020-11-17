@@ -144,22 +144,22 @@ const getData = (dataURL) => __awaiter(this, void 0, void 0, function* () {
 const addProfiles = (id) => {
     document.getElementById(id).innerHTML = `
   <div class="icon" id="pdf-resume">
-    <a href="https://chriscorchado.com/resume/Chris-Corchado-resume-2020.pdf" target="_blank">
-      <img alt="Link to PDF Resume" src="https://chriscorchado.com/images/pdfIcon.jpg" title="Link to PDF Resume" />
+    <a href="https://chriscorchado.com/resume/Chris-Corchado-resume-2020.pdf" target="_blank" rel="noopener" title="Opening a new window">
+      <img alt="PDF Icon" src="https://chriscorchado.com/images/pdfIcon.jpg" title="Link to PDF Resume" />
       <span>Resume</span>
     </a>
   </div>
 
   <div class="icon" id="profile-linkedin">
-    <a href="https://www.linkedin.com/in/chriscorchado/" target="_blank">
-      <img alt="Link to LinkedIn Profile" title="Link to LinkedIn Profile" src="https://chriscorchado.com/images/linkedInIcon.jpg" />
+    <a href="https://www.linkedin.com/in/chriscorchado/" target="_blank" rel="noopener" title="Opening a new window">
+      <img alt="LinkedIn Icon" title="Link to LinkedIn Profile" src="https://chriscorchado.com/images/linkedInIcon.jpg" />
       <span>LinkedIn</span>
     </a>
   </div>
 
   <div class="icon" id="profile-azure">
-    <a href="https://docs.microsoft.com/en-us/users/corchadochrisit-2736/" target="_blank">
-      <img alt="Link to Azure Profile" title="Link to Azure Profile" src="https://chriscorchado.com/images/azureIcon.png" />
+    <a href="https://docs.microsoft.com/en-us/users/corchadochrisit-2736/" target="_blank" rel="noopener" title="Opening a new window">
+      <img alt="Azure Icon" title="Link to Azure Profile" src="https://chriscorchado.com/images/azureIcon.png" />
       <span>Azure</span>
     </a>
   </div>`;
@@ -215,7 +215,7 @@ const setPageHTML = (values) => {
             <img loading="lazy" src=${getFullUrlByPage(imgPieces[0], page)}
             class="company-screenshot"
             alt="${data.attributes.title} Screenshot"
-            title="${data.attributes.title} Screenshot" />
+            title="Screenshot of ${data.attributes.title}" />
           </div>
 
           <div class="employment-dates">${startDate} - ${endDate}</div>
@@ -236,16 +236,16 @@ const setPageHTML = (values) => {
             <span class="course-date">${itemDate}</span>
 
             <span class="course-links">
-              <a href="${getFullUrlByPage(itemPDF, page)}" target="_blank">
+              <a href="${getFullUrlByPage(itemPDF, page)}" target="_blank" rel="noopener" title="Opens in a new window">
                 <img loading="lazy" src="https://chriscorchado.com/images/pdfIcon.jpg" height="25"
-                title="View the PDF Certificate" alt="View the PDF Certificate"/>
+                title="View the PDF Certificate" alt="PDF Icon"/>
               </a>
             </span>`;
             if (itemTrackImage) {
                 item += `<span class="course-links">
             <a href="${getFullUrlByPage(itemTrackImage, page)}" data-featherlight="image">
               <img loading="lazy" src="https://chriscorchado.com/images/linkedIn-track.png" height="25"
-              title="View the Courses in the Track" alt="View the Courses in the Track" />
+              title="View the Courses in the Track" alt="Trophy Icon" />
             </a>
           </span>`;
             }
@@ -276,8 +276,7 @@ const setPageHTML = (values) => {
                   ${itemWithSearchHighlight(screenshotAlt[imgAltCount], searchedFor)}
                 </div>
 
-                <img loading="lazy" src='${projectImage}' alt='${screenshotAlt[imgAltCount]}'
-                  title='${screenshotAlt[imgAltCount]}' />
+                <img loading="lazy" src='${projectImage}' alt='Screenshot of ${screenshotAlt[imgAltCount]}' />
               </a>
             </div>`;
                         imgAltCount++;
@@ -289,8 +288,8 @@ const setPageHTML = (values) => {
             if (data.attributes.field_video_url) {
                 let encodedName = encodeURIComponent(itemTitle);
                 data.attributes.field_video_url.forEach((img) => {
-                    item += `<span title="Play Video"><a href="https://chriscorchado.com/video.html?url=${data.attributes.field_video_url}&name=${encodedName}" target="_blank" class="play-video">
-            Play Video <img loading="lazy" src="https://chriscorchado.com/images/play_video_new_window_icon.png" alt="Play Video" width="20" />
+                    item += `<span title="Play Video"><a href="https://chriscorchado.com/video.html?url=${data.attributes.field_video_url}&name=${encodedName}" target="_blank" class="play-video" rel="noopener" title="Opens in a new window">
+            Play Video <img loading="lazy" src="https://chriscorchado.com/images/play_video_new_window_icon.png" alt="Play Video Icon" width="20" />
           </a></span>`;
                 });
             }

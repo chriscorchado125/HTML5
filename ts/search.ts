@@ -187,7 +187,7 @@ const noRecordsFound = (
       '<b style="color:red">No match</b>';
   } else {
     document.getElementById("pagination").style.display = "inline-block";
-    document.getElementById("searchBtn").style.visibility = "visible";
+    document.getElementById("searchClear").style.visibility = "visible";
   }
 };
 
