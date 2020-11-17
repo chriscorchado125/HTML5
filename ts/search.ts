@@ -110,10 +110,27 @@ const setPagination = (
 /**
  * Triggered search
  */
-const search = () => {
+const search = (e: Event) => {
+
+  // only allow the alphabet and spaces when searching
+  const re = new RegExp(('[a-zA-Z \s]'));
+
   const inputSearchBox = document.getElementById(SITE_SEARCH_ID)! as HTMLInputElement;
-    getPage(getCurrentPage(), inputSearchBox.value);
-    updateInterface();
+
+  if (inputSearchBox.value == "" || re.exec(inputSearchBox.value) == null) {
+    e.preventDefault();
+
+    if (inputSearchBox.value == "") {
+      alert("Please enter something to search for");
+    } else if (re.exec(inputSearchBox.value) == null) {
+      alert("Searching with numbers and/or special characters is not enabled")
+    }
+
+    return false;
+  }
+
+  getPage(getCurrentPage(), inputSearchBox.value);
+  updateInterface();
 }
 
 /**

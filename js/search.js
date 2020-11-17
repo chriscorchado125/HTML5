@@ -61,8 +61,19 @@ const setPagination = (count, paginationTotal, prev, next) => {
         paginationCount.innerHTML = `${prevLink}  ${nextLink}`;
     }
 };
-const search = () => {
+const search = (e) => {
+    const re = new RegExp(('[a-zA-Z \s]'));
     const inputSearchBox = document.getElementById(SITE_SEARCH_ID);
+    if (inputSearchBox.value == "" || re.exec(inputSearchBox.value) == null) {
+        e.preventDefault();
+        if (inputSearchBox.value == "") {
+            alert("Please enter something to search for");
+        }
+        else if (re.exec(inputSearchBox.value) == null) {
+            alert("Searching with numbers and/or special characters is not enabled");
+        }
+        return false;
+    }
     getPage(getCurrentPage(), inputSearchBox.value);
     updateInterface();
 };
