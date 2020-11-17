@@ -24,37 +24,26 @@
 
     <div id="profiles"></div>
 
-    <form id="search-container" role="search">
-      <span id="searchCount" >Loading...</span>
-      <label>
+    <form id="search-container" method="get" role="search" class="paginationNo" accept-charset="UTF-8" onsubmit="return false">
+
+      <span id="searchCount" aria-live="polite"></span>
+
+      <label for="searchSite">
+        <span class="screen-reader">Enter search term</span>
+        <input type="search" id="searchSite" name="search_api" aria-label="Enter search term" aria-required="true"
+          placeholder="Search items" maxlength="128" class="ccBtn searchBtn" onkeypress="return searchFilter(event)">
+      </label>
+
+      <label for="searchSubmit">
         <span class="screen-reader">Search</span>
-        <input
-          type="search"
-          id="searchSite"
-          placeholder="Search items"
-          onkeypress="return searchFilter(event)"
-          class="ccBtn"
-          title="Search"
-          aria-label="Search"
-        />
-        <label>
-          <span class="screen-reader">Search</span>
-          <input type="button" id="searchSubmit" onclick="search(event)" aria-label="Search" class="searchBtn" title="Search" value="Search" ">
-        </label>
-        <label>
-          <span class="screen-reader">Clear Search</span>
-          <input
-            id="searchBtn"
-            class="searchBtn"
-            onclick="searchClear(SITE_SEARCH_ID)"
-            aria-label="Clear Search"
-            title="Clear search"
-            label="Clear search"
-            role="button"
-            type="button"
-            value="Clear"
-          >
-        </label>
+        <button type="submit" id="searchSubmit" aria-label="Search" class="searchBtn" value="Search"
+          onclick="search(event)">Search</button>
+      </label>
+
+      <label for="searchClear">
+        <span class="screen-reader">Clear Search</span>
+        <button type="reset" id="searchBtn" aria-label="Clear Search" class="searchBtn" title="Clear search" value="Clear"
+          onclick="searchClear(SITE_SEARCH_ID)">Clear</button>
       </label>
 
       <div id="pagination"></div>
