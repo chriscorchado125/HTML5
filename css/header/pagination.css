@@ -5,7 +5,7 @@ label {
   margin: -65px 0 0 0 !important; }
 
 .paginationNo {
-  margin: -53px 0 0 0 !important; }
+  margin: -48px 0 0 0 !important; }
 
 #pagination {
   text-align: center;
@@ -17,7 +17,7 @@ label {
     color: #ffffff;
     text-shadow: 1px 1px #000; }
   #pagination .pager-navigation {
-    background-color: #7399ea;
+    background-color: #346adf;
     margin: 0px 3px;
     padding: 3px 10px;
     font-size: 12px; }
