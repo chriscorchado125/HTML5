@@ -69,11 +69,11 @@ const setPagination = (
       // middle pages item counts
       if (currentCount !== 0) {
         dataOffsetText = `Items ${
-          currentCount * MAX_ITEMS_PER_PAGE - MAX_ITEMS_PER_PAGE
+          (currentCount * MAX_ITEMS_PER_PAGE - MAX_ITEMS_PER_PAGE) + 1
         }-<span id="lastCount">${currentCount * MAX_ITEMS_PER_PAGE}</span>`;
       } else {
         // last page item count
-        dataOffsetText = `Items ${paginationTotal}-<span id="lastCount">${
+          dataOffsetText = `Items ${+paginationTotal + 1}-<span id="lastCount">${
           +paginationTotal + count
         }</span>`;
       }

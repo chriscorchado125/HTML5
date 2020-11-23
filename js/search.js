@@ -36,10 +36,10 @@ const setPagination = (count, paginationTotal, prev, next) => {
         }
         else {
             if (currentCount !== 0) {
-                dataOffsetText = `Items ${currentCount * MAX_ITEMS_PER_PAGE - MAX_ITEMS_PER_PAGE}-<span id="lastCount">${currentCount * MAX_ITEMS_PER_PAGE}</span>`;
+                dataOffsetText = `Items ${(currentCount * MAX_ITEMS_PER_PAGE - MAX_ITEMS_PER_PAGE) + 1}-<span id="lastCount">${currentCount * MAX_ITEMS_PER_PAGE}</span>`;
             }
             else {
-                dataOffsetText = `Items ${paginationTotal}-<span id="lastCount">${+paginationTotal + count}</span>`;
+                dataOffsetText = `Items ${+paginationTotal + 1}-<span id="lastCount">${+paginationTotal + count}</span>`;
             }
         }
         document.getElementById("searchCount").innerHTML = `<span id="paging-info">${dataOffsetText}</span>`;

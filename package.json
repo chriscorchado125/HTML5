@@ -1,0 +1,28 @@
+{
+  "name": "html5",
+  "version": "1.0.0",
+  "description": "HTML5 version of www.chriscorchado.com",
+  "type": "module",
+  "dependencies": {
+    "@types/jquery": "^3.5.0",
+    "mime-types": "^2.1.27",
+    "node": "^14.5.0",
+    "tslib": "^2.0.0"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chriscorchado125/HTML5.git"
+  },
+  "author": "Chris Corchado",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chriscorchado125/HTML5/issues"
+  },
+  "homepage": "https://github.com/chriscorchado125/HTML5#readme"
+}
