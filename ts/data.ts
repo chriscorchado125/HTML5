@@ -143,6 +143,14 @@ const getPage = async (page: string, search?: string, pagingURL?: string) => {
             );
           }
           break;
+        case "resume":
+          data = await getData(
+            `${API_BASE}/jsonapi/node/page?fields[node--page]=id,title,body&
+              filter[id][operator]=CONTAINS&
+              filter[id][value]=815cf534-a677-409c-be7a-b231c24827b5`
+          );
+          break;
+
       }
     }
   }
@@ -182,9 +190,9 @@ const getData = async (dataURL: string) => {
  */
 const addProfiles = (id: string) => {
   document.getElementById(id).innerHTML = `
-  <div class="icon" id="pdf-resume">
-    <a href="https://chriscorchado.com/resume/Chris-Corchado-resume-2020.pdf" target="_blank" rel="noopener" title="Opening a new window">
-      <img alt="PDF Icon" src="https://chriscorchado.com/images/pdfIcon.jpg" title="Link to PDF Resume" />
+  <div class="icon" id="html-resume">
+    <a href="/html5/resume.html">
+      <img alt="Link to HTML Resume with PDF and Word options" src="https://chriscorchado.com/images/htmlIcon.jpg" />
       <span>Resume</span>
     </a>
   </div>
@@ -202,6 +210,28 @@ const addProfiles = (id: string) => {
       <span>Azure</span>
     </a>
   </div>`;
+};
+
+/**
+ * Add PDF and Word resume links
+ * @param {string} id - ID of element to insert into
+ */
+const addResumes = (id: string) => {
+  document.getElementById(id).innerHTML = `
+  <div class="icon" id="pdf-resume">
+    <a href="https://chriscorchado.com/resume/Chris-Corchado-resume-2020.pdf" target="_blank" rel="noopener" title="Opening a new window">
+      <img alt="Link to PDF Resume" src="https://chriscorchado.com/images/pdfIcon.jpg" />
+      <span>PDF</span>
+    </a>
+  </div>
+
+  <div class="icon" id="word-resume">
+    <a href="https://chriscorchado.com/resume/Chris-Corchado-resume-2020.docx" title="File will download">
+      <img alt="Link to MS Word Resume" src="https://chriscorchado.com/images/wordIcon.jpg" />
+      <span>Word</span>
+    </a>
+  </div>
+`;
 };
 
 /**
@@ -228,9 +258,8 @@ const setPageHTML = (values: any) => {
   let includedTechnologyItem = values[14];
   let indexCount = values[15];
 
-  switch (page) {
+   switch (page) {
     case "about": // homepage
-      document.getElementById("search-container").style.display = "none"; // hide search box
 
       // add a border to the site logo
       document.getElementById("logo").getElementsByTagName("img")[0].style.border =
@@ -243,7 +272,6 @@ const setPageHTML = (values: any) => {
       addProfiles("profiles");
 
       return aboutData;
-
       break;
     case "contact":
       // add resume, linkedin and azure links
@@ -385,9 +413,7 @@ const setPageHTML = (values: any) => {
         let encodedName = encodeURIComponent(itemTitle);
 
         data.attributes.field_video_url.forEach((img: string) => {
-          item += `<span title="Play Video"><a href="https://chriscorchado.com/video.html?url=${
-            data.attributes.field_video_url
-          }&name=${encodedName}" target="_blank" class="play-video" rel="noopener" title="Opens in a new window">
+          item += `<span title="Play Video"><a href="https://chriscorchado.com/video.html?url=${data.attributes.field_video_url}&name=${encodedName}" target="_blank" class="play-video" rel="noopener" title="Opens in a new window">
             Play Video <img loading="lazy" src="https://chriscorchado.com/images/play_video_new_window_icon.png" alt="Play Video Icon" width="20" />
           </a></span>`;
         });
@@ -411,6 +437,15 @@ const setPageHTML = (values: any) => {
 
       item += `</div>`;
       return item;
+      break;
+    case "resume":
+
+      let resumeData = data.attributes.body.value.toString();
+
+      // add PDF and Word resumes
+      addResumes("profiles");
+
+      return resumeData;
       break;
   }
 };
@@ -568,6 +603,9 @@ const renderPage = (
       case "projects":
         item += setPageHTML(allValues);
         break;
+      case "resume":
+      item = setPageHTML(allValues);
+      break;
     }
   }); // data.data forEach
 
@@ -594,9 +632,12 @@ const renderPage = (
       pageHasGallery = true;
       item = `<h1 id="content">Projects</h1><div class="container project-container row">${item}</div>`;
       break;
+    case "resume":
+      item = `<h1 id="content">Resume</h1>${item}`;
+      break;
   }
 
-  if (page !== "about") {
+  if (page !== "about" && page !== "resume") {
     document.getElementById(currentNavItem).className += " nav-item-active";
   }
 
@@ -616,7 +657,7 @@ const renderPage = (
     });
   }
 
-  if (page !== "about" && page !== "contact") {
+  if (page !== "about" && page !== "contact"  && page !== "resume") {
     setPagination(itemCount, data.passedInCount.currentCount, prev, next);
   }
 
