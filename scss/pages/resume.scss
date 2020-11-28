@@ -22,9 +22,10 @@
     /* FULL STACK DEVELOPER */
     h2 {
       color: #3a4261;
-      margin-bottom: 10px;
+      margin-bottom: 0;
       font-size: 26px;
       text-align: center;
+      font-weight: bold;
     }
 
     /* WEBSITE DEVELOPMENT • INFORMATION TECHNOLOGY • PROCESS IMPROVEMENT • PROBLEM SOLVING */
@@ -170,7 +171,7 @@
 @media (max-width: 700px) {
   .container {
     h1 {
-      margin-top: 130px !important;
+      margin-top: 130px;
     }
 
     .resume {
@@ -225,9 +226,21 @@
 }
 
 @media (max-width: 400px) {
+  .container {
+    .resume {
+      padding: 0 10px;
+    }
+
+    h1 {
+      margin-top: 105px;
+    }
+  }
   #profiles {
-    .icon img {
-      height: 25px;
+    .icon {
+      width: 35px;
+      img {
+        height: 15px;
+      }
     }
   }
 }
