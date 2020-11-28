@@ -189,7 +189,8 @@ const getData = async (dataURL: string) => {
  * @param {string} id - ID of element to insert into
  */
 const addProfiles = (id: string) => {
-  const baseDir = window.location.toString().indexOf("HTML") == -1 ? "/html5" : "";
+  const baseDir = window.location.toString().toLocaleLowerCase().indexOf("/html5") !== -1 ? "/html5" : "";
+
   document.getElementById(id).innerHTML = `
   <div class="icon" id="html-resume">
     <a href="${baseDir}/resume.html">
