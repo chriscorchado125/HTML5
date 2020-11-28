@@ -55,9 +55,9 @@ const updateMenuPages = (currentPage, targetContainer) => __awaiter(this, void 0
             pageLink = pageName;
             if (pageName == "Companies")
                 pageName = "History";
-            generatedPageLinks += `<a href="${pageLink.toLowerCase()}.html" 
-        class="nav-item nav-link ${activeNavItem}" 
-        title="${pageName}" 
+            generatedPageLinks += `<a href="${pageLink.toLowerCase()}.html"
+        class="nav-item nav-link ${activeNavItem}"
+        title="${pageName}"
         id="${pageName.toLowerCase()}-link">${pageName}</a>`;
         }
         document.getElementById(targetContainer).innerHTML = generatedPageLinks;
@@ -73,8 +73,10 @@ const getCurrentPage = () => {
         return pathnamePieces.length;
     })
         .pop();
-    let pageName = thisPage.split(".")[0];
-    if (pageName == "index" || pageName == "html5")
+    let pageName = "";
+    if (thisPage)
+        pageName = thisPage.split(".")[0];
+    if (pageName == "index" || pageName == "html5" || !pageName)
         pageName = "about";
     return pageName;
 };

@@ -33,6 +33,7 @@ const getPage = (page, search, pagingURL) => __awaiter(this, void 0, void 0, fun
         }
         renderPage(data, page);
         setLoading(false);
+        console.log(page);
         return false;
     }
     else {
@@ -147,9 +148,10 @@ const getData = (dataURL) => __awaiter(this, void 0, void 0, function* () {
     return result;
 });
 const addProfiles = (id) => {
+    const baseDir = window.location.toString().indexOf("HTML") == -1 ? "/html5" : "";
     document.getElementById(id).innerHTML = `
   <div class="icon" id="html-resume">
-    <a href="/html5/resume.html">
+    <a href="${baseDir}/resume.html">
       <img alt="Link to HTML Resume with PDF and Word options" src="https://chriscorchado.com/images/htmlIcon.jpg" />
       <span>Resume</span>
     </a>

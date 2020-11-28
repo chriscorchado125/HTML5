@@ -69,9 +69,9 @@ const updateMenuPages = async (currentPage: string, targetContainer: string) => 
         pageLink = pageName; // capture correct link name before pageName is updated
         if (pageName == "Companies") pageName = "History";
 
-        generatedPageLinks += `<a href="${pageLink.toLowerCase()}.html" 
-        class="nav-item nav-link ${activeNavItem}" 
-        title="${pageName}" 
+        generatedPageLinks += `<a href="${pageLink.toLowerCase()}.html"
+        class="nav-item nav-link ${activeNavItem}"
+        title="${pageName}"
         id="${pageName.toLowerCase()}-link">${pageName}</a>`;
       }
 
@@ -94,8 +94,10 @@ const getCurrentPage = () => {
     })
     .pop();
 
-  let pageName = thisPage.split(".")[0];
-  if (pageName == "index" || pageName == "html5") pageName = "about";
+  let pageName = "";
+  if (thisPage) pageName = thisPage.split(".")[0];
+
+  if (pageName == "index" || pageName == "html5"  || !pageName) pageName = "about";
 
   return pageName;
 };
