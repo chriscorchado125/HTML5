@@ -1,4 +1,3 @@
-"use strict";
 import * as dataJS from "./data.js";
 import * as utilityJS from "./utilities.js";
 import * as searchJS from "./search.js";

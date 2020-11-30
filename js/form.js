@@ -8,7 +8,8 @@ const formSubmitted = (seconds) => {
     document.getElementsByClassName("container")[0].append(countDown);
     let updateCountDown = setInterval(function () {
         seconds--;
-        document.getElementById("secondCountDown").innerHTML = seconds.toString();
+        const secondCountDown = document.getElementById("secondCountDown");
+        secondCountDown.innerHTML = seconds.toString();
         if (seconds === 0) {
             clearInterval(updateCountDown);
             window.location.replace(location.href.substring(0, location.href.lastIndexOf("/") + 1));

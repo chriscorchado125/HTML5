@@ -1,4 +1,3 @@
-"use strict";
 import * as utilityJS from "./utilities.js";
 import * as dataJS from "./data.js";
 const getSearchCount = (count, searchCountID) => {

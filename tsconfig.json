@@ -6,7 +6,8 @@
     "removeComments": true,
     "outDir": "./js",
     "rootDir": "./ts",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "strict": true
   },
   "include": ["./ts/**/*"]
 }

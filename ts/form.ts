@@ -15,7 +15,8 @@ const formSubmitted = (seconds: number) => {
 
   let updateCountDown = setInterval(function () {
     seconds--;
-    document.getElementById("secondCountDown").innerHTML = seconds.toString();
+     const secondCountDown = document.getElementById("secondCountDown") as HTMLElement;
+    secondCountDown.innerHTML = seconds.toString();
 
     if (seconds === 0) {
       clearInterval(updateCountDown);
