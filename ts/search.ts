@@ -1,3 +1,6 @@
+import * as utilityJS from "./utilities.js";
+import * as dataJS from "./data.js";
+
 /**
  * Get the current search count
  * @param {number} count - item count
@@ -5,15 +8,14 @@
  * @return {string} - item count with either 'Items' or 'Item'
  */
 const getSearchCount = (count: number, searchCountID: string) => {
-  let searchElement = <HTMLInputElement>document.getElementById(SITE_SEARCH_ID);
+  let searchElement = <HTMLInputElement>document.getElementById(utilityJS.SITE_SEARCH_ID);
 
   if (searchElement.value) {
-    if (count <= MAX_ITEMS_PER_PAGE) {
-      document.getElementById(searchCountID).innerHTML =
-        count + `  ${count == 1 ? "Item" : "Items"}`;
+    const searchCountEL = document.getElementById(searchCountID) as HTMLElement;
+    if (count <= utilityJS.MAX_ITEMS_PER_PAGE) {
+      searchCountEL.innerHTML = count + `  ${count == 1 ? "Item" : "Items"}`;
     } else {
-      document.getElementById(searchCountID).innerHTML =
-        MAX_ITEMS_PER_PAGE + `  ${+MAX_ITEMS_PER_PAGE == 1 ? "Item" : "Items"}`;
+      searchCountEL.innerHTML = utilityJS.MAX_ITEMS_PER_PAGE + `  ${+utilityJS.MAX_ITEMS_PER_PAGE == 1 ? "Item" : "Items"}`;
     }
 
     return `${count} ${count == 1 ? "Item" : "Items"} `;
@@ -37,7 +39,7 @@ const getSearchOffset = (link: any) => {
  * @param {Object=} prev - (optional) - link to previous results
  * @param {Object=} next - (optional) - link to next results
  */
-const setPagination = (
+export const setPagination = (
   count: number,
   paginationTotal: number,
   prev?: any,
@@ -52,25 +54,25 @@ const setPagination = (
   let dataOffsetText = getSearchCount(count, "searchCount");
 
   // if there is a next or prev link then show the pagination
+  const searchContainer = document.getElementById("search-container") as HTMLElement;
+  const searchContainerCount = document.getElementById("searchCount") as HTMLElement;
+
   if (!next && !prev) {
-    document.getElementById("search-container").className = "paginationNo";
-    document.getElementById(
-      "searchCount"
-    ).innerHTML = `<span id="totalItems">${count}</span>
-   ${count == 1 ? "Item" : "Items"}`;
+    searchContainer.className = "paginationNo";
+    searchContainerCount.innerHTML = `<span id="totalItems">${count}</span> ${count == 1 ? "Item" : "Items"}`;
   } else {
-    document.getElementById("search-container").className = "paginationYes";
-    let currentCount = +dataOffset / MAX_ITEMS_PER_PAGE;
+    searchContainer.className = "paginationYes";
+    let currentCount = +dataOffset / utilityJS.MAX_ITEMS_PER_PAGE;
 
     // first page item count
     if (count == dataOffset) {
-      dataOffsetText = `Items 1-<span id="lastCount">${MAX_ITEMS_PER_PAGE}</span>`;
+      dataOffsetText = `Items 1-<span id="lastCount">${utilityJS.MAX_ITEMS_PER_PAGE}</span>`;
     } else {
       // middle pages item counts
       if (currentCount !== 0) {
         dataOffsetText = `Items ${
-          (currentCount * MAX_ITEMS_PER_PAGE - MAX_ITEMS_PER_PAGE) + 1
-        }-<span id="lastCount">${currentCount * MAX_ITEMS_PER_PAGE}</span>`;
+          (currentCount * utilityJS.MAX_ITEMS_PER_PAGE - utilityJS.MAX_ITEMS_PER_PAGE) + 1
+        }-<span id="lastCount">${currentCount * utilityJS.MAX_ITEMS_PER_PAGE}</span>`;
       } else {
         // last page item count
           dataOffsetText = `Items ${+paginationTotal + 1}-<span id="lastCount">${
@@ -80,42 +82,47 @@ const setPagination = (
     }
 
     // add item counts to the page
-    document.getElementById(
-      "searchCount"
-    ).innerHTML = `<span id="paging-info">${dataOffsetText}</span>`;
+    searchContainerCount.innerHTML = `<span id="paging-info">${dataOffsetText}</span>`;
 
     // configure next and prev links
     prevLink = prev
-      ? `<a href="#" class="pager-navigation" title="View the previous page" role="button"
-          onclick="getPage(getCurrentPage(), document.getElementById('${SITE_SEARCH_ID}').value,'${prev.href}')">Prev</a>`
+      ? `<a href="#" class="pager-navigation" title="View the previous page" role="button" id="pagePrev"
+          onclick="getPage(getCurrentPage(), document.getElementById('${utilityJS.SITE_SEARCH_ID}').value,'${prev.href}')">Prev</a>`
       : `<span class="pager-navigation disabled" title="There is no previous page available" role="button">Prev</span>`;
     nextLink = next
-      ? `<a href="#" class="pager-navigation" title="View the next page" role="button"
-          onclick="getPage(getCurrentPage(), document.getElementById('${SITE_SEARCH_ID}').value,'${next.href}')">Next</a>`
+      ? `<a href="#" class="pager-navigation" title="View the next page" role="button" id="pageNext">Next</a>`
       : `<span class="pager-navigation disabled" title="There is no next page available" role="button">Next</span>`;
   }
 
-  // hide pagination when the item count is less than the page limit and on the first page
-  let paginationCount = document.getElementById("pagination");
+  const SITE_SEARCH_ID = document.getElementById(utilityJS.SITE_SEARCH_ID) as HTMLInputElement;
 
-  if (count < MAX_ITEMS_PER_PAGE && paginationTotal === 1) {
+
+  // hide pagination when the item count is less than the page limit and on the first page
+  const paginationCount = document.getElementById("pagination") as HTMLElement;
+
+  if (count < utilityJS.MAX_ITEMS_PER_PAGE && paginationTotal === 1) {
     paginationCount.style.display = "none";
   } else {
     paginationCount.style.display = "inline-block";
     paginationCount.innerHTML = `${prevLink}  ${nextLink}`;
+
+    const pagePrev = document.getElementById("pagePrev") as HTMLElement;
+    const pageNext = document.getElementById("pageNext") as HTMLElement;
+
+    if (pagePrev) pagePrev.onclick = () => dataJS.getPage(utilityJS.getCurrentPage(), SITE_SEARCH_ID.value, prev.href);
+    if (pageNext) pageNext.onclick = () => dataJS.getPage(utilityJS.getCurrentPage(), SITE_SEARCH_ID.value, next.href);
   }
 };
-
 
 /**
  * Triggered search
  */
-const search = (e: Event) => {
+export const search = (e: Event) => {
 
   // only allow the alphabet and spaces when searching
   const re = new RegExp(('[a-zA-Z \s]'));
 
-  const inputSearchBox = document.getElementById(SITE_SEARCH_ID)! as HTMLInputElement;
+  const inputSearchBox = document.getElementById(utilityJS.SITE_SEARCH_ID)! as HTMLInputElement;
 
   if (inputSearchBox.value == "" || re.exec(inputSearchBox.value) == null) {
     e.preventDefault();
@@ -129,7 +136,7 @@ const search = (e: Event) => {
     return false;
   }
 
-  getPage(getCurrentPage(), inputSearchBox.value);
+  dataJS.getPage(utilityJS.getCurrentPage(), inputSearchBox.value);
   updateInterface();
 }
 
@@ -139,7 +146,7 @@ const search = (e: Event) => {
  * @param {KeyboardEvent} event - key event
  * @return {string} - allowed characters
  */
-const searchFilter = (event: KeyboardEvent) => {
+export const searchFilter = (event: KeyboardEvent) => {
   const allowOnlyLettersAndSpace = new RegExp("^(?! )[A-Za-z\s]*$");
   return allowOnlyLettersAndSpace.test(event.key);
 };
@@ -148,10 +155,10 @@ const searchFilter = (event: KeyboardEvent) => {
  * Clear current search
  * @param {string} searchTextBoxID - id of search textbox
  */
-const searchClear = (searchTextBoxID: string) => {
+export const searchClear = (searchTextBoxID: string) => {
   const inputSearchBox = document.getElementById(searchTextBoxID)! as HTMLInputElement;
   inputSearchBox.value = "";
-  getPage(getCurrentPage());
+  dataJS.getPage(utilityJS.getCurrentPage());
   updateInterface();
 };
 
@@ -162,32 +169,35 @@ const searchClear = (searchTextBoxID: string) => {
  * @param {string} appendToID - id of element to append to
  * @param {string} msg - message
  */
-const noRecordsFound = (
+export const noRecordsFound = (
   noRecordID: string,
   search: string,
   appendToID: string,
   msg: string
 ) => {
-  if (document.getElementById(noRecordID)) {
-    document.getElementById(noRecordID).remove();
-  }
+   const noRecordEL = document.getElementById(noRecordID) as HTMLElement;
+   //noRecordEL.remove();
 
-  if (!document.getElementById(noRecordID) && search) {
-    document.getElementById("pagination").style.display = "none";
+  const pagination = document.getElementById("pagination") as HTMLElement;
+
+  if (!noRecordEL && search) {
+    pagination.style.display = "none";
     document.getElementsByClassName("container")[0].removeAttribute("style");
 
     let notFound = document.createElement("div");
     notFound.id = noRecordID;
     notFound.innerHTML = `${msg} '${search}'`;
-    document.getElementById(appendToID).appendChild(notFound);
 
-    document.getElementById("preloadAnimation").remove();
+    const appendToEL = document.getElementById(appendToID) as HTMLElement;
+    appendToEL.appendChild(notFound);
 
-    document.getElementById("searchCount").innerHTML =
-      '<b style="color:red">No match</b>';
+    const preloadAnimationEL = document.getElementById("preloadAnimation") as HTMLElement;
+    preloadAnimationEL.remove();
+
+    const searchCountEL = document.getElementById("searchCount") as HTMLElement;
+    searchCountEL.innerHTML = '<b style="color:red">No match</b>';
   } else {
-    document.getElementById("pagination").style.display = "inline-block";
-    document.getElementById("searchClear").style.visibility = "visible";
+    pagination.style.display = "inline-block";
   }
 };
 
@@ -196,7 +206,7 @@ const noRecordsFound = (
  * @param {Object} data - array of included data
  * @return {Array} - array of included data arrays
  */
-const getIncludedData = (data: any) => {
+export const getIncludedData = (data: any) => {
   let includedAssetFilename = [""];
   let includedCompanyName = [""];
   let includedTechnologyName = [""];
@@ -207,7 +217,7 @@ const getIncludedData = (data: any) => {
       // extract image URL within quotes
       let iconFileNamePath = /"(.*?)"/.exec(
         included_element.attributes.description.value
-      );
+      ) || "";
       includedTechnologyIcon[included_element.id] = iconFileNamePath[1];
     }
 
@@ -242,7 +252,7 @@ const getIncludedData = (data: any) => {
  * @param {Array} includedTechnologyIcon
  * @return {Array} array of element relationship arrays
  */
-const getElementRelationships = (
+export const getElementRelationships = (
   element: any,
   includedAssetFilename: any,
   includedCompanyName: any,
@@ -359,7 +369,7 @@ const getElementRelationships = (
  * @param {string} searchedFor - string to search for
  * @return {string} - search result with/without highlight
  */
-const itemWithSearchHighlight = (itemToHighlight: string, searchedFor: string) => {
+export const itemWithSearchHighlight = (itemToHighlight: string, searchedFor: string) => {
   let dataToReturn = "";
 
   if (searchedFor) {
@@ -415,4 +425,12 @@ const itemWithSearchHighlight = (itemToHighlight: string, searchedFor: string) =
   }
 
   return dataToReturn || itemToHighlight;
+};
+
+/**
+ * Toggle the preloader, searchCount, paging-info, pagination and message elements
+ * @param {string=} search - (optional) searched for text
+ */
+export const updateInterface = (search = "") => {
+  noRecordsFound("noRecords", search, "navigation", "No matches found for");
 };

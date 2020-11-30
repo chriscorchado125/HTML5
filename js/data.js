@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,19 +8,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const getPage = (page, search, pagingURL) => __awaiter(this, void 0, void 0, function* () {
+import * as utilityJS from "./utilities.js";
+import * as searchJS from "./search.js";
+export const getPage = (page, search, pagingURL) => __awaiter(void 0, void 0, void 0, function* () {
     let data = null;
-    setLoading(true);
+    utilityJS.setLoading(true);
     if (search) {
     }
     if (page == "contact") {
         if (location.toString().indexOf("submitted") == -1) {
-            yield fetch(`${API_BASE}/contact/feedback`)
+            yield fetch(`${utilityJS.API_BASE}/contact/feedback`)
                 .then((resp) => {
                 return resp.ok ? resp.text() : Promise.reject(resp.statusText);
             })
                 .then((page) => {
-                data = page.replace(/\/drupal8/g, API_BASE);
+                data = page.replace(/\/drupal8/g, utilityJS.API_BASE);
                 let form = data.substr(data.indexOf("<form class="), data.indexOf("</form>"));
                 form = form.substr(0, form.indexOf("</form>") + 8);
                 form = form.replace("Your email address", "Email");
@@ -32,8 +35,7 @@ const getPage = (page, search, pagingURL) => __awaiter(this, void 0, void 0, fun
             });
         }
         renderPage(data, page);
-        setLoading(false);
-        console.log(page);
+        utilityJS.setLoading(false);
         return false;
     }
     else {
@@ -43,13 +45,13 @@ const getPage = (page, search, pagingURL) => __awaiter(this, void 0, void 0, fun
         else {
             switch (page) {
                 case "about":
-                    data = yield getData(`${API_BASE}/jsonapi/node/page?fields[node--page]=id,title,body&
+                    data = yield getData(`${utilityJS.API_BASE}/jsonapi/node/page?fields[node--page]=id,title,body&
               filter[id][operator]=CONTAINS&
               filter[id][value]=ca23f416-ad70-41c2-9228-52ba6577abfe`);
                     break;
                 case "companies":
                     if (search) {
-                        data = yield getData(`${API_BASE}/jsonapi/node/company?filter[or-group][group][conjunction]=OR&
+                        data = yield getData(`${utilityJS.API_BASE}/jsonapi/node/company?filter[or-group][group][conjunction]=OR&
                 filter[field_company_name][operator]=CONTAINS&
                 filter[field_company_name][value]=${search}&
                 filter[field_company_name][condition][memberOf]=or-group&
@@ -61,17 +63,17 @@ const getPage = (page, search, pagingURL) => __awaiter(this, void 0, void 0, fun
                 filter[body.value][condition][memberOf]=or-group&
                 sort=-field_end_date&
                 include=field_company_screenshot&
-                page[limit]=${MAX_ITEMS_PER_PAGE}`);
+                page[limit]=${utilityJS.MAX_ITEMS_PER_PAGE}`);
                     }
                     else {
-                        data = yield getData(`${API_BASE}/jsonapi/node/company?sort=-field_end_date&
+                        data = yield getData(`${utilityJS.API_BASE}/jsonapi/node/company?sort=-field_end_date&
                 include=field_company_screenshot&
-                page[limit]=${MAX_ITEMS_PER_PAGE}`);
+                page[limit]=${utilityJS.MAX_ITEMS_PER_PAGE}`);
                     }
                     break;
                 case "courses":
                     if (search) {
-                        data = yield getData(`${API_BASE}/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&
+                        data = yield getData(`${utilityJS.API_BASE}/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&
                 filter[title][operator]=CONTAINS&
                 filter[title][value]=${search}&
                 filter[title][condition][memberOf]=or-group&
@@ -80,17 +82,17 @@ const getPage = (page, search, pagingURL) => __awaiter(this, void 0, void 0, fun
                 filter[field_award_date][condition][memberOf]=or-group&
                 sort=-field_award_date&
                 include=field_award_pdf,field_track_image,field_award_images&
-                page[limit]=${MAX_ITEMS_PER_PAGE}`);
+                page[limit]=${utilityJS.MAX_ITEMS_PER_PAGE}`);
                     }
                     else {
-                        data = yield getData(`${API_BASE}/jsonapi/node/awards?sort=-field_award_date&
+                        data = yield getData(`${utilityJS.API_BASE}/jsonapi/node/awards?sort=-field_award_date&
                 include=field_award_pdf,field_track_image,field_award_images&
-                page[limit]=${MAX_ITEMS_PER_PAGE}`);
+                page[limit]=${utilityJS.MAX_ITEMS_PER_PAGE}`);
                     }
                     break;
                 case "projects":
                     if (search) {
-                        data = yield getData(`${API_BASE}/jsonapi/node/project?filter[or-group][group][conjunction]=OR&
+                        data = yield getData(`${utilityJS.API_BASE}/jsonapi/node/project?filter[or-group][group][conjunction]=OR&
               filter[title][operator]=CONTAINS&
               filter[title][value]=${search}&
               filter[title][condition][memberOf]=or-group&
@@ -109,47 +111,54 @@ const getPage = (page, search, pagingURL) => __awaiter(this, void 0, void 0, fun
               sort=-field_date&field_company.title&
               include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&
               fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&
-              page[limit]=${MAX_ITEMS_PER_PAGE}`);
+              page[limit]=${utilityJS.MAX_ITEMS_PER_PAGE}`);
                     }
                     else {
-                        data = yield getData(`${API_BASE}/jsonapi/node/project?sort=-field_date&field_company.title&
+                        data = yield getData(`${utilityJS.API_BASE}/jsonapi/node/project?sort=-field_date&field_company.title&
                 include=field_project_technology,field_company,field_screenshot&
                 fields[node--company]=field_company_name,field_video_url&
                 fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&
-                page[limit]=${MAX_ITEMS_PER_PAGE}`);
+                page[limit]=${utilityJS.MAX_ITEMS_PER_PAGE}`);
                     }
                     break;
                 case "resume":
-                    data = yield getData(`${API_BASE}/jsonapi/node/page?fields[node--page]=id,title,body&
+                    data = yield getData(`${utilityJS.API_BASE}/jsonapi/node/page?fields[node--page]=id,title,body&
               filter[id][operator]=CONTAINS&
               filter[id][value]=815cf534-a677-409c-be7a-b231c24827b5`);
                     break;
             }
         }
     }
+    const lastCount = document.getElementById("lastCount");
     let passedInCount = {
         currentCount: document.getElementById("lastCount")
-            ? document.getElementById("lastCount").textContent
+            ? lastCount.textContent
             : 1
     };
     data = Object.assign(Object.assign({}, data), { passedInCount });
-    if (data.data.length) {
+    if (data.data && data.data.length) {
         renderPage(data, page, search, data.links.next, data.links.prev);
     }
     else {
-        updateInterface(search);
+        searchJS.updateInterface(search);
     }
 });
-const getData = (dataURL) => __awaiter(this, void 0, void 0, function* () {
+const getData = (dataURL) => __awaiter(void 0, void 0, void 0, function* () {
     let result = {};
-    yield fetch(cleanURL(dataURL))
-        .then((response) => response.json())
-        .then((data) => (result = data));
-    return result;
+    try {
+        yield fetch(utilityJS.cleanURL(dataURL))
+            .then((response) => response.json())
+            .then((data) => (result = data));
+        return result;
+    }
+    catch (error) {
+        alert(`Sorry an error has occurred: ${error}`);
+    }
 });
 const addProfiles = (id) => {
     const baseDir = window.location.toString().toLocaleLowerCase().indexOf("/html5") !== -1 ? "/html5" : "";
-    document.getElementById(id).innerHTML = `
+    const docEl = document.getElementById(id);
+    docEl.innerHTML = `
   <div class="icon" id="html-resume">
     <a href="${baseDir}/resume.html">
       <img alt="Link to HTML Resume with PDF and Word options" src="https://chriscorchado.com/images/htmlIcon.jpg" />
@@ -172,7 +181,8 @@ const addProfiles = (id) => {
   </div>`;
 };
 const addResumes = (id) => {
-    document.getElementById(id).innerHTML = `
+    const docEl = document.getElementById(id);
+    docEl.innerHTML = `
   <div class="icon" id="pdf-resume">
     <a href="https://chriscorchado.com/resume/Chris-Corchado-resume-2020.pdf" target="_blank" rel="noopener" title="Opening a new window">
       <img alt="Link to PDF Resume" src="https://chriscorchado.com/images/pdfIcon.jpg" />
@@ -185,8 +195,7 @@ const addResumes = (id) => {
       <img alt="Link to MS Word Resume" src="https://chriscorchado.com/images/wordIcon.jpg" />
       <span>Word</span>
     </a>
-  </div>
-`;
+  </div>`;
 };
 const setPageHTML = (values) => {
     let item = "";
@@ -208,7 +217,8 @@ const setPageHTML = (values) => {
     let indexCount = values[15];
     switch (page) {
         case "about":
-            document.getElementById("logo").getElementsByTagName("img")[0].style.border =
+            const docLogo = document.getElementById("logo");
+            docLogo.getElementsByTagName("img")[0].style.border =
                 "1px dashed #7399EA";
             let aboutData = data.attributes.body.value.toString();
             addProfiles("profiles");
@@ -221,10 +231,12 @@ const setPageHTML = (values) => {
             }
             else {
                 document.getElementsByClassName("container")[0].innerHTML = data.toString();
-                document.getElementById("contact-link").className += " nav-item-active";
+                const docContact = document.getElementById("contact-link");
+                docContact.className += " nav-item-active";
                 const webLocation = document.getElementById("edit-field-site-0-value");
                 webLocation.value = location.toString();
-                document.getElementById("edit-mail").focus();
+                const docEditMail = document.getElementById("edit-mail");
+                docEditMail.focus();
             }
             break;
         case "companies":
@@ -235,7 +247,7 @@ const setPageHTML = (values) => {
           <div class="body-container">${itemBody}</div>
 
           <div class="screenshot-container">
-            <img loading="lazy" src=${getFullUrlByPage(imgPieces[0], page)}
+            <img loading="lazy" src=${utilityJS.getFullUrlByPage(imgPieces[0], page)}
             class="company-screenshot"
             alt="${data.attributes.title} Screenshot"
             title="Screenshot of ${data.attributes.title}" />
@@ -249,7 +261,7 @@ const setPageHTML = (values) => {
           <h2>${itemTitle}</h2>
 
           <div>
-            <img loading="lazy" src="${getFullUrlByPage(imgPieces[0], page)}"
+            <img loading="lazy" src="${utilityJS.getFullUrlByPage(imgPieces[0], page)}"
               alt="${itemTitle.replace(/(<([^>]+)>)/gi, "")}"
               title="${itemTitle.replace(/(<([^>]+)>)/gi, "")}" />
           </div>
@@ -259,14 +271,14 @@ const setPageHTML = (values) => {
             <span class="course-date">${itemDate}</span>
 
             <span class="course-links">
-              <a href="${getFullUrlByPage(itemPDF, page)}" target="_blank" rel="noopener" title="Opens in a new window">
+              <a href="${utilityJS.getFullUrlByPage(itemPDF, page)}" target="_blank" rel="noopener" title="Opens in a new window">
                 <img loading="lazy" src="https://chriscorchado.com/images/pdfIcon.jpg" height="25"
                 title="View the PDF Certificate" alt="PDF Icon"/>
               </a>
             </span>`;
             if (itemTrackImage) {
                 item += `<span class="course-links">
-            <a href="${getFullUrlByPage(itemTrackImage, page)}" data-featherlight="image">
+            <a href="${utilityJS.getFullUrlByPage(itemTrackImage, page)}" data-featherlight="image">
               <img loading="lazy" src="https://chriscorchado.com/images/linkedIn-track.png" height="25"
               title="View the Courses in the Track" alt="Trophy Icon" />
             </a>
@@ -291,12 +303,12 @@ const setPageHTML = (values) => {
                 imgPieces.forEach((img) => {
                     let pieces = img.split(",");
                     pieces.forEach((item) => {
-                        let projectImage = getFullUrlByPage(item, page);
+                        let projectImage = utilityJS.getFullUrlByPage(item, page);
                         section += `<div class="project-item shadow" title='${screenshotAlt[imgAltCount]}'>
 
               <a href=${projectImage} class="gallery">
                 <div class="project-item-desc">
-                  ${itemWithSearchHighlight(screenshotAlt[imgAltCount], searchedFor)}
+                  ${searchJS.itemWithSearchHighlight(screenshotAlt[imgAltCount], searchedFor)}
                 </div>
 
                 <img loading="lazy" src='${projectImage}' alt='Screenshot of ${screenshotAlt[imgAltCount]}' />
@@ -338,7 +350,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     let includedTechnologyName = [""];
     let includedTechnologyIcon = [""];
     if (data.included) {
-        let allIncludedData = getIncludedData(data);
+        let allIncludedData = searchJS.getIncludedData(data);
         includedCompanyName = allIncludedData[0];
         includedAssetFilename = allIncludedData[1];
         includedTechnologyName = allIncludedData[2];
@@ -361,7 +373,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
         imgPieces = [];
         includedTechnologyItem = [];
         if (element.relationships) {
-            let relationshipData = getElementRelationships(element, includedAssetFilename, includedCompanyName, includedTechnologyName, includedTechnologyIcon);
+            let relationshipData = searchJS.getElementRelationships(element, includedAssetFilename, includedCompanyName, includedTechnologyName, includedTechnologyIcon);
             if (!imgPieces.includes(relationshipData[0].toString())) {
                 imgPieces.push(relationshipData[0].toString());
             }
@@ -377,24 +389,24 @@ const renderPage = (data, page, searchedFor, next, prev) => {
             if (page == "projects")
                 itemDate = itemDate.split("-")[0];
             if (page == "courses")
-                itemDate = getMonthYear(itemDate);
+                itemDate = utilityJS.getMonthYear(itemDate);
         }
         if (startDate)
-            startDate = getMonthYear(startDate);
+            startDate = utilityJS.getMonthYear(startDate);
         if (endDate)
-            endDate = getMonthYear(endDate);
+            endDate = utilityJS.getMonthYear(endDate);
         itemTitle = itemTitle.replace("&amp;", "&");
         if (searchedFor) {
-            itemTitle = itemWithSearchHighlight(itemTitle, searchedFor);
-            itemDate = itemWithSearchHighlight(itemDate, searchedFor);
-            startDate = itemWithSearchHighlight(startDate, searchedFor);
-            endDate = itemWithSearchHighlight(endDate, searchedFor);
-            itemBody = itemWithSearchHighlight(itemBody, searchedFor);
-            itemJobTitle = itemWithSearchHighlight(itemJobTitle, searchedFor);
-            itemTechnology = itemWithSearchHighlight(itemTechnology, searchedFor);
-            itemCompanyName = itemWithSearchHighlight(itemCompanyName, searchedFor);
+            itemTitle = searchJS.itemWithSearchHighlight(itemTitle, searchedFor);
+            itemDate = searchJS.itemWithSearchHighlight(itemDate, searchedFor);
+            startDate = searchJS.itemWithSearchHighlight(startDate, searchedFor);
+            endDate = searchJS.itemWithSearchHighlight(endDate, searchedFor);
+            itemBody = searchJS.itemWithSearchHighlight(itemBody, searchedFor);
+            itemJobTitle = searchJS.itemWithSearchHighlight(itemJobTitle, searchedFor);
+            itemTechnology = searchJS.itemWithSearchHighlight(itemTechnology, searchedFor);
+            itemCompanyName = searchJS.itemWithSearchHighlight(itemCompanyName, searchedFor);
             if (itemWorkType !== "node-company") {
-                itemWorkType = itemWithSearchHighlight(itemWorkType, searchedFor);
+                itemWorkType = searchJS.itemWithSearchHighlight(itemWorkType, searchedFor);
             }
         }
         itemCount++;
@@ -461,11 +473,13 @@ const renderPage = (data, page, searchedFor, next, prev) => {
             break;
     }
     if (page !== "about" && page !== "resume") {
-        document.getElementById(currentNavItem).className += " nav-item-active";
+        const docCurrentNavItem = document.getElementById(currentNavItem);
+        docCurrentNavItem.className += " nav-item-active";
     }
     document.getElementsByClassName("container")[0].innerHTML = item;
     if (pageIsSearchable) {
-        document.getElementById("search-container").style.display = "block";
+        const docSearchContainer = document.getElementById("search-container");
+        docSearchContainer.style.display = "block";
     }
     if (pageHasGallery) {
         $("a.gallery").featherlightGallery({
@@ -476,22 +490,28 @@ const renderPage = (data, page, searchedFor, next, prev) => {
         });
     }
     if (page !== "about" && page !== "contact" && page !== "resume") {
-        setPagination(itemCount, data.passedInCount.currentCount, prev, next);
+        searchJS.setPagination(itemCount, data.passedInCount.currentCount, prev, next);
     }
-    setLoading(false);
+    utilityJS.setLoading(false);
     if (page == "about") {
         let currentURL = window.location.toString();
         if (currentURL.indexOf("/html5/") !== -1) {
-            document.getElementById("html5").setAttribute("class", "shadow-version noLink");
-            document.getElementById("html5-here").style.display = "block";
+            const docHtml5 = document.getElementById("html5");
+            docHtml5.setAttribute("class", "shadow-version noLink");
+            const docHtml5Here = document.getElementById("html5-here");
+            docHtml5Here.style.display = "block";
         }
         else if (currentURL.indexOf("/drupal8/") !== -1) {
-            document.getElementById("drupal8").setAttribute("class", "shadow-version noLink");
-            document.getElementById("drupal8-here").style.display = "block";
+            const docDrupal8 = document.getElementById("drupal8");
+            docDrupal8.setAttribute("class", "shadow-version noLink");
+            const docDrupal8Here = document.getElementById("drupal8-here");
+            docDrupal8Here.style.display = "block";
         }
         else {
-            document.getElementById("nodeJS").setAttribute("class", "shadow-version noLink");
-            document.getElementById("nodeJS-here").style.display = "block";
+            const docNodeJS = document.getElementById("nodeJS");
+            docNodeJS.setAttribute("class", "shadow-version noLink");
+            const docnodeJSHere = document.getElementById("nodeJS-here");
+            docnodeJSHere.style.display = "block";
         }
     }
 };

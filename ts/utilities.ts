@@ -1,3 +1,10 @@
+//const {noRecordsFound} = require('./search');
+
+export const API_BASE = "https://chriscorchado.com/drupal8";
+export const MAX_ITEMS_PER_PAGE = 50;
+export const SITE_SEARCH_ID = "searchSite";
+
+
 // https://gist.github.com/alirezas/c4f9f43e9fe1abba9a4824dd6fc60a55
 /**
  * Pure JS fade in using opacity
@@ -75,7 +82,8 @@ const updateMenuPages = async (currentPage: string, targetContainer: string) => 
         id="${pageName.toLowerCase()}-link">${pageName}</a>`;
       }
 
-      document.getElementById(targetContainer).innerHTML = generatedPageLinks;
+      const targetContainerEL = document.getElementById(targetContainer) as HTMLElement;
+      targetContainerEL.innerHTML = generatedPageLinks;
     })
     .catch((error) => {
       alert(`Sorry an error has occurred: ${error}`);
@@ -86,7 +94,7 @@ const updateMenuPages = async (currentPage: string, targetContainer: string) => 
  * Get the current page name
  * @return {string} - page name
  */
-const getCurrentPage = () => {
+export const getCurrentPage = () => {
   let thisPage = window.location.pathname
     .split("/")
     .filter(function (pathnamePieces) {
@@ -108,7 +116,7 @@ const getCurrentPage = () => {
  * @param {string} page - page name
  * @return {string} - absolute url
  */
-const getFullUrlByPage = (linkToFix: string, page: string) => {
+export const getFullUrlByPage = (linkToFix: string, page: string) => {
   let pathToResource = "No Path Found";
 
   switch (page) {
@@ -135,7 +143,7 @@ const getFullUrlByPage = (linkToFix: string, page: string) => {
  * @param {string} dateString - date value
  * @return {string} - month and year - example: January 2020
  */
-const getMonthYear = (dateString: string) => {
+export const getMonthYear = (dateString: string) => {
   let newDate = new Date(dateString);
 
   return (
@@ -150,7 +158,7 @@ const getMonthYear = (dateString: string) => {
  * @param {string} urlToClean - URL to fix
  * @return {string} - fixed URL
  */
-const cleanURL = (urlToClean: string) => {
+export const cleanURL = (urlToClean: string) => {
   let fixedURL = "";
   let strings = urlToClean.split(" ");
   strings.forEach((element: string) => {
@@ -163,7 +171,7 @@ const cleanURL = (urlToClean: string) => {
  * Toggle content and preloader
  * @param {boolean} loadingStatus
  */
-const setLoading = (loadingStatus: boolean) => {
+export const setLoading = (loadingStatus: boolean) => {
   if (loadingStatus) {
     let preloader = document.createElement("div");
 
@@ -177,7 +185,8 @@ const setLoading = (loadingStatus: boolean) => {
 
     document.body.append(preloader);
   } else {
-    document.getElementById("preloadAnimation").remove();
+    const preloadAnimation = document.getElementById("preloadAnimation") as HTMLElement;
+    preloadAnimation.remove();
 
     if (document.getElementsByClassName("container")[0]) {
       let mainContainer = document.getElementsByClassName("container")[0] as HTMLElement;
@@ -190,10 +199,3 @@ const setLoading = (loadingStatus: boolean) => {
   }
 };
 
-/**
- * Toggle the preloader, searchCount, paging-info, pagination and message elements
- * @param {string=} search - (optional) searched for text
- */
-const updateInterface = (search?: string) => {
-  noRecordsFound("noRecords", search, "navigation", "No matches found for");
-};

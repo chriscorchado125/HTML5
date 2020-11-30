@@ -1,13 +1,16 @@
+import * as utilityJS from "./utilities.js";
+import * as searchJS from "./search.js";
+
 /**
  * Load page
  * @param {string} page - page name
  * @param {string=} search - (optional) - search string
  * @param {string=} pagingURL - (optional) - Prev/Next links
  */
-const getPage = async (page: string, search?: string, pagingURL?: string) => {
+export const getPage = async (page: string, search?: string, pagingURL?: string) => {
   let data = null;
-
-  setLoading(true);
+  //alert(page + " | " + search + " | " + pagingURL);
+  utilityJS.setLoading(true);
 
   if (search) {
     // ga('send', 'pageview', location.pathname + '?search=' + search);
@@ -16,12 +19,12 @@ const getPage = async (page: string, search?: string, pagingURL?: string) => {
   if (page == "contact") {
     // generate the contact form as long as it has not been submitted
     if (location.toString().indexOf("submitted") == -1) {
-      await fetch(`${API_BASE}/contact/feedback`) // get the feedback form as text
+      await fetch(`${utilityJS.API_BASE}/contact/feedback`) // get the feedback form as text
         .then((resp) => {
           return resp.ok ? resp.text() : Promise.reject(resp.statusText);
         })
         .then((page) => {
-          data = page.replace(/\/drupal8/g, API_BASE); // update the HTML URLs from relative to absolute
+          data = page.replace(/\/drupal8/g, utilityJS.API_BASE); // update the HTML URLs from relative to absolute
 
           // get the contact form HTML
           let form = data.substr(data.indexOf("<form class="), data.indexOf("</form>"));
@@ -47,8 +50,8 @@ const getPage = async (page: string, search?: string, pagingURL?: string) => {
 
     renderPage(data, page);
 
-    setLoading(false);
-console.log(page)
+    utilityJS.setLoading(false);
+
     return false;
   } else {
     if (pagingURL) {
@@ -57,7 +60,7 @@ console.log(page)
       switch (page) {
         case "about":
           data = await getData(
-            `${API_BASE}/jsonapi/node/page?fields[node--page]=id,title,body&
+            `${utilityJS.API_BASE}/jsonapi/node/page?fields[node--page]=id,title,body&
               filter[id][operator]=CONTAINS&
               filter[id][value]=ca23f416-ad70-41c2-9228-52ba6577abfe`
           );
@@ -65,7 +68,7 @@ console.log(page)
         case "companies":
           if (search) {
             data = await getData(
-              `${API_BASE}/jsonapi/node/company?filter[or-group][group][conjunction]=OR&
+              `${utilityJS.API_BASE}/jsonapi/node/company?filter[or-group][group][conjunction]=OR&
                 filter[field_company_name][operator]=CONTAINS&
                 filter[field_company_name][value]=${search}&
                 filter[field_company_name][condition][memberOf]=or-group&
@@ -77,20 +80,20 @@ console.log(page)
                 filter[body.value][condition][memberOf]=or-group&
                 sort=-field_end_date&
                 include=field_company_screenshot&
-                page[limit]=${MAX_ITEMS_PER_PAGE}`
+                page[limit]=${utilityJS.MAX_ITEMS_PER_PAGE}`
             );
           } else {
             data = await getData(
-              `${API_BASE}/jsonapi/node/company?sort=-field_end_date&
+              `${utilityJS.API_BASE}/jsonapi/node/company?sort=-field_end_date&
                 include=field_company_screenshot&
-                page[limit]=${MAX_ITEMS_PER_PAGE}`
+                page[limit]=${utilityJS.MAX_ITEMS_PER_PAGE}`
             );
           }
           break;
         case "courses":
           if (search) {
             data = await getData(
-              `${API_BASE}/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&
+              `${utilityJS.API_BASE}/jsonapi/node/awards?filter[or-group][group][conjunction]=OR&
                 filter[title][operator]=CONTAINS&
                 filter[title][value]=${search}&
                 filter[title][condition][memberOf]=or-group&
@@ -99,20 +102,20 @@ console.log(page)
                 filter[field_award_date][condition][memberOf]=or-group&
                 sort=-field_award_date&
                 include=field_award_pdf,field_track_image,field_award_images&
-                page[limit]=${MAX_ITEMS_PER_PAGE}`
+                page[limit]=${utilityJS.MAX_ITEMS_PER_PAGE}`
             );
           } else {
             data = await getData(
-              `${API_BASE}/jsonapi/node/awards?sort=-field_award_date&
+              `${utilityJS.API_BASE}/jsonapi/node/awards?sort=-field_award_date&
                 include=field_award_pdf,field_track_image,field_award_images&
-                page[limit]=${MAX_ITEMS_PER_PAGE}`
+                page[limit]=${utilityJS.MAX_ITEMS_PER_PAGE}`
             );
           }
           break;
         case "projects":
           if (search) {
             data = await getData(
-              `${API_BASE}/jsonapi/node/project?filter[or-group][group][conjunction]=OR&
+              `${utilityJS.API_BASE}/jsonapi/node/project?filter[or-group][group][conjunction]=OR&
               filter[title][operator]=CONTAINS&
               filter[title][value]=${search}&
               filter[title][condition][memberOf]=or-group&
@@ -131,21 +134,21 @@ console.log(page)
               sort=-field_date&field_company.title&
               include=field_project_technology,field_company,field_screenshot&fields[node--company]=field_company_name,field_video_url&
               fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&
-              page[limit]=${MAX_ITEMS_PER_PAGE}`
+              page[limit]=${utilityJS.MAX_ITEMS_PER_PAGE}`
             );
           } else {
             data = await getData(
-              `${API_BASE}/jsonapi/node/project?sort=-field_date&field_company.title&
+              `${utilityJS.API_BASE}/jsonapi/node/project?sort=-field_date&field_company.title&
                 include=field_project_technology,field_company,field_screenshot&
                 fields[node--company]=field_company_name,field_video_url&
                 fields[node--project]=title,body,field_date,field_screenshot,field_project_technology,field_company,field_video_url&
-                page[limit]=${MAX_ITEMS_PER_PAGE}`
+                page[limit]=${utilityJS.MAX_ITEMS_PER_PAGE}`
             );
           }
           break;
         case "resume":
           data = await getData(
-            `${API_BASE}/jsonapi/node/page?fields[node--page]=id,title,body&
+            `${utilityJS.API_BASE}/jsonapi/node/page?fields[node--page]=id,title,body&
               filter[id][operator]=CONTAINS&
               filter[id][value]=815cf534-a677-409c-be7a-b231c24827b5`
           );
@@ -156,18 +159,19 @@ console.log(page)
   }
 
   // create object with the last pagination count or a default of 1
+  const lastCount = document.getElementById("lastCount") as HTMLElement;
   let passedInCount = {
     currentCount: document.getElementById("lastCount")
-      ? document.getElementById("lastCount").textContent
+      ? lastCount.textContent
       : 1
   };
 
   data = { ...data, passedInCount };
 
-  if (data.data.length) {
+  if (data.data && data.data.length) {
     renderPage(data, page, search, data.links.next, data.links.prev);
   } else {
-    updateInterface(search);
+    searchJS.updateInterface(search);
   }
 };
 
@@ -178,10 +182,15 @@ console.log(page)
  */
 const getData = async (dataURL: string) => {
   let result: any = {};
-  await fetch(cleanURL(dataURL))
+  try {
+    await fetch(utilityJS.cleanURL(dataURL))
     .then((response) => response.json())
     .then((data) => (result = data));
   return result;
+  } catch(error) {
+     alert(`Sorry an error has occurred: ${error}`);
+  }
+
 };
 
 /**
@@ -189,9 +198,11 @@ const getData = async (dataURL: string) => {
  * @param {string} id - ID of element to insert into
  */
 const addProfiles = (id: string) => {
+
   const baseDir = window.location.toString().toLocaleLowerCase().indexOf("/html5") !== -1 ? "/html5" : "";
 
-  document.getElementById(id).innerHTML = `
+  const docEl = document.getElementById(id)! as HTMLInputElement;
+  docEl.innerHTML = `
   <div class="icon" id="html-resume">
     <a href="${baseDir}/resume.html">
       <img alt="Link to HTML Resume with PDF and Word options" src="https://chriscorchado.com/images/htmlIcon.jpg" />
@@ -219,7 +230,9 @@ const addProfiles = (id: string) => {
  * @param {string} id - ID of element to insert into
  */
 const addResumes = (id: string) => {
-  document.getElementById(id).innerHTML = `
+
+  const docEl = document.getElementById(id)! as HTMLInputElement;
+  docEl.innerHTML = `
   <div class="icon" id="pdf-resume">
     <a href="https://chriscorchado.com/resume/Chris-Corchado-resume-2020.pdf" target="_blank" rel="noopener" title="Opening a new window">
       <img alt="Link to PDF Resume" src="https://chriscorchado.com/images/pdfIcon.jpg" />
@@ -232,8 +245,7 @@ const addResumes = (id: string) => {
       <img alt="Link to MS Word Resume" src="https://chriscorchado.com/images/wordIcon.jpg" />
       <span>Word</span>
     </a>
-  </div>
-`;
+  </div>`;
 };
 
 /**
@@ -264,7 +276,8 @@ const setPageHTML = (values: any) => {
     case "about": // homepage
 
       // add a border to the site logo
-      document.getElementById("logo").getElementsByTagName("img")[0].style.border =
+        const docLogo = document.getElementById("logo")! as HTMLInputElement;
+        docLogo.getElementsByTagName("img")[0].style.border =
         "1px dashed #7399EA";
 
       // TODO: change to a content type vs basic page split
@@ -285,15 +298,17 @@ const setPageHTML = (values: any) => {
       } else {
         // show the form
         document.getElementsByClassName("container")[0].innerHTML = data.toString();
-        document.getElementById("contact-link").className += " nav-item-active";
+
+        const docContact = document.getElementById("contact-link")! as HTMLInputElement;
+        docContact.className += " nav-item-active";
 
         // capture the current site URL
-        const webLocation = document.getElementById(
-          "edit-field-site-0-value"
-        )! as HTMLInputElement;
+        const webLocation = document.getElementById("edit-field-site-0-value")! as HTMLInputElement;
 
         webLocation.value = location.toString();
-        document.getElementById("edit-mail").focus();
+
+        const docEditMail = document.getElementById("edit-mail")! as HTMLInputElement;
+        docEditMail.focus();
       }
       break;
     case "companies":
@@ -304,7 +319,7 @@ const setPageHTML = (values: any) => {
           <div class="body-container">${itemBody}</div>
 
           <div class="screenshot-container">
-            <img loading="lazy" src=${getFullUrlByPage(imgPieces[0], page)}
+            <img loading="lazy" src=${utilityJS.getFullUrlByPage(imgPieces[0], page)}
             class="company-screenshot"
             alt="${data.attributes.title} Screenshot"
             title="Screenshot of ${data.attributes.title}" />
@@ -312,20 +327,15 @@ const setPageHTML = (values: any) => {
 
           <div class="employment-dates">${startDate} - ${endDate}</div>
         </div>`;
-
-      // item += `<div class="employment-type">${itemWorkType}</div>`;
       break;
     case "courses":
       item = `<div class="course-box box">
           <h2>${itemTitle}</h2>
 
           <div>
-            <img loading="lazy" src="${getFullUrlByPage(imgPieces[0], page)}"
+            <img loading="lazy" src="${utilityJS.getFullUrlByPage(imgPieces[0], page)}"
               alt="${itemTitle.replace(/(<([^>]+)>)/gi, "")}"
-              title="${itemTitle.replace(
-                /(<([^>]+)>)/gi,
-                ""
-              )}" />
+              title="${itemTitle.replace(/(<([^>]+)>)/gi,"")}" />
           </div>
 
           <div class="course-wrapper">
@@ -333,10 +343,7 @@ const setPageHTML = (values: any) => {
             <span class="course-date">${itemDate}</span>
 
             <span class="course-links">
-              <a href="${getFullUrlByPage(
-                itemPDF,
-                page
-              )}" target="_blank" rel="noopener" title="Opens in a new window">
+              <a href="${utilityJS.getFullUrlByPage(itemPDF, page)}" target="_blank" rel="noopener" title="Opens in a new window">
                 <img loading="lazy" src="https://chriscorchado.com/images/pdfIcon.jpg" height="25"
                 title="View the PDF Certificate" alt="PDF Icon"/>
               </a>
@@ -351,10 +358,7 @@ const setPageHTML = (values: any) => {
 
       if (itemTrackImage) {
         item += `<span class="course-links">
-            <a href="${getFullUrlByPage(
-              itemTrackImage,
-              page
-            )}" data-featherlight="image">
+            <a href="${utilityJS.getFullUrlByPage(itemTrackImage, page)}" data-featherlight="image">
               <img loading="lazy" src="https://chriscorchado.com/images/linkedIn-track.png" height="25"
               title="View the Courses in the Track" alt="Trophy Icon" />
             </a>
@@ -385,7 +389,7 @@ const setPageHTML = (values: any) => {
           let pieces = img.split(",");
 
           pieces.forEach((item: string) => {
-            let projectImage = getFullUrlByPage(item, page);
+            let projectImage = utilityJS.getFullUrlByPage(item, page);
 
             section += `<div class="project-item shadow" title='${
               screenshotAlt[imgAltCount]
@@ -393,7 +397,7 @@ const setPageHTML = (values: any) => {
 
               <a href=${projectImage} class="gallery">
                 <div class="project-item-desc">
-                  ${itemWithSearchHighlight(screenshotAlt[imgAltCount], searchedFor)}
+                  ${searchJS.itemWithSearchHighlight(screenshotAlt[imgAltCount], searchedFor)}
                 </div>
 
                 <img loading="lazy" src='${projectImage}' alt='Screenshot of ${
@@ -422,10 +426,7 @@ const setPageHTML = (values: any) => {
       }
 
       // Text for HTML, CSS, JavaScript, etc..
-      item += `<div class="project-technology">${itemTechnology.slice(
-        0,
-        -2
-      )}</div>`;
+      item += `<div class="project-technology">${itemTechnology.slice(0, -2)}</div>`;
 
       // Icons for HTML, CSS, JavaScript, etc..
       // item += `<div class="project-technology">`;
@@ -480,7 +481,7 @@ const renderPage = (
   let includedTechnologyIcon = [""];
 
   if (data.included) {
-    let allIncludedData = getIncludedData(data);
+    let allIncludedData = searchJS.getIncludedData(data);
     includedCompanyName = allIncludedData[0];
     includedAssetFilename = allIncludedData[1];
     includedTechnologyName = allIncludedData[2];
@@ -520,7 +521,7 @@ const renderPage = (
     includedTechnologyItem = [];
 
     if (element.relationships) {
-      let relationshipData = getElementRelationships(
+      let relationshipData = searchJS.getElementRelationships(
         element,
         includedAssetFilename,
         includedCompanyName,
@@ -546,28 +547,28 @@ const renderPage = (
     // get project and course dates
     if (itemDate) {
       if (page == "projects") itemDate = itemDate.split("-")[0]; // only the year
-      if (page == "courses") itemDate = getMonthYear(itemDate);
+      if (page == "courses") itemDate = utilityJS.getMonthYear(itemDate);
     }
 
     // get work history dates - month and year
-    if (startDate) startDate = getMonthYear(startDate);
-    if (endDate) endDate = getMonthYear(endDate);
+    if (startDate) startDate = utilityJS.getMonthYear(startDate);
+    if (endDate) endDate = utilityJS.getMonthYear(endDate);
 
     itemTitle = itemTitle.replace("&amp;", "&");
 
     if (searchedFor) {
       // TODO pass in array[itemTitle, itemDate, etc..] and searchedFor then destructure
-      itemTitle = itemWithSearchHighlight(itemTitle, searchedFor);
-      itemDate = itemWithSearchHighlight(itemDate, searchedFor);
-      startDate = itemWithSearchHighlight(startDate, searchedFor);
-      endDate = itemWithSearchHighlight(endDate, searchedFor);
-      itemBody = itemWithSearchHighlight(itemBody, searchedFor);
-      itemJobTitle = itemWithSearchHighlight(itemJobTitle, searchedFor);
-      itemTechnology = itemWithSearchHighlight(itemTechnology, searchedFor);
-      itemCompanyName = itemWithSearchHighlight(itemCompanyName, searchedFor);
+      itemTitle = searchJS.itemWithSearchHighlight(itemTitle, searchedFor);
+      itemDate = searchJS.itemWithSearchHighlight(itemDate, searchedFor);
+      startDate = searchJS.itemWithSearchHighlight(startDate, searchedFor);
+      endDate = searchJS.itemWithSearchHighlight(endDate, searchedFor);
+      itemBody = searchJS.itemWithSearchHighlight(itemBody, searchedFor);
+      itemJobTitle = searchJS.itemWithSearchHighlight(itemJobTitle, searchedFor);
+      itemTechnology = searchJS.itemWithSearchHighlight(itemTechnology, searchedFor);
+      itemCompanyName = searchJS.itemWithSearchHighlight(itemCompanyName, searchedFor);
 
       if (itemWorkType !== "node-company") {
-        itemWorkType = itemWithSearchHighlight(itemWorkType, searchedFor);
+        itemWorkType = searchJS.itemWithSearchHighlight(itemWorkType, searchedFor);
       }
     }
 
@@ -640,13 +641,15 @@ const renderPage = (
   }
 
   if (page !== "about" && page !== "resume") {
-    document.getElementById(currentNavItem).className += " nav-item-active";
+    const docCurrentNavItem = document.getElementById(currentNavItem)! as HTMLInputElement;
+    docCurrentNavItem.className += " nav-item-active";
   }
 
   document.getElementsByClassName("container")[0].innerHTML = item;
 
   if (pageIsSearchable) {
-    document.getElementById("search-container").style.display = "block";
+    const docSearchContainer = document.getElementById("search-container")! as HTMLInputElement;
+    docSearchContainer.style.display = "block";
   }
 
   if (pageHasGallery) {
@@ -660,24 +663,37 @@ const renderPage = (
   }
 
   if (page !== "about" && page !== "contact"  && page !== "resume") {
-    setPagination(itemCount, data.passedInCount.currentCount, prev, next);
+    searchJS.setPagination(itemCount, data.passedInCount.currentCount, prev, next);
   }
 
-  setLoading(false);
+  utilityJS.setLoading(false);
 
   if (page == "about") {
     // set current site version
     let currentURL = window.location.toString();
 
     if (currentURL.indexOf("/html5/") !== -1) {
-      document.getElementById("html5").setAttribute("class", "shadow-version noLink");
-      document.getElementById("html5-here").style.display = "block";
+
+      const docHtml5 = document.getElementById("html5")! as HTMLInputElement;
+      docHtml5.setAttribute("class", "shadow-version noLink");
+
+      const docHtml5Here = document.getElementById("html5-here")! as HTMLInputElement;
+      docHtml5Here.style.display = "block";
+
     } else if (currentURL.indexOf("/drupal8/") !== -1) {
-      document.getElementById("drupal8").setAttribute("class", "shadow-version noLink");
-      document.getElementById("drupal8-here").style.display = "block";
+
+      const docDrupal8 = document.getElementById("drupal8")! as HTMLInputElement;
+      docDrupal8.setAttribute("class", "shadow-version noLink");
+
+      const docDrupal8Here = document.getElementById("drupal8-here")! as HTMLInputElement;
+      docDrupal8Here.style.display = "block";
+
     } else {
-      document.getElementById("nodeJS").setAttribute("class", "shadow-version noLink");
-      document.getElementById("nodeJS-here").style.display = "block";
+      const docNodeJS = document.getElementById("nodeJS")! as HTMLInputElement;
+      docNodeJS.setAttribute("class", "shadow-version noLink");
+
+      const docnodeJSHere = document.getElementById("nodeJS-here")! as HTMLInputElement;
+      docnodeJSHere.style.display = "block";
     }
   }
 };

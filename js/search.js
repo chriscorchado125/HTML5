@@ -1,13 +1,15 @@
+"use strict";
+import * as utilityJS from "./utilities.js";
+import * as dataJS from "./data.js";
 const getSearchCount = (count, searchCountID) => {
-    let searchElement = document.getElementById(SITE_SEARCH_ID);
+    let searchElement = document.getElementById(utilityJS.SITE_SEARCH_ID);
     if (searchElement.value) {
-        if (count <= MAX_ITEMS_PER_PAGE) {
-            document.getElementById(searchCountID).innerHTML =
-                count + `  ${count == 1 ? "Item" : "Items"}`;
+        const searchCountEL = document.getElementById(searchCountID);
+        if (count <= utilityJS.MAX_ITEMS_PER_PAGE) {
+            searchCountEL.innerHTML = count + `  ${count == 1 ? "Item" : "Items"}`;
         }
         else {
-            document.getElementById(searchCountID).innerHTML =
-                MAX_ITEMS_PER_PAGE + `  ${+MAX_ITEMS_PER_PAGE == 1 ? "Item" : "Items"}`;
+            searchCountEL.innerHTML = utilityJS.MAX_ITEMS_PER_PAGE + `  ${+utilityJS.MAX_ITEMS_PER_PAGE == 1 ? "Item" : "Items"}`;
         }
         return `${count} ${count == 1 ? "Item" : "Items"} `;
     }
@@ -16,54 +18,61 @@ const getSearchOffset = (link) => {
     let nextURL = link.href.replace(/%2C/g, ",").replace(/%5B/g, "[").replace(/%5D/g, "]");
     return nextURL.substring(nextURL.search("offset") + 8, nextURL.search("limit") - 6);
 };
-const setPagination = (count, paginationTotal, prev, next) => {
+export const setPagination = (count, paginationTotal, prev, next) => {
     let dataOffset = 0;
     let prevLink = "";
     let nextLink = "";
     if (next)
         dataOffset = getSearchOffset(next);
     let dataOffsetText = getSearchCount(count, "searchCount");
+    const searchContainer = document.getElementById("search-container");
+    const searchContainerCount = document.getElementById("searchCount");
     if (!next && !prev) {
-        document.getElementById("search-container").className = "paginationNo";
-        document.getElementById("searchCount").innerHTML = `<span id="totalItems">${count}</span>
-   ${count == 1 ? "Item" : "Items"}`;
+        searchContainer.className = "paginationNo";
+        searchContainerCount.innerHTML = `<span id="totalItems">${count}</span> ${count == 1 ? "Item" : "Items"}`;
     }
     else {
-        document.getElementById("search-container").className = "paginationYes";
-        let currentCount = +dataOffset / MAX_ITEMS_PER_PAGE;
+        searchContainer.className = "paginationYes";
+        let currentCount = +dataOffset / utilityJS.MAX_ITEMS_PER_PAGE;
         if (count == dataOffset) {
-            dataOffsetText = `Items 1-<span id="lastCount">${MAX_ITEMS_PER_PAGE}</span>`;
+            dataOffsetText = `Items 1-<span id="lastCount">${utilityJS.MAX_ITEMS_PER_PAGE}</span>`;
         }
         else {
             if (currentCount !== 0) {
-                dataOffsetText = `Items ${(currentCount * MAX_ITEMS_PER_PAGE - MAX_ITEMS_PER_PAGE) + 1}-<span id="lastCount">${currentCount * MAX_ITEMS_PER_PAGE}</span>`;
+                dataOffsetText = `Items ${(currentCount * utilityJS.MAX_ITEMS_PER_PAGE - utilityJS.MAX_ITEMS_PER_PAGE) + 1}-<span id="lastCount">${currentCount * utilityJS.MAX_ITEMS_PER_PAGE}</span>`;
             }
             else {
                 dataOffsetText = `Items ${+paginationTotal + 1}-<span id="lastCount">${+paginationTotal + count}</span>`;
             }
         }
-        document.getElementById("searchCount").innerHTML = `<span id="paging-info">${dataOffsetText}</span>`;
+        searchContainerCount.innerHTML = `<span id="paging-info">${dataOffsetText}</span>`;
         prevLink = prev
-            ? `<a href="#" class="pager-navigation" title="View the previous page" role="button"
-          onclick="getPage(getCurrentPage(), document.getElementById('${SITE_SEARCH_ID}').value,'${prev.href}')">Prev</a>`
+            ? `<a href="#" class="pager-navigation" title="View the previous page" role="button" id="pagePrev"
+          onclick="getPage(getCurrentPage(), document.getElementById('${utilityJS.SITE_SEARCH_ID}').value,'${prev.href}')">Prev</a>`
             : `<span class="pager-navigation disabled" title="There is no previous page available" role="button">Prev</span>`;
         nextLink = next
-            ? `<a href="#" class="pager-navigation" title="View the next page" role="button"
-          onclick="getPage(getCurrentPage(), document.getElementById('${SITE_SEARCH_ID}').value,'${next.href}')">Next</a>`
+            ? `<a href="#" class="pager-navigation" title="View the next page" role="button" id="pageNext">Next</a>`
             : `<span class="pager-navigation disabled" title="There is no next page available" role="button">Next</span>`;
     }
-    let paginationCount = document.getElementById("pagination");
-    if (count < MAX_ITEMS_PER_PAGE && paginationTotal === 1) {
+    const SITE_SEARCH_ID = document.getElementById(utilityJS.SITE_SEARCH_ID);
+    const paginationCount = document.getElementById("pagination");
+    if (count < utilityJS.MAX_ITEMS_PER_PAGE && paginationTotal === 1) {
         paginationCount.style.display = "none";
     }
     else {
         paginationCount.style.display = "inline-block";
         paginationCount.innerHTML = `${prevLink}  ${nextLink}`;
+        const pagePrev = document.getElementById("pagePrev");
+        const pageNext = document.getElementById("pageNext");
+        if (pagePrev)
+            pagePrev.onclick = () => dataJS.getPage(utilityJS.getCurrentPage(), SITE_SEARCH_ID.value, prev.href);
+        if (pageNext)
+            pageNext.onclick = () => dataJS.getPage(utilityJS.getCurrentPage(), SITE_SEARCH_ID.value, next.href);
     }
 };
-const search = (e) => {
+export const search = (e) => {
     const re = new RegExp(('[a-zA-Z \s]'));
-    const inputSearchBox = document.getElementById(SITE_SEARCH_ID);
+    const inputSearchBox = document.getElementById(utilityJS.SITE_SEARCH_ID);
     if (inputSearchBox.value == "" || re.exec(inputSearchBox.value) == null) {
         e.preventDefault();
         if (inputSearchBox.value == "") {
@@ -74,47 +83,47 @@ const search = (e) => {
         }
         return false;
     }
-    getPage(getCurrentPage(), inputSearchBox.value);
+    dataJS.getPage(utilityJS.getCurrentPage(), inputSearchBox.value);
     updateInterface();
 };
-const searchFilter = (event) => {
+export const searchFilter = (event) => {
     const allowOnlyLettersAndSpace = new RegExp("^(?! )[A-Za-z\s]*$");
     return allowOnlyLettersAndSpace.test(event.key);
 };
-const searchClear = (searchTextBoxID) => {
+export const searchClear = (searchTextBoxID) => {
     const inputSearchBox = document.getElementById(searchTextBoxID);
     inputSearchBox.value = "";
-    getPage(getCurrentPage());
+    dataJS.getPage(utilityJS.getCurrentPage());
     updateInterface();
 };
-const noRecordsFound = (noRecordID, search, appendToID, msg) => {
-    if (document.getElementById(noRecordID)) {
-        document.getElementById(noRecordID).remove();
-    }
-    if (!document.getElementById(noRecordID) && search) {
-        document.getElementById("pagination").style.display = "none";
+export const noRecordsFound = (noRecordID, search, appendToID, msg) => {
+    const noRecordEL = document.getElementById(noRecordID);
+    const pagination = document.getElementById("pagination");
+    if (!noRecordEL && search) {
+        pagination.style.display = "none";
         document.getElementsByClassName("container")[0].removeAttribute("style");
         let notFound = document.createElement("div");
         notFound.id = noRecordID;
         notFound.innerHTML = `${msg} '${search}'`;
-        document.getElementById(appendToID).appendChild(notFound);
-        document.getElementById("preloadAnimation").remove();
-        document.getElementById("searchCount").innerHTML =
-            '<b style="color:red">No match</b>';
+        const appendToEL = document.getElementById(appendToID);
+        appendToEL.appendChild(notFound);
+        const preloadAnimationEL = document.getElementById("preloadAnimation");
+        preloadAnimationEL.remove();
+        const searchCountEL = document.getElementById("searchCount");
+        searchCountEL.innerHTML = '<b style="color:red">No match</b>';
     }
     else {
-        document.getElementById("pagination").style.display = "inline-block";
-        document.getElementById("searchClear").style.visibility = "visible";
+        pagination.style.display = "inline-block";
     }
 };
-const getIncludedData = (data) => {
+export const getIncludedData = (data) => {
     let includedAssetFilename = [""];
     let includedCompanyName = [""];
     let includedTechnologyName = [""];
     let includedTechnologyIcon = [""];
     data.included.forEach((included_element) => {
         if (included_element.attributes.description) {
-            let iconFileNamePath = /"(.*?)"/.exec(included_element.attributes.description.value);
+            let iconFileNamePath = /"(.*?)"/.exec(included_element.attributes.description.value) || "";
             includedTechnologyIcon[included_element.id] = iconFileNamePath[1];
         }
         if (included_element.attributes.filename) {
@@ -135,7 +144,7 @@ const getIncludedData = (data) => {
         includedTechnologyIcon
     ];
 };
-const getElementRelationships = (element, includedAssetFilename, includedCompanyName, includedTechnologyName, includedTechnologyIcon) => {
+export const getElementRelationships = (element, includedAssetFilename, includedCompanyName, includedTechnologyName, includedTechnologyIcon) => {
     let imgPieces = [];
     let itemPDF = "";
     let itemTrackImage = "";
@@ -193,7 +202,7 @@ const getElementRelationships = (element, includedAssetFilename, includedCompany
         includedTechnologyItem
     ];
 };
-const itemWithSearchHighlight = (itemToHighlight, searchedFor) => {
+export const itemWithSearchHighlight = (itemToHighlight, searchedFor) => {
     let dataToReturn = "";
     if (searchedFor) {
         let searchTerm = new RegExp(searchedFor, "gi");
@@ -232,4 +241,7 @@ const itemWithSearchHighlight = (itemToHighlight, searchedFor) => {
         }
     }
     return dataToReturn || itemToHighlight;
+};
+export const updateInterface = (search = "") => {
+    noRecordsFound("noRecords", search, "navigation", "No matches found for");
 };

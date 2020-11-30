@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,6 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+export const API_BASE = "https://chriscorchado.com/drupal8";
+export const MAX_ITEMS_PER_PAGE = 50;
+export const SITE_SEARCH_ID = "searchSite";
 const fadeOut = (el) => {
     el.style.opacity = 1;
     (function fade() {
@@ -28,7 +32,7 @@ const fadeIn = (el) => {
         }
     })();
 };
-const updateMenuPages = (currentPage, targetContainer) => __awaiter(this, void 0, void 0, function* () {
+const updateMenuPages = (currentPage, targetContainer) => __awaiter(void 0, void 0, void 0, function* () {
     yield fetch(`${API_BASE}/api/menu_items/main?_format=json`)
         .then((resp) => {
         return resp.ok ? resp.json() : Promise.reject(resp.statusText);
@@ -60,13 +64,14 @@ const updateMenuPages = (currentPage, targetContainer) => __awaiter(this, void 0
         title="${pageName}"
         id="${pageName.toLowerCase()}-link">${pageName}</a>`;
         }
-        document.getElementById(targetContainer).innerHTML = generatedPageLinks;
+        const targetContainerEL = document.getElementById(targetContainer);
+        targetContainerEL.innerHTML = generatedPageLinks;
     })
         .catch((error) => {
         alert(`Sorry an error has occurred: ${error}`);
     });
 });
-const getCurrentPage = () => {
+export const getCurrentPage = () => {
     let thisPage = window.location.pathname
         .split("/")
         .filter(function (pathnamePieces) {
@@ -80,7 +85,7 @@ const getCurrentPage = () => {
         pageName = "about";
     return pageName;
 };
-const getFullUrlByPage = (linkToFix, page) => {
+export const getFullUrlByPage = (linkToFix, page) => {
     let pathToResource = "No Path Found";
     switch (page) {
         case "companies":
@@ -100,13 +105,13 @@ const getFullUrlByPage = (linkToFix, page) => {
     }
     return `${API_BASE}/sites/default/files/${pathToResource}/${linkToFix}`;
 };
-const getMonthYear = (dateString) => {
+export const getMonthYear = (dateString) => {
     let newDate = new Date(dateString);
     return (newDate.toLocaleString("default", { month: "long" }) +
         " " +
         newDate.getFullYear().toString());
 };
-const cleanURL = (urlToClean) => {
+export const cleanURL = (urlToClean) => {
     let fixedURL = "";
     let strings = urlToClean.split(" ");
     strings.forEach((element) => {
@@ -115,7 +120,7 @@ const cleanURL = (urlToClean) => {
     });
     return fixedURL;
 };
-const setLoading = (loadingStatus) => {
+export const setLoading = (loadingStatus) => {
     if (loadingStatus) {
         let preloader = document.createElement("div");
         preloader.innerHTML = `
@@ -128,7 +133,8 @@ const setLoading = (loadingStatus) => {
         document.body.append(preloader);
     }
     else {
-        document.getElementById("preloadAnimation").remove();
+        const preloadAnimation = document.getElementById("preloadAnimation");
+        preloadAnimation.remove();
         if (document.getElementsByClassName("container")[0]) {
             let mainContainer = document.getElementsByClassName("container")[0];
             fadeIn(mainContainer);
@@ -138,7 +144,4 @@ const setLoading = (loadingStatus) => {
             fadeIn(dataContainer);
         }
     }
-};
-const updateInterface = (search) => {
-    noRecordsFound("noRecords", search, "navigation", "No matches found for");
 };

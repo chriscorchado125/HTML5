@@ -34,19 +34,17 @@
       <label for="searchSite">
         <span class="screen-reader">Enter search term</span>
         <input type="search" id="searchSite" name="search_api" aria-label="Enter search term" aria-required="true"
-          placeholder="Search items" maxlength="128" class="ccBtn searchBtn" onkeypress="return searchFilter(event)">
+          placeholder="Search items" maxlength="128" class="ccBtn searchBtn">
       </label>
 
       <label for="searchSubmit">
         <span class="screen-reader">Search</span>
-        <button type="submit" id="searchSubmit" aria-label="Search" class="searchBtn" value="Search"
-          onclick="search(event)">Search</button>
+        <button type="submit" id="searchSubmit" aria-label="Search" class="searchBtn" value="Search">Search</button>
       </label>
 
       <label for="searchClearBtn">
         <span class="screen-reader">Clear Search</span>
-        <button type="reset" id="searchClearBtn" aria-label="Clear Search" class="searchBtn" title="Clear search" value="Clear"
-          onclick="searchClear(SITE_SEARCH_ID)">Clear</button>
+        <button type="reset" id="searchClearBtn" aria-label="Clear Search" class="searchBtn" title="Clear search" value="Clear">Clear</button>
       </label>
 
       <div id="pagination"></div>

@@ -1,3 +1,4 @@
+"use strict";
 const formSubmitted = (seconds) => {
     let countDown = document.createElement("div");
     countDown.style.padding = "50px";
