@@ -98,6 +98,13 @@ a:link {
   text-decoration: none;
 }
 
+/* button style reset - IOS uses the pill shape */
+button {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+}
+
 .shadow {
   -webkit-box-shadow: 3px 3px 5px 3px #ccc; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
   -moz-box-shadow: 3px 3px 5px 3px #ccc; /* Firefox 3.5 - 3.6 */
