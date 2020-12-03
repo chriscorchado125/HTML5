@@ -3,6 +3,12 @@
 ::-ms-clear {
   display: none; }
 
+/* button style reset - IOS uses the pill shape */
+button {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important; }
+
 .highlightSearchText {
   background-color: yellow; }
 
@@ -26,7 +32,6 @@
   text-align: center;
   display: none;
   /* search textbox */
-  /* remove IE “clear field or cross” X button from inputs field */
   /* search button */ }
   #search-container label {
     display: inline-block; }
@@ -39,8 +44,6 @@
     width: 85px; }
   #search-container #search-site {
     width: 150px; }
-  #search-container ::-ms-clear {
-    display: none; }
   #search-container .search-btn {
     padding: 2px;
     font-size: 12px;
