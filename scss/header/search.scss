@@ -1,9 +1,30 @@
 @import "./../variables.scss";
 
+/* remove IE “clear field or cross” X button from inputs field */
+::-ms-clear {
+  display: none;
+}
+
+.highlightSearchText {
+  background-color: yellow;
+}
+
+#no-records {
+  font-size: 36px;
+  max-width: 700px;
+  border-radius: 5px;
+  color: $main_color;
+  background-color: $off_white;
+  padding: 15px;
+  text-align: center;
+  margin: auto;
+  margin-top: 150px !important;
+}
+
 #search-container {
   float: right;
   margin: -50px 0 0 0;
-  padding: 0px;
+  padding: 0; /* no unit */
   width: 330px;
   text-align: center;
   display: none;
@@ -12,16 +33,16 @@
     display: inline-block;
   }
 
-  #searchCount {
+  #search-count {
     font-size: 12px;
     text-align: right;
-    margin-right: 0px;
+    margin-right: 0; /* no unit */
     display: inline-block;
     width: 85px;
   }
 
   /* search textbox */
-  #searchSite {
+  #search-site {
     width: 150px;
   }
 
@@ -31,13 +52,13 @@
   }
 
   /* search button */
-  .searchBtn {
+  .search-btn {
     padding: 2px;
     font-size: 12px;
-    margin-left: 0px;
+    margin-left: 0; /* no unit */
   }
 
-  .searchBtn:hover {
+  .search-btn:hover {
     color: #fff;
     box-shadow: 0 0 #fff;
     background-color: $main_color;
@@ -54,13 +75,15 @@
 
 @media (max-width: 500px) {
   #search-container {
-    #searchSite {
+    #search-site {
       width: 105px;
     }
-    #searchBtn {
+
+    #search-btn {
       margin-left: 5px;
     }
-    #searchCount {
+
+    #search-count {
       width: 80px;
     }
   }
@@ -68,18 +91,13 @@
 
 @media (max-width: 350px) {
   #search-container {
-    #searchSite {
+    #search-site {
       width: 95px;
       font-size: 12px;
     }
 
-    #searchCount {
+    #search-count {
       width: 75px;
     }
   }
-}
-
-/* remove IE “clear field or cross” X button from inputs field */
-::-ms-clear {
-  display: none;
 }

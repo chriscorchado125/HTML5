@@ -75,6 +75,7 @@
     padding: 5px;
     position: absolute;
     bottom: 0;
+    /* no unit */
     border-radius: 0 0 10px 10px;
     background-color: #e2eafb;
     font-size: 10px; }

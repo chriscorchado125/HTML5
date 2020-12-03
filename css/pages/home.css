@@ -48,8 +48,10 @@ p {
 @media (max-width: 400px) {
   .container > h1 {
     margin: 110px 0 20px 0; } }
-#html5 a img {
-  box-shadow: 5px 5px 15px 2px #888888 !important; }
+.jira-versions img {
+  max-width: 185px;
+  box-shadow: 1px 1px 15px 1px #888;
+  margin: 10px; }
 
 .shadow-version a img {
   padding: 0 !important; }
@@ -57,10 +59,8 @@ p {
 .jira-versions {
   text-align: center; }
 
-.jira-versions img {
-  max-width: 185px;
-  box-shadow: 1px 1px 15px 1px #888888;
-  margin: 10px; }
+#html5 a img {
+  box-shadow: 5px 5px 15px 2px #888 !important; }
 
 .homepage-wrapper ul li {
   padding: 5px; }

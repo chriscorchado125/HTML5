@@ -17,6 +17,7 @@
       height: 30px;
     }
   }
+
   a span {
     color: $main_color;
   }
@@ -41,6 +42,7 @@
 @media (max-width: 400px) {
   #profiles {
     margin: -6px 0 5px 0 !important;
+
     .icon {
       img {
         height: 15px;

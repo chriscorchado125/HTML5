@@ -22,7 +22,7 @@
     /* FULL STACK DEVELOPER */
     h2 {
       color: #3a4261;
-      margin-bottom: 0;
+      margin-bottom: 0; /* no unit */
       font-size: 26px;
       text-align: center;
       font-weight: bold;
@@ -32,8 +32,8 @@
     #tech_pillars {
       width: 100%;
       text-align: center;
-      margin: 0px 0 15px 0;
-      border-top: 1px solid black;
+      margin: 0 0 15px 0;
+      border-top: 1px solid #000;
       font-weight: bold;
       padding-top: 5px;
     }
@@ -42,8 +42,8 @@
     h3 {
       text-align: center;
       color: #2a61a8;
-      border-top: 1px solid black;
-      border-bottom: 1px solid black;
+      border-top: 1px solid #000;
+      border-bottom: 1px solid #000;
       font-size: 20px;
       font-weight: bold;
       margin-bottom: 15px;
@@ -54,6 +54,7 @@
       margin: 0;
       font-size: 18px;
       font-weight: bold;
+
       .years {
         float: right;
       }
@@ -74,14 +75,14 @@
 
     /* Job Title */
     h6 {
-      margin: 0;
+      margin: 0; /* no unit */
       font-size: 14px;
       font-weight: bold;
     }
 
     p {
-      margin: 0;
-      padding: 0;
+      margin: 0; /* no unit */
+      padding: 0; /* no unit */
     }
 
     /* paragraph after job title */
@@ -104,7 +105,7 @@
       ul {
         display: inline-block;
         min-width: 210px;
-        padding: 0;
+        padding: 0; /* no unit */
         margin: 0 0 0 50px;
 
         li {
@@ -160,6 +161,7 @@
           display: block;
           margin-left: 80px;
         }
+
         #three_cols {
           display: none;
         }
@@ -203,7 +205,8 @@
 @media (max-width: 520px) {
   .container {
     .resume {
-      padding: 0 0;
+      padding: 0; /* no unit */
+
       h4 {
         text-align: center;
         font-size: 13px;
@@ -213,6 +216,7 @@
           margin-left: 20px;
         }
       }
+
       /* Education certificate, diploma */
       h4 + div {
         font-size: 13px;
@@ -235,9 +239,11 @@
       margin-top: 105px;
     }
   }
+
   #profiles {
     .icon {
       width: 35px;
+
       img {
         height: 15px;
       }

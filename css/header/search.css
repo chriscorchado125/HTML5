@@ -1,8 +1,27 @@
 @charset "UTF-8";
+/* remove IE “clear field or cross” X button from inputs field */
+::-ms-clear {
+  display: none; }
+
+.highlightSearchText {
+  background-color: yellow; }
+
+#no-records {
+  font-size: 36px;
+  max-width: 700px;
+  border-radius: 5px;
+  color: #346adf;
+  background-color: #f8f9fa;
+  padding: 15px;
+  text-align: center;
+  margin: auto;
+  margin-top: 150px !important; }
+
 #search-container {
   float: right;
   margin: -50px 0 0 0;
-  padding: 0px;
+  padding: 0;
+  /* no unit */
   width: 330px;
   text-align: center;
   display: none;
@@ -11,21 +30,23 @@
   /* search button */ }
   #search-container label {
     display: inline-block; }
-  #search-container #searchCount {
+  #search-container #search-count {
     font-size: 12px;
     text-align: right;
-    margin-right: 0px;
+    margin-right: 0;
+    /* no unit */
     display: inline-block;
     width: 85px; }
-  #search-container #searchSite {
+  #search-container #search-site {
     width: 150px; }
   #search-container ::-ms-clear {
     display: none; }
-  #search-container .searchBtn {
+  #search-container .search-btn {
     padding: 2px;
     font-size: 12px;
-    margin-left: 0px; }
-  #search-container .searchBtn:hover {
+    margin-left: 0;
+    /* no unit */ }
+  #search-container .search-btn:hover {
     color: #fff;
     box-shadow: 0 0 #fff;
     background-color: #346adf; }
@@ -36,20 +57,17 @@
     width: 100%;
     padding-bottom: 2px; } }
 @media (max-width: 500px) {
-  #search-container #searchSite {
+  #search-container #search-site {
     width: 105px; }
-  #search-container #searchBtn {
+  #search-container #search-btn {
     margin-left: 5px; }
-  #search-container #searchCount {
+  #search-container #search-count {
     width: 80px; } }
 @media (max-width: 350px) {
-  #search-container #searchSite {
+  #search-container #search-site {
     width: 95px;
     font-size: 12px; }
-  #search-container #searchCount {
+  #search-container #search-count {
     width: 75px; } }
-/* remove IE “clear field or cross” X button from inputs field */
-::-ms-clear {
-  display: none; }
 
 /*# sourceMappingURL=search.css.map */

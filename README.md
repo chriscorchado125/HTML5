@@ -5,4 +5,4 @@ The "-ish" part is because the site uses:
 Bootstrap for the CSS features like grid, containter and css normalization.
 Featherlight for the JavaScript lightbox.
 
-Currently hosted on : https://chriscorchado.com/html5
+Currently hosted on : <https://chriscorchado.com/html5>

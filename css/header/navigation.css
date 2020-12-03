@@ -5,24 +5,25 @@
 #logo > img:hover {
   border: 1px dashed #346adf; }
 
-#navbarCollapse {
+#navbar-collapse {
   max-width: 1100px;
   margin: auto; }
 
 .navbar {
   border-bottom: 2px solid #346adf;
   display: block;
-  min-height: 80px;
+  height: 85px;
   /* force nav to stay horizontal */ }
   .navbar .navbar-nav {
     flex-direction: row;
-    /* align items vertically*/ }
+    /* align items vertically */ }
     .navbar .navbar-nav .nav-item {
       display: flex;
       justify-content: center;
       align-items: center;
       margin: 0;
-      padding: 0px 5px;
+      /* no unit */
+      padding: 0 5px;
       width: 80px; }
     .navbar .navbar-nav .nav-item-active,
     .navbar .navbar-nav .nav-item:hover {

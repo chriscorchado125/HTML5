@@ -1,114 +1,113 @@
-//const {noRecordsFound} = require('./search');
+// const {noRecordsFound} = require('./search');
 
-export const API_BASE = "https://chriscorchado.com/drupal8";
-export const MAX_ITEMS_PER_PAGE = 50;
-export const SITE_SEARCH_ID = "searchSite";
-
+export const API_BASE = 'https://chriscorchado.com/drupal8'
+export const MAX_ITEMS_PER_PAGE = 50
+export const SITE_SEARCH_ID = 'search-site'
 
 // https://gist.github.com/alirezas/c4f9f43e9fe1abba9a4824dd6fc60a55
 /**
  * Pure JS fade in using opacity
  * @param {any} HTML element
  */
-const fadeOut = (el: any) => {
+export const fadeOut = (el: any) => {
   el.style.opacity = 1;
 
-  (function fade() {
+  (function fade () {
     if ((el.style.opacity -= 0.2) < 0) {
-      el.style.display = "none";
+      el.style.display = 'none'
     } else {
-      requestAnimationFrame(fade);
+      requestAnimationFrame(fade)
     }
-  })();
-};
+  })()
+}
 
 /**
  * Pure JS fade out using opacity
  * @param {any} HTML element
  */
-const fadeIn = (el: any) => {
+export const fadeIn = (el: any) => {
   el.style.opacity = 0;
 
-  (function fade() {
-    var val = parseFloat(el.style.opacity);
+  (function fade () {
+    let val = parseFloat(el.style.opacity)
 
     if (!((val += 0.2) > 1)) {
-      el.style.opacity = val;
-      requestAnimationFrame(fade);
+      el.style.opacity = val
+      requestAnimationFrame(fade)
     }
-  })();
-};
+  })()
+}
 
 /**
  * Replace static navigation with data from the menu API
  * @param {string} currentPage - page name
  * @param {string} targetContainer - id of html container for the menu items
  */
-const updateMenuPages = async (currentPage: string, targetContainer: string) => {
+export const updateMenuPages = async (currentPage: string, targetContainer: string) => {
   await fetch(`${API_BASE}/api/menu_items/main?_format=json`)
     .then((resp) => {
-      return resp.ok ? resp.json() : Promise.reject(resp.statusText);
+      return resp.ok ? resp.json() : Promise.reject(resp.statusText)
     })
     .then((pageData) => {
-      let pageName = "";
-      let pageLink = "";
+      let pageName = ''
+      let pageLink = ''
 
-      let homepageStyle = "";
-      if (currentPage == "about") {
-        homepageStyle = "border: 1px dashed rgb(115, 153, 234);";
+      let homepageStyle = ''
+      if (currentPage === 'about') {
+        homepageStyle = 'border: 1px dashed rgb(115, 153, 234)'
       }
 
-      let generatedPageLinks = `<a href="index.html" class="navbar-brand" id="logo" style="${homepageStyle}">
-        <img src="./images/chriscorchado-initials-logo.png" title="Home" alt="Home">
-      </a>`;
+      let generatedPageLinks = `<a href='index.html' class='navbar-brand' id='logo' style='${homepageStyle}'>
+        <img src='./images/chriscorchado-initials-logo.png' title='Home' alt='Home'>
+      </a>`
 
-      for (let page in pageData) {
-        pageName = pageData[page].title;
-        if (pageName == "Home" || pageName == "About" || !pageData[page].enabled) {
-          continue;
+      for (const page in pageData) {
+        pageName = pageData[page].title
+        if (pageName === 'Home' || pageName === 'About' || !pageData[page].enabled) {
+          continue
         }
 
-        let activeNavItem = "";
-        if (currentPage == pageName.toLowerCase()) {
-          activeNavItem = "nav-item-active";
+        let activeNavItem = ''
+        if (currentPage === pageName.toLowerCase()) {
+          activeNavItem = 'nav-item-active'
         }
 
-        pageLink = pageName; // capture correct link name before pageName is updated
-        if (pageName == "Companies") pageName = "History";
+        pageLink = pageName // capture correct link name before pageName is updated
+        if (pageName === 'Companies') pageName = 'History'
 
-        generatedPageLinks += `<a href="${pageLink.toLowerCase()}.html"
-        class="nav-item nav-link ${activeNavItem}"
-        title="${pageName}"
-        id="${pageName.toLowerCase()}-link">${pageName}</a>`;
+        generatedPageLinks += `<a href='${pageLink.toLowerCase()}.html'
+        class='nav-item nav-link ${activeNavItem}'
+        title='${pageName}'
+        id='${pageName.toLowerCase()}-link'>${pageName}</a>`
       }
 
-      const targetContainerEL = document.getElementById(targetContainer) as HTMLElement;
-      targetContainerEL.innerHTML = generatedPageLinks;
+      const targetContainerEL = document.getElementById(targetContainer) as HTMLElement
+      targetContainerEL.innerHTML = generatedPageLinks
     })
     .catch((error) => {
-      alert(`Sorry an error has occurred: ${error}`);
-    });
-};
+      alert(`Sorry an error has occurred: ${error}`)
+    })
+}
 
 /**
  * Get the current page name
  * @return {string} - page name
  */
 export const getCurrentPage = () => {
-  let thisPage = window.location.pathname
-    .split("/")
+  const thisPage = window.location.pathname
+    .split('/')
     .filter(function (pathnamePieces) {
-      return pathnamePieces.length;
+      return pathnamePieces.length
     })
-    .pop();
+    .pop()
 
-  let pageName = "";
-  if (thisPage) pageName = thisPage.split(".")[0];
+  let pageName = ''
+  if (thisPage) pageName = thisPage.split('.')[0]
 
-  if (pageName == "index" || pageName == "html5"  || !pageName) pageName = "about";
+  if (pageName === 'index' || pageName === 'html5' || !pageName) pageName = 'about'
 
-  return pageName;
-};
+  return pageName
+}
 
 /**
  * Create absolute link
@@ -117,26 +116,26 @@ export const getCurrentPage = () => {
  * @return {string} - absolute url
  */
 export const getFullUrlByPage = (linkToFix: string, page: string) => {
-  let pathToResource = "No Path Found";
+  let pathToResource = 'No Path Found'
 
   switch (page) {
-    case "companies":
-      pathToResource = "company-screenshot";
-      break;
-    case "courses":
-      if (linkToFix.indexOf(".pdf") !== -1) {
-        pathToResource = "award-pdf";
+    case 'companies':
+      pathToResource = 'company-screenshot'
+      break
+    case 'courses':
+      if (linkToFix.indexOf('.pdf') !== -1) {
+        pathToResource = 'award-pdf'
       } else {
-        pathToResource = "award-images";
+        pathToResource = 'award-images'
       }
-      break;
-    case "projects":
-      pathToResource = "project-screenshot";
-      break;
+      break
+    case 'projects':
+      pathToResource = 'project-screenshot'
+      break
   }
 
-  return `${API_BASE}/sites/default/files/${pathToResource}/${linkToFix}`;
-};
+  return `${API_BASE}/sites/default/files/${pathToResource}/${linkToFix}`
+}
 
 /**
  * Change date to name of the month plus the 4 digit year
@@ -144,14 +143,14 @@ export const getFullUrlByPage = (linkToFix: string, page: string) => {
  * @return {string} - month and year - example: January 2020
  */
 export const getMonthYear = (dateString: string) => {
-  let newDate = new Date(dateString);
+  const newDate = new Date(dateString)
 
   return (
-    newDate.toLocaleString("default", { month: "long" }) +
-    " " +
+    newDate.toLocaleString('default', { month: 'long' }) +
+    ' ' +
     newDate.getFullYear().toString()
-  );
-};
+  )
+}
 
 /**
  * Remove newline characters and spaces from URLs created using multi-line template literals
@@ -159,13 +158,13 @@ export const getMonthYear = (dateString: string) => {
  * @return {string} - fixed URL
  */
 export const cleanURL = (urlToClean: string) => {
-  let fixedURL = "";
-  let strings = urlToClean.split(" ");
+  let fixedURL = ''
+  const strings = urlToClean.split(' ')
   strings.forEach((element: string) => {
-    if (element) fixedURL += element.replace(/$\n^\s*/gm, "");
-  });
-  return fixedURL;
-};
+    if (element) fixedURL += element.replace(/$\n^\s*/gm, '')
+  })
+  return fixedURL
+}
 
 /**
  * Toggle content and preloader
@@ -173,29 +172,28 @@ export const cleanURL = (urlToClean: string) => {
  */
 export const setLoading = (loadingStatus: boolean) => {
   if (loadingStatus) {
-    let preloader = document.createElement("div");
+    const preloader = document.createElement('div')
 
     preloader.innerHTML = `
-      <div class="preloadAnimation" id="preloadAnimation">
-        <div class="bounce1"></div>
-        <div class="bounce2"></div>
-        <div class="bounce3"></div>
+      <div class='preloadAnimation' id='preloadAnimation'>
+        <div class='bounce1'></div>
+        <div class='bounce2'></div>
+        <div class='bounce3'></div>
         <br />Loading
-      </div>`;
+      </div>`
 
-    document.body.append(preloader);
+    document.body.append(preloader)
   } else {
-    const preloadAnimation = document.getElementById("preloadAnimation") as HTMLElement;
-    preloadAnimation.remove();
+    const preloadAnimation = document.getElementById('preloadAnimation') as HTMLElement
+    preloadAnimation.remove()
 
-    if (document.getElementsByClassName("container")[0]) {
-      let mainContainer = document.getElementsByClassName("container")[0] as HTMLElement;
-      fadeIn(mainContainer);
+    if (document.getElementsByClassName('container')[0]) {
+      const mainContainer = document.getElementsByClassName('container')[0] as HTMLElement
+      fadeIn(mainContainer)
     }
-    if (document.getElementsByClassName("container")[1]) {
-      let dataContainer = document.getElementsByClassName("container")[1] as HTMLElement;
-      fadeIn(dataContainer);
+    if (document.getElementsByClassName('container')[1]) {
+      const dataContainer = document.getElementsByClassName('container')[1] as HTMLElement
+      fadeIn(dataContainer)
     }
   }
-};
-
+}

@@ -24,21 +24,22 @@
     .container .resume h2 {
       color: #3a4261;
       margin-bottom: 0;
+      /* no unit */
       font-size: 26px;
       text-align: center;
       font-weight: bold; }
     .container .resume #tech_pillars {
       width: 100%;
       text-align: center;
-      margin: 0px 0 15px 0;
-      border-top: 1px solid black;
+      margin: 0 0 15px 0;
+      border-top: 1px solid #000;
       font-weight: bold;
       padding-top: 5px; }
     .container .resume h3 {
       text-align: center;
       color: #2a61a8;
-      border-top: 1px solid black;
-      border-bottom: 1px solid black;
+      border-top: 1px solid #000;
+      border-bottom: 1px solid #000;
       font-size: 20px;
       font-weight: bold;
       margin-bottom: 15px; }
@@ -57,11 +58,14 @@
       margin-bottom: 10px; }
     .container .resume h6 {
       margin: 0;
+      /* no unit */
       font-size: 14px;
       font-weight: bold; }
     .container .resume p {
       margin: 0;
-      padding: 0; }
+      /* no unit */
+      padding: 0;
+      /* no unit */ }
     .container .resume h6 + p {
       margin-bottom: 10px; }
     .container .resume p:first-of-type {
@@ -75,6 +79,7 @@
         display: inline-block;
         min-width: 210px;
         padding: 0;
+        /* no unit */
         margin: 0 0 0 50px; }
         .container .resume #skills_experise_ul_wrapper ul li {
           font-size: 14px;
@@ -123,7 +128,8 @@
     margin-left: 40px; } }
 @media (max-width: 520px) {
   .container .resume {
-    padding: 0 0;
+    padding: 0;
+    /* no unit */
     /* Education certificate, diploma */ }
     .container .resume h4 {
       text-align: center;

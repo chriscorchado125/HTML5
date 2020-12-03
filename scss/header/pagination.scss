@@ -4,11 +4,11 @@ label {
   margin-bottom: 2px;
 }
 
-.paginationYes {
+.pagination-yes {
   margin: -65px 0 0 0 !important;
 }
 
-.paginationNo {
+.pagination-no {
   margin: -48px 0 0 0 !important;
 }
 
@@ -19,32 +19,34 @@ label {
   display: inline-block;
 
   a {
-    color: #ffffff;
+    color: #fff;
     text-shadow: 1px 1px #000;
   }
+
   /* next / prev text */
   .pager-navigation {
     background-color: $main_color;
-    margin: 0px 3px;
+    margin: 0 3px;
     padding: 3px 10px;
     font-size: 12px;
   }
+
   .disabled {
     color: rgb(61, 60, 60);
     background-color: rgb(202, 201, 201) !important;
   }
 }
 
-#recordCount {
+#record-count {
   display: none;
 }
 
 @media (max-width: 700px) {
-  .paginationYes {
+  .pagination-yes {
     margin: -2px 0 0 0 !important;
   }
 
-  .paginationNo {
+  .pagination-yo {
     margin: 0 0 0 0 !important;
   }
 
@@ -54,7 +56,7 @@ label {
 }
 
 @media (max-width: 500px) {
-  .paginationYes {
+  .pagination-yes {
     margin: -5px 0 0 0 !important;
   }
 
@@ -62,16 +64,17 @@ label {
     padding-left: 10px;
 
     .pager-navigation {
-      margin: 0px 2px;
+      margin: 0 2px;
       padding: 3px 5px;
     }
   }
 }
 
 @media (max-width: 400px) {
-  #searchSite {
+  #search-site {
     width: 85px !important;
   }
+
   #pagination {
     padding-left: 5px;
     margin-right: 5px;

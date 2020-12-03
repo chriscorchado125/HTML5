@@ -6,6 +6,7 @@
 
 .container {
   padding: 20px 35px;
+
   h1 {
     margin: 100px 0 28px 0;
   }
@@ -44,6 +45,7 @@ p {
 @media (max-width: 700px) {
   .container {
     max-width: 540px;
+
     h1 {
       margin-top: 145px;
     }
@@ -51,9 +53,11 @@ p {
 
   .about {
     padding: 15px 35px;
+
     p {
       text-align: left !important;
     }
+
     .about-headline {
       text-align: center !important;
     }
@@ -72,8 +76,10 @@ p {
   }
 }
 
-#html5 a img {
-  box-shadow: 5px 5px 15px 2px #888888 !important;
+.jira-versions img {
+  max-width: 185px;
+  box-shadow: 1px 1px 15px 1px #888;
+  margin: 10px;
 }
 
 .shadow-version a img {
@@ -83,10 +89,9 @@ p {
 .jira-versions {
   text-align: center;
 }
-.jira-versions img {
-  max-width: 185px;
-  box-shadow: 1px 1px 15px 1px #888888;
-  margin: 10px;
+
+#html5 a img {
+  box-shadow: 5px 5px 15px 2px #888 !important;
 }
 
 .homepage-wrapper ul li {

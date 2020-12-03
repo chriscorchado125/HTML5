@@ -1,6 +1,8 @@
+<!DOCTYPE html>
+
 <nav class="navbar navbar-light bg-light fixed-top navbar-fixed-top shadow" aria-label="navigation-outer-wrapper">
 
-  <div class="navbar-collapse" id="navbarCollapse" aria-label="navigation-collapse-wrapper">
+  <div class="navbar-collapse" id="navbar-collapse" aria-label="navigation-collapse-wrapper">
 
     <div class="navbar-nav show" id="navbar-nav" role="navigation" aria-label="Navigation">
 
@@ -27,27 +29,28 @@
 
     <div id="profiles"></div>
 
-    <form id="search-container" method="get" role="search" class="paginationNo" accept-charset="UTF-8" onsubmit="return false">
+    <form id="search-container" method="get" role="search" class="pagination-no" accept-charset="UTF-8" onsubmit="return false">
 
-      <span id="searchCount" aria-live="polite"></span>
+      <span id="search-count" aria-live="polite"></span>
 
-      <label for="searchSite">
+      <label for="search-site">
         <span class="screen-reader">Enter search term</span>
-        <input type="search" id="searchSite" name="search_api" aria-label="Enter search term" aria-required="true"
-          placeholder="Search items" maxlength="128" class="ccBtn searchBtn">
+        <input type="search" id="search-site" name="search_api" aria-label="Enter search term" aria-required="true"
+          placeholder="Search items" maxlength="128" class="cc-btn search-btn">
       </label>
 
-      <label for="searchSubmit">
+      <label for="search-submit">
         <span class="screen-reader">Search</span>
-        <button type="submit" id="searchSubmit" aria-label="Search" class="searchBtn" value="Search">Search</button>
+        <button type="submit" id="search-submit" aria-label="Search" class="search-btn" value="Search">Search</button>
       </label>
 
-      <label for="searchClearBtn">
+      <label for="search-clear-btn">
         <span class="screen-reader">Clear Search</span>
-        <button type="reset" id="searchClearBtn" aria-label="Clear Search" class="searchBtn" title="Clear search" value="Clear">Clear</button>
+        <button type="reset" id="search-clear-btn" aria-label="Clear Search" class="search-btn" title="Clear search" value="Clear">Clear</button>
       </label>
 
       <div id="pagination"></div>
-    </div>
+
+    </form>
   </div>
 </nav>

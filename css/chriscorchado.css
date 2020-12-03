@@ -5,24 +5,25 @@
 #logo > img:hover {
   border: 1px dashed #346adf; }
 
-#navbarCollapse {
+#navbar-collapse {
   max-width: 1100px;
   margin: auto; }
 
 .navbar {
   border-bottom: 2px solid #346adf;
   display: block;
-  min-height: 80px;
+  height: 85px;
   /* force nav to stay horizontal */ }
   .navbar .navbar-nav {
     flex-direction: row;
-    /* align items vertically*/ }
+    /* align items vertically */ }
     .navbar .navbar-nav .nav-item {
       display: flex;
       justify-content: center;
       align-items: center;
       margin: 0;
-      padding: 0px 5px;
+      /* no unit */
+      padding: 0 5px;
       width: 80px; }
     .navbar .navbar-nav .nav-item-active,
     .navbar .navbar-nav .nav-item:hover {
@@ -100,7 +101,7 @@ body {
   text-align: center;
   font-size: 34px;
   color: #e2eafb;
-  text-shadow: 1px 1px 2px #000000;
+  text-shadow: 1px 1px 2px #000;
   margin-top: 100px; }
 
 .preloadAnimation > div {
@@ -111,7 +112,7 @@ body {
   display: inline-block;
   -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
   animation: sk-bouncedelay 1.4s infinite ease-in-out both;
-  border: 1px solid #000000; }
+  border: 1px solid #000; }
 
 .preloadAnimation .bounce1 {
   -webkit-animation-delay: -0.32s;
@@ -149,9 +150,6 @@ h1 {
   color: #346adf;
   font-size: 30px; }
 
-.highlightSearchText {
-  background-color: yellow; }
-
 /* space for top navigation */
 .container {
   margin: 0 auto;
@@ -160,17 +158,6 @@ h1 {
   background-color: #fff;
   opacity: 0;
   border-radius: 0 0 15px 15px; }
-
-#noRecords {
-  font-size: 36px;
-  max-width: 700px;
-  border-radius: 5px;
-  color: #346adf;
-  background-color: #f8f9fa;
-  padding: 15px;
-  text-align: center;
-  margin: auto;
-  margin-top: 150px !important; }
 
 a:link {
   text-decoration: none; }
