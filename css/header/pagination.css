@@ -32,7 +32,7 @@ label {
   .pagination-yes {
     margin: -2px 0 0 0 !important; }
 
-  .pagination-yo {
+  .pagination-no {
     margin: 0 0 0 0 !important; }
 
   #pagination {
@@ -44,8 +44,9 @@ label {
   #pagination {
     padding-left: 10px; }
     #pagination .pager-navigation {
-      margin: 0 2px;
-      padding: 3px 5px; } }
+      margin: 0;
+      /* no unit */
+      padding: 5px; } }
 @media (max-width: 400px) {
   #search-site {
     width: 85px !important; }
@@ -53,5 +54,11 @@ label {
   #pagination {
     padding-left: 5px;
     margin-right: 5px; } }
+@media (max-width: 350px) {
+  #pagination {
+    padding-left: 2px;
+    margin-right: 2px; }
+    #pagination .pager-navigation {
+      font-size: 11px; } }
 
 /*# sourceMappingURL=pagination.css.map */

@@ -46,7 +46,7 @@ label {
     margin: -2px 0 0 0 !important;
   }
 
-  .pagination-yo {
+  .pagination-no {
     margin: 0 0 0 0 !important;
   }
 
@@ -64,8 +64,8 @@ label {
     padding-left: 10px;
 
     .pager-navigation {
-      margin: 0 2px;
-      padding: 3px 5px;
+      margin: 0; /* no unit */
+      padding: 5px;
     }
   }
 }
@@ -80,3 +80,14 @@ label {
     margin-right: 5px;
   }
 }
+
+@media (max-width: 350px) {
+  #pagination {
+    padding-left: 2px;
+    margin-right: 2px;
+    .pager-navigation {
+      font-size: 11px;
+    }
+  }
+}
+

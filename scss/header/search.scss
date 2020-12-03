@@ -89,6 +89,12 @@
   }
 }
 
+@media (max-width: 400px) {
+  #search-container {
+   margin: -5px 0 10px 0 !important;
+  }
+}
+
 @media (max-width: 350px) {
   #search-container {
     #search-site {
@@ -96,8 +102,16 @@
       font-size: 12px;
     }
 
+    #search-btn {
+      margin-left: 0; /* no unit */
+    }
+
+    .search-btn {
+      font-size: 11px;
+    }
+
     #search-count {
-      width: 75px;
+      width: 70px;
     }
   }
 }

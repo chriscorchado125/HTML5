@@ -63,11 +63,19 @@
     margin-left: 5px; }
   #search-container #search-count {
     width: 80px; } }
+@media (max-width: 400px) {
+  #search-container {
+    margin: -5px 0 10px 0 !important; } }
 @media (max-width: 350px) {
   #search-container #search-site {
     width: 95px;
     font-size: 12px; }
+  #search-container #search-btn {
+    margin-left: 0;
+    /* no unit */ }
+  #search-container .search-btn {
+    font-size: 11px; }
   #search-container #search-count {
-    width: 75px; } }
+    width: 70px; } }
 
 /*# sourceMappingURL=search.css.map */

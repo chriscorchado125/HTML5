@@ -17,7 +17,7 @@
 .navbar {
   border-bottom: 2px solid $main_color;
   display: block;
-  height: 85px;
+  min-height: 85px;
 
   /* force nav to stay horizontal */
   .navbar-nav {
