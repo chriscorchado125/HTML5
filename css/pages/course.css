@@ -15,18 +15,20 @@
 .course-box {
   padding: 20px;
   margin: 0 0 20px 0;
-  font-size: 12px;
-  max-width: 260px; }
+  width: 220px;
+  text-align: center;
+  /* constrain the title to 2 lines */ }
   .course-box h2 {
     height: 23px; }
   .course-box img {
-    max-width: 200px; }
+    max-width: 180px; }
   .course-box .course-wrapper {
     max-width: 190px;
     margin: auto;
     padding: 0 5px; }
   .course-box .course-date {
     float: left;
+    font-size: 12px;
     margin-top: 4px; }
   .course-box .course-links {
     float: right;
@@ -36,9 +38,7 @@
   .courses-container .course-box {
     padding: 20px; }
     .courses-container .course-box img {
-      max-width: 170px; }
-  .courses-container h2 {
-    font-size: 12px; } }
+      max-width: 170px; } }
 @media (max-width: 1000px) {
   .courses-container {
     grid-template-columns: 1fr 1fr 1fr; }
