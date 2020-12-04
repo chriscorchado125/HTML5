@@ -8,6 +8,7 @@
     "jquery": "^3.5.1",
     "mime-types": "^2.1.27",
     "node": "^14.15.1",
+    "stylelint-scss": "^3.18.0",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
@@ -23,11 +24,13 @@
     "sass-loader": "^10.1.0",
     "stylelint": "^13.8.0",
     "stylelint-config-sass-guidelines": "^7.1.0",
+    "stylelint-config-standard": "^20.0.0",
     "webpack": "^5.9.0"
   },
   "scripts": {
     "test": "jest",
-    "lint-html": "npx htmlhint **/*.html"
+    "htmllint": "npx htmlhint **/*.html",
+    "csslint": "npx stylelint  **/*.scss"
   },
   "repository": {
     "type": "git",
