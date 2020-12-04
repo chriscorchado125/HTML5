@@ -27,7 +27,7 @@
   },
   "scripts": {
     "test": "jest",
-    "lint": "eslint"
+    "lint-html": "npx htmlhint **/*.html"
   },
   "repository": {
     "type": "git",
