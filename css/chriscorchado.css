@@ -86,17 +86,6 @@
 .box:hover::after {
   opacity: 1; }
 
-html {
-  overflow-y: scroll; }
-
-body {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  scrollbar-color: #346adf #e2eafb;
-  background-image: url(https://chriscorchado.com/images/cclogobg.jpg);
-  background-attachment: fixed; }
-
 .preloadAnimation {
   text-align: center;
   font-size: 34px;
@@ -138,6 +127,17 @@ body {
   40% {
     -webkit-transform: scale(1);
     transform: scale(1); } }
+html {
+  overflow-y: scroll; }
+
+body {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  scrollbar-color: #346adf #e2eafb;
+  background-image: url(https://chriscorchado.com/images/cclogobg.jpg);
+  background-attachment: fixed; }
+
 .screen-reader {
   position: absolute;
   left: -10000px;
