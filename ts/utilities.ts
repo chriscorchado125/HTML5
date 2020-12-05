@@ -58,7 +58,7 @@ export const updateMenuPages = async (currentPage: string, targetContainer: stri
       }
 
       let generatedPageLinks = `<a href='index.html' class='navbar-brand' id='logo' style='${homepageStyle}'>
-        <img src='./images/chriscorchado-initials-logo.png' title='Home' alt='Home'>
+        <img src='./images/chriscorchado-initials-logo.png' title='Home' alt='Home' id="logo-image">
       </a>`
 
       for (const page in pageData) {
@@ -183,6 +183,7 @@ export const setLoading = (loadingStatus: boolean) => {
       </div>`
 
     document.body.append(preloader)
+
   } else {
     const preloadAnimation = document.getElementById('preloadAnimation') as HTMLElement
     preloadAnimation.remove()

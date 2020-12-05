@@ -44,7 +44,7 @@ export const updateMenuPages = (currentPage, targetContainer) => __awaiter(void 
             homepageStyle = 'border: 1px dashed rgb(115, 153, 234)';
         }
         let generatedPageLinks = `<a href='index.html' class='navbar-brand' id='logo' style='${homepageStyle}'>
-        <img src='./images/chriscorchado-initials-logo.png' title='Home' alt='Home'>
+        <img src='./images/chriscorchado-initials-logo.png' title='Home' alt='Home' id="logo-image">
       </a>`;
         for (const page in pageData) {
             pageName = pageData[page].title;
