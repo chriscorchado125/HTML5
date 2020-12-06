@@ -11,7 +11,9 @@ window.onload = () => {
       const thisNav = document.getElementById('navigation') as HTMLElement
       thisNav.innerHTML = data
 
-      // setup search functionality
+      utilityJS.animateLogo('logo-image', 'spin')
+
+      // Setup search functionality
       if (document.getElementById('search-container')) {
         const thisSearchSite = document.getElementById('search-site') as HTMLElement
         if (thisSearchSite) {

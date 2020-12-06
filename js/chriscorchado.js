@@ -9,6 +9,7 @@ window.onload = () => {
         .then((data) => {
         const thisNav = document.getElementById('navigation');
         thisNav.innerHTML = data;
+        utilityJS.animateLogo('logo-image', 'spin');
         if (document.getElementById('search-container')) {
             const thisSearchSite = document.getElementById('search-site');
             if (thisSearchSite) {
