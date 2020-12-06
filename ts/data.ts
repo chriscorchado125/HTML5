@@ -12,7 +12,6 @@ import { formSubmitted } from './form.js'
 export const getPage = async (page: string, search: string, pagingURL?: string, pagingDirection?: string) => {
   let data = null
   document.getElementById('no-records')?.remove()
-  document.getElementsByClassName('container')[0].classList.add('hide')
 
   utilityJS.setLoading(true)
 

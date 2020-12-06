@@ -14,7 +14,6 @@ export const getPage = (page, search, pagingURL, pagingDirection) => __awaiter(v
     var _a;
     let data = null;
     (_a = document.getElementById('no-records')) === null || _a === void 0 ? void 0 : _a.remove();
-    document.getElementsByClassName('container')[0].classList.add('hide');
     utilityJS.setLoading(true);
     if (pagingDirection === 'next' || search) {
         utilityJS.animateLogo('logo-image', 'spin');

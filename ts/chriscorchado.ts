@@ -3,6 +3,8 @@ import * as utilityJS from './utilities.js'
 import * as searchJS from './search.js'
 
 window.onload = () => {
+  document.getElementsByClassName('container')[0].classList.add('hide')
+
   fetch('./includes/nav.html')
     .then((response) => {
       return response.text()
