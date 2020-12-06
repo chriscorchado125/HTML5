@@ -13,8 +13,6 @@ export const getPage = async (page: string, search: string, pagingURL?: string, 
   let data = null
   document.getElementById('no-records')?.remove()
 
-  utilityJS.setLoading(true)
-
   if (pagingDirection === 'next' || search) {
     utilityJS.animateLogo('logo-image', 'spin')
   }
@@ -488,7 +486,6 @@ const renderPage = (
     document.getElementsByClassName('container')[0].classList.remove('hide')
     document.getElementById('search-container')?.classList.add('hide')
     utilityJS.animateLogo('logo-image', '')
-    utilityJS.setLoading(false)
     return
   }
 
@@ -680,7 +677,6 @@ const renderPage = (
     searchJS.setPagination(itemCount, data.passedInCount.currentCount, prev, next)
   }
 
-  utilityJS.setLoading(false)
   utilityJS.animateLogo('logo-image', '')
   document.getElementsByClassName('container')[0].classList.remove('hide')
 }

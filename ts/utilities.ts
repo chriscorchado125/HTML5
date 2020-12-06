@@ -114,28 +114,6 @@ export const cleanURL = (urlToClean: string) => {
 }
 
 /**
- * Toggle content and preloader
- * @param {boolean} loadingStatus
- */
-export const setLoading = (loadingStatus: boolean) => {
-  if (loadingStatus) {
-    const preloader = document.createElement('div')
-
-    preloader.innerHTML = `
-      <div class='preloadAnimation' id='preloadAnimation'>
-        <div class='bounce1'></div>
-        <div class='bounce2'></div>
-        <div class='bounce3'></div>
-        <br />Loading
-      </div>`
-
-    document.body.append(preloader)
-  } else {
-    document.getElementById('preloadAnimation')?.remove()
-  }
-}
-
-/**
  * Animate logo as a way to show loading, paging or any other processing
  * @param {string} logoID - ID of the HTML image tag
  * @param {string} animationID - options [spin, spin-reverse, breath] or empty string '' to disable

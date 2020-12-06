@@ -14,7 +14,6 @@ export const getPage = (page, search, pagingURL, pagingDirection) => __awaiter(v
     var _a;
     let data = null;
     (_a = document.getElementById('no-records')) === null || _a === void 0 ? void 0 : _a.remove();
-    utilityJS.setLoading(true);
     if (pagingDirection === 'next' || search) {
         utilityJS.animateLogo('logo-image', 'spin');
     }
@@ -355,7 +354,6 @@ const renderPage = (data, page, searchedFor, next, prev) => {
         document.getElementsByClassName('container')[0].classList.remove('hide');
         (_a = document.getElementById('search-container')) === null || _a === void 0 ? void 0 : _a.classList.add('hide');
         utilityJS.animateLogo('logo-image', '');
-        utilityJS.setLoading(false);
         return;
     }
     let includedCompanyName = [];
@@ -511,7 +509,6 @@ const renderPage = (data, page, searchedFor, next, prev) => {
     if (page !== 'about' && page !== 'contact' && page !== 'resume') {
         searchJS.setPagination(itemCount, data.passedInCount.currentCount, prev, next);
     }
-    utilityJS.setLoading(false);
     utilityJS.animateLogo('logo-image', '');
     document.getElementsByClassName('container')[0].classList.remove('hide');
 };

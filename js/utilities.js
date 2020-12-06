@@ -71,23 +71,6 @@ export const cleanURL = (urlToClean) => {
     });
     return fixedURL;
 };
-export const setLoading = (loadingStatus) => {
-    var _a;
-    if (loadingStatus) {
-        const preloader = document.createElement('div');
-        preloader.innerHTML = `
-      <div class='preloadAnimation' id='preloadAnimation'>
-        <div class='bounce1'></div>
-        <div class='bounce2'></div>
-        <div class='bounce3'></div>
-        <br />Loading
-      </div>`;
-        document.body.append(preloader);
-    }
-    else {
-        (_a = document.getElementById('preloadAnimation')) === null || _a === void 0 ? void 0 : _a.remove();
-    }
-};
 export const animateLogo = (logoID, animationID) => {
     const logoElement = document.getElementById(logoID);
     const checkExist = setInterval(function () {

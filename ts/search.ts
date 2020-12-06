@@ -148,7 +148,7 @@ export const search = (e: Event) => {
  * Filter what a user is allowed to enter in the search field
  * Only allow searching with letters and spaces.  No numbers or special characters
  * @param {KeyboardEvent} event - key event
- * @return {string} - allowed characters
+ * @return {boolean} - true if valid, otherwise false
  */
 export const searchFilter = (event: KeyboardEvent) => {
   const allowOnlyLettersAndSpace = /[A-Za-z\s]/
