@@ -96,7 +96,7 @@ export const animateLogo = (logoID, animationID) => {
                 logoElement.setAttribute('src', `https://chriscorchado.com/images/chriscorchado-initials-logo-animated-${animationID}.gif`);
             }
             else {
-                logoElement.setAttribute('src', `https://chriscorchado.com/images/chriscorchado-initials-logo.png`);
+                logoElement.setAttribute('src', 'https://chriscorchado.com/images/chriscorchado-initials-logo.png');
             }
             clearInterval(checkExist);
         }

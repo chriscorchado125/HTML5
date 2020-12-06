@@ -10,18 +10,17 @@ import { formSubmitted } from './form.js'
  * @param {string=} pagingURL - (optional) - Prev/Next links
  */
 export const getPage = async (page: string, search: string, pagingURL?: string, pagingDirection?: string) => {
-
   let data = null
   document.getElementById('no-records')?.remove()
-  document.getElementsByClassName('container')[0].classList.add('hide');
+  document.getElementsByClassName('container')[0].classList.add('hide')
 
   utilityJS.setLoading(true)
 
-  if(pagingDirection === 'next' || search) {
+  if (pagingDirection === 'next' || search) {
     utilityJS.animateLogo('logo-image', 'spin')
   }
 
-  if(pagingDirection === 'prev') {
+  if (pagingDirection === 'prev') {
     utilityJS.animateLogo('logo-image', 'spin-reverse')
   }
 
@@ -685,5 +684,5 @@ const renderPage = (
 
   utilityJS.setLoading(false)
   utilityJS.animateLogo('logo-image', '')
-  document.getElementsByClassName('container')[0].classList.remove('hide');
+  document.getElementsByClassName('container')[0].classList.remove('hide')
 }

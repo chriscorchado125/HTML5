@@ -119,7 +119,6 @@ export const cleanURL = (urlToClean: string) => {
  */
 export const setLoading = (loadingStatus: boolean) => {
   if (loadingStatus) {
-
     const preloader = document.createElement('div')
 
     preloader.innerHTML = `
@@ -131,7 +130,6 @@ export const setLoading = (loadingStatus: boolean) => {
       </div>`
 
     document.body.append(preloader)
-
   } else {
     document.getElementById('preloadAnimation')?.remove()
   }
@@ -148,12 +146,13 @@ export const animateLogo = (logoID: string, animationID: string) => {
   const checkExist = setInterval(function() {
     if (logoElement) {
 
-      if(animationID){
+      if (animationID){
         logoElement.setAttribute('src', `https://chriscorchado.com/images/chriscorchado-initials-logo-animated-${animationID}.gif`)
-      }else{
-        logoElement.setAttribute('src', `https://chriscorchado.com/images/chriscorchado-initials-logo.png`)
+      } else {
+        logoElement.setAttribute('src', 'https://chriscorchado.com/images/chriscorchado-initials-logo.png')
       }
-      clearInterval(checkExist);
+
+      clearInterval(checkExist)
     }
-  }, 100);
+  }, 100)
 }

@@ -190,7 +190,7 @@ export const noRecordsFound = (
 
   if (!noRecordEL && search) {
     // hide the content container
-    document.getElementsByClassName('container')[0].classList.add('hide');
+    document.getElementsByClassName('container')[0].classList.add('hide')
 
     pagination.style.display = 'none'
 
@@ -212,7 +212,6 @@ export const noRecordsFound = (
     if (searchCountEL) {
       searchCountEL.innerHTML = '0 items'
     }
-
   } else {
     pagination.style.display = 'inline-block'
   }
