@@ -641,7 +641,6 @@ const renderPage = (
     case 'courses':
       currentNavItem = 'courses-link'
       pageIsSearchable = true
-      pageHasGallery = true
       item = `<h1 id='content'>Courses</h1><div class='container courses-container row'>${item}</div>`
       break
     case 'projects':
