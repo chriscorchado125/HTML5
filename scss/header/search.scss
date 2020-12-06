@@ -1,6 +1,6 @@
 @import "./../variables.scss";
 
-/* remove IE “clear field or cross” X button from inputs field */
+// Remove IE “clear field or cross” X button from inputs field
 ::-ms-clear {
   display: none;
 }
@@ -18,7 +18,7 @@
   padding: 15px;
   text-align: center;
   margin: auto;
-  margin-top: 150px !important;
+  margin-top: 150px;
 }
 
 #search-container {
@@ -41,12 +41,12 @@
     width: 85px;
   }
 
-  /* search textbox */
+  // Search textbox
   #search-site {
     width: 150px;
   }
 
-  /* search button */
+  // Search button
   .search-btn {
     padding: 2px;
     font-size: 12px;
@@ -58,13 +58,18 @@
     box-shadow: 0 0 #fff;
     background-color: $main_color;
   }
-} // #search-container
+}
 
 @media (max-width: 700px) {
   #search-container {
     float: none;
     width: 100%;
     padding-bottom: 2px;
+  }
+
+  #no-records {
+    font-size: 30px;
+    max-width: 500px;
   }
 }
 
@@ -81,6 +86,12 @@
     #search-count {
       width: 80px;
     }
+  }
+
+  #no-records {
+    font-size: 18px;
+    max-width: 95%;
+    margin-top: 130px;
   }
 }
 

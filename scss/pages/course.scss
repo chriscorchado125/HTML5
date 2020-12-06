@@ -1,17 +1,12 @@
 @import "./../variables.scss";
 
-.container > h1 {
-  margin-top: 100px;
-}
-
 .courses-container {
   display: grid;
   grid-gap: 5px;
   justify-items: center;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  margin: 0 0 40px 0;
 
-  /* course title */
+  // Course title
   h2 {
     font-size: 12px;
     color: $item_text;
@@ -24,7 +19,7 @@
   width: 220px;
   text-align: center;
 
-  /* constrain the title to 2 lines */
+  // Constrain the title to 2 lines
   h2 {
     height: 23px;
   }
@@ -79,16 +74,6 @@
   }
 }
 
-@media (max-width: 700px) {
-  #pagination {
-    display: inline;
-  }
-
-  .container > h1 {
-    margin-top: 135px;
-  }
-}
-
 @media (max-width: 600px) {
   .courses-container {
     grid-template-columns: 1fr;
@@ -100,9 +85,5 @@
     .course-box {
       padding: 10px !important;
     }
-  }
-
-  .container > h1 {
-    margin-top: 100px;
   }
 }

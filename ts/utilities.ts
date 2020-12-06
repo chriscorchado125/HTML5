@@ -119,6 +119,7 @@ export const cleanURL = (urlToClean: string) => {
  */
 export const setLoading = (loadingStatus: boolean) => {
   if (loadingStatus) {
+
     const preloader = document.createElement('div')
 
     preloader.innerHTML = `
@@ -132,16 +133,27 @@ export const setLoading = (loadingStatus: boolean) => {
     document.body.append(preloader)
 
   } else {
-    const preloadAnimation = document.getElementById('preloadAnimation') as HTMLElement
-    preloadAnimation.remove()
-
-    if (document.getElementsByClassName('container')[0]) {
-      const mainContainer = document.getElementsByClassName('container')[0] as HTMLElement
-      fadeIn(mainContainer)
-    }
-    if (document.getElementsByClassName('container')[1]) {
-      const dataContainer = document.getElementsByClassName('container')[1] as HTMLElement
-      fadeIn(dataContainer)
-    }
+    document.getElementById('preloadAnimation')?.remove()
   }
+}
+
+/**
+ * Animate logo as a way to show loading, paging or any other processing
+ * @param {string} logoID - ID of the HTML image tag
+ * @param {string} animationID - options [spin, spin-reverse, breath] or empty string '' to disable
+ */
+export const animateLogo = (logoID: string, animationID: string) => {
+  const logoElement = document.getElementById(logoID) as HTMLElement
+
+  const checkExist = setInterval(function() {
+    if (logoElement) {
+
+      if(animationID){
+        logoElement.setAttribute('src', `https://chriscorchado.com/images/chriscorchado-initials-logo-animated-${animationID}.gif`)
+      }else{
+        logoElement.setAttribute('src', `https://chriscorchado.com/images/chriscorchado-initials-logo.png`)
+      }
+      clearInterval(checkExist);
+    }
+  }, 100);
 }

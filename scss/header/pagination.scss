@@ -23,7 +23,7 @@ label {
     text-shadow: 1px 1px #000;
   }
 
-  /* next / prev text */
+  // Text [next / prev]
   .pager-navigation {
     background-color: $main_color;
     margin: 0 3px;
@@ -51,6 +51,7 @@ label {
   }
 
   #pagination {
+    display: inline;
     padding-left: 30px;
   }
 }

@@ -10,11 +10,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import * as utilityJS from './utilities.js';
 import * as searchJS from './search.js';
 import { formSubmitted } from './form.js';
-export const getPage = (page, search, pagingURL) => __awaiter(void 0, void 0, void 0, function* () {
+export const getPage = (page, search, pagingURL, pagingDirection) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     let data = null;
     (_a = document.getElementById('no-records')) === null || _a === void 0 ? void 0 : _a.remove();
+    document.getElementsByClassName('container')[0].classList.add('hide');
     utilityJS.setLoading(true);
+    if (pagingDirection === 'next' || search) {
+        utilityJS.animateLogo('logo-image', 'spin');
+    }
+    if (pagingDirection === 'prev') {
+        utilityJS.animateLogo('logo-image', 'spin-reverse');
+    }
     if (search) {
     }
     if (page === 'contact') {
@@ -37,7 +44,6 @@ export const getPage = (page, search, pagingURL) => __awaiter(void 0, void 0, vo
             });
         }
         renderPage(data, page);
-        utilityJS.setLoading(false);
         return false;
     }
     else {
@@ -144,6 +150,7 @@ export const getPage = (page, search, pagingURL) => __awaiter(void 0, void 0, vo
     else {
         searchJS.noRecordsFound('no-records', search, 'navigation', 'No matches found for');
     }
+    utilityJS.animateLogo('logo-image', '');
 });
 const getData = (dataURL) => __awaiter(void 0, void 0, void 0, function* () {
     let result = {};
@@ -342,9 +349,14 @@ const setPageHTML = (values) => {
     }
 };
 const renderPage = (data, page, searchedFor, next, prev) => {
+    var _a;
     let pageIsSearchable = false;
     if (page === 'contact') {
         setPageHTML([page, data]);
+        document.getElementsByClassName('container')[0].classList.remove('hide');
+        (_a = document.getElementById('search-container')) === null || _a === void 0 ? void 0 : _a.classList.add('hide');
+        utilityJS.animateLogo('logo-image', '');
+        utilityJS.setLoading(false);
         return;
     }
     let includedCompanyName = [];
@@ -502,25 +514,6 @@ const renderPage = (data, page, searchedFor, next, prev) => {
         searchJS.setPagination(itemCount, data.passedInCount.currentCount, prev, next);
     }
     utilityJS.setLoading(false);
-    if (page === 'about') {
-        const currentURL = window.location.toString();
-        if (currentURL.indexOf('/html5/') !== -1) {
-            const docHtml5 = document.getElementById('html5');
-            docHtml5.setAttribute('class', 'shadow-version noLink');
-            const docHtml5Here = document.getElementById('html5-here');
-            docHtml5Here.style.display = 'block';
-        }
-        else if (currentURL.indexOf('/drupal8/') !== -1) {
-            const docDrupal8 = document.getElementById('drupal8');
-            docDrupal8.setAttribute('class', 'shadow-version noLink');
-            const docDrupal8Here = document.getElementById('drupal8-here');
-            docDrupal8Here.style.display = 'block';
-        }
-        else {
-            const docNodeJS = document.getElementById('nodeJS');
-            docNodeJS.setAttribute('class', 'shadow-version noLink');
-            const docnodeJSHere = document.getElementById('nodeJS-here');
-            docnodeJSHere.style.display = 'block';
-        }
-    }
+    utilityJS.animateLogo('logo-image', '');
+    document.getElementsByClassName('container')[0].classList.remove('hide');
 };

@@ -5,7 +5,7 @@
   font-size: 34px;
   color: $main_color_light;
   text-shadow: 1px 1px 2px #000;
-  margin-top: 100px;
+  margin-top: 120px;
 }
 
 .preloadAnimation > div {
@@ -52,5 +52,11 @@
   40% {
     -webkit-transform: scale(1);
     transform: scale(1);
+  }
+}
+
+@media (max-width: 400px) {
+  .preloadAnimation {
+    font-size: 24px;
   }
 }

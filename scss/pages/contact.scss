@@ -1,10 +1,14 @@
 @import "./../variables.scss";
 
-/* search button */
+h1 {
+  margin-bottom: 30px;
+}
+
+// Submit button
 #edit-submit {
   padding: 2px;
   font-size: 12px;
-  margin-left: 0; /* no unit */
+  margin-left: 0; // no unit
 }
 
 #edit-submit:hover {
@@ -13,28 +17,11 @@
   background-color: $main_color;
 }
 
-.navbar {
-  min-height: 60px !important;
-}
-
-#search-container {
-  display: none;
-}
-
-.container > h1 {
-  margin-top: 100px;
-}
-
-.container h2 {
-  margin-top: 80px;
-}
-
 #contact-message-feedback-form {
-  margin: auto;
   background-color: $main_color_light;
   padding: 10px 10px 30px 10px;
   text-align: center !important;
-  margin-top: 20px;
+  margin: 20px auto 50px auto;
   max-width: 600px;
   border-radius: 10px;
 
@@ -46,12 +33,12 @@
     margin-top: 50px;
   }
 
-  /* holds the current page url */
+  // Holds the current page url
   #edit-field-site-wrapper {
     display: none;
   }
 
-  /* subject align */
+  // Subject align
   .form-text {
     display: inline !important;
   }
@@ -65,7 +52,7 @@
     margin-bottom: 50px;
   }
 
-  /* display the name and email fiels next to each other */
+  // Display the name and email fiels next to each other
   .js-form-item-name,
   .js-form-item-mail {
     display: inline-block !important;
@@ -93,7 +80,7 @@
   max-width: 250px;
 }
 
-/* stack name and email fields */
+// Stack name and email fields
 @media (max-width: 800px) {
   .container {
     margin-top: 50px;
@@ -102,10 +89,6 @@
     #contact-message-feedback-form {
       width: 100%;
       border-radius: 0;
-    }
-
-    h1 {
-      margin-top: 50px;
     }
   }
 
@@ -119,8 +102,10 @@
 }
 
 @media (max-width: 700px) {
-  .container > h1 {
-    margin-top: 90px;
+  .container {
+    h1 {
+      margin: 90px 0 35px 0;
+    }
   }
 }
 
@@ -131,7 +116,9 @@
 }
 
 @media (max-width: 400px) {
-  .container > h1 {
-    margin-top: 60px;
+  .container {
+    h1 {
+      margin: 60px 0 35px 0;
+    }
   }
 }

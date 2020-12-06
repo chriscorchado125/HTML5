@@ -1,5 +1,3 @@
-@charset "UTF-8";
-/* remove IE “clear field or cross” X button from inputs field */
 ::-ms-clear {
   display: none; }
 
@@ -15,7 +13,7 @@
   padding: 15px;
   text-align: center;
   margin: auto;
-  margin-top: 150px !important; }
+  margin-top: 150px; }
 
 #search-container {
   float: right;
@@ -24,9 +22,7 @@
   /* no unit */
   width: 330px;
   text-align: center;
-  display: none;
-  /* search textbox */
-  /* search button */ }
+  display: none; }
   #search-container label {
     display: inline-block; }
   #search-container #search-count {
@@ -52,14 +48,23 @@
   #search-container {
     float: none;
     width: 100%;
-    padding-bottom: 2px; } }
+    padding-bottom: 2px; }
+
+  #no-records {
+    font-size: 30px;
+    max-width: 500px; } }
 @media (max-width: 500px) {
   #search-container #search-site {
     width: 105px; }
   #search-container #search-btn {
     margin-left: 5px; }
   #search-container #search-count {
-    width: 80px; } }
+    width: 80px; }
+
+  #no-records {
+    font-size: 18px;
+    max-width: 95%;
+    margin-top: 130px; } }
 @media (max-width: 400px) {
   #search-container {
     margin: -5px 0 10px 0 !important; } }

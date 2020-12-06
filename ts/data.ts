@@ -9,18 +9,28 @@ import { formSubmitted } from './form.js'
  * @param {string=} search - (optional) - search string
  * @param {string=} pagingURL - (optional) - Prev/Next links
  */
-export const getPage = async (page: string, search: string, pagingURL?: string) => {
+export const getPage = async (page: string, search: string, pagingURL?: string, pagingDirection?: string) => {
+
   let data = null
   document.getElementById('no-records')?.remove()
+  document.getElementsByClassName('container')[0].classList.add('hide');
 
   utilityJS.setLoading(true)
+
+  if(pagingDirection === 'next' || search) {
+    utilityJS.animateLogo('logo-image', 'spin')
+  }
+
+  if(pagingDirection === 'prev') {
+    utilityJS.animateLogo('logo-image', 'spin-reverse')
+  }
 
   if (search) {
     // ga('send', 'pageview', location.pathname + '?search=' + search)
   }
 
   if (page === 'contact') {
-    // generate the contact form as long as it has not been submitted
+    // Generate the contact form as long as it has not been submitted
     if (location.toString().indexOf('submitted') === -1) {
       await fetch(`${utilityJS.API_BASE}/contact/feedback`) // get the feedback form as text
         .then((resp) => {
@@ -29,13 +39,13 @@ export const getPage = async (page: string, search: string, pagingURL?: string) 
         .then((page) => {
           data = page.replace(/\/drupal8/g, utilityJS.API_BASE) // update the HTML URLs from relative to absolute
 
-          // get the contact form HTML
+          // Get the contact form HTML
           let form = data.substr(data.indexOf('<form class='), data.indexOf('</form>'))
           form = form.substr(0, form.indexOf('</form>') + 8)
 
           form = form.replace('Your email address', 'Email')
 
-          // get the contact form JavaScript
+          // Get the contact form JavaScript
           let script = data.substr(
             data.indexOf(
               '<script type="application/json" data-drupal-selector="drupal-settings-json">'
@@ -52,8 +62,6 @@ export const getPage = async (page: string, search: string, pagingURL?: string) 
     }
 
     renderPage(data, page)
-
-    utilityJS.setLoading(false)
 
     return false
   } else {
@@ -160,7 +168,7 @@ export const getPage = async (page: string, search: string, pagingURL?: string) 
     }
   }
 
-  // create object with the last pagination count or a default of 1
+  // Create object with the last pagination count or a default of 1
   const lastCount = document.getElementById('lastCount') as HTMLElement
   const passedInCount = {
     currentCount: document.getElementById('lastCount')
@@ -175,6 +183,8 @@ export const getPage = async (page: string, search: string, pagingURL?: string) 
   } else {
     searchJS.noRecordsFound('no-records', search, 'navigation', 'No matches found for')
   }
+
+  utilityJS.animateLogo('logo-image', '')
 }
 
 /**
@@ -279,7 +289,6 @@ const setPageHTML = (values: any) => {
   }
 
   let imgAltCount = 0
-
   const screenshotAlt:any = []
 
   const encodedName = encodeURIComponent(itemTitle)
@@ -293,32 +302,32 @@ const setPageHTML = (values: any) => {
   let section = ''
 
   switch (page) {
-    case 'about': // homepage
-      // add a border to the site logo
+    // Homepage
+    case 'about':
+      // Add a border to the site logo
       docLogo.getElementsByTagName('img')[0].style.border = '1px dashed #7399EA'
 
-      // add resume, linkedin and azure links
+      // Add resume, linkedin and azure links
       addProfiles('profiles')
 
       return aboutData
     case 'contact':
 
-      // form sumitted
+      // Form sumitted
       if (location.toString().indexOf('/contact.html?submitted=true') !== -1) {
         formSubmitted(5)
       } else {
-        // add resume, linkedin and azure links
+        // Add resume, linkedin and azure links
         addProfiles('profiles')
 
-        // show the form
+        // Show the form
         document.getElementsByClassName('container')[0].innerHTML = data.toString()
 
         const docContact = document.getElementById('contact-link')! as HTMLInputElement
         docContact.className += ' nav-item-active'
 
-        // capture the current site URL
+        // Capture the current site URL
         const webLocation = document.getElementById('edit-field-site-0-value')! as HTMLInputElement
-
         webLocation.value = location.toString()
 
         const docEditMail = document.getElementById('edit-mail')! as HTMLInputElement
@@ -378,7 +387,8 @@ const setPageHTML = (values: any) => {
           </span>`
       }
 
-      return (item += '</div></div>') // course-box box
+      // Course-box box
+      return (item += '</div></div>')
     case 'projects':
 
       item = `<div class='project col'>
@@ -386,7 +396,7 @@ const setPageHTML = (values: any) => {
         <div class='project-company'>${itemCompanyName} <span class='project-date'>(${itemDate})</span></div>
         <div class='body-container'>${itemBody}</div>`
 
-      // screenshots
+      // Screenshots
       if (imgPieces) {
         data.relationships.field_screenshot.data.forEach((screenshot: any) => {
           screenshotAlt.push(screenshot.meta.alt)
@@ -395,7 +405,8 @@ const setPageHTML = (values: any) => {
         itemGridClass = `project-item-grid project-items${data.relationships.field_screenshot.data.length}`
         section = `<section data-featherlight-gallery data-featherlight-filter='a' class='${itemGridClass}'>`
 
-        imgAltCount = 0 // reset alt attribute counter
+        // Reset alt attribute counter
+        imgAltCount = 0
         imgPieces.forEach((img: string) => {
           const pieces = img.split(',')
 
@@ -425,7 +436,7 @@ const setPageHTML = (values: any) => {
         item += section
       }
 
-      // videos
+      // Videos
       if (data.attributes.field_video_url) {
         data.attributes.field_video_url.forEach((img: string) => {
           item += `<span title='Play Video'><a href='https://chriscorchado.com/video.html?url=${data.attributes.field_video_url}&name=${encodedName}' target='_blank' class='play-video' rel='noopener' title='Opens in a new window'>
@@ -450,7 +461,7 @@ const setPageHTML = (values: any) => {
       item += '</div>'
       return item
     case 'resume':
-      // add PDF and Word resumes
+      // Add PDF and Word resumes
       addResumes('profiles')
 
       return resumeData
@@ -476,6 +487,10 @@ const renderPage = (
 
   if (page === 'contact') {
     setPageHTML([page, data])
+    document.getElementsByClassName('container')[0].classList.remove('hide')
+    document.getElementById('search-container')?.classList.add('hide')
+    utilityJS.animateLogo('logo-image', '')
+    utilityJS.setLoading(false)
     return
   }
 
@@ -533,12 +548,12 @@ const renderPage = (
         includedTechnologyIcon
       )
 
-      // course, company and project screenshot filenames
+      // Course, company and project screenshot filenames
       if (!imgPieces.includes(relationshipData[0].toString())) {
         imgPieces.push(relationshipData[0].toString())
       }
 
-      // course PDF filename and track image
+      // Course PDF filename and track image
       itemPDF = relationshipData[1].toString()
       if (relationshipData[2]) itemTrackImage = relationshipData[2].toString()
 
@@ -548,20 +563,19 @@ const renderPage = (
       // includedTechnologyItem.push(relationshipData[6])
     }
 
-    // get project and course dates
+    // Get project and course dates
     if (itemDate) {
       if (page === 'projects') itemDate = itemDate.split('-')[0] // only the year
       if (page === 'courses') itemDate = utilityJS.getMonthYear(itemDate)
     }
 
-    // get work history dates - month and year
+    // Get work history dates - month and year
     if (startDate) startDate = utilityJS.getMonthYear(startDate)
     if (endDate) endDate = utilityJS.getMonthYear(endDate)
 
     itemTitle = itemTitle.replace('&amp;', '&')
 
     if (searchedFor) {
-      // TODO pass in array[itemTitle, itemDate, etc..] and searchedFor then destructure
       itemTitle = searchJS.itemWithSearchHighlight(itemTitle, searchedFor)
       itemDate = searchJS.itemWithSearchHighlight(itemDate, searchedFor)
       startDate = searchJS.itemWithSearchHighlight(startDate, searchedFor)
@@ -658,10 +672,10 @@ const renderPage = (
   if (pageHasGallery) {
     // @ts-ignore
     $('a.gallery').featherlightGallery({
-      previousIcon: '<img src="https://chriscorchado.com/lightbox/images/left-arrow.png" alt="Prev" />' /* &#dsfsd Code that was used as previous icon */,
-      nextIcon: '<img src="https://chriscorchado.com/lightbox/images/right-arrow.png" alt="Next" />' /* &#9654 Code that was used as next icon */,
-      galleryFadeIn: 200 /* fadeIn speed when slide is loaded */,
-      galleryFadeOut: 300 /* fadeOut speed before slide is loaded */
+      previousIcon: '<img src="https://chriscorchado.com/lightbox/images/left-arrow.png" alt="Prev" />', // &#dsfsd Code that was used as previous icon
+      nextIcon: '<img src="https://chriscorchado.com/lightbox/images/right-arrow.png" alt="Next" />', // &#9654 Code that was used as next icon
+      galleryFadeIn: 200, // FadeIn speed when slide is loaded
+      galleryFadeOut: 300 // FadeOut speed before slide is loaded
     })
   }
 
@@ -670,31 +684,6 @@ const renderPage = (
   }
 
   utilityJS.setLoading(false)
-
-  if (page === 'about') {
-    // set current site version
-    const currentURL = window.location.toString()
-
-    if (currentURL.indexOf('/html5/') !== -1) {
-      const docHtml5 = document.getElementById('html5')! as HTMLInputElement
-      docHtml5.setAttribute('class', 'shadow-version noLink')
-
-      const docHtml5Here = document.getElementById('html5-here')! as HTMLInputElement
-      docHtml5Here.style.display = 'block'
-    // space
-    } else if (currentURL.indexOf('/drupal8/') !== -1) {
-      const docDrupal8 = document.getElementById('drupal8')! as HTMLInputElement
-      docDrupal8.setAttribute('class', 'shadow-version noLink')
-
-      const docDrupal8Here = document.getElementById('drupal8-here')! as HTMLInputElement
-      docDrupal8Here.style.display = 'block'
-    // space
-    } else {
-      const docNodeJS = document.getElementById('nodeJS')! as HTMLInputElement
-      docNodeJS.setAttribute('class', 'shadow-version noLink')
-
-      const docnodeJSHere = document.getElementById('nodeJS-here')! as HTMLInputElement
-      docnodeJSHere.style.display = 'block'
-    }
-  }
+  utilityJS.animateLogo('logo-image', '')
+  document.getElementsByClassName('container')[0].classList.remove('hide');
 }

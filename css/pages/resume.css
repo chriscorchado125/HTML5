@@ -1,26 +1,14 @@
-@charset "UTF-8";
 #search-container {
   display: none; }
 
 .container {
-  padding-bottom: 100px !important; }
-  .container h1 {
-    margin-top: 100px;
-    margin-bottom: 28px; }
+  padding-bottom: 100px; }
   .container .resume {
     font-family: Calibri, "Trebuchet MS", sans-serif;
     font-size: 16px;
     max-width: 800px;
     margin: auto;
-    text-align: left;
-    /* FULL STACK DEVELOPER */
-    /* WEBSITE DEVELOPMENT • INFORMATION TECHNOLOGY • PROCESS IMPROVEMENT • PROBLEM SOLVING */
-    /* Sections: ACCOMPLISHMENTS | SKILLS AND EXPERTISE | PROFESSIONAL EXPERIENCE | EDUCATION */
-    /* Company, City, State - Years */
-    /* Type of Company */
-    /* Education certificate, diploma */
-    /* Job Title */
-    /* paragraph after job title */ }
+    text-align: left; }
     .container .resume h2 {
       color: #3a4261;
       margin-bottom: 0;
@@ -104,8 +92,7 @@
     .container .resume #tech_pillars {
       font-size: 14px; }
     .container .resume #skills_experise_ul_wrapper {
-      text-align: center;
-      /* Toggles skills and experience to make the list responsive */ }
+      text-align: center; }
       .container .resume #skills_experise_ul_wrapper ul {
         vertical-align: top; }
       .container .resume #skills_experise_ul_wrapper #two_cols {
@@ -129,8 +116,7 @@
 @media (max-width: 520px) {
   .container .resume {
     padding: 0;
-    /* no unit */
-    /* Education certificate, diploma */ }
+    /* no unit */ }
     .container .resume h4 {
       text-align: center;
       font-size: 13px; }

@@ -72,6 +72,7 @@ export const cleanURL = (urlToClean) => {
     return fixedURL;
 };
 export const setLoading = (loadingStatus) => {
+    var _a;
     if (loadingStatus) {
         const preloader = document.createElement('div');
         preloader.innerHTML = `
@@ -84,15 +85,20 @@ export const setLoading = (loadingStatus) => {
         document.body.append(preloader);
     }
     else {
-        const preloadAnimation = document.getElementById('preloadAnimation');
-        preloadAnimation.remove();
-        if (document.getElementsByClassName('container')[0]) {
-            const mainContainer = document.getElementsByClassName('container')[0];
-            fadeIn(mainContainer);
-        }
-        if (document.getElementsByClassName('container')[1]) {
-            const dataContainer = document.getElementsByClassName('container')[1];
-            fadeIn(dataContainer);
-        }
+        (_a = document.getElementById('preloadAnimation')) === null || _a === void 0 ? void 0 : _a.remove();
     }
+};
+export const animateLogo = (logoID, animationID) => {
+    const logoElement = document.getElementById(logoID);
+    const checkExist = setInterval(function () {
+        if (logoElement) {
+            if (animationID) {
+                logoElement.setAttribute('src', `https://chriscorchado.com/images/chriscorchado-initials-logo-animated-${animationID}.gif`);
+            }
+            else {
+                logoElement.setAttribute('src', `https://chriscorchado.com/images/chriscorchado-initials-logo.png`);
+            }
+            clearInterval(checkExist);
+        }
+    }, 100);
 };

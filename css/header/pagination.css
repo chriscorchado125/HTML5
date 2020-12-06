@@ -11,8 +11,7 @@ label {
   text-align: center;
   padding-left: 15px;
   margin-top: 5px;
-  display: inline-block;
-  /* next / prev text */ }
+  display: inline-block; }
   #pagination a {
     color: #fff;
     text-shadow: 1px 1px #000; }
@@ -36,6 +35,7 @@ label {
     margin: 0 0 0 0 !important; }
 
   #pagination {
+    display: inline;
     padding-left: 30px; } }
 @media (max-width: 500px) {
   .pagination-yes {

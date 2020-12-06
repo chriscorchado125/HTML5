@@ -19,11 +19,11 @@
   display: block;
   min-height: 85px;
 
-  /* force nav to stay horizontal */
+  // Force nav to stay horizontal
   .navbar-nav {
     flex-direction: row;
 
-    /* align items vertically */
+    // Align items vertically
     .nav-item {
       display: flex;
       justify-content: center;
@@ -39,7 +39,7 @@
       color: $main_color !important;
     }
   }
-} // .navbar
+}
 
 .navbar-light .navbar-nav a {
   color: rgba(0, 0, 0, 0.7) !important;

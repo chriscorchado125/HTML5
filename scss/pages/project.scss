@@ -1,19 +1,14 @@
 @import "./../variables.scss";
 
-.container > h1 {
-  margin-top: 100px;
-}
-
-/* page container */
+// Page container
 .project-container {
   display: grid;
   grid-template-columns: 30% 30% 30%;
   align-items: stretch;
   justify-content: space-evenly;
-  margin: 0 0 60px 0;
   font-size: 12px;
 
-  /* individual project container */
+  // Individual project container
   .project {
     padding: 0 0 30px 0;
     border-radius: 10px;
@@ -37,7 +32,7 @@
     background-color: $item_bg_color;
   }
 
-  /* project description */
+  // Project description
   .body-container {
     max-width: 320px;
     margin: 10px auto;
@@ -46,14 +41,14 @@
     padding: 0 15px;
   }
 
-  /* text above thumbnails */
+  // Text above thumbnails
   .project-item-desc {
     padding: 5px;
     font-size: 14px;
     color: $item_text;
   }
 
-  /* thumbnail */
+  // Thumbnail
   .project-item {
     margin: 10px;
     max-width: 150px;
@@ -66,7 +61,7 @@
     max-width: 90%;
   }
 
-  /* layout for thumbnails */
+  // Layout for thumbnails
   .project-item-grid {
     display: grid;
     justify-items: center;
@@ -142,10 +137,6 @@
 }
 
 @media (max-width: 700px) {
-  .container > h1 {
-    margin-top: 135px;
-  }
-
   .container {
     .project {
       width: 90%;
@@ -154,10 +145,6 @@
 }
 
 @media (max-width: 400px) {
-  .container > h1 {
-    margin-top: 100px;
-  }
-
   .project {
     margin-top: 0 !important;
   }

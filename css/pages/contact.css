@@ -1,38 +1,23 @@
-/* search button */
+h1 {
+  margin-bottom: 30px; }
+
 #edit-submit {
   padding: 2px;
   font-size: 12px;
-  margin-left: 0;
-  /* no unit */ }
+  margin-left: 0; }
 
 #edit-submit:hover {
   color: #fff;
   box-shadow: 0 0 #fff;
   background-color: #346adf; }
 
-.navbar {
-  min-height: 60px !important; }
-
-#search-container {
-  display: none; }
-
-.container > h1 {
-  margin-top: 100px; }
-
-.container h2 {
-  margin-top: 80px; }
-
 #contact-message-feedback-form {
-  margin: auto;
   background-color: #e2eafb;
   padding: 10px 10px 30px 10px;
   text-align: center !important;
-  margin-top: 20px;
+  margin: 20px auto 50px auto;
   max-width: 600px;
-  border-radius: 10px;
-  /* holds the current page url */
-  /* subject align */
-  /* display the name and email fiels next to each other */ }
+  border-radius: 10px; }
   #contact-message-feedback-form label {
     display: block; }
   #contact-message-feedback-form #thank-you {
@@ -62,7 +47,6 @@
   margin-top: 50px;
   max-width: 250px; }
 
-/* stack name and email fields */
 @media (max-width: 800px) {
   .container {
     margin-top: 50px;
@@ -70,8 +54,6 @@
     .container #contact-message-feedback-form {
       width: 100%;
       border-radius: 0; }
-    .container h1 {
-      margin-top: 50px; }
 
   .js-form-item-name {
     display: block !important; }
@@ -79,13 +61,13 @@
   .js-form-item-mail {
     display: block !important; } }
 @media (max-width: 700px) {
-  .container > h1 {
-    margin-top: 90px; } }
+  .container h1 {
+    margin: 90px 0 35px 0; } }
 @media (max-width: 500px) {
   #edit-message-0-value {
     height: 150px; } }
 @media (max-width: 400px) {
-  .container > h1 {
-    margin-top: 60px; } }
+  .container h1 {
+    margin: 60px 0 35px 0; } }
 
 /*# sourceMappingURL=contact.css.map */

@@ -113,8 +113,8 @@ export const setPagination = (
     const pagePrev = document.getElementById('pagePrev') as HTMLElement
     const pageNext = document.getElementById('pageNext') as HTMLElement
 
-    if (pagePrev) pagePrev.onclick = () => dataJS.getPage(utilityJS.getCurrentPage(), SITE_SEARCH_ID.value, prev.href)
-    if (pageNext) pageNext.onclick = () => dataJS.getPage(utilityJS.getCurrentPage(), SITE_SEARCH_ID.value, next.href)
+    if (pagePrev) pagePrev.onclick = () => dataJS.getPage(utilityJS.getCurrentPage(), SITE_SEARCH_ID.value, prev.href, 'prev')
+    if (pageNext) pageNext.onclick = () => dataJS.getPage(utilityJS.getCurrentPage(), SITE_SEARCH_ID.value, next.href, 'next')
   }
 }
 
@@ -132,6 +132,7 @@ export const search = (e: Event) => {
 
     if (inputSearchBox.value === '') {
       alert('Please enter something to search for')
+      inputSearchBox.focus()
     } else if (re.exec(inputSearchBox.value) === null) {
       alert('Searching with numbers and/or special characters is not enabled')
     }
@@ -139,6 +140,7 @@ export const search = (e: Event) => {
     return false
   } else {
     dataJS.getPage(utilityJS.getCurrentPage(), inputSearchBox.value)
+    inputSearchBox.select()
   }
 }
 
@@ -159,11 +161,15 @@ export const searchFilter = (event: KeyboardEvent) => {
  */
 export const searchClear = (searchTextBoxID: string) => {
   const inputSearchBox = document.getElementById(searchTextBoxID)! as HTMLInputElement
+
+  if (inputSearchBox.value === '') return
+
   inputSearchBox.value = ''
 
   document.getElementById('no-records')?.remove()
 
   dataJS.getPage(utilityJS.getCurrentPage(), '')
+  utilityJS.animateLogo('logo-image', 'spin-reverse')
 }
 
 /**
@@ -183,13 +189,17 @@ export const noRecordsFound = (
   const pagination = document.getElementById('pagination') as HTMLElement
 
   if (!noRecordEL && search) {
-    pagination.style.display = 'none'
-    document.getElementsByClassName('container')[0].removeAttribute('style')
+    // hide the content container
+    document.getElementsByClassName('container')[0].classList.add('hide');
 
+    pagination.style.display = 'none'
+
+    // create a div with the error
     const notFound = document.createElement('div')
     notFound.id = noRecordID
     notFound.innerHTML = `${msg} '${search}'`
 
+    // add error message
     const appendToEL = document.getElementById(appendToID) as HTMLElement
     appendToEL.appendChild(notFound)
 
@@ -200,8 +210,9 @@ export const noRecordsFound = (
 
     const searchCountEL = document.getElementById('search-count') as HTMLElement
     if (searchCountEL) {
-      searchCountEL.innerHTML = 'No matches'
+      searchCountEL.innerHTML = '0 items'
     }
+
   } else {
     pagination.style.display = 'inline-block'
   }

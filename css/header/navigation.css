@@ -12,11 +12,9 @@
 .navbar {
   border-bottom: 2px solid #346adf;
   display: block;
-  min-height: 85px;
-  /* force nav to stay horizontal */ }
+  min-height: 85px; }
   .navbar .navbar-nav {
-    flex-direction: row;
-    /* align items vertically */ }
+    flex-direction: row; }
     .navbar .navbar-nav .nav-item {
       display: flex;
       justify-content: center;

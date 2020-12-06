@@ -69,9 +69,9 @@ export const setPagination = (count, paginationTotal, prev, next) => {
         const pagePrev = document.getElementById('pagePrev');
         const pageNext = document.getElementById('pageNext');
         if (pagePrev)
-            pagePrev.onclick = () => dataJS.getPage(utilityJS.getCurrentPage(), SITE_SEARCH_ID.value, prev.href);
+            pagePrev.onclick = () => dataJS.getPage(utilityJS.getCurrentPage(), SITE_SEARCH_ID.value, prev.href, 'prev');
         if (pageNext)
-            pageNext.onclick = () => dataJS.getPage(utilityJS.getCurrentPage(), SITE_SEARCH_ID.value, next.href);
+            pageNext.onclick = () => dataJS.getPage(utilityJS.getCurrentPage(), SITE_SEARCH_ID.value, next.href, 'next');
     }
 };
 export const search = (e) => {
@@ -81,6 +81,7 @@ export const search = (e) => {
         e.preventDefault();
         if (inputSearchBox.value === '') {
             alert('Please enter something to search for');
+            inputSearchBox.focus();
         }
         else if (re.exec(inputSearchBox.value) === null) {
             alert('Searching with numbers and/or special characters is not enabled');
@@ -89,6 +90,7 @@ export const search = (e) => {
     }
     else {
         dataJS.getPage(utilityJS.getCurrentPage(), inputSearchBox.value);
+        inputSearchBox.select();
     }
 };
 export const searchFilter = (event) => {
@@ -98,16 +100,19 @@ export const searchFilter = (event) => {
 export const searchClear = (searchTextBoxID) => {
     var _a;
     const inputSearchBox = document.getElementById(searchTextBoxID);
+    if (inputSearchBox.value === '')
+        return;
     inputSearchBox.value = '';
     (_a = document.getElementById('no-records')) === null || _a === void 0 ? void 0 : _a.remove();
     dataJS.getPage(utilityJS.getCurrentPage(), '');
+    utilityJS.animateLogo('logo-image', 'spin-reverse');
 };
 export const noRecordsFound = (noRecordID, search, appendToID, msg) => {
     const noRecordEL = document.getElementById(noRecordID);
     const pagination = document.getElementById('pagination');
     if (!noRecordEL && search) {
+        document.getElementsByClassName('container')[0].classList.add('hide');
         pagination.style.display = 'none';
-        document.getElementsByClassName('container')[0].removeAttribute('style');
         const notFound = document.createElement('div');
         notFound.id = noRecordID;
         notFound.innerHTML = `${msg} '${search}'`;
@@ -119,7 +124,7 @@ export const noRecordsFound = (noRecordID, search, appendToID, msg) => {
         }
         const searchCountEL = document.getElementById('search-count');
         if (searchCountEL) {
-            searchCountEL.innerHTML = 'No matches';
+            searchCountEL.innerHTML = '0 items';
         }
     }
     else {
