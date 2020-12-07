@@ -29,6 +29,16 @@ body {
   display: none;
 }
 
+#user-message {
+  position: sticky;
+  width: 320px;
+  font-size: 13px;
+  text-align: center;
+  font-weight: bold;
+  color: $main_color;
+  margin: -7px auto 0 auto;
+}
+
 // Main content
 .container {
   margin: 0 auto 25px auto;

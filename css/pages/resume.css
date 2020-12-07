@@ -11,8 +11,7 @@
     text-align: left; }
     .container .resume h2 {
       color: #3a4261;
-      margin-bottom: 0;
-      /* no unit */
+      margin: 30px auto 0 auto;
       font-size: 26px;
       text-align: center;
       font-weight: bold; }
@@ -61,8 +60,8 @@
     .container .resume #skills_experise_ul_wrapper {
       margin-bottom: 15px;
       text-align: center; }
-      .container .resume #skills_experise_ul_wrapper #two_cols {
-        display: none; }
+      .container .resume #skills_experise_ul_wrapper .two_cols {
+        display: none !important; }
       .container .resume #skills_experise_ul_wrapper ul {
         display: inline-block;
         min-width: 210px;

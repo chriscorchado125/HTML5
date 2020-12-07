@@ -17,7 +17,7 @@
     // FULL STACK DEVELOPER
     h2 {
       color: #3a4261;
-      margin-bottom: 0; /* no unit */
+      margin: 30px auto 0 auto;
       font-size: 26px;
       text-align: center;
       font-weight: bold;
@@ -90,8 +90,8 @@
     }
 
     #skills_experise_ul_wrapper {
-      #two_cols {
-        display: none;
+      .two_cols {
+        display: none !important;
       }
 
       margin-bottom: 15px;
