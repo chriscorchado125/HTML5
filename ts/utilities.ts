@@ -2,48 +2,33 @@ export const API_BASE = 'https://chriscorchado.com/drupal8'
 export const MAX_ITEMS_PER_PAGE = 50
 export const SITE_SEARCH_ID = 'search-site'
 
-// https://gist.github.com/alirezas/c4f9f43e9fe1abba9a4824dd6fc60a55
 /**
- * Pure JS fade in using opacity
- * @param {any} HTML element
+ * Show message
+ * @param {string} msg - message
  */
-export const fadeOut = (el: any) => {
-  el.style.opacity = 1;
-
-  (function fade () {
-    if ((el.style.opacity -= 0.2) < 0) {
-      el.style.display = 'none'
-    } else {
-      requestAnimationFrame(fade)
-    }
-  })()
+export const showMessage = (
+  msg: string
+): void => {
+  const userMsg = document.getElementById('user-message') as HTMLElement
+  userMsg.innerHTML = msg
 }
 
 /**
- * Pure JS fade out using opacity
- * @param {any} HTML element
+ * Clear message
  */
-export const fadeIn = (el: any) => {
-  el.style.opacity = 0;
-
-  (function fade () {
-    let val = parseFloat(el.style.opacity)
-
-    if (!((val += 0.2) > 1)) {
-      el.style.opacity = val
-      requestAnimationFrame(fade)
-    }
-  })()
+export const clearMessage = (): void => {
+  const userMsg = document.getElementById('user-message') as HTMLElement
+  userMsg.innerHTML = ''
 }
 
 /**
  * Get the current page name
  * @return {string} - page name
  */
-export const getCurrentPage = () => {
+export const getCurrentPage = (): string => {
   const thisPage = window.location.pathname
     .split('/')
-    .filter(function (pathnamePieces) {
+    .filter((pathnamePieces) => {
       return pathnamePieces.length
     })
     .pop()
@@ -62,7 +47,7 @@ export const getCurrentPage = () => {
  * @param {string} page - page name
  * @return {string} - absolute url
  */
-export const getFullUrlByPage = (linkToFix: string, page: string) => {
+export const getFullUrlByPage = (linkToFix: string, page: string): string => {
   let pathToResource = 'No Path Found'
 
   switch (page) {
@@ -79,6 +64,7 @@ export const getFullUrlByPage = (linkToFix: string, page: string) => {
     case 'projects':
       pathToResource = 'project-screenshot'
       break
+    default:
   }
 
   return `${API_BASE}/sites/default/files/${pathToResource}/${linkToFix}`
@@ -89,13 +75,11 @@ export const getFullUrlByPage = (linkToFix: string, page: string) => {
  * @param {string} dateString - date value
  * @return {string} - month and year - example: January 2020
  */
-export const getMonthYear = (dateString: string) => {
+export const getMonthYear = (dateString: string): string => {
   const newDate = new Date(dateString)
 
   return (
-    newDate.toLocaleString('default', { month: 'long' }) +
-    ' ' +
-    newDate.getFullYear().toString()
+    `${newDate.toLocaleString('default', { month: 'long' })}  ${newDate.getFullYear().toString()}`
   )
 }
 
@@ -104,7 +88,7 @@ export const getMonthYear = (dateString: string) => {
  * @param {string} urlToClean - URL to fix
  * @return {string} - fixed URL
  */
-export const cleanURL = (urlToClean: string) => {
+export const cleanURL = (urlToClean: string): string => {
   let fixedURL = ''
   const strings = urlToClean.split(' ')
   strings.forEach((element: string) => {
@@ -118,7 +102,7 @@ export const cleanURL = (urlToClean: string) => {
  * @param {string} logoID - ID of the HTML image tag
  * @param {string} animationID - options [spin, spin-reverse, breath] or empty string '' to disable
  */
-export const animateLogo = (logoID: string, animationID: string) => {
+export const animateLogo = (logoID: string, animationID: string): void => {
   const logoElement = document.getElementById(logoID) as HTMLElement
 
   const checkExist = setInterval(function () {

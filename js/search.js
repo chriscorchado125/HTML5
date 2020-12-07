@@ -1,19 +1,18 @@
 import * as utilityJS from './utilities.js';
 import * as dataJS from './data.js';
+const searchElement = document.getElementById(utilityJS.SITE_SEARCH_ID);
 const getSearchCount = (count, searchCountID) => {
-    const searchElement = document.getElementById(utilityJS.SITE_SEARCH_ID);
     if (searchElement && searchElement.value) {
         const searchCountEL = document.getElementById(searchCountID);
         if (searchCountEL && (count <= utilityJS.MAX_ITEMS_PER_PAGE)) {
-            searchCountEL.innerHTML = count + `  ${count === 1 ? 'Item' : 'Items'}`;
+            searchCountEL.innerHTML = `${count}  ${count === 1 ? 'Item' : 'Items'}`;
         }
         else {
-            if (searchCountEL) {
-                searchCountEL.innerHTML = utilityJS.MAX_ITEMS_PER_PAGE + `  ${+utilityJS.MAX_ITEMS_PER_PAGE === 1 ? 'Item' : 'Items'}`;
-            }
+            searchCountEL.innerHTML = `${utilityJS.MAX_ITEMS_PER_PAGE} ${+utilityJS.MAX_ITEMS_PER_PAGE === 1 ? 'Item' : 'Items'}`;
         }
         return `${count} ${count === 1 ? 'Item' : 'Items'} `;
     }
+    return '';
 };
 const getSearchOffset = (link) => {
     const nextURL = link.href.replace(/%2C/g, ',').replace(/%5B/g, '[').replace(/%5D/g, ']');
@@ -75,20 +74,23 @@ export const setPagination = (count, paginationTotal, prev, next) => {
     }
 };
 export const search = (e) => {
+    utilityJS.clearMessage();
     const re = /[A-Za-z\s]/;
-    const inputSearchBox = document.getElementById(utilityJS.SITE_SEARCH_ID);
+    let inputSearchBox;
+    if (document.getElementById(utilityJS.SITE_SEARCH_ID)) {
+        inputSearchBox = document.getElementById(utilityJS.SITE_SEARCH_ID);
+    }
     if (inputSearchBox && (inputSearchBox.value === '' || re.exec(inputSearchBox.value) === null)) {
         e.preventDefault();
         if (inputSearchBox.value === '') {
-            alert('Please enter something to search for');
-            inputSearchBox.focus();
+            utilityJS.showMessage('Please enter something to search for');
         }
         else if (re.exec(inputSearchBox.value) === null) {
-            alert('Searching with numbers and/or special characters is not enabled');
+            utilityJS.showMessage('Searching with numbers and/or special characters is not enabled');
         }
-        return false;
+        inputSearchBox.focus();
     }
-    else {
+    if (inputSearchBox && inputSearchBox.value) {
         dataJS.getPage(utilityJS.getCurrentPage(), inputSearchBox.value);
         inputSearchBox.select();
     }
@@ -99,6 +101,7 @@ export const searchFilter = (event) => {
 };
 export const searchClear = (searchTextBoxID) => {
     var _a;
+    utilityJS.clearMessage();
     const inputSearchBox = document.getElementById(searchTextBoxID);
     if (inputSearchBox.value === '')
         return;
@@ -107,15 +110,15 @@ export const searchClear = (searchTextBoxID) => {
     dataJS.getPage(utilityJS.getCurrentPage(), '');
     utilityJS.animateLogo('logo-image', 'spin-reverse');
 };
-export const noRecordsFound = (noRecordID, search, appendToID, msg) => {
+export const noRecordsFound = (noRecordID, searchedFor, appendToID, msg) => {
     const noRecordEL = document.getElementById(noRecordID);
     const pagination = document.getElementById('pagination');
-    if (!noRecordEL && search) {
+    if (!noRecordEL && searchedFor) {
         document.getElementsByClassName('container')[0].classList.add('hide');
         pagination.style.display = 'none';
         const notFound = document.createElement('div');
         notFound.id = noRecordID;
-        notFound.innerHTML = `${msg} '${search}'`;
+        notFound.innerHTML = `${msg} '${searchedFor}'`;
         const appendToEL = document.getElementById(appendToID);
         appendToEL.appendChild(notFound);
         const preloadAnimationEL = document.getElementById('preloadAnimation');
@@ -145,8 +148,7 @@ export const getIncludedData = (data) => {
             includedAssetFilename[includedElement.id] = includedElement.attributes.filename;
         }
         if (includedElement.attributes.field_company_name) {
-            includedCompanyName[includedElement.id] =
-                includedElement.attributes.field_company_name;
+            includedCompanyName[includedElement.id] = includedElement.attributes.field_company_name;
         }
         if (includedElement.attributes.name) {
             includedTechnologyName[includedElement.id] = includedElement.attributes.name;
@@ -167,20 +169,17 @@ export const getElementRelationships = (element, includedAssetFilename, included
     let itemTechnology = '';
     let itemTechnologyIcon = '';
     const includedTechnologyItem = [];
-    if (element.relationships.field_award_images &&
-        element.relationships.field_award_images.data) {
+    if (element.relationships.field_award_images && element.relationships.field_award_images.data) {
         imgPieces.push(includedAssetFilename[element.relationships.field_award_images.data[0].id]);
     }
-    if (element.relationships.field_award_pdf &&
-        element.relationships.field_award_pdf.data) {
+    if (element.relationships.field_award_pdf && element.relationships.field_award_pdf.data) {
         itemPDF = includedAssetFilename[element.relationships.field_award_pdf.data.id];
     }
-    if (element.relationships.field_track_image &&
-        element.relationships.field_track_image.data) {
-        itemTrackImage =
-            includedAssetFilename[element.relationships.field_track_image.data.id];
+    if (element.relationships.field_track_image && element.relationships.field_track_image.data) {
+        itemTrackImage = includedAssetFilename[element.relationships.field_track_image.data.id];
     }
-    if (element.relationships.field_company && element.relationships.field_company.data) {
+    if (element.relationships.field_company &&
+        element.relationships.field_company.data) {
         itemCompanyName = includedCompanyName[element.relationships.field_company.data.id];
     }
     if (element.relationships.field_company_screenshot &&
@@ -196,10 +195,8 @@ export const getElementRelationships = (element, includedAssetFilename, included
     if (element.relationships.field_project_technology &&
         element.relationships.field_project_technology.data) {
         for (let i = 0; i < element.relationships.field_project_technology.data.length; i++) {
-            itemTechnology +=
-                includedTechnologyName[element.relationships.field_project_technology.data[i].id] + ', ';
-            itemTechnologyIcon +=
-                includedTechnologyIcon[element.relationships.field_project_technology.data[i].id] + ', ';
+            itemTechnology += `${includedTechnologyName[element.relationships.field_project_technology.data[i].id]} , `;
+            itemTechnologyIcon += `${includedTechnologyIcon[element.relationships.field_project_technology.data[i].id]} , `;
             const technologyItem = {
                 name: includedTechnologyName[element.relationships.field_project_technology.data[i].id],
                 image: includedTechnologyIcon[element.relationships.field_project_technology.data[i].id]

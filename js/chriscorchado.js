@@ -1,8 +1,8 @@
 import * as dataJS from './data.js';
 import * as utilityJS from './utilities.js';
 import * as searchJS from './search.js';
+document.getElementsByClassName('container')[0].classList.add('hide');
 window.onload = () => {
-    document.getElementsByClassName('container')[0].classList.add('hide');
     fetch('./includes/nav.html')
         .then((response) => {
         return response.text();
@@ -22,11 +22,11 @@ window.onload = () => {
             }
             const thisSearchClearBtn = document.getElementById('search-clear-btn');
             if (thisSearchClearBtn) {
-                thisSearchClearBtn.onclick = (event) => searchJS.searchClear(utilityJS.SITE_SEARCH_ID);
+                thisSearchClearBtn.onclick = () => searchJS.searchClear(utilityJS.SITE_SEARCH_ID);
             }
         }
     }).catch((error) => {
-        alert(`Sorry an error has occurred: ${error}`);
+        utilityJS.showMessage(`Sorry an error has occurred: ${error}`);
     });
     fetch('./includes/footer.html')
         .then((response) => {
@@ -38,7 +38,7 @@ window.onload = () => {
             footerEL.innerHTML = data;
         }
     }).catch((error) => {
-        alert(`Sorry an error has occurred: ${error}`);
+        utilityJS.showMessage(`Sorry an error has occurred: ${error}`);
     });
     dataJS.getPage(utilityJS.getCurrentPage(), '');
 };

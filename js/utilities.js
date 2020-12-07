@@ -1,31 +1,18 @@
 export const API_BASE = 'https://chriscorchado.com/drupal8';
 export const MAX_ITEMS_PER_PAGE = 50;
 export const SITE_SEARCH_ID = 'search-site';
-export const fadeOut = (el) => {
-    el.style.opacity = 1;
-    (function fade() {
-        if ((el.style.opacity -= 0.2) < 0) {
-            el.style.display = 'none';
-        }
-        else {
-            requestAnimationFrame(fade);
-        }
-    })();
+export const showMessage = (msg) => {
+    const userMsg = document.getElementById('user-message');
+    userMsg.innerHTML = msg;
 };
-export const fadeIn = (el) => {
-    el.style.opacity = 0;
-    (function fade() {
-        let val = parseFloat(el.style.opacity);
-        if (!((val += 0.2) > 1)) {
-            el.style.opacity = val;
-            requestAnimationFrame(fade);
-        }
-    })();
+export const clearMessage = () => {
+    const userMsg = document.getElementById('user-message');
+    userMsg.innerHTML = '';
 };
 export const getCurrentPage = () => {
     const thisPage = window.location.pathname
         .split('/')
-        .filter(function (pathnamePieces) {
+        .filter((pathnamePieces) => {
         return pathnamePieces.length;
     })
         .pop();
@@ -53,14 +40,13 @@ export const getFullUrlByPage = (linkToFix, page) => {
         case 'projects':
             pathToResource = 'project-screenshot';
             break;
+        default:
     }
     return `${API_BASE}/sites/default/files/${pathToResource}/${linkToFix}`;
 };
 export const getMonthYear = (dateString) => {
     const newDate = new Date(dateString);
-    return (newDate.toLocaleString('default', { month: 'long' }) +
-        ' ' +
-        newDate.getFullYear().toString());
+    return (`${newDate.toLocaleString('default', { month: 'long' })}  ${newDate.getFullYear().toString()}`);
 };
 export const cleanURL = (urlToClean) => {
     let fixedURL = '';

@@ -7,6 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import { showMessage } from './utilities';
 export const updateMenuPages = (baseURL, currentPage, targetContainer) => __awaiter(void 0, void 0, void 0, function* () {
     yield fetch(`${baseURL}/api/menu_items/main?_format=json`)
         .then((resp) => {
@@ -24,25 +25,24 @@ export const updateMenuPages = (baseURL, currentPage, targetContainer) => __awai
       </a>`;
         for (const page in pageData) {
             pageName = pageData[page].title;
-            if (pageName === 'Home' || pageName === 'About' || !pageData[page].enabled) {
-                continue;
+            if ((pageName !== 'Home' && pageName !== 'About') || pageData[page].enabled) {
+                let activeNavItem = '';
+                if (currentPage === pageName.toLowerCase()) {
+                    activeNavItem = 'nav-item-active';
+                }
+                pageLink = pageName;
+                if (pageName === 'Companies')
+                    pageName = 'History';
+                generatedPageLinks += `<a href='${pageLink.toLowerCase()}.html'
+          class='nav-item nav-link ${activeNavItem}'
+          title='${pageName}'
+          id='${pageName.toLowerCase()}-link'>${pageName}</a>`;
             }
-            let activeNavItem = '';
-            if (currentPage === pageName.toLowerCase()) {
-                activeNavItem = 'nav-item-active';
-            }
-            pageLink = pageName;
-            if (pageName === 'Companies')
-                pageName = 'History';
-            generatedPageLinks += `<a href='${pageLink.toLowerCase()}.html'
-        class='nav-item nav-link ${activeNavItem}'
-        title='${pageName}'
-        id='${pageName.toLowerCase()}-link'>${pageName}</a>`;
         }
         const targetContainerEL = document.getElementById(targetContainer);
         targetContainerEL.innerHTML = generatedPageLinks;
     })
         .catch((error) => {
-        alert(`Sorry an error has occurred: ${error}`);
+        showMessage(`Sorry an error has occurred: ${error}`);
     });
 });
