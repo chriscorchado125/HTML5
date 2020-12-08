@@ -57,27 +57,28 @@
       margin-bottom: 10px; }
     .container .resume p:first-of-type {
       margin-bottom: 10px; }
-    .container .resume #skills_experise_ul_wrapper {
-      margin-bottom: 15px;
-      text-align: center; }
-      .container .resume #skills_experise_ul_wrapper .two_cols {
-        display: none !important; }
-      .container .resume #skills_experise_ul_wrapper ul {
-        display: inline-block;
-        min-width: 210px;
-        padding: 0;
-        /* no unit */
-        margin: 0 0 0 50px; }
-        .container .resume #skills_experise_ul_wrapper ul li {
-          font-size: 14px;
-          line-height: 20px;
-          text-align: left; }
     .container .resume .professional_experience_header {
       background-color: #d3d3d3;
       padding: 5px;
       font-weight: bold; }
       .container .resume .professional_experience_header div {
         display: inline-block; }
+
+#skills_experise_ul_wrapper {
+  margin-bottom: 15px;
+  text-align: center; }
+  #skills_experise_ul_wrapper .two_cols {
+    display: none !important; }
+  #skills_experise_ul_wrapper ul {
+    display: inline-block;
+    min-width: 210px;
+    padding: 0;
+    /* no unit */
+    margin: 0 0 0 50px; }
+    #skills_experise_ul_wrapper ul li {
+      font-size: 14px;
+      line-height: 20px;
+      text-align: left; }
 
 @media (max-width: 990px) {
   .container .resume {
@@ -94,10 +95,10 @@
       text-align: center; }
       .container .resume #skills_experise_ul_wrapper ul {
         vertical-align: top; }
-      .container .resume #skills_experise_ul_wrapper #two_cols {
-        display: block;
+      .container .resume #skills_experise_ul_wrapper .two_cols {
+        display: inline-block !important;
         margin-left: 80px; }
-      .container .resume #skills_experise_ul_wrapper #three_cols {
+      .container .resume #skills_experise_ul_wrapper .three_cols {
         display: none; } }
 @media (max-width: 700px) {
   .container h1 {
