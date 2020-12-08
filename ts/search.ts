@@ -187,35 +187,35 @@ export const noRecordsFound = (
   appendToID: string,
   msg: string
 ): void => {
-  const noRecordEL = document.getElementById(noRecordID) as HTMLElement
+  // Vertically align search box
+  const searchEL = document.getElementById('search-container') as HTMLElement
+  searchEL.classList.add('pagination-no')
+  searchEL.classList.remove('pagination-yes')
+
+  // Hide pagination
   const pagination = document.getElementById('pagination') as HTMLElement
+  pagination.style.display = 'none'
 
-  if (!noRecordEL && searchedFor) {
-    // hide the content container
-    document.getElementsByClassName('container')[0].classList.add('hide')
+  // Hide the content container
+  document.getElementsByClassName('container')[0].classList.add('hide')
 
-    pagination.style.display = 'none'
+  // Create a div with the error
+  const notFound = document.createElement('div')
+  notFound.id = noRecordID
+  notFound.innerHTML = `${msg} '${searchedFor}'`
 
-    // create a div with the error
-    const notFound = document.createElement('div')
-    notFound.id = noRecordID
-    notFound.innerHTML = `${msg} '${searchedFor}'`
+  // Add error message
+  const appendToEL = document.getElementById(appendToID) as HTMLElement
+  appendToEL.appendChild(notFound)
 
-    // add error message
-    const appendToEL = document.getElementById(appendToID) as HTMLElement
-    appendToEL.appendChild(notFound)
+  const preloadAnimationEL = document.getElementById('preloadAnimation') as HTMLElement
+  if (preloadAnimationEL) {
+    preloadAnimationEL.remove()
+  }
 
-    const preloadAnimationEL = document.getElementById('preloadAnimation') as HTMLElement
-    if (preloadAnimationEL) {
-      preloadAnimationEL.remove()
-    }
-
-    const searchCountEL = document.getElementById('search-count') as HTMLElement
-    if (searchCountEL) {
-      searchCountEL.innerHTML = '0 items'
-    }
-  } else {
-    pagination.style.display = 'inline-block'
+  const searchCountEL = document.getElementById('search-count') as HTMLElement
+  if (searchCountEL) {
+    searchCountEL.innerHTML = '0 items'
   }
 }
 

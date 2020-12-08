@@ -111,27 +111,24 @@ export const searchClear = (searchTextBoxID) => {
     utilityJS.animateLogo('logo-image', 'spin-reverse');
 };
 export const noRecordsFound = (noRecordID, searchedFor, appendToID, msg) => {
-    const noRecordEL = document.getElementById(noRecordID);
+    const searchEL = document.getElementById('search-container');
+    searchEL.classList.add('pagination-no');
+    searchEL.classList.remove('pagination-yes');
     const pagination = document.getElementById('pagination');
-    if (!noRecordEL && searchedFor) {
-        document.getElementsByClassName('container')[0].classList.add('hide');
-        pagination.style.display = 'none';
-        const notFound = document.createElement('div');
-        notFound.id = noRecordID;
-        notFound.innerHTML = `${msg} '${searchedFor}'`;
-        const appendToEL = document.getElementById(appendToID);
-        appendToEL.appendChild(notFound);
-        const preloadAnimationEL = document.getElementById('preloadAnimation');
-        if (preloadAnimationEL) {
-            preloadAnimationEL.remove();
-        }
-        const searchCountEL = document.getElementById('search-count');
-        if (searchCountEL) {
-            searchCountEL.innerHTML = '0 items';
-        }
+    pagination.style.display = 'none';
+    document.getElementsByClassName('container')[0].classList.add('hide');
+    const notFound = document.createElement('div');
+    notFound.id = noRecordID;
+    notFound.innerHTML = `${msg} '${searchedFor}'`;
+    const appendToEL = document.getElementById(appendToID);
+    appendToEL.appendChild(notFound);
+    const preloadAnimationEL = document.getElementById('preloadAnimation');
+    if (preloadAnimationEL) {
+        preloadAnimationEL.remove();
     }
-    else {
-        pagination.style.display = 'inline-block';
+    const searchCountEL = document.getElementById('search-count');
+    if (searchCountEL) {
+        searchCountEL.innerHTML = '0 items';
     }
 };
 export const getIncludedData = (data) => {
