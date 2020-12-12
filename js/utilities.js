@@ -5,10 +5,6 @@ export const showMessage = (msg) => {
     const userMsg = document.getElementById('user-message');
     userMsg.innerHTML = msg;
 };
-export const clearMessage = () => {
-    const userMsg = document.getElementById('user-message');
-    userMsg.innerHTML = '';
-};
 export const getCurrentPage = () => {
     const thisPage = window.location.pathname
         .split('/')

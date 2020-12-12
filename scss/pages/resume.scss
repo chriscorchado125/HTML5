@@ -5,7 +5,6 @@
 }
 
 .container {
-  padding-bottom: 100px;
 
   .resume {
     font-family: Calibri, "Trebuchet MS", sans-serif;
@@ -13,6 +12,7 @@
     max-width: 800px;
     margin: auto;
     text-align: left;
+    padding-bottom: 100px;
 
     // FULL STACK DEVELOPER
     h2 {

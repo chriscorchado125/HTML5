@@ -3,7 +3,8 @@
   grid-template-columns: 30% 30% 30%;
   align-items: stretch;
   justify-content: space-evenly;
-  font-size: 12px; }
+  font-size: 12px;
+  margin: 20px auto 70px auto; }
   .project-container .project {
     padding: 0 0 30px 0;
     border-radius: 10px;
@@ -86,7 +87,7 @@
     .project-container .project {
       margin: 15px auto; } }
 @media (max-width: 800px) {
-  .container {
+  .project-container {
     grid-template-columns: 1fr; } }
 @media (max-width: 700px) {
   .container .project {

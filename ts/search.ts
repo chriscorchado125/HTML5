@@ -118,8 +118,6 @@ export const setPagination = (
  * Triggered search
  */
 export const search = (e: Event): void => {
-  utilityJS.clearMessage()
-
   // only allow the alphabet and spaces when searching
   const re = /[A-Za-z\s]/
 
@@ -130,12 +128,6 @@ export const search = (e: Event): void => {
 
   if (inputSearchBox && (inputSearchBox.value === '' || re.exec(inputSearchBox.value) === null)) {
     e.preventDefault()
-
-    if (inputSearchBox.value === '') {
-      utilityJS.showMessage('Please enter something to search for')
-    } else if (re.exec(inputSearchBox.value) === null) {
-      utilityJS.showMessage('Searching with numbers and/or special characters is not enabled')
-    }
     inputSearchBox.focus()
   }
   if (inputSearchBox && inputSearchBox.value) {
@@ -160,17 +152,17 @@ export const searchFilter = (event: KeyboardEvent): boolean => {
  * @param {string} searchTextBoxID - id of search textbox
  */
 export const searchClear = (searchTextBoxID: string): void => {
-  utilityJS.clearMessage()
-
   const inputSearchBox = document.getElementById(searchTextBoxID)! as HTMLInputElement
+  const pagination = document.getElementById('pagination')! as HTMLInputElement
 
-  if (inputSearchBox.value === '') return
+  if (inputSearchBox.value === '' && pagination.style.display === 'none') return
 
   inputSearchBox.value = ''
 
   document.getElementById('no-records')?.remove()
 
   dataJS.getPage(utilityJS.getCurrentPage(), '')
+
   utilityJS.animateLogo('logo-image', 'spin-reverse')
 }
 

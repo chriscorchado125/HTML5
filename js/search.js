@@ -74,7 +74,6 @@ export const setPagination = (count, paginationTotal, prev, next) => {
     }
 };
 export const search = (e) => {
-    utilityJS.clearMessage();
     const re = /[A-Za-z\s]/;
     let inputSearchBox;
     if (document.getElementById(utilityJS.SITE_SEARCH_ID)) {
@@ -82,12 +81,6 @@ export const search = (e) => {
     }
     if (inputSearchBox && (inputSearchBox.value === '' || re.exec(inputSearchBox.value) === null)) {
         e.preventDefault();
-        if (inputSearchBox.value === '') {
-            utilityJS.showMessage('Please enter something to search for');
-        }
-        else if (re.exec(inputSearchBox.value) === null) {
-            utilityJS.showMessage('Searching with numbers and/or special characters is not enabled');
-        }
         inputSearchBox.focus();
     }
     if (inputSearchBox && inputSearchBox.value) {
@@ -101,9 +94,9 @@ export const searchFilter = (event) => {
 };
 export const searchClear = (searchTextBoxID) => {
     var _a;
-    utilityJS.clearMessage();
     const inputSearchBox = document.getElementById(searchTextBoxID);
-    if (inputSearchBox.value === '')
+    const pagination = document.getElementById('pagination');
+    if (inputSearchBox.value === '' && pagination.style.display === 'none')
         return;
     inputSearchBox.value = '';
     (_a = document.getElementById('no-records')) === null || _a === void 0 ? void 0 : _a.remove();

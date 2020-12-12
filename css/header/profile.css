@@ -8,7 +8,8 @@
     display: inline-block;
     width: 50px;
     padding: 0 5px;
-    margin: 0 5px; }
+    margin: 0 5px;
+    text-align: center; }
     #profiles .icon img {
       height: 30px; }
   #profiles a span {
@@ -16,17 +17,19 @@
 
 @media (max-width: 700px) {
   #profiles {
-    margin: 0;
+    margin: 0 auto 10px auto;
     float: none;
     max-width: 100%;
     text-align: center;
     font-size: 11px; }
-    #profiles .icon img {
-      height: 25px; } }
-@media (max-width: 400px) {
-  #profiles {
-    margin: -6px 0 5px 0 !important; }
-    #profiles .icon img {
-      height: 15px; } }
+    #profiles .icon {
+      width: 90px;
+      text-align: center; }
+      #profiles .icon img {
+        height: 20px;
+        margin-right: 5px; } }
+@media (max-width: 500px) {
+  #profiles .icon {
+    width: 80px; } }
 
 /*# sourceMappingURL=profile.css.map */

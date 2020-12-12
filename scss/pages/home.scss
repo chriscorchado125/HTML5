@@ -1,14 +1,8 @@
 @import "./../variables.scss";
 
-.container {
+.homepage-wrapper {
   padding: 20px 45px 20px 45px;
 
-  h1 {
-    margin: 100px auto 30px auto;
-  }
-}
-
-.homepage-wrapper {
   .about-headline {
     text-align: center;
   }
@@ -63,27 +57,7 @@
   }
 }
 
-@media (max-width: 700px) {
-  .container {
-    max-width: 540px;
-
-    h1 {
-      margin-top: 135px;
-    }
-  }
-
-  .about {
-    padding: 15px 35px;
-
-    p {
-      text-align: left !important;
-    }
-
-    .about-headline {
-      text-align: center !important;
-    }
-  }
-
+@media (max-width: 800px) {
   .jira-versions {
     text-align: center;
 
@@ -95,10 +69,19 @@
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 700px) {
   .container {
-    h1 {
-      margin-top: 105px;
+    max-width: 540px;
+    padding: 20px 0 20px 0 !important;
+  }
+
+  .jira-versions {
+    text-align: center;
+
+    img {
+      max-width: 185px;
+      box-shadow: 1px 1px 15px 1px #888;
+      margin: 10px;
     }
   }
 }
@@ -117,7 +100,7 @@
   }
 }
 
-#nodejs-text,
+#nodeJS-text,
 #vuejs-text,
 #drupal8-text,
 #webpack-text a img {
@@ -128,7 +111,7 @@
   display: inline-block !important;
 }
 
-#nodejs-text,
+#nodeJS-text,
 #vuejs-text,
 #drupal8-text,
 #webpack-text {

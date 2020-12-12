@@ -1,7 +1,6 @@
 import * as dataJS from './data.js';
 import * as utilityJS from './utilities.js';
 import * as searchJS from './search.js';
-document.getElementsByClassName('container')[0].classList.add('hide');
 window.onload = () => {
     fetch('./includes/nav.html')
         .then((response) => {

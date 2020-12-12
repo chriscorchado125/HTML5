@@ -7,6 +7,7 @@
   align-items: stretch;
   justify-content: space-evenly;
   font-size: 12px;
+  margin: 20px auto 70px auto;
 
   // Individual project container
   .project {
@@ -131,7 +132,7 @@
 }
 
 @media (max-width: 800px) {
-  .container {
+  .project-container {
     grid-template-columns: 1fr;
   }
 }

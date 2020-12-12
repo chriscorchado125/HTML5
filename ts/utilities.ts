@@ -9,16 +9,9 @@ export const SITE_SEARCH_ID = 'search-site'
 export const showMessage = (
   msg: string
 ): void => {
+  // TODO: create element, attach and then use timer to have message go away
   const userMsg = document.getElementById('user-message') as HTMLElement
   userMsg.innerHTML = msg
-}
-
-/**
- * Clear message
- */
-export const clearMessage = (): void => {
-  const userMsg = document.getElementById('user-message') as HTMLElement
-  userMsg.innerHTML = ''
 }
 
 /**

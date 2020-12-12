@@ -17,8 +17,7 @@
 .navbar {
   border-bottom: 2px solid $main_color;
   display: block;
-  min-height: 85px;
-  padding-bottom: 0;  /* no unit */
+  min-height: 85px !important;
 
   // Force nav to stay horizontal
   .navbar-nav {
@@ -67,11 +66,11 @@
 
 @media (max-width: 400px) {
   #logo img {
-    margin: 0 0 0 10px;
+    margin: 5px 0 0 10px;
   }
 
   .navbar {
-    padding: 0;
+    padding: 0; /* no unit */
 
     .navbar-nav {
       width: 100%;

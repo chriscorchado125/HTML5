@@ -1,27 +1,24 @@
-.container {
+.homepage-wrapper {
   padding: 20px 45px 20px 45px; }
-  .container h1 {
-    margin: 100px auto 30px auto; }
-
-.homepage-wrapper .about-headline {
-  text-align: center; }
-.homepage-wrapper p {
-  text-align: center; }
-.homepage-wrapper h4 {
-  font-size: 16px;
-  font-weight: bold; }
-.homepage-wrapper .home-hrclass {
-  background-color: #000 !important;
-  height: 2px !important; }
-.homepage-wrapper .how-it-works-text-wrapper {
-  text-align: left !important; }
-.homepage-wrapper .target-site-versions {
-  display: grid;
-  justify-items: center;
-  grid-template-columns: 1fr 1fr;
-  max-width: 400px;
-  text-align: center;
-  padding-top: 10px; }
+  .homepage-wrapper .about-headline {
+    text-align: center; }
+  .homepage-wrapper p {
+    text-align: center; }
+  .homepage-wrapper h4 {
+    font-size: 16px;
+    font-weight: bold; }
+  .homepage-wrapper .home-hrclass {
+    background-color: #000 !important;
+    height: 2px !important; }
+  .homepage-wrapper .how-it-works-text-wrapper {
+    text-align: left !important; }
+  .homepage-wrapper .target-site-versions {
+    display: grid;
+    justify-items: center;
+    grid-template-columns: 1fr 1fr;
+    max-width: 400px;
+    text-align: center;
+    padding-top: 10px; }
 
 .site-versions {
   display: grid;
@@ -38,18 +35,17 @@
   .site-versions i {
     font-size: 12px; }
 
+@media (max-width: 800px) {
+  .jira-versions {
+    text-align: center; }
+    .jira-versions img {
+      max-width: 185px;
+      box-shadow: 1px 1px 15px 1px #888;
+      margin: 10px; } }
 @media (max-width: 700px) {
   .container {
-    max-width: 540px; }
-    .container h1 {
-      margin-top: 135px; }
-
-  .about {
-    padding: 15px 35px; }
-    .about p {
-      text-align: left !important; }
-    .about .about-headline {
-      text-align: center !important; }
+    max-width: 540px;
+    padding: 20px 0 20px 0 !important; }
 
   .jira-versions {
     text-align: center; }
@@ -57,16 +53,13 @@
       max-width: 185px;
       box-shadow: 1px 1px 15px 1px #888;
       margin: 10px; } }
-@media (max-width: 400px) {
-  .container h1 {
-    margin-top: 105px; } }
 #html5 div .here-hand {
   display: block;
   margin: auto; }
 #html5 a img {
   box-shadow: 5px 5px 15px 2px #888 !important; }
 
-#nodejs-text,
+#nodeJS-text,
 #vuejs-text,
 #drupal8-text,
 #webpack-text a img {
@@ -75,7 +68,7 @@
 #html5-text {
   display: inline-block !important; }
 
-#nodejs-text,
+#nodeJS-text,
 #vuejs-text,
 #drupal8-text,
 #webpack-text {

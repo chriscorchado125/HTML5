@@ -64,7 +64,7 @@
   #search-container {
     float: none;
     width: 100%;
-    padding-bottom: 2px;
+    margin: -5px 0 10px 0 !important;
   }
 
   #no-records {
@@ -95,29 +95,20 @@
   }
 }
 
-@media (max-width: 400px) {
-  #search-container {
-    margin: -5px 0 10px 0 !important;
-  }
-}
-
 @media (max-width: 350px) {
   #search-container {
     #search-site {
       width: 95px;
-      font-size: 12px;
     }
 
     #search-btn {
-      margin-left: 0; /* no unit */
-    }
-
-    .search-btn {
+      margin-left: 2px;
       font-size: 11px;
     }
 
     #search-count {
       width: 70px;
+      font-size: 11px;
     }
   }
 }

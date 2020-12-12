@@ -12,9 +12,7 @@
 .navbar {
   border-bottom: 2px solid #346adf;
   display: block;
-  min-height: 85px;
-  padding-bottom: 0;
-  /* no unit */ }
+  min-height: 85px !important; }
   .navbar .navbar-nav {
     flex-direction: row; }
     .navbar .navbar-nav .nav-item {
@@ -46,10 +44,11 @@
     height: 50px; } }
 @media (max-width: 400px) {
   #logo img {
-    margin: 0 0 0 10px; }
+    margin: 5px 0 0 10px; }
 
   .navbar {
-    padding: 0; }
+    padding: 0;
+    /* no unit */ }
     .navbar .navbar-nav {
       width: 100%;
       margin-left: -7px !important; }

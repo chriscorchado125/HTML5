@@ -356,7 +356,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
             currentNavItem = 'projects-link';
             pageIsSearchable = true;
             pageHasGallery = true;
-            item = `<h1 id='content'>Project Samples</h1><div class='container project-container row'>${item}</div>`;
+            item = `<h1 id='content'>Project Samples</h1><div class='project-container'>${item}</div>`;
             break;
         case 'resume':
             item = `<h1 id='content'>Resume</h1>${item}`;
@@ -523,7 +523,6 @@ export const getPage = (page, search, pagingURL, pagingDirection) => __awaiter(v
             searchJS.noRecordsFound('no-records', search, 'navigation', 'No matches found for');
         }
         utilityJS.animateLogo('logo-image', '');
-        utilityJS.clearMessage();
     }
     return true;
 });

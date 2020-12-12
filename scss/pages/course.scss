@@ -5,6 +5,7 @@
   grid-gap: 5px;
   justify-items: center;
   grid-template-columns: 1fr 1fr 1fr 1fr;
+  margin-top: 20px;
 
   // Course title
   h2 {
@@ -60,6 +61,7 @@
 
 @media (max-width: 1000px) {
   .courses-container {
+    margin-top: 30px !important;
     grid-template-columns: 1fr 1fr 1fr;
 
     .course-box {
