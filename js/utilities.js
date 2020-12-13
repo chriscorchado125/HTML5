@@ -2,8 +2,9 @@ export const API_BASE = 'https://chriscorchado.com/drupal8';
 export const MAX_ITEMS_PER_PAGE = 50;
 export const SITE_SEARCH_ID = 'search-site';
 export const showMessage = (msg) => {
-    const userMsg = document.getElementById('user-message');
-    userMsg.innerHTML = msg;
+    const userMessage = document.createElement('div');
+    userMessage.id = 'user-message';
+    userMessage.innerHTML = msg;
 };
 export const getCurrentPage = () => {
     const thisPage = window.location.pathname

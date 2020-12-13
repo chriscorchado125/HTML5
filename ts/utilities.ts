@@ -9,9 +9,10 @@ export const SITE_SEARCH_ID = 'search-site'
 export const showMessage = (
   msg: string
 ): void => {
-  // TODO: create element, attach and then use timer to have message go away
-  const userMsg = document.getElementById('user-message') as HTMLElement
-  userMsg.innerHTML = msg
+  // TODO: attach and then use timer to have message go away
+  const userMessage = document.createElement('div')
+  userMessage.id = 'user-message'
+  userMessage.innerHTML = msg
 }
 
 /**
