@@ -62,7 +62,7 @@ h1 {
     display: block !important; } }
 @media (max-width: 700px) {
   .container h1 {
-    margin: 90px 0 35px 0; } }
+    margin: 85px 0 35px 0 !important; } }
 @media (max-width: 500px) {
   #edit-message-0-value {
     height: 150px; } }
