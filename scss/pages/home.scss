@@ -183,6 +183,9 @@ ul li { text-align: left !important; }
 
 // SET VERSION image and text: html5, nodejs, vuejs, drupal8, webpack
 #html5 {
+  pointer-events: none;
+  cursor: default;
+
   div {
     .here-hand {
       display: block;
