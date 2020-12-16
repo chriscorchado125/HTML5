@@ -1,4 +1,4 @@
-@import "./../variables.scss";
+@import './../variables.scss';
 
 // Remove IE “clear field or cross” X button from inputs field
 ::-ms-clear {
@@ -25,7 +25,7 @@
 #search-container {
   float: right;
   padding: 0; /* no unit */
-  width: 340px;
+  width: 350px;
   text-align: center;
   display: none;
 
