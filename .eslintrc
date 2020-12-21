@@ -25,62 +25,25 @@
     "@typescript-eslint"
   ],
   "rules": {
-    "arrow-body-style": [
-      "off"
-    ],
-    "comma-dangle": [
-      "off"
-    ],
-    "func-names": [
-      "off"
-    ],
-    "import/extensions": [
-      "off"
-    ],
-    "import/no-unresolved": [
-      "off"
-    ],
-    "import/prefer-default-export": [
-      "off"
-    ],
-    "no-restricted-globals": [
-      "off"
-    ],
-    "no-lonely-if": [
-      "off"
-    ],
-    "no-plusplus": [
-      "off"
-    ],
-    "operator-linebreak": [
-      "off"
-    ],
-    "prefer-destructuring": [
-      "off"
-    ],
-    "prefer-arrow-callback": [
-      "off"
-    ],
-    "semi": [
-      "off"
-    ],
-    "space-before-function-paren": [
-      "off"
-    ],
-    "@typescript-eslint/ban-ts-comment": [
-      "off"
-    ],
-    "@typescript-eslint/no-explicit-any": [
-      "off"
-    ],
-    "@typescript-eslint/no-var-requires": [
-      "off"
-    ],
-    "@typescript-eslint/explicit-module-boundary-types": [
-      "off"
-    ],
-    "@typescript-eslint/no-non-null-assertion": [
-      "off"
-    ]
+    "arrow-body-style": ["off"],
+    "comma-dangle": ["off"],
+    "func-names": ["off"],
+    "import/extensions": ["off"],
+    "import/no-unresolved": ["off"],
+    "import/prefer-default-export": ["off"],
+    "no-restricted-globals": ["off"],
+    "no-lonely-if": ["off"],
+    "no-plusplus": ["off"],
+    "no-undef": ["off"],
+    "operator-linebreak": ["off"],
+    "prefer-destructuring": ["off"],
+    "prefer-arrow-callback": ["off"],
+    "semi": ["off"],
+    "space-before-function-paren": ["off"],
+    "@typescript-eslint/ban-ts-comment": ["off"],
+    "@typescript-eslint/no-explicit-any": ["off"],
+    "@typescript-eslint/no-var-requires": ["off"],
+    "@typescript-eslint/explicit-module-boundary-types": ["off"],
+    "@typescript-eslint/no-non-null-assertion": ["off"]
   }
 }

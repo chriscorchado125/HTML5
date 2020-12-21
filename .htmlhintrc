@@ -7,7 +7,7 @@
   "attr-value-not-empty": true,
   "doctype-first": false,
   "doctype-html5": true,
-  "head-script-disabled": true,
+  "head-script-disabled": false,
   "href-abs-or-rel": false,
   "id-class-value": "dash",
   "id-class-ad-disabled": false,
