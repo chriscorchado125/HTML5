@@ -62,7 +62,7 @@ export const setPagination = (
     searchContainer.className = 'pagination-no'
 
     if (searchContainerCount) {
-      searchContainerCount.innerHTML = `<span id='totalItems'>${count}</span> ${count === 1 ? 'Item' : 'Items'}`
+      searchContainerCount.innerHTML = `<span id='totalItems'>${count}</span>&nbsp;${count === 1 ? 'Item' : 'Items'}`
     }
   } else {
     searchContainer.className = 'pagination-yes'
@@ -70,14 +70,14 @@ export const setPagination = (
 
     // first page item count
     if (count === dataOffset) {
-      dataOffsetText = `Items 1-<span id="lastCount">${utilityJS.MAX_ITEMS_PER_PAGE}</span>`
+      dataOffsetText = `Items&nbsp;1-<span id="lastCount">${utilityJS.MAX_ITEMS_PER_PAGE}</span>`
     } else {
       // middle pages item counts
       if (currentCount !== 0) {
-        dataOffsetText = `Items ${(currentCount * utilityJS.MAX_ITEMS_PER_PAGE - utilityJS.MAX_ITEMS_PER_PAGE) + 1}-<span id="lastCount">${currentCount * utilityJS.MAX_ITEMS_PER_PAGE}</span>`
+        dataOffsetText = `Items&nbsp;${(currentCount * utilityJS.MAX_ITEMS_PER_PAGE - utilityJS.MAX_ITEMS_PER_PAGE) + 1}-<span id="lastCount">${currentCount * utilityJS.MAX_ITEMS_PER_PAGE}</span>`
       } else {
         // last page item count
-        dataOffsetText = `Items ${+paginationTotal + 1}-<span id="lastCount">${+paginationTotal + count}</span>`
+        dataOffsetText = `Items&nbsp;${+paginationTotal + 1}-<span id="lastCount">${+paginationTotal + count}</span>`
       }
     }
 

@@ -1,4 +1,4 @@
-@import "./../variables.scss";
+@import './../variables.scss';
 
 label {
   margin-bottom: 2px;
@@ -72,20 +72,16 @@ label {
 }
 
 @media (max-width: 400px) {
-  #search-site {
-    width: 85px !important;
-  }
-
   #pagination {
-    padding-left: 5px;
-    margin-right: 5px;
+    padding-left: 0; /* no unit */
+    margin-right: 2px;
   }
 }
 
 @media (max-width: 350px) {
   #pagination {
-    padding-left: 2px;
-    margin-right: 2px;
+    padding-left: 0; /* no unit */
+    margin-right: 0; /* no unit */
 
     .pager-navigation {
       font-size: 11px;
