@@ -244,7 +244,6 @@ const setPageDataLayer = (values, pageName, site) => {
         }
     };
     dataLayer.push(eventList);
-    console.log(dataLayer);
 };
 const renderPage = (data, page, searchedFor, next, prev) => {
     var _a, _b;
@@ -427,6 +426,10 @@ export const getPage = (page, search, pagingURL, pagingDirection) => __awaiter(v
         utilityJS.animateLogo('logo-image', 'spin-reverse');
     }
     if (search) {
+        dataLayer.push({
+            'event': 'search',
+            'searchTerm': search
+        });
     }
     if (page === 'contact') {
         if (location.toString().indexOf('submitted') === -1) {

@@ -335,7 +335,7 @@ const setPageDataLayer = (values: any, pageName: string, site: string): void => 
   }
 
   dataLayer.push(eventList)
-  console.log(dataLayer)
+  // console.log(dataLayer)
 }
 
 /**
@@ -585,7 +585,10 @@ export const getPage = async (
   }
 
   if (search) {
-    // ga('send', 'pageview', location.pathname + '?search=' + search)
+    dataLayer.push({
+      'event': 'search',
+      'searchTerm': search
+    })
   }
 
   if (page === 'contact') {

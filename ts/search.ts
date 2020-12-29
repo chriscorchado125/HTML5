@@ -134,8 +134,6 @@ export const search = (e: Event): void => {
 
   if (inputSearchBox && inputSearchBox.value) {
     const currentSearchPage = getCurrentPage()
-
-    ga('send', 'pageview', `/${currentSearchPage}?q=${inputSearchBox.value}`)
     dataJS.getPage(currentSearchPage, inputSearchBox.value)
     inputSearchBox.select()
   }
