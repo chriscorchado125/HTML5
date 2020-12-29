@@ -6,20 +6,6 @@ export const showMessage = (msg) => {
     userMessage.id = 'user-message';
     userMessage.innerHTML = msg;
 };
-export const getCurrentPage = () => {
-    const thisPage = window.location.pathname
-        .split('/')
-        .filter((pathnamePieces) => {
-        return pathnamePieces.length;
-    })
-        .pop();
-    let pageName = '';
-    if (thisPage)
-        pageName = thisPage.split('.')[0];
-    if (pageName === 'index' || pageName === 'html5' || !pageName)
-        pageName = 'about';
-    return pageName;
-};
 export const getFullUrlByPage = (linkToFix, page) => {
     let pathToResource = 'No Path Found';
     switch (page) {

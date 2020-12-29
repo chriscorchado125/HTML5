@@ -1,6 +1,7 @@
 import * as dataJS from './data.js';
 import * as utilityJS from './utilities.js';
 import * as searchJS from './search.js';
+import getCurrentPage from './getCurrentPage.js';
 window.onload = () => {
     fetch('./includes/nav.html')
         .then((response) => {
@@ -39,5 +40,5 @@ window.onload = () => {
     }).catch((error) => {
         utilityJS.showMessage(`Sorry an error has occurred: ${error}`);
     });
-    dataJS.getPage(utilityJS.getCurrentPage(), '');
+    dataJS.getPage(getCurrentPage(), '');
 };

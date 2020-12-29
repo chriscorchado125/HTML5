@@ -1,5 +1,6 @@
 import * as utilityJS from './utilities.js'
 import * as dataJS from './data.js'
+import getCurrentPage from './getCurrentPage.js'
 
 const searchElement = <HTMLInputElement>document.getElementById(utilityJS.SITE_SEARCH_ID)
 /**
@@ -109,8 +110,8 @@ export const setPagination = (
     const pagePrev = document.getElementById('pagePrev') as HTMLElement
     const pageNext = document.getElementById('pageNext') as HTMLElement
 
-    if (pagePrev) pagePrev.onclick = () => dataJS.getPage(utilityJS.getCurrentPage(), SITE_SEARCH_ID.value, prev.href, 'prev')
-    if (pageNext) pageNext.onclick = () => dataJS.getPage(utilityJS.getCurrentPage(), SITE_SEARCH_ID.value, next.href, 'next')
+    if (pagePrev) pagePrev.onclick = () => dataJS.getPage(getCurrentPage(), SITE_SEARCH_ID.value, prev.href, 'prev')
+    if (pageNext) pageNext.onclick = () => dataJS.getPage(getCurrentPage(), SITE_SEARCH_ID.value, next.href, 'next')
   }
 }
 
@@ -130,8 +131,9 @@ export const search = (e: Event): void => {
     e.preventDefault()
     inputSearchBox.focus()
   }
+
   if (inputSearchBox && inputSearchBox.value) {
-    const currentSearchPage = utilityJS.getCurrentPage()
+    const currentSearchPage = getCurrentPage()
 
     ga('send', 'pageview', `/${currentSearchPage}?q=${inputSearchBox.value}`)
     dataJS.getPage(currentSearchPage, inputSearchBox.value)
@@ -164,7 +166,7 @@ export const searchClear = (searchTextBoxID: string): void => {
 
   document.getElementById('no-records')?.remove()
 
-  dataJS.getPage(utilityJS.getCurrentPage(), '')
+  dataJS.getPage(getCurrentPage(), '')
 
   utilityJS.animateLogo('logo-image', 'spin-reverse')
 }

@@ -1,5 +1,6 @@
 import * as utilityJS from './utilities.js';
 import * as dataJS from './data.js';
+import getCurrentPage from './getCurrentPage.js';
 const searchElement = document.getElementById(utilityJS.SITE_SEARCH_ID);
 const getSearchCount = (count, searchCountID) => {
     if (searchElement && searchElement.value) {
@@ -68,9 +69,9 @@ export const setPagination = (count, paginationTotal, prev, next) => {
         const pagePrev = document.getElementById('pagePrev');
         const pageNext = document.getElementById('pageNext');
         if (pagePrev)
-            pagePrev.onclick = () => dataJS.getPage(utilityJS.getCurrentPage(), SITE_SEARCH_ID.value, prev.href, 'prev');
+            pagePrev.onclick = () => dataJS.getPage(getCurrentPage(), SITE_SEARCH_ID.value, prev.href, 'prev');
         if (pageNext)
-            pageNext.onclick = () => dataJS.getPage(utilityJS.getCurrentPage(), SITE_SEARCH_ID.value, next.href, 'next');
+            pageNext.onclick = () => dataJS.getPage(getCurrentPage(), SITE_SEARCH_ID.value, next.href, 'next');
     }
 };
 export const search = (e) => {
@@ -84,7 +85,7 @@ export const search = (e) => {
         inputSearchBox.focus();
     }
     if (inputSearchBox && inputSearchBox.value) {
-        const currentSearchPage = utilityJS.getCurrentPage();
+        const currentSearchPage = getCurrentPage();
         ga('send', 'pageview', `/${currentSearchPage}?q=${inputSearchBox.value}`);
         dataJS.getPage(currentSearchPage, inputSearchBox.value);
         inputSearchBox.select();
@@ -102,7 +103,7 @@ export const searchClear = (searchTextBoxID) => {
         return;
     inputSearchBox.value = '';
     (_a = document.getElementById('no-records')) === null || _a === void 0 ? void 0 : _a.remove();
-    dataJS.getPage(utilityJS.getCurrentPage(), '');
+    dataJS.getPage(getCurrentPage(), '');
     utilityJS.animateLogo('logo-image', 'spin-reverse');
 };
 export const noRecordsFound = (noRecordID, searchedFor, appendToID, msg) => {
