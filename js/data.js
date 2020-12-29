@@ -217,6 +217,35 @@ const setPageHTML = (values) => {
     }
     return '';
 };
+const setPageDataLayer = (values, pageName, site) => {
+    const items = [];
+    let itemTitle = '';
+    values.forEach((element) => {
+        if (pageName === 'companies') {
+            itemTitle = element.attributes.field_company_name;
+        }
+        else {
+            itemTitle = element.attributes.title;
+        }
+        const thisItem = {
+            'item_name': `${itemTitle}`,
+            'item_id': `${element.id}`,
+            'price': '.99',
+            'item_brand': `${site}`,
+            'item_category': `${pageName}`,
+            'quantity': '1'
+        };
+        items.push(thisItem);
+    });
+    const eventList = {
+        event: 'view_item_list',
+        ecommerce: {
+            items
+        }
+    };
+    dataLayer.push(eventList);
+    console.log(dataLayer);
+};
 const renderPage = (data, page, searchedFor, next, prev) => {
     var _a, _b;
     let pageIsSearchable = false;
@@ -336,6 +365,7 @@ const renderPage = (data, page, searchedFor, next, prev) => {
             default:
         }
     });
+    setPageDataLayer(data.data, page, 'HTML5');
     let pageHasGallery = false;
     switch (page) {
         case 'about':

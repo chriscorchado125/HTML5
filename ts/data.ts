@@ -1,7 +1,8 @@
+/* eslint-disable quote-props */
+/* eslint-env jquery */
 import * as utilityJS from './utilities.js'
 import * as searchJS from './search.js'
 import { formSubmitted } from './form.js'
-/* eslint-env jquery */
 
 /**
  * Get data
@@ -300,6 +301,44 @@ const setPageHTML = (values: any): string => {
 }
 
 /**
+ * Configure the analytics data layer for each page
+ * @param {array} values - all item values
+ */
+const setPageDataLayer = (values: any, pageName: string, site: string): void => {
+  const items: any = []
+  let itemTitle = ''
+
+  values.forEach((element: any) => {
+    if (pageName === 'companies') {
+      itemTitle = element.attributes.field_company_name
+    } else {
+      itemTitle = element.attributes.title
+    }
+
+    const thisItem = {
+      'item_name': `${itemTitle}`,
+      'item_id': `${element.id}`,
+      'price': '.99',
+      'item_brand': `${site}`,
+      'item_category': `${pageName}`,
+      'quantity': '1'
+    }
+
+    items.push(thisItem)
+  })
+
+  const eventList = {
+    event: 'view_item_list',
+    ecommerce: {
+      items
+    }
+  }
+
+  dataLayer.push(eventList)
+  console.log(dataLayer)
+}
+
+/**
  * Generate the webpage
  * @param {Object[]} data - page items
  * @param {string} page - page name
@@ -461,6 +500,8 @@ const renderPage = (
       default:
     }
   }) // data.data forEach
+
+  setPageDataLayer(data.data, page, 'HTML5')
 
   let pageHasGallery = false
   switch (page) {
