@@ -6,10 +6,10 @@ import { formSubmitted } from './form.js'
 
 // Used for analytics
 declare global {
-    interface Window { dataLayer: any; }
+  interface Window { dataLayer: any; }
 }
 
-window.dataLayer = window.dataLayer || [];
+window.dataLayer = window.dataLayer || []
 
 /**
  * Get data

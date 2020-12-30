@@ -18,4 +18,4 @@ const getCurrentPage = (): string => {
   return pageName
 }
 
-module.exports = getCurrentPage;
+export default getCurrentPage

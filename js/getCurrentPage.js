@@ -1,4 +1,3 @@
-"use strict";
 const getCurrentPage = () => {
     const thisPage = window.location.pathname
         .split('/')
@@ -13,4 +12,4 @@ const getCurrentPage = () => {
         pageName = 'about';
     return pageName;
 };
-module.exports = getCurrentPage;
+export default getCurrentPage;
