@@ -4,6 +4,13 @@ import * as utilityJS from './utilities.js'
 import * as searchJS from './search.js'
 import { formSubmitted } from './form.js'
 
+// Used for analytics
+declare global {
+    interface Window { dataLayer: any; }
+}
+
+window.dataLayer = window.dataLayer || [];
+
 /**
  * Get data
  * @param {string} dataURL - URL to fetch data from
@@ -334,8 +341,7 @@ const setPageDataLayer = (values: any, pageName: string, site: string): void => 
     }
   }
 
-  dataLayer.push(eventList)
-  // console.log(dataLayer)
+  window.dataLayer.push(eventList)
 }
 
 /**
@@ -585,7 +591,7 @@ export const getPage = async (
   }
 
   if (search) {
-    dataLayer.push({
+    window.dataLayer.push({
       'event': 'search',
       'searchTerm': search
     })

@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import * as utilityJS from './utilities.js';
 import * as searchJS from './search.js';
 import { formSubmitted } from './form.js';
+window.dataLayer = window.dataLayer || [];
 const getData = (dataURL) => __awaiter(void 0, void 0, void 0, function* () {
     let result = {};
     try {
@@ -243,7 +244,7 @@ const setPageDataLayer = (values, pageName, site) => {
             items
         }
     };
-    dataLayer.push(eventList);
+    window.dataLayer.push(eventList);
 };
 const renderPage = (data, page, searchedFor, next, prev) => {
     var _a, _b;
@@ -426,7 +427,7 @@ export const getPage = (page, search, pagingURL, pagingDirection) => __awaiter(v
         utilityJS.animateLogo('logo-image', 'spin-reverse');
     }
     if (search) {
-        dataLayer.push({
+        window.dataLayer.push({
             'event': 'search',
             'searchTerm': search
         });
