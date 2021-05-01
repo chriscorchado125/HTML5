@@ -48,9 +48,14 @@ const addProfiles = (id) => {
   </div>
 
   <div class='icon' id='profile-azure'>
-    <a href='https://docs.microsoft.com/en-us/users/corchadochrisit-2736/' target='_blank' rel='noopener' title='Opening a new window'>
+    <!--a href='https://docs.microsoft.com/en-us/users/corchadochrisit-2736/' target='_blank' rel='noopener' title='Opening a new window'>
       <img alt='Azure Icon' title='Link to Azure Profile' src='https://chriscorchado.com/images/azureIcon.png' />
       <span>Azure</span>
+    </a-->
+
+    <a href='https://chriscorchado.com/resume/ChrisCorchadoIT-2736_microsoft-en-us-users.pdf' target='_blank' rel='noopener' title='Opening a new window'>
+    <img alt='Azure Icon' title='Link to Azure Profile' src='https://chriscorchado.com/images/azureIcon.png' />
+    <span>Azure</span>
     </a>
   </div>`;
 };
