@@ -1,4 +1,4 @@
-export const API_BASE = 'https://chriscorchado.com/drupal8';
+export const API_BASE = 'https://live-chriscorchadod8.pantheonsite.io';
 export const MAX_ITEMS_PER_PAGE = 50;
 export const SITE_SEARCH_ID = 'search-site';
 export const showMessage = (msg) => {
