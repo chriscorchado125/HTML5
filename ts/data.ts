@@ -676,13 +676,13 @@ export const getPage = async (
                 filter[field_award_date][operator]=CONTAINS&
                 filter[field_award_date][value]=${search}&
                 filter[field_award_date][condition][memberOf]=or-group&
-                sort=-field_award_date&
+                sort=-field_award_date,title&
                 include=field_award_pdf,field_track_image,field_award_images&
                 page[limit]=${utilityJS.MAX_ITEMS_PER_PAGE}`
             )
           } else {
             data = await getData(
-              `${utilityJS.API_BASE}/jsonapi/node/awards?sort=-field_award_date&
+              `${utilityJS.API_BASE}/jsonapi/node/awards?sort=-field_award_date,title&
                 include=field_award_pdf,field_track_image,field_award_images&
                 page[limit]=${utilityJS.MAX_ITEMS_PER_PAGE}`
             )
